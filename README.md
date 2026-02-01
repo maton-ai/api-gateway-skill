@@ -1,8 +1,8 @@
 # Maton API Gateway
 
-API gateway for calling third-party APIs with managed OAuth.
+API gateway for calling third-party APIs with managed auth.
 
-Call native API endpoints directly without handling OAuth token management.
+Call native API endpoints directly with a single API key.
 
 ## Quick Start
 
