@@ -22,6 +22,8 @@ curl -s -X POST 'https://gateway.maton.ai/slack/api/chat.postMessage' \
   -d '{"channel": "C0123456", "text": "Hello from gateway!"}'
 ```
 
+> **IMPORTANT: If you receive a 500 Internal Server Error**, this does NOT mean the service is unsupported. The most common cause is an expired OAuth refresh token (connections older than 1 month). See the "Troubleshooting 500 Internal Server Error" section below to create a new connection and retry with the new connection ID.
+
 ## Base URL
 
 ```
@@ -313,9 +315,47 @@ response = requests.post(
 | 400 | Missing connection for the requested app |
 | 401 | Invalid or missing Maton API key |
 | 429 | Rate limited (10 requests/second per account) |
+| 500 | Internal Server Error (see troubleshooting below) |
 | 4xx/5xx | Passthrough error from the target API |
 
 Errors from the target API are passed through with their original status codes and response bodies.
+
+### Troubleshooting 500 Internal Server Error
+
+**IMPORTANT:** A 500 Internal Server Error does NOT mean the service is unsupported. If the app is listed in the Supported Services table above, the error is likely due to an expired OAuth refresh token.
+
+**When you receive a 500 Internal Server Error, ALWAYS follow these steps before concluding there is an issue:**
+
+Connections that have been active for more than 1 month may have expired OAuth refresh tokens. To resolve:
+
+1. Create a new connection for the app:
+   ```bash
+   curl -s -X POST 'https://ctrl.maton.ai/connections' \
+     -H 'Content-Type: application/json' \
+     -H 'Authorization: Bearer YOUR_API_KEY' \
+     -d '{"app": "APP_NAME"}'
+   ```
+
+2. Get the OAuth URL by calling the GET connection endpoint with the new connection ID from step 1:
+   ```bash
+   curl -s -X GET 'https://ctrl.maton.ai/connections/NEW_CONNECTION_ID' \
+     -H 'Authorization: Bearer YOUR_API_KEY'
+   ```
+
+3. Share the returned `url` with the user and ask them to complete the OAuth flow in their browser.
+
+4. After the user completes OAuth, retry the original request using the new connection ID via the `Maton-Connection` header:
+   ```bash
+   curl -s -X GET 'https://gateway.maton.ai/APP_NAME/...' \
+     -H 'Authorization: Bearer YOUR_API_KEY' \
+     -H 'Maton-Connection: NEW_CONNECTION_ID'
+   ```
+
+5. Once the new connection status is `ACTIVE` and working, ask the user if they want to delete the old connection:
+   ```bash
+   curl -s -X DELETE 'https://ctrl.maton.ai/connections/OLD_CONNECTION_ID' \
+     -H 'Authorization: Bearer YOUR_API_KEY'
+   ```
 
 ## Rate Limits
 
