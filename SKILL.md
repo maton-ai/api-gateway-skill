@@ -1,7 +1,7 @@
 ---
 name: api-gateway
 description: |
-  API gateway for calling third-party APIs with managed auth. Use this skill when users want to interact with external services like Slack, HubSpot, Salesforce, Google Workspace, Stripe, Shopify, and more.
+  API gateway for calling third-party APIs with managed auth. Use this skill when users want to interact with external services like Slack, HubSpot, Salesforce, Google Workspace, Stripe, and more.
 compatibility: Requires network access and valid Maton API key
 metadata:
   author: maton
@@ -169,7 +169,6 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | Outlook | `outlook` | `graph.microsoft.com` |
 | QuickBooks | `quickbooks` | `quickbooks.api.intuit.com` |
 | Salesforce | `salesforce` | `{instance}.salesforce.com` |
-| Shopify | `shopify` | `{subdomain}.myshopify.com` (GraphQL API) |
 | Slack | `slack` | `slack.com` |
 | Stripe | `stripe` | `api.stripe.com` |
 | Typeform | `typeform` | `api.typeform.com` |
@@ -203,7 +202,6 @@ See [references/](references/) for detailed routing guides per provider:
 - [Outlook](references/outlook.md) - Mail, calendar, contacts
 - [QuickBooks](references/quickbooks.md) - Customers, invoices, reports
 - [Salesforce](references/salesforce.md) - SOQL, sObjects, CRUD
-- [Shopify](references/shopify.md) - **Uses GraphQL API (read this first)**, products, orders, customers
 - [Slack](references/slack.md) - Messages, channels, users
 - [Stripe](references/stripe.md) - Customers, subscriptions, payments
 - [Typeform](references/typeform.md) - Forms, responses, insights
