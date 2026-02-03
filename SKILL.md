@@ -144,7 +144,11 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 |---------|----------|------------------|
 | Airtable | `airtable` | `api.airtable.com` |
 | Apollo | `apollo` | `api.apollo.io` |
+| Asana | `asana` | `app.asana.com` |
+| Calendly | `calendly` | `api.calendly.com` |
 | Chargebee | `chargebee` | `{subdomain}.chargebee.com` |
+| ClickUp | `clickup` | `api.clickup.com` |
+| Fathom | `fathom` | `api.fathom.ai` |
 | Google Ads | `google-ads` | `googleads.googleapis.com` |
 | Google Analytics Admin | `google-analytics-admin` | `analyticsadmin.googleapis.com` |
 | Google Analytics Data | `google-analytics-data` | `analyticsdata.googleapis.com` |
@@ -153,12 +157,16 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | Google Drive | `google-drive` | `www.googleapis.com` |
 | Google Forms | `google-forms` | `forms.googleapis.com` |
 | Gmail | `google-mail` | `gmail.googleapis.com` |
+| Google Meet | `google-meet` | `meet.googleapis.com` |
+| Google Play | `google-play` | `androidpublisher.googleapis.com` |
 | Google Search Console | `google-search-console` | `www.googleapis.com` |
 | Google Sheets | `google-sheets` | `sheets.googleapis.com` |
+| Google Slides | `google-slides` | `slides.googleapis.com` |
 | HubSpot | `hubspot` | `api.hubapi.com` |
 | Jira | `jira` | `api.atlassian.com` |
 | JotForm | `jotform` | `api.jotform.com` |
 | Notion | `notion` | `api.notion.com` |
+| Outlook | `outlook` | `graph.microsoft.com` |
 | QuickBooks | `quickbooks` | `quickbooks.api.intuit.com` |
 | Salesforce | `salesforce` | `{instance}.salesforce.com` |
 | Shopify | `shopify` | `{subdomain}.myshopify.com` (GraphQL API) |
@@ -170,7 +178,11 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 See [references/](references/) for detailed routing guides per provider:
 - [Airtable](references/airtable.md) - Records, bases, tables
 - [Apollo](references/apollo.md) - People search, enrichment, contacts
+- [Asana](references/asana.md) - Tasks, projects, workspaces, webhooks
+- [Calendly](references/calendly.md) - Event types, scheduled events, availability, webhooks
 - [Chargebee](references/chargebee.md) - Subscriptions, customers, invoices
+- [ClickUp](references/clickup.md) - Tasks, lists, folders, spaces, webhooks
+- [Fathom](references/fathom.md) - Meeting recordings, transcripts, summaries, webhooks
 - [Google Ads](references/google-ads.md) - Campaigns, ad groups, GAQL queries
 - [Google Analytics Admin](references/google-analytics-admin.md) - Reports, dimensions, metrics
 - [Google Analytics Data](references/google-analytics-data.md) - Reports, dimensions, metrics
@@ -179,12 +191,16 @@ See [references/](references/) for detailed routing guides per provider:
 - [Google Drive](references/google-drive.md) - Files, folders, permissions
 - [Google Forms](references/google-forms.md) - Forms, questions, responses
 - [Gmail](references/google-mail.md) - Messages, threads, labels
+- [Google Meet](references/google-meet.md) - Spaces, conference records, participants
+- [Google Play](references/google-play.md) - In-app products, subscriptions, reviews
 - [Google Search Console](references/google-search-console.md) - Search analytics, sitemaps
 - [Google Sheets](references/google-sheets.md) - Values, ranges, formatting
+- [Google Slides](references/google-slides.md) - Presentations, slides, formatting
 - [HubSpot](references/hubspot.md) - Contacts, companies, deals
 - [Jira](references/jira.md) - Issues, projects, JQL queries
 - [JotForm](references/jotform.md) - Forms, submissions, webhooks
 - [Notion](references/notion.md) - Pages, databases, blocks
+- [Outlook](references/outlook.md) - Mail, calendar, contacts
 - [QuickBooks](references/quickbooks.md) - Customers, invoices, reports
 - [Salesforce](references/salesforce.md) - SOQL, sObjects, CRUD
 - [Shopify](references/shopify.md) - **Uses GraphQL API (read this first)**, products, orders, customers
