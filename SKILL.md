@@ -169,12 +169,15 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | JotForm | `jotform` | `api.jotform.com` |
 | Notion | `notion` | `api.notion.com` |
 | Outlook | `outlook` | `graph.microsoft.com` |
+| Pipedrive | `pipedrive` | `api.pipedrive.com` |
 | QuickBooks | `quickbooks` | `quickbooks.api.intuit.com` |
 | Salesforce | `salesforce` | `{instance}.salesforce.com` |
 | Slack | `slack` | `slack.com` |
 | Stripe | `stripe` | `api.stripe.com` |
+| Trello | `trello` | `api.trello.com` |
 | Typeform | `typeform` | `api.typeform.com` |
 | Xero | `xero` | `api.xero.com` |
+| YouTube | `youtube` | `www.googleapis.com` |
 
 See [references/](references/) for detailed routing guides per provider:
 - [Airtable](references/airtable.md) - Records, bases, tables
@@ -202,12 +205,15 @@ See [references/](references/) for detailed routing guides per provider:
 - [JotForm](references/jotform.md) - Forms, submissions, webhooks
 - [Notion](references/notion.md) - Pages, databases, blocks
 - [Outlook](references/outlook.md) - Mail, calendar, contacts
+- [Pipedrive](references/pipedrive.md) - Deals, persons, organizations, activities
 - [QuickBooks](references/quickbooks.md) - Customers, invoices, reports
 - [Salesforce](references/salesforce.md) - SOQL, sObjects, CRUD
 - [Slack](references/slack.md) - Messages, channels, users
 - [Stripe](references/stripe.md) - Customers, subscriptions, payments
+- [Trello](references/trello.md) - Boards, lists, cards, checklists
 - [Typeform](references/typeform.md) - Forms, responses, insights
 - [Xero](references/xero.md) - Contacts, invoices, reports
+- [YouTube](references/youtube.md) - Videos, playlists, channels, subscriptions
 
 ## Examples
 
