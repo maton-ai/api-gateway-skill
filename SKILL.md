@@ -26,7 +26,6 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-> **IMPORTANT: If you receive a 500 Internal Server Error**, this does NOT mean the service is unsupported. The most common cause is an expired OAuth refresh token (connections older than 1 month). See the "Troubleshooting 500 Internal Server Error" section below to create a new connection and retry with the new connection ID.
 
 ## Base URL
 
@@ -168,6 +167,7 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 
 | Service | App Name | Base URL Proxied |
 |---------|----------|------------------|
+| Acuity Scheduling | `acuity-scheduling` | `acuityscheduling.com` |
 | Airtable | `airtable` | `api.airtable.com` |
 | Apollo | `apollo` | `api.apollo.io` |
 | Asana | `asana` | `app.asana.com` |
@@ -190,6 +190,7 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | Google Search Console | `google-search-console` | `www.googleapis.com` |
 | Google Sheets | `google-sheets` | `sheets.googleapis.com` |
 | Google Slides | `google-slides` | `slides.googleapis.com` |
+| Google Workspace Admin | `google-workspace-admin` | `admin.googleapis.com` |
 | HubSpot | `hubspot` | `api.hubapi.com` |
 | Jira | `jira` | `api.atlassian.com` |
 | JotForm | `jotform` | `api.jotform.com` |
@@ -204,14 +205,24 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | Salesforce | `salesforce` | `{instance}.salesforce.com` |
 | Slack | `slack` | `slack.com` |
 | Stripe | `stripe` | `api.stripe.com` |
+| Todoist | `todoist` | `api.todoist.com` |
 | Trello | `trello` | `api.trello.com` |
 | Typeform | `typeform` | `api.typeform.com` |
 | WhatsApp Business | `whatsapp-business` | `graph.facebook.com` |
 | WooCommerce | `woocommerce` | `{store-url}/wp-json/wc/v3` |
 | Xero | `xero` | `api.xero.com` |
 | YouTube | `youtube` | `www.googleapis.com` |
+| Zoho Bigin | `zoho-bigin` | `www.zohoapis.com` |
+| Zoho Books | `zoho-books` | `www.zohoapis.com` |
+| Zoho Calendar | `zoho-calendar` | `calendar.zoho.com` |
+| Zoho CRM | `zoho-crm` | `www.zohoapis.com` |
+| Zoho Inventory | `zoho-inventory` | `www.zohoapis.com` |
+| Zoho Mail | `zoho-mail` | `mail.zoho.com` |
+| Zoho People | `zoho-people` | `people.zoho.com` |
+| Zoho Recruit | `zoho-recruit` | `recruit.zoho.com` |
 
 See [references/](references/) for detailed routing guides per provider:
+- [Acuity Scheduling](references/acuity-scheduling.md) - Appointments, calendars, clients, availability
 - [Airtable](references/airtable.md) - Records, bases, tables
 - [Apollo](references/apollo.md) - People search, enrichment, contacts
 - [Asana](references/asana.md) - Tasks, projects, workspaces, webhooks
@@ -234,6 +245,7 @@ See [references/](references/) for detailed routing guides per provider:
 - [Google Search Console](references/google-search-console.md) - Search analytics, sitemaps
 - [Google Sheets](references/google-sheets.md) - Values, ranges, formatting
 - [Google Slides](references/google-slides.md) - Presentations, slides, formatting
+- [Google Workspace Admin](references/google-workspace-admin.md) - Users, groups, org units, domains, roles
 - [HubSpot](references/hubspot.md) - Contacts, companies, deals
 - [Jira](references/jira.md) - Issues, projects, JQL queries
 - [JotForm](references/jotform.md) - Forms, submissions, webhooks
@@ -248,12 +260,21 @@ See [references/](references/) for detailed routing guides per provider:
 - [Salesforce](references/salesforce.md) - SOQL, sObjects, CRUD
 - [Slack](references/slack.md) - Messages, channels, users
 - [Stripe](references/stripe.md) - Customers, subscriptions, payments
+- [Todoist](references/todoist.md) - Tasks, projects, sections, labels, comments
 - [Trello](references/trello.md) - Boards, lists, cards, checklists
 - [Typeform](references/typeform.md) - Forms, responses, insights
 - [WhatsApp Business](references/whatsapp-business.md) - Messages, templates, media
 - [WooCommerce](references/woocommerce.md) - Products, orders, customers, coupons
 - [Xero](references/xero.md) - Contacts, invoices, reports
 - [YouTube](references/youtube.md) - Videos, playlists, channels, subscriptions
+- [Zoho Bigin](references/zoho-bigin.md) - Contacts, companies, pipelines, products
+- [Zoho Books](references/zoho-books.md) - Invoices, contacts, bills, expenses
+- [Zoho Calendar](references/zoho-calendar.md) - Calendars, events, attendees, reminders
+- [Zoho CRM](references/zoho-crm.md) - Leads, contacts, accounts, deals, search
+- [Zoho Inventory](references/zoho-inventory.md) - Items, sales orders, invoices, purchase orders, bills
+- [Zoho Mail](references/zoho-mail.md) - Messages, folders, labels, attachments
+- [Zoho People](references/zoho-people.md) - Employees, departments, designations, attendance, leave
+- [Zoho Recruit](references/zoho-recruit.md) - Candidates, job openings, interviews, applications
 
 ## Examples
 
@@ -383,14 +404,12 @@ response = requests.post(
 | 400 | Missing connection for the requested app |
 | 401 | Invalid or missing Maton API key |
 | 429 | Rate limited (10 requests/second per account) |
-| 500 | Internal Server Error (see troubleshooting below) |
+| 500 | Internal Server Error |
 | 4xx/5xx | Passthrough error from the target API |
 
 Errors from the target API are passed through with their original status codes and response bodies.
 
 ### Troubleshooting: Invalid API Key
-
-**When you receive a "Invalid API key" error, ALWAYS follow these steps before concluding there is an issue:**
 
 1. Check that the `MATON_API_KEY` environment variable is set:
 
@@ -409,62 +428,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting 500 Internal Server Error
+### Troubleshooting: 500 Internal Server Error
 
-**IMPORTANT:** A 500 Internal Server Error does NOT mean the service is unsupported. If the app is listed in the Supported Services table above, the error is likely due to an expired OAuth refresh token.
-
-**When you receive a 500 Internal Server Error, ALWAYS follow these steps before concluding there is an issue:**
-
-Connections that have been active for more than 1 month may have expired OAuth refresh tokens. To resolve:
-
-1. Create a new connection for the app:
-
-```bash
-python <<'EOF'
-import urllib.request, os, json
-data = json.dumps({'app': 'APP_NAME'}).encode()
-req = urllib.request.Request('https://ctrl.maton.ai/connections', data=data, method='POST')
-req.add_header('Authorization', f'Bearer {os.environ["MATON_API_KEY"]}')
-req.add_header('Content-Type', 'application/json')
-print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
-EOF
-```
-
-2. Get the OAuth URL by calling the GET connection endpoint with the new connection ID from step 1:
-
-```bash
-python <<'EOF'
-import urllib.request, os, json
-req = urllib.request.Request('https://ctrl.maton.ai/connections/NEW_CONNECTION_ID')
-req.add_header('Authorization', f'Bearer {os.environ["MATON_API_KEY"]}')
-print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
-EOF
-```
-
-3. Share the returned `url` with the user and ask them to complete the OAuth flow in their browser.
-
-4. After the user completes OAuth, retry the original request using the new connection ID via the `Maton-Connection` header:
-
-```bash
-python <<'EOF'
-import urllib.request, os, json
-req = urllib.request.Request('https://gateway.maton.ai/APP_NAME/...')
-req.add_header('Authorization', f'Bearer {os.environ["MATON_API_KEY"]}')
-req.add_header('Maton-Connection', 'NEW_CONNECTION_ID')
-print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
-EOF
-```
-
-5. Once the new connection status is `ACTIVE` and working, ask the user if they want to delete the old connection:
-
-```bash
-python <<'EOF'
-import urllib.request, os, json
-req = urllib.request.Request('https://ctrl.maton.ai/connections/OLD_CONNECTION_ID', method='DELETE')
-req.add_header('Authorization', f'Bearer {os.environ["MATON_API_KEY"]}')
-print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
-EOF
-```
+A 500 error may indicate an expired OAuth token. Try creating a new connection via the Connection Management section above and completing OAuth authorization. If the new connection is "ACTIVE", delete the old connection to ensure the gateway uses the new one.
 
 ## Rate Limits
 
@@ -473,8 +439,8 @@ EOF
 
 ## Notes
 
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets (`fields[]`, `sort[]`, `records[]`) to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- When using curl with URLs containing brackets (`fields[]`, `sort[]`, `records[]`), use the `-g` flag to disable glob parsing
+- When piping curl output to `jq`, environment variables may not expand correctly in some shells, which can cause "Invalid API key" errors
 
 ## Tips
 
