@@ -35,6 +35,8 @@ https://gateway.maton.ai/{app}/{native-api-path}
 
 Replace `{app}` with the service name and `{native-api-path}` with the actual API endpoint path.
 
+IMPORTANT: The URL path MUST start with the connection's app name (eg. `/google-mail/...`). This prefix tells the gateway which app connection to use. For example, the native Gmail API path starts with `gmail/v1/`, so full paths look like `/google-mail/gmail/v1/users/me/messages`.
+
 ## Authentication
 
 All requests require the Maton API key in the Authorization header:
@@ -167,47 +169,78 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 
 | Service | App Name | Base URL Proxied |
 |---------|----------|------------------|
+| ActiveCampaign | `active-campaign` | `{account}.api-us1.com` |
 | Acuity Scheduling | `acuity-scheduling` | `acuityscheduling.com` |
 | Airtable | `airtable` | `api.airtable.com` |
 | Apollo | `apollo` | `api.apollo.io` |
 | Asana | `asana` | `app.asana.com` |
 | Attio | `attio` | `api.attio.com` |
+| Basecamp | `basecamp` | `3.basecampapi.com` |
+| Box | `box` | `api.box.com` |
+| Brevo | `brevo` | `api.brevo.com` |
 | Calendly | `calendly` | `api.calendly.com` |
 | Chargebee | `chargebee` | `{subdomain}.chargebee.com` |
+| ClickFunnels | `clickfunnels` | `{subdomain}.myclickfunnels.com` |
 | ClickUp | `clickup` | `api.clickup.com` |
+| Cognito Forms | `cognito-forms` | `www.cognitoforms.com` |
+| Constant Contact | `constant-contact` | `api.cc.email` |
+| Dropbox | `dropbox` | `api.dropboxapi.com` |
+| Eventbrite | `eventbrite` | `www.eventbriteapi.com` |
 | Fathom | `fathom` | `api.fathom.ai` |
 | GitHub | `github` | `api.github.com` |
+| Gumroad | `gumroad` | `api.gumroad.com` |
 | Google Ads | `google-ads` | `googleads.googleapis.com` |
 | Google Analytics Admin | `google-analytics-admin` | `analyticsadmin.googleapis.com` |
 | Google Analytics Data | `google-analytics-data` | `analyticsdata.googleapis.com` |
 | Google Calendar | `google-calendar` | `www.googleapis.com` |
+| Google Contacts | `google-contacts` | `people.googleapis.com` |
 | Google Docs | `google-docs` | `docs.googleapis.com` |
 | Google Drive | `google-drive` | `www.googleapis.com` |
 | Google Forms | `google-forms` | `forms.googleapis.com` |
 | Gmail | `google-mail` | `gmail.googleapis.com` |
+| Google Merchant | `google-merchant` | `merchantapi.googleapis.com` |
 | Google Meet | `google-meet` | `meet.googleapis.com` |
 | Google Play | `google-play` | `androidpublisher.googleapis.com` |
 | Google Search Console | `google-search-console` | `www.googleapis.com` |
 | Google Sheets | `google-sheets` | `sheets.googleapis.com` |
 | Google Slides | `google-slides` | `slides.googleapis.com` |
+| Google Tasks | `google-tasks` | `tasks.googleapis.com` |
 | Google Workspace Admin | `google-workspace-admin` | `admin.googleapis.com` |
 | HubSpot | `hubspot` | `api.hubapi.com` |
 | Jira | `jira` | `api.atlassian.com` |
+| Jobber | `jobber` | `api.getjobber.com` |
 | JotForm | `jotform` | `api.jotform.com` |
+| Keap | `keap` | `api.infusionsoft.com` |
+| Kit | `kit` | `api.kit.com` |
 | Klaviyo | `klaviyo` | `a.klaviyo.com` |
 | Linear | `linear` | `api.linear.app` |
+| LinkedIn | `linkedin` | `api.linkedin.com` |
 | Mailchimp | `mailchimp` | `{dc}.api.mailchimp.com` |
+| MailerLite | `mailerlite` | `connect.mailerlite.com` |
+| ManyChat | `manychat` | `api.manychat.com` |
+| Microsoft Excel | `microsoft-excel` | `graph.microsoft.com` |
+| Microsoft To Do | `microsoft-to-do` | `graph.microsoft.com` |
 | Monday.com | `monday` | `api.monday.com` |
 | Notion | `notion` | `api.notion.com` |
+| OneDrive | `one-drive` | `graph.microsoft.com` |
 | Outlook | `outlook` | `graph.microsoft.com` |
 | Pipedrive | `pipedrive` | `api.pipedrive.com` |
 | QuickBooks | `quickbooks` | `quickbooks.api.intuit.com` |
+| Quo | `quo` | `api.openphone.com` |
 | Salesforce | `salesforce` | `{instance}.salesforce.com` |
+| SignNow | `signnow` | `api.signnow.com` |
 | Slack | `slack` | `slack.com` |
+| Square | `squareup` | `connect.squareup.com` |
 | Stripe | `stripe` | `api.stripe.com` |
+| Systeme.io | `systeme` | `api.systeme.io` |
+| Tally | `tally` | `api.tally.so` |
+| Telegram | `telegram` | `api.telegram.org` |
+| TickTick | `ticktick` | `api.ticktick.com` |
 | Todoist | `todoist` | `api.todoist.com` |
 | Trello | `trello` | `api.trello.com` |
+| Twilio | `twilio` | `api.twilio.com` |
 | Typeform | `typeform` | `api.typeform.com` |
+| Vimeo | `vimeo` | `api.vimeo.com` |
 | WhatsApp Business | `whatsapp-business` | `graph.facebook.com` |
 | WooCommerce | `woocommerce` | `{store-url}/wp-json/wc/v3` |
 | Xero | `xero` | `api.xero.com` |
@@ -222,47 +255,78 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | Zoho Recruit | `zoho-recruit` | `recruit.zoho.com` |
 
 See [references/](references/) for detailed routing guides per provider:
+- [ActiveCampaign](references/active-campaign.md) - Contacts, deals, tags, lists, automations, campaigns
 - [Acuity Scheduling](references/acuity-scheduling.md) - Appointments, calendars, clients, availability
 - [Airtable](references/airtable.md) - Records, bases, tables
 - [Apollo](references/apollo.md) - People search, enrichment, contacts
 - [Asana](references/asana.md) - Tasks, projects, workspaces, webhooks
 - [Attio](references/attio.md) - People, companies, records, tasks
+- [Basecamp](references/basecamp.md) - Projects, to-dos, messages, schedules, documents
+- [Box](references/box.md) - Files, folders, collaborations, shared links
+- [Brevo](references/brevo.md) - Contacts, email campaigns, transactional emails, templates
 - [Calendly](references/calendly.md) - Event types, scheduled events, availability, webhooks
 - [Chargebee](references/chargebee.md) - Subscriptions, customers, invoices
+- [ClickFunnels](references/clickfunnels.md) - Contacts, products, orders, courses, webhooks
 - [ClickUp](references/clickup.md) - Tasks, lists, folders, spaces, webhooks
+- [Cognito Forms](references/cognito-forms.md) - Forms, entries, documents, files
+- [Constant Contact](references/constant-contact.md) - Contacts, email campaigns, lists, segments
+- [Dropbox](references/dropbox.md) - Files, folders, search, metadata, revisions, tags
+- [Eventbrite](references/eventbrite.md) - Events, venues, tickets, orders, attendees
 - [Fathom](references/fathom.md) - Meeting recordings, transcripts, summaries, webhooks
 - [GitHub](references/github.md) - Repositories, issues, pull requests, commits
+- [Gumroad](references/gumroad.md) - Products, sales, subscribers, licenses, webhooks
 - [Google Ads](references/google-ads.md) - Campaigns, ad groups, GAQL queries
 - [Google Analytics Admin](references/google-analytics-admin.md) - Reports, dimensions, metrics
 - [Google Analytics Data](references/google-analytics-data.md) - Reports, dimensions, metrics
 - [Google Calendar](references/google-calendar.md) - Events, calendars, free/busy
+- [Google Contacts](references/google-contacts.md) - Contacts, contact groups, people search
 - [Google Docs](references/google-docs.md) - Document creation, batch updates
 - [Google Drive](references/google-drive.md) - Files, folders, permissions
 - [Google Forms](references/google-forms.md) - Forms, questions, responses
 - [Gmail](references/google-mail.md) - Messages, threads, labels
 - [Google Meet](references/google-meet.md) - Spaces, conference records, participants
+- [Google Merchant](references/google-merchant.md) - Products, inventories, promotions, reports
 - [Google Play](references/google-play.md) - In-app products, subscriptions, reviews
 - [Google Search Console](references/google-search-console.md) - Search analytics, sitemaps
 - [Google Sheets](references/google-sheets.md) - Values, ranges, formatting
 - [Google Slides](references/google-slides.md) - Presentations, slides, formatting
+- [Google Tasks](references/google-tasks.md) - Task lists, tasks, subtasks
 - [Google Workspace Admin](references/google-workspace-admin.md) - Users, groups, org units, domains, roles
 - [HubSpot](references/hubspot.md) - Contacts, companies, deals
 - [Jira](references/jira.md) - Issues, projects, JQL queries
+- [Jobber](references/jobber.md) - Clients, jobs, invoices, quotes (GraphQL)
 - [JotForm](references/jotform.md) - Forms, submissions, webhooks
+- [Keap](references/keap.md) - Contacts, companies, tags, tasks, opportunities, campaigns
+- [Kit](references/kit.md) - Subscribers, tags, forms, sequences, broadcasts
 - [Klaviyo](references/klaviyo.md) - Profiles, lists, campaigns, flows, events
 - [Linear](references/linear.md) - Issues, projects, teams, cycles (GraphQL)
+- [LinkedIn](references/linkedin.md) - Profile, posts, shares, media uploads
 - [Mailchimp](references/mailchimp.md) - Audiences, campaigns, templates, automations
+- [MailerLite](references/mailerlite.md) - Subscribers, groups, campaigns, automations, forms
+- [ManyChat](references/manychat.md) - Subscribers, tags, flows, messaging
+- [Microsoft Excel](references/microsoft-excel.md) - Workbooks, worksheets, ranges, tables, charts
+- [Microsoft To Do](references/microsoft-to-do.md) - Task lists, tasks, checklist items, linked resources
 - [Monday.com](references/monday.md) - Boards, items, columns, groups (GraphQL)
 - [Notion](references/notion.md) - Pages, databases, blocks
+- [OneDrive](references/one-drive.md) - Files, folders, drives, sharing
 - [Outlook](references/outlook.md) - Mail, calendar, contacts
 - [Pipedrive](references/pipedrive.md) - Deals, persons, organizations, activities
 - [QuickBooks](references/quickbooks.md) - Customers, invoices, reports
+- [Quo](references/quo.md) - Calls, messages, contacts, conversations, webhooks
 - [Salesforce](references/salesforce.md) - SOQL, sObjects, CRUD
+- [SignNow](references/signnow.md) - Documents, templates, invites, e-signatures
 - [Slack](references/slack.md) - Messages, channels, users
+- [Square](references/squareup.md) - Payments, customers, orders, catalog, inventory, invoices
 - [Stripe](references/stripe.md) - Customers, subscriptions, payments
+- [Systeme.io](references/systeme.md) - Contacts, tags, courses, communities, webhooks
+- [Tally](references/tally.md) - Forms, submissions, workspaces, webhooks
+- [Telegram](references/telegram.md) - Messages, chats, bots, updates, polls
+- [TickTick](references/ticktick.md) - Tasks, projects, task lists
 - [Todoist](references/todoist.md) - Tasks, projects, sections, labels, comments
 - [Trello](references/trello.md) - Boards, lists, cards, checklists
+- [Twilio](references/twilio.md) - SMS, voice calls, phone numbers, messaging
 - [Typeform](references/typeform.md) - Forms, responses, insights
+- [Vimeo](references/vimeo.md) - Videos, folders, albums, comments, likes
 - [WhatsApp Business](references/whatsapp-business.md) - Messages, templates, media
 - [WooCommerce](references/woocommerce.md) - Products, orders, customers, coupons
 - [Xero](references/xero.md) - Contacts, invoices, reports
@@ -423,6 +487,24 @@ echo $MATON_API_KEY
 python <<'EOF'
 import urllib.request, os, json
 req = urllib.request.Request('https://ctrl.maton.ai/connections')
+req.add_header('Authorization', f'Bearer {os.environ["MATON_API_KEY"]}')
+print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
+EOF
+```
+
+### Troubleshooting: Missing app connection for {app} or Invalid app name: {app}
+
+1. Verify your URL path starts with the correct app name. The path must begin with `/google-mail/`. For example:
+
+- Correct: `https://gateway.maton.ai/google-mail/gmail/v1/users/me/messages`
+- Incorrect: `https://gateway.maton.ai/gmail/v1/users/me/messages`
+
+2. Ensure you have an active connection for the app. List your connections to verify:
+
+```bash
+python <<'EOF'
+import urllib.request, os, json
+req = urllib.request.Request('https://ctrl.maton.ai/connections?app=google-mail&status=ACTIVE')
 req.add_header('Authorization', f'Bearer {os.environ["MATON_API_KEY"]}')
 print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
