@@ -1,12 +1,12 @@
 # Acuity Scheduling Routing Reference
 
 **App name:** `acuity-scheduling`
-**Base URL proxied:** `acuityscheduling.com/api/v1`
+**Base URL proxied:** `acuityscheduling.com`
 
 ## API Path Pattern
 
 ```
-/acuity-scheduling/{resource}
+/acuity-scheduling/api/v1/{resource}
 ```
 
 The gateway automatically prepends `/api/v1` when proxying to Acuity.
@@ -15,22 +15,22 @@ The gateway automatically prepends `/api/v1` when proxying to Acuity.
 
 ### Get Account Info
 ```bash
-GET /acuity-scheduling/me
+GET /acuity-scheduling/api/v1/me
 ```
 
 ### List Appointments
 ```bash
-GET /acuity-scheduling/appointments?max=100&minDate=2026-02-01
+GET /acuity-scheduling/api/v1/appointments?max=100&minDate=2026-02-01
 ```
 
 ### Get Appointment
 ```bash
-GET /acuity-scheduling/appointments/{id}
+GET /acuity-scheduling/api/v1/appointments/{id}
 ```
 
 ### Create Appointment
 ```bash
-POST /acuity-scheduling/appointments
+POST /acuity-scheduling/api/v1/appointments
 Content-Type: application/json
 
 {
@@ -44,7 +44,7 @@ Content-Type: application/json
 
 ### Update Appointment
 ```bash
-PUT /acuity-scheduling/appointments/{id}
+PUT /acuity-scheduling/api/v1/appointments/{id}
 Content-Type: application/json
 
 {
@@ -55,12 +55,12 @@ Content-Type: application/json
 
 ### Cancel Appointment
 ```bash
-PUT /acuity-scheduling/appointments/{id}/cancel
+PUT /acuity-scheduling/api/v1/appointments/{id}/cancel
 ```
 
 ### Reschedule Appointment
 ```bash
-PUT /acuity-scheduling/appointments/{id}/reschedule
+PUT /acuity-scheduling/api/v1/appointments/{id}/reschedule
 Content-Type: application/json
 
 {
@@ -70,32 +70,32 @@ Content-Type: application/json
 
 ### List Calendars
 ```bash
-GET /acuity-scheduling/calendars
+GET /acuity-scheduling/api/v1/calendars
 ```
 
 ### List Appointment Types
 ```bash
-GET /acuity-scheduling/appointment-types
+GET /acuity-scheduling/api/v1/appointment-types
 ```
 
 ### Get Available Dates
 ```bash
-GET /acuity-scheduling/availability/dates?month=2026-02&appointmentTypeID=123
+GET /acuity-scheduling/api/v1/availability/dates?month=2026-02&appointmentTypeID=123
 ```
 
 ### Get Available Times
 ```bash
-GET /acuity-scheduling/availability/times?date=2026-02-04&appointmentTypeID=123
+GET /acuity-scheduling/api/v1/availability/times?date=2026-02-04&appointmentTypeID=123
 ```
 
 ### List Clients
 ```bash
-GET /acuity-scheduling/clients?search=John
+GET /acuity-scheduling/api/v1/clients?search=John
 ```
 
 ### Create Client
 ```bash
-POST /acuity-scheduling/clients
+POST /acuity-scheduling/api/v1/clients
 Content-Type: application/json
 
 {
@@ -107,12 +107,12 @@ Content-Type: application/json
 
 ### List Blocks
 ```bash
-GET /acuity-scheduling/blocks?calendarID=1234
+GET /acuity-scheduling/api/v1/blocks?calendarID=1234
 ```
 
 ### Create Block
 ```bash
-POST /acuity-scheduling/blocks
+POST /acuity-scheduling/api/v1/blocks
 Content-Type: application/json
 
 {
@@ -124,17 +124,17 @@ Content-Type: application/json
 
 ### Delete Block
 ```bash
-DELETE /acuity-scheduling/blocks/{id}
+DELETE /acuity-scheduling/api/v1/blocks/{id}
 ```
 
 ### List Forms
 ```bash
-GET /acuity-scheduling/forms
+GET /acuity-scheduling/api/v1/forms
 ```
 
 ### List Labels
 ```bash
-GET /acuity-scheduling/labels
+GET /acuity-scheduling/api/v1/labels
 ```
 
 ## Notes
