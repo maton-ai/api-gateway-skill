@@ -6,6 +6,12 @@ compatibility: Requires network access and valid Maton API key
 metadata:
   author: maton
   version: "1.0"
+  clawdbot:
+    emoji: 🧠
+    homepage: "https://maton.ai"
+    requires:
+      env:
+        - MATON_API_KEY
 ---
 
 # API Gateway
@@ -176,17 +182,21 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | Asana | `asana` | `app.asana.com` |
 | Attio | `attio` | `api.attio.com` |
 | Basecamp | `basecamp` | `3.basecampapi.com` |
+| beehiiv | `beehiiv` | `api.beehiiv.com` |
 | Box | `box` | `api.box.com` |
 | Brevo | `brevo` | `api.brevo.com` |
 | Calendly | `calendly` | `api.calendly.com` |
+| CallRail | `callrail` | `api.callrail.com` |
 | Chargebee | `chargebee` | `{subdomain}.chargebee.com` |
 | ClickFunnels | `clickfunnels` | `{subdomain}.myclickfunnels.com` |
+| ClickSend | `clicksend` | `rest.clicksend.com` |
 | ClickUp | `clickup` | `api.clickup.com` |
 | Cognito Forms | `cognito-forms` | `www.cognitoforms.com` |
 | Constant Contact | `constant-contact` | `api.cc.email` |
 | Dropbox | `dropbox` | `api.dropboxapi.com` |
 | Eventbrite | `eventbrite` | `www.eventbriteapi.com` |
 | Fathom | `fathom` | `api.fathom.ai` |
+| Fireflies | `fireflies` | `api.fireflies.ai` |
 | GitHub | `github` | `api.github.com` |
 | Gumroad | `gumroad` | `api.gumroad.com` |
 | Google Ads | `google-ads` | `googleads.googleapis.com` |
@@ -243,6 +253,7 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | Vimeo | `vimeo` | `api.vimeo.com` |
 | WhatsApp Business | `whatsapp-business` | `graph.facebook.com` |
 | WooCommerce | `woocommerce` | `{store-url}/wp-json/wc/v3` |
+| WordPress.com | `wordpress` | `public-api.wordpress.com` |
 | Xero | `xero` | `api.xero.com` |
 | YouTube | `youtube` | `www.googleapis.com` |
 | Zoho Bigin | `zoho-bigin` | `www.zohoapis.com` |
@@ -262,17 +273,21 @@ See [references/](references/) for detailed routing guides per provider:
 - [Asana](references/asana.md) - Tasks, projects, workspaces, webhooks
 - [Attio](references/attio.md) - People, companies, records, tasks
 - [Basecamp](references/basecamp.md) - Projects, to-dos, messages, schedules, documents
+- [beehiiv](references/beehiiv.md) - Publications, subscriptions, posts, custom fields
 - [Box](references/box.md) - Files, folders, collaborations, shared links
 - [Brevo](references/brevo.md) - Contacts, email campaigns, transactional emails, templates
 - [Calendly](references/calendly.md) - Event types, scheduled events, availability, webhooks
+- [CallRail](references/callrail.md) - Calls, trackers, companies, tags, analytics
 - [Chargebee](references/chargebee.md) - Subscriptions, customers, invoices
 - [ClickFunnels](references/clickfunnels.md) - Contacts, products, orders, courses, webhooks
+- [ClickSend](references/clicksend.md) - SMS, MMS, voice messages, contacts, lists
 - [ClickUp](references/clickup.md) - Tasks, lists, folders, spaces, webhooks
 - [Cognito Forms](references/cognito-forms.md) - Forms, entries, documents, files
 - [Constant Contact](references/constant-contact.md) - Contacts, email campaigns, lists, segments
 - [Dropbox](references/dropbox.md) - Files, folders, search, metadata, revisions, tags
 - [Eventbrite](references/eventbrite.md) - Events, venues, tickets, orders, attendees
 - [Fathom](references/fathom.md) - Meeting recordings, transcripts, summaries, webhooks
+- [Fireflies](references/fireflies.md) - Meeting transcripts, summaries, AskFred AI, channels
 - [GitHub](references/github.md) - Repositories, issues, pull requests, commits
 - [Gumroad](references/gumroad.md) - Products, sales, subscribers, licenses, webhooks
 - [Google Ads](references/google-ads.md) - Campaigns, ad groups, GAQL queries
@@ -315,6 +330,7 @@ See [references/](references/) for detailed routing guides per provider:
 - [Quo](references/quo.md) - Calls, messages, contacts, conversations, webhooks
 - [Salesforce](references/salesforce.md) - SOQL, sObjects, CRUD
 - [SignNow](references/signnow.md) - Documents, templates, invites, e-signatures
+- [SendGrid](references/sendgrid.md) - Email sending, contacts, templates, suppressions, statistics
 - [Slack](references/slack.md) - Messages, channels, users
 - [Square](references/squareup.md) - Payments, customers, orders, catalog, inventory, invoices
 - [Stripe](references/stripe.md) - Customers, subscriptions, payments
@@ -329,6 +345,7 @@ See [references/](references/) for detailed routing guides per provider:
 - [Vimeo](references/vimeo.md) - Videos, folders, albums, comments, likes
 - [WhatsApp Business](references/whatsapp-business.md) - Messages, templates, media
 - [WooCommerce](references/woocommerce.md) - Products, orders, customers, coupons
+- [WordPress.com](references/wordpress.md) - Posts, pages, sites, users, settings
 - [Xero](references/xero.md) - Contacts, invoices, reports
 - [YouTube](references/youtube.md) - Videos, playlists, channels, subscriptions
 - [Zoho Bigin](references/zoho-bigin.md) - Contacts, companies, pipelines, products
@@ -473,7 +490,7 @@ response = requests.post(
 
 Errors from the target API are passed through with their original status codes and response bodies.
 
-### Troubleshooting: Invalid API Key
+### Troubleshooting: API Key Issues
 
 1. Check that the `MATON_API_KEY` environment variable is set:
 
@@ -492,7 +509,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Missing app connection for {app} or Invalid app name: {app}
+### Troubleshooting: Invalid App Name
 
 1. Verify your URL path starts with the correct app name. The path must begin with `/google-mail/`. For example:
 
@@ -510,7 +527,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: 500 Internal Server Error
+### Troubleshooting: Server Error
 
 A 500 error may indicate an expired OAuth token. Try creating a new connection via the Connection Management section above and completing OAuth authorization. If the new connection is "ACTIVE", delete the old connection to ensure the gateway uses the new one.
 
@@ -539,5 +556,6 @@ A 500 error may indicate an expired OAuth token. Try creating a new connection v
 ## Optional
 
 - [Github](https://github.com/maton-ai/api-gateway-skill)
-- [Documentation](https://www.maton.ai/docs/api-reference)
-- [Community](https://discord.com/invite/dBfFAcefs2)
+- [API Reference](https://www.maton.ai/docs/api-reference)
+- [Maton Community](https://discord.com/invite/dBfFAcefs2)
+- [Maton Support](mailto:support@maton.ai)
