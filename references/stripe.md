@@ -137,6 +137,61 @@ GET /stripe/v1/balance
 GET /stripe/v1/events?limit=10&type=customer.created
 ```
 
+### Payment Methods
+
+#### List Payment Methods
+```bash
+GET /stripe/v1/payment_methods?customer=cus_XXX&type=card
+```
+
+#### Attach Payment Method
+```bash
+POST /stripe/v1/payment_methods/{paymentMethodId}/attach
+Content-Type: application/x-www-form-urlencoded
+
+customer=cus_XXX
+```
+
+#### Detach Payment Method
+```bash
+POST /stripe/v1/payment_methods/{paymentMethodId}/detach
+```
+
+### Coupons
+
+#### List Coupons
+```bash
+GET /stripe/v1/coupons?limit=10
+```
+
+#### Create Coupon
+```bash
+POST /stripe/v1/coupons
+Content-Type: application/x-www-form-urlencoded
+
+percent_off=25&duration=once
+```
+
+#### Delete Coupon
+```bash
+DELETE /stripe/v1/coupons/{couponId}
+```
+
+### Refunds
+
+#### List Refunds
+```bash
+GET /stripe/v1/refunds?limit=10
+```
+
+#### Create Refund
+```bash
+POST /stripe/v1/refunds
+Content-Type: application/x-www-form-urlencoded
+
+charge=ch_XXX&amount=1000
+```
+
 ## Notes
 
 - Stripe API uses form-urlencoded data for POST requests
