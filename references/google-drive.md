@@ -115,6 +115,56 @@ Content-Type: application/json
 }
 ```
 
+## File Uploads
+
+Upload endpoints use a different path pattern: `/google-drive/upload/drive/v3/files`
+
+### Simple Upload (up to 5MB)
+```bash
+POST /google-drive/upload/drive/v3/files?uploadType=media
+Content-Type: text/plain
+
+<file content>
+```
+
+### Multipart Upload (with metadata, up to 5MB)
+```bash
+POST /google-drive/upload/drive/v3/files?uploadType=multipart
+Content-Type: multipart/related; boundary=boundary
+
+--boundary
+Content-Type: application/json
+
+{"name": "myfile.txt"}
+--boundary
+Content-Type: text/plain
+
+<file content>
+--boundary--
+```
+
+### Resumable Upload (for large files)
+```bash
+# Step 1: Initiate session
+POST /google-drive/upload/drive/v3/files?uploadType=resumable
+Content-Type: application/json
+X-Upload-Content-Type: application/octet-stream
+X-Upload-Content-Length: <file_size>
+
+{"name": "large_file.bin"}
+
+# Response includes Location header with upload URI
+# Step 2: Upload content to that URI
+```
+
+### Update File Content
+```bash
+PATCH /google-drive/upload/drive/v3/files/{fileId}?uploadType=media
+Content-Type: text/plain
+
+<new file content>
+```
+
 ## Query Operators
 
 Use in the `q` parameter:
@@ -143,6 +193,9 @@ name contains 'report' and mimeType = 'application/pdf'
 - Authentication is automatic - the router injects the OAuth token
 - Use `fields` parameter to limit response data
 - Pagination uses `pageToken` from previous response's `nextPageToken`
+- Upload endpoints use `/upload/drive/v3/files` path (note the `/upload` prefix)
+- Use `uploadType=resumable` for files larger than 5MB
+- Resumable uploads support chunking (256KB minimum, 5MB recommended)
 
 ## Resources
 
@@ -154,5 +207,7 @@ name contains 'report' and mimeType = 'application/pdf'
 - [Delete File](https://developers.google.com/drive/api/reference/rest/v3/files/delete)
 - [Copy File](https://developers.google.com/drive/api/reference/rest/v3/files/copy)
 - [Export File](https://developers.google.com/drive/api/reference/rest/v3/files/export)
+- [Upload Files](https://developers.google.com/drive/api/guides/manage-uploads)
+- [Resumable Uploads](https://developers.google.com/drive/api/guides/manage-uploads#resumable)
 - [Create Permission](https://developers.google.com/workspace/drive/api/reference/rest/v3/permissions/create)
 - [Search Query Syntax](https://developers.google.com/drive/api/guides/search-files)

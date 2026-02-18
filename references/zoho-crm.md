@@ -65,6 +65,48 @@ GET /zoho-crm/crm/v8/{module_api_name}/search?phone=555-1234
 GET /zoho-crm/crm/v8/{module_api_name}/search?word=searchterm
 ```
 
+### Organization
+
+```bash
+# Get organization details
+GET /zoho-crm/crm/v8/org
+```
+
+### Users
+
+```bash
+# List users (type: AllUsers, ActiveUsers, AdminUsers, CurrentUser, etc.)
+GET /zoho-crm/crm/v8/users?type=AllUsers
+
+# Get specific user
+GET /zoho-crm/crm/v8/users/{user_id}
+```
+
+### Settings / Metadata
+
+```bash
+# List all modules
+GET /zoho-crm/crm/v8/settings/modules
+
+# Get fields for a module
+GET /zoho-crm/crm/v8/settings/fields?module={module_api_name}
+
+# Get layouts for a module
+GET /zoho-crm/crm/v8/settings/layouts?module={module_api_name}
+
+# List roles
+GET /zoho-crm/crm/v8/settings/roles
+
+# Get specific role
+GET /zoho-crm/crm/v8/settings/roles/{role_id}
+
+# List profiles
+GET /zoho-crm/crm/v8/settings/profiles
+
+# Get specific profile
+GET /zoho-crm/crm/v8/settings/profiles/{profile_id}
+```
+
 ## Available Modules
 
 | Module | API Name | Description |
@@ -102,7 +144,7 @@ GET /zoho-crm/crm/v8/{module_api_name}/search?word=searchterm
 - Maximum 100 records per create/update/delete request
 - Maximum 200 records returned per GET request
 - Use `page_token` for >2,000 records (expires after 24 hours)
-- Some modules require additional OAuth scopes (Tasks, Events, Calls, Products)
+- If you receive a scope error, contact Maton support at support@maton.ai with the specific operations/APIs you need and your use-case
 - Empty datasets return HTTP 204 (No Content)
 
 ## Resources
@@ -110,3 +152,9 @@ GET /zoho-crm/crm/v8/{module_api_name}/search?word=searchterm
 - [Zoho CRM API v8 Documentation](https://www.zoho.com/crm/developer/docs/api/v8/)
 - [Get Records API](https://www.zoho.com/crm/developer/docs/api/v8/get-records.html)
 - [Search Records API](https://www.zoho.com/crm/developer/docs/api/v8/search-records.html)
+- [Organization API](https://www.zoho.com/crm/developer/docs/api/v8/get-org-data.html)
+- [Users API](https://www.zoho.com/crm/developer/docs/api/v8/get-users.html)
+- [Modules API](https://www.zoho.com/crm/developer/docs/api/v8/modules-api.html)
+- [Fields API](https://www.zoho.com/crm/developer/docs/api/v8/field-meta.html)
+- [Roles API](https://www.zoho.com/crm/developer/docs/api/v8/get-roles.html)
+- [Profiles API](https://www.zoho.com/crm/developer/docs/api/v8/get-profiles.html)
