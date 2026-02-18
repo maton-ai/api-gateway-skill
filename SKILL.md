@@ -1,8 +1,10 @@
 ---
 name: api-gateway
 description: |
-  API gateway for calling third-party APIs with managed auth. Use this skill when users want to interact with external services like Slack, HubSpot, Salesforce, Google Workspace, Stripe, and more.
-compatibility: Requires network access and valid Maton API key
+  API gateway for calling third-party APIs with managed OAuth connections, provided by Maton (https://maton.ai).
+  Use this skill when users want to interact with external services like Slack, HubSpot, Salesforce, Google Workspace, Stripe, and more.
+  Access is scoped to connections you explicitly authorize via OAuth - the API key alone does not grant access to any third-party service.
+  Requires network access and valid Maton API key.
 metadata:
   author: maton
   version: "1.0"
@@ -16,7 +18,7 @@ metadata:
 
 # API Gateway
 
-Passthrough proxy for direct access to third-party APIs using managed auth connections. The API gateway lets you call native API endpoints directly.
+Passthrough proxy for direct access to third-party APIs using managed OAuth connections, provided by [Maton](https://maton.ai). The API gateway lets you call native API endpoints directly.
 
 ## Quick Start
 
@@ -186,23 +188,34 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | Box | `box` | `api.box.com` |
 | Brevo | `brevo` | `api.brevo.com` |
 | Calendly | `calendly` | `api.calendly.com` |
+| Cal.com | `cal-com` | `api.cal.com` |
 | CallRail | `callrail` | `api.callrail.com` |
 | Chargebee | `chargebee` | `{subdomain}.chargebee.com` |
 | ClickFunnels | `clickfunnels` | `{subdomain}.myclickfunnels.com` |
 | ClickSend | `clicksend` | `rest.clicksend.com` |
 | ClickUp | `clickup` | `api.clickup.com` |
+| Clockify | `clockify` | `api.clockify.me` |
+| Coda | `coda` | `coda.io` |
+| Confluence | `confluence` | `api.atlassian.com` |
+| CompanyCam | `companycam` | `api.companycam.com` |
 | Cognito Forms | `cognito-forms` | `www.cognitoforms.com` |
 | Constant Contact | `constant-contact` | `api.cc.email` |
 | Dropbox | `dropbox` | `api.dropboxapi.com` |
+| Dropbox Business | `dropbox-business` | `api.dropboxapi.com` |
+| ElevenLabs | `elevenlabs` | `api.elevenlabs.io` |
 | Eventbrite | `eventbrite` | `www.eventbriteapi.com` |
 | Fathom | `fathom` | `api.fathom.ai` |
+| Firebase | `firebase` | `firebase.googleapis.com` |
 | Fireflies | `fireflies` | `api.fireflies.ai` |
+| GetResponse | `getresponse` | `api.getresponse.com` |
 | GitHub | `github` | `api.github.com` |
 | Gumroad | `gumroad` | `api.gumroad.com` |
 | Google Ads | `google-ads` | `googleads.googleapis.com` |
+| Google BigQuery | `google-bigquery` | `bigquery.googleapis.com` |
 | Google Analytics Admin | `google-analytics-admin` | `analyticsadmin.googleapis.com` |
 | Google Analytics Data | `google-analytics-data` | `analyticsdata.googleapis.com` |
 | Google Calendar | `google-calendar` | `www.googleapis.com` |
+| Google Classroom | `google-classroom` | `classroom.googleapis.com` |
 | Google Contacts | `google-contacts` | `people.googleapis.com` |
 | Google Docs | `google-docs` | `docs.googleapis.com` |
 | Google Drive | `google-drive` | `www.googleapis.com` |
@@ -217,29 +230,37 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | Google Tasks | `google-tasks` | `tasks.googleapis.com` |
 | Google Workspace Admin | `google-workspace-admin` | `admin.googleapis.com` |
 | HubSpot | `hubspot` | `api.hubapi.com` |
+| Instantly | `instantly` | `api.instantly.ai` |
 | Jira | `jira` | `api.atlassian.com` |
 | Jobber | `jobber` | `api.getjobber.com` |
 | JotForm | `jotform` | `api.jotform.com` |
 | Keap | `keap` | `api.infusionsoft.com` |
 | Kit | `kit` | `api.kit.com` |
 | Klaviyo | `klaviyo` | `a.klaviyo.com` |
+| Lemlist | `lemlist` | `api.lemlist.com` |
 | Linear | `linear` | `api.linear.app` |
 | LinkedIn | `linkedin` | `api.linkedin.com` |
 | Mailchimp | `mailchimp` | `{dc}.api.mailchimp.com` |
 | MailerLite | `mailerlite` | `connect.mailerlite.com` |
+| Mailgun | `mailgun` | `api.mailgun.net` |
 | ManyChat | `manychat` | `api.manychat.com` |
 | Microsoft Excel | `microsoft-excel` | `graph.microsoft.com` |
 | Microsoft To Do | `microsoft-to-do` | `graph.microsoft.com` |
 | Monday.com | `monday` | `api.monday.com` |
+| Motion | `motion` | `api.usemotion.com` |
+| Netlify | `netlify` | `api.netlify.com` |
 | Notion | `notion` | `api.notion.com` |
 | OneDrive | `one-drive` | `graph.microsoft.com` |
 | Outlook | `outlook` | `graph.microsoft.com` |
+| PDF.co | `pdf-co` | `api.pdf.co` |
 | Pipedrive | `pipedrive` | `api.pipedrive.com` |
+| Podio | `podio` | `api.podio.com` |
 | QuickBooks | `quickbooks` | `quickbooks.api.intuit.com` |
 | Quo | `quo` | `api.openphone.com` |
 | Salesforce | `salesforce` | `{instance}.salesforce.com` |
 | SignNow | `signnow` | `api.signnow.com` |
 | Slack | `slack` | `slack.com` |
+| Snapchat | `snapchat` | `adsapi.snapchat.com` |
 | Square | `squareup` | `connect.squareup.com` |
 | Stripe | `stripe` | `api.stripe.com` |
 | Systeme.io | `systeme` | `api.systeme.io` |
@@ -247,6 +268,7 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | Telegram | `telegram` | `api.telegram.org` |
 | TickTick | `ticktick` | `api.ticktick.com` |
 | Todoist | `todoist` | `api.todoist.com` |
+| Toggl Track | `toggl-track` | `api.track.toggl.com` |
 | Trello | `trello` | `api.trello.com` |
 | Twilio | `twilio` | `api.twilio.com` |
 | Typeform | `typeform` | `api.typeform.com` |
@@ -257,6 +279,7 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | Xero | `xero` | `api.xero.com` |
 | YouTube | `youtube` | `www.googleapis.com` |
 | Zoho Bigin | `zoho-bigin` | `www.zohoapis.com` |
+| Zoho Bookings | `zoho-bookings` | `www.zohoapis.com` |
 | Zoho Books | `zoho-books` | `www.zohoapis.com` |
 | Zoho Calendar | `zoho-calendar` | `calendar.zoho.com` |
 | Zoho CRM | `zoho-crm` | `www.zohoapis.com` |
@@ -277,23 +300,34 @@ See [references/](references/) for detailed routing guides per provider:
 - [Box](references/box.md) - Files, folders, collaborations, shared links
 - [Brevo](references/brevo.md) - Contacts, email campaigns, transactional emails, templates
 - [Calendly](references/calendly.md) - Event types, scheduled events, availability, webhooks
+- [Cal.com](references/cal-com.md) - Event types, bookings, schedules, availability slots, webhooks
 - [CallRail](references/callrail.md) - Calls, trackers, companies, tags, analytics
 - [Chargebee](references/chargebee.md) - Subscriptions, customers, invoices
 - [ClickFunnels](references/clickfunnels.md) - Contacts, products, orders, courses, webhooks
 - [ClickSend](references/clicksend.md) - SMS, MMS, voice messages, contacts, lists
 - [ClickUp](references/clickup.md) - Tasks, lists, folders, spaces, webhooks
+- [Clockify](references/clockify.md) - Time tracking, projects, clients, tasks, workspaces
+- [Coda](references/coda.md) - Docs, pages, tables, rows, formulas, controls
+- [Confluence](references/confluence.md) - Pages, spaces, blogposts, comments, attachments
+- [CompanyCam](references/companycam.md) - Projects, photos, users, tags, groups, documents
 - [Cognito Forms](references/cognito-forms.md) - Forms, entries, documents, files
 - [Constant Contact](references/constant-contact.md) - Contacts, email campaigns, lists, segments
 - [Dropbox](references/dropbox.md) - Files, folders, search, metadata, revisions, tags
+- [Dropbox Business](references/dropbox-business.md) - Team members, groups, team folders, devices, audit logs
+- [ElevenLabs](references/elevenlabs.md) - Text-to-speech, voice cloning, sound effects, audio processing
 - [Eventbrite](references/eventbrite.md) - Events, venues, tickets, orders, attendees
 - [Fathom](references/fathom.md) - Meeting recordings, transcripts, summaries, webhooks
+- [Firebase](references/firebase.md) - Projects, web apps, Android apps, iOS apps, configurations
 - [Fireflies](references/fireflies.md) - Meeting transcripts, summaries, AskFred AI, channels
+- [GetResponse](references/getresponse.md) - Campaigns, contacts, newsletters, autoresponders, tags, segments
 - [GitHub](references/github.md) - Repositories, issues, pull requests, commits
 - [Gumroad](references/gumroad.md) - Products, sales, subscribers, licenses, webhooks
 - [Google Ads](references/google-ads.md) - Campaigns, ad groups, GAQL queries
 - [Google Analytics Admin](references/google-analytics-admin.md) - Reports, dimensions, metrics
 - [Google Analytics Data](references/google-analytics-data.md) - Reports, dimensions, metrics
+- [Google BigQuery](references/google-bigquery.md) - Datasets, tables, jobs, SQL queries
 - [Google Calendar](references/google-calendar.md) - Events, calendars, free/busy
+- [Google Classroom](references/google-classroom.md) - Courses, coursework, students, teachers, announcements
 - [Google Contacts](references/google-contacts.md) - Contacts, contact groups, people search
 - [Google Docs](references/google-docs.md) - Document creation, batch updates
 - [Google Drive](references/google-drive.md) - Files, folders, permissions
@@ -308,30 +342,38 @@ See [references/](references/) for detailed routing guides per provider:
 - [Google Tasks](references/google-tasks.md) - Task lists, tasks, subtasks
 - [Google Workspace Admin](references/google-workspace-admin.md) - Users, groups, org units, domains, roles
 - [HubSpot](references/hubspot.md) - Contacts, companies, deals
+- [Instantly](references/instantly.md) - Campaigns, leads, accounts, email outreach
 - [Jira](references/jira.md) - Issues, projects, JQL queries
 - [Jobber](references/jobber.md) - Clients, jobs, invoices, quotes (GraphQL)
 - [JotForm](references/jotform.md) - Forms, submissions, webhooks
 - [Keap](references/keap.md) - Contacts, companies, tags, tasks, opportunities, campaigns
 - [Kit](references/kit.md) - Subscribers, tags, forms, sequences, broadcasts
 - [Klaviyo](references/klaviyo.md) - Profiles, lists, campaigns, flows, events
+- [Lemlist](references/lemlist.md) - Campaigns, leads, activities, schedules, unsubscribes
 - [Linear](references/linear.md) - Issues, projects, teams, cycles (GraphQL)
 - [LinkedIn](references/linkedin.md) - Profile, posts, shares, media uploads
 - [Mailchimp](references/mailchimp.md) - Audiences, campaigns, templates, automations
 - [MailerLite](references/mailerlite.md) - Subscribers, groups, campaigns, automations, forms
+- [Mailgun](references/mailgun.md) - Email sending, domains, routes, templates, mailing lists, suppressions
 - [ManyChat](references/manychat.md) - Subscribers, tags, flows, messaging
 - [Microsoft Excel](references/microsoft-excel.md) - Workbooks, worksheets, ranges, tables, charts
 - [Microsoft To Do](references/microsoft-to-do.md) - Task lists, tasks, checklist items, linked resources
 - [Monday.com](references/monday.md) - Boards, items, columns, groups (GraphQL)
+- [Motion](references/motion.md) - Tasks, projects, workspaces, schedules
+- [Netlify](references/netlify.md) - Sites, deploys, builds, DNS, environment variables
 - [Notion](references/notion.md) - Pages, databases, blocks
 - [OneDrive](references/one-drive.md) - Files, folders, drives, sharing
 - [Outlook](references/outlook.md) - Mail, calendar, contacts
+- [PDF.co](references/pdf-co.md) - PDF conversion, merge, split, edit, text extraction, barcodes
 - [Pipedrive](references/pipedrive.md) - Deals, persons, organizations, activities
+- [Podio](references/podio.md) - Organizations, workspaces, apps, items, tasks, comments
 - [QuickBooks](references/quickbooks.md) - Customers, invoices, reports
 - [Quo](references/quo.md) - Calls, messages, contacts, conversations, webhooks
 - [Salesforce](references/salesforce.md) - SOQL, sObjects, CRUD
 - [SignNow](references/signnow.md) - Documents, templates, invites, e-signatures
 - [SendGrid](references/sendgrid.md) - Email sending, contacts, templates, suppressions, statistics
 - [Slack](references/slack.md) - Messages, channels, users
+- [Snapchat](references/snapchat.md) - Ad accounts, campaigns, ad squads, ads, creatives, audiences
 - [Square](references/squareup.md) - Payments, customers, orders, catalog, inventory, invoices
 - [Stripe](references/stripe.md) - Customers, subscriptions, payments
 - [Systeme.io](references/systeme.md) - Contacts, tags, courses, communities, webhooks
@@ -339,6 +381,7 @@ See [references/](references/) for detailed routing guides per provider:
 - [Telegram](references/telegram.md) - Messages, chats, bots, updates, polls
 - [TickTick](references/ticktick.md) - Tasks, projects, task lists
 - [Todoist](references/todoist.md) - Tasks, projects, sections, labels, comments
+- [Toggl Track](references/toggl-track.md) - Time entries, projects, clients, tags, workspaces
 - [Trello](references/trello.md) - Boards, lists, cards, checklists
 - [Twilio](references/twilio.md) - SMS, voice calls, phone numbers, messaging
 - [Typeform](references/typeform.md) - Forms, responses, insights
@@ -349,6 +392,7 @@ See [references/](references/) for detailed routing guides per provider:
 - [Xero](references/xero.md) - Contacts, invoices, reports
 - [YouTube](references/youtube.md) - Videos, playlists, channels, subscriptions
 - [Zoho Bigin](references/zoho-bigin.md) - Contacts, companies, pipelines, products
+- [Zoho Bookings](references/zoho-bookings.md) - Appointments, services, staff, workspaces
 - [Zoho Books](references/zoho-books.md) - Invoices, contacts, bills, expenses
 - [Zoho Calendar](references/zoho-calendar.md) - Calendars, events, attendees, reminders
 - [Zoho CRM](references/zoho-crm.md) - Leads, contacts, accounts, deals, search
