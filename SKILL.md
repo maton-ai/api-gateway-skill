@@ -1,10 +1,10 @@
 ---
 name: api-gateway
 description: |
-  API gateway for calling third-party APIs with managed OAuth connections, provided by Maton (https://maton.ai).
-  Use this skill when users want to interact with external services like Slack, HubSpot, Salesforce, Google Workspace, Stripe, and more.
-  Access is scoped to connections you explicitly authorize via OAuth - the API key alone does not grant access to any third-party service.
-  Requires network access and valid Maton API key.
+  Integrate with third-party APIs (Google Workspace, Outlook, GitHub, Stripe, HubSpot, and more) with just a few clicks via OAuth.
+  Use this skill when users want to interact with external services.
+  Security: The MATON_API_KEY authenticates with Maton.ai but grants NO access to third-party services by itself. Each service requires explicit OAuth authorization by the user through Maton's connect flow. Access is strictly scoped to connections the user has authorized.
+  Requires network access and valid Maton API key. Provided by Maton (https://maton.ai).
 metadata:
   author: maton
   version: "1.0"
@@ -245,6 +245,7 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | Mailgun | `mailgun` | `api.mailgun.net` |
 | ManyChat | `manychat` | `api.manychat.com` |
 | Microsoft Excel | `microsoft-excel` | `graph.microsoft.com` |
+| Microsoft Teams | `microsoft-teams` | `graph.microsoft.com` |
 | Microsoft To Do | `microsoft-to-do` | `graph.microsoft.com` |
 | Monday.com | `monday` | `api.monday.com` |
 | Motion | `motion` | `api.usemotion.com` |
@@ -357,6 +358,7 @@ See [references/](references/) for detailed routing guides per provider:
 - [Mailgun](references/mailgun.md) - Email sending, domains, routes, templates, mailing lists, suppressions
 - [ManyChat](references/manychat.md) - Subscribers, tags, flows, messaging
 - [Microsoft Excel](references/microsoft-excel.md) - Workbooks, worksheets, ranges, tables, charts
+- [Microsoft Teams](references/microsoft-teams.md) - Teams, channels, messages, members, chats
 - [Microsoft To Do](references/microsoft-to-do.md) - Task lists, tasks, checklist items, linked resources
 - [Monday.com](references/monday.md) - Boards, items, columns, groups (GraphQL)
 - [Motion](references/motion.md) - Tasks, projects, workspaces, schedules
