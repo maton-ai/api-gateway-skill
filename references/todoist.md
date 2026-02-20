@@ -6,24 +6,24 @@
 ## API Path Pattern
 
 ```
-/todoist/rest/v2/{resource}
+/todoist/api/v1/{resource}
 ```
 
 ## Common Endpoints
 
 ### List Projects
 ```bash
-GET /todoist/rest/v2/projects
+GET /todoist/api/v1/projects
 ```
 
 ### Get Project
 ```bash
-GET /todoist/rest/v2/projects/{id}
+GET /todoist/api/v1/projects/{id}
 ```
 
 ### Create Project
 ```bash
-POST /todoist/rest/v2/projects
+POST /todoist/api/v1/projects
 Content-Type: application/json
 
 {
@@ -34,7 +34,7 @@ Content-Type: application/json
 
 ### Update Project
 ```bash
-POST /todoist/rest/v2/projects/{id}
+POST /todoist/api/v1/projects/{id}
 Content-Type: application/json
 
 {
@@ -44,24 +44,24 @@ Content-Type: application/json
 
 ### Delete Project
 ```bash
-DELETE /todoist/rest/v2/projects/{id}
+DELETE /todoist/api/v1/projects/{id}
 ```
 
 ### List Tasks
 ```bash
-GET /todoist/rest/v2/tasks
-GET /todoist/rest/v2/tasks?project_id={project_id}
-GET /todoist/rest/v2/tasks?filter={filter}
+GET /todoist/api/v1/tasks
+GET /todoist/api/v1/tasks?project_id={project_id}
+GET /todoist/api/v1/tasks?filter={filter}
 ```
 
 ### Get Task
 ```bash
-GET /todoist/rest/v2/tasks/{id}
+GET /todoist/api/v1/tasks/{id}
 ```
 
 ### Create Task
 ```bash
-POST /todoist/rest/v2/tasks
+POST /todoist/api/v1/tasks
 Content-Type: application/json
 
 {
@@ -73,7 +73,7 @@ Content-Type: application/json
 
 ### Update Task
 ```bash
-POST /todoist/rest/v2/tasks/{id}
+POST /todoist/api/v1/tasks/{id}
 Content-Type: application/json
 
 {
@@ -84,28 +84,28 @@ Content-Type: application/json
 
 ### Close Task (Complete)
 ```bash
-POST /todoist/rest/v2/tasks/{id}/close
+POST /todoist/api/v1/tasks/{id}/close
 ```
 
 ### Reopen Task
 ```bash
-POST /todoist/rest/v2/tasks/{id}/reopen
+POST /todoist/api/v1/tasks/{id}/reopen
 ```
 
 ### Delete Task
 ```bash
-DELETE /todoist/rest/v2/tasks/{id}
+DELETE /todoist/api/v1/tasks/{id}
 ```
 
 ### List Sections
 ```bash
-GET /todoist/rest/v2/sections
-GET /todoist/rest/v2/sections?project_id={project_id}
+GET /todoist/api/v1/sections
+GET /todoist/api/v1/sections?project_id={project_id}
 ```
 
 ### Create Section
 ```bash
-POST /todoist/rest/v2/sections
+POST /todoist/api/v1/sections
 Content-Type: application/json
 
 {
@@ -116,17 +116,17 @@ Content-Type: application/json
 
 ### Delete Section
 ```bash
-DELETE /todoist/rest/v2/sections/{id}
+DELETE /todoist/api/v1/sections/{id}
 ```
 
 ### List Labels
 ```bash
-GET /todoist/rest/v2/labels
+GET /todoist/api/v1/labels
 ```
 
 ### Create Label
 ```bash
-POST /todoist/rest/v2/labels
+POST /todoist/api/v1/labels
 Content-Type: application/json
 
 {
@@ -137,18 +137,18 @@ Content-Type: application/json
 
 ### Delete Label
 ```bash
-DELETE /todoist/rest/v2/labels/{id}
+DELETE /todoist/api/v1/labels/{id}
 ```
 
 ### List Comments
 ```bash
-GET /todoist/rest/v2/comments?task_id={task_id}
-GET /todoist/rest/v2/comments?project_id={project_id}
+GET /todoist/api/v1/comments?task_id={task_id}
+GET /todoist/api/v1/comments?project_id={project_id}
 ```
 
 ### Create Comment
 ```bash
-POST /todoist/rest/v2/comments
+POST /todoist/api/v1/comments
 Content-Type: application/json
 
 {
@@ -159,7 +159,7 @@ Content-Type: application/json
 
 ### Delete Comment
 ```bash
-DELETE /todoist/rest/v2/comments/{id}
+DELETE /todoist/api/v1/comments/{id}
 ```
 
 ## Notes
@@ -172,5 +172,5 @@ DELETE /todoist/rest/v2/comments/{id}
 
 ## Resources
 
-- [Todoist REST API v2 Documentation](https://developer.todoist.com/rest/v2)
+- [Todoist API v1 Documentation](https://developer.todoist.com/api/v1)
 - [Todoist Filter Syntax](https://todoist.com/help/articles/introduction-to-filters)
