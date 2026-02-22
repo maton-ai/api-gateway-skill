@@ -6,94 +6,73 @@
 ## API Path Pattern
 
 ```
-/linkedin/v2/{resource}
+/linkedin/rest/{resource}
 ```
 
 ## Required Headers
 
 ```
-X-Restli-Protocol-Version: 2.0.0
+LinkedIn-Version: 202506
 ```
 
 ## Common Endpoints
 
-### Get User Info (OpenID Connect)
-```bash
-GET /linkedin/v2/userinfo
-```
-
 ### Get Current User Profile
 ```bash
-GET /linkedin/v2/me
-```
-
-With projection:
-```bash
-GET /linkedin/v2/me?projection=(id,firstName,lastName)
+GET /linkedin/rest/me
+LinkedIn-Version: 202506
 ```
 
 ### Create Text Post
 ```bash
-POST /linkedin/v2/ugcPosts
+POST /linkedin/rest/posts
 Content-Type: application/json
-X-Restli-Protocol-Version: 2.0.0
+LinkedIn-Version: 202506
 
 {
   "author": "urn:li:person:{personId}",
   "lifecycleState": "PUBLISHED",
-  "specificContent": {
-    "com.linkedin.ugc.ShareContent": {
-      "shareCommentary": {"text": "Hello LinkedIn!"},
-      "shareMediaCategory": "NONE"
-    }
-  },
-  "visibility": {
-    "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC"
+  "visibility": "PUBLIC",
+  "commentary": "Hello LinkedIn!",
+  "distribution": {
+    "feedDistribution": "MAIN_FEED"
   }
 }
 ```
 
 ### Create Article/URL Share
 ```bash
-POST /linkedin/v2/ugcPosts
+POST /linkedin/rest/posts
 Content-Type: application/json
-X-Restli-Protocol-Version: 2.0.0
+LinkedIn-Version: 202506
 
 {
   "author": "urn:li:person:{personId}",
   "lifecycleState": "PUBLISHED",
-  "specificContent": {
-    "com.linkedin.ugc.ShareContent": {
-      "shareCommentary": {"text": "Check this out!"},
-      "shareMediaCategory": "ARTICLE",
-      "media": [{
-        "status": "READY",
-        "originalUrl": "https://example.com",
-        "title": {"text": "Title"},
-        "description": {"text": "Description"}
-      }]
-    }
+  "visibility": "PUBLIC",
+  "commentary": "Check this out!",
+  "distribution": {
+    "feedDistribution": "MAIN_FEED"
   },
-  "visibility": {
-    "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC"
+  "content": {
+    "article": {
+      "source": "https://example.com",
+      "title": "Title",
+      "description": "Description"
+    }
   }
 }
 ```
 
-### Register Image Upload
+### Initialize Image Upload
 ```bash
-POST /linkedin/v2/assets?action=registerUpload
+POST /linkedin/rest/images?action=initializeUpload
 Content-Type: application/json
-X-Restli-Protocol-Version: 2.0.0
+LinkedIn-Version: 202506
 
 {
-  "registerUploadRequest": {
-    "recipes": ["urn:li:digitalmediaRecipe:feedshare-image"],
-    "owner": "urn:li:person:{personId}",
-    "serviceRelationships": [{
-      "relationshipType": "OWNER",
-      "identifier": "urn:li:userGeneratedContent"
-    }]
+  "initializeUploadRequest": {
+    "owner": "urn:li:person:{personId}"
   }
 }
 ```
@@ -101,25 +80,20 @@ X-Restli-Protocol-Version: 2.0.0
 ### Ad Library - Search Ads
 ```bash
 GET /linkedin/rest/adLibrary?q=criteria&keyword=linkedin
+LinkedIn-Version: 202506
 ```
-
-Required headers:
-- `LinkedIn-Version: 202502`
 
 ### Job Library - Search Jobs
 ```bash
 GET /linkedin/rest/jobLibrary?q=criteria&keyword=software
+LinkedIn-Version: 202506
 ```
-
-Required headers:
-- `LinkedIn-Version: 202506`
 
 ## Marketing API (Advertising)
 
 Required headers for all Marketing API calls:
 ```
-X-Restli-Protocol-Version: 2.0.0
-LinkedIn-Version: 202502
+LinkedIn-Version: 202506
 ```
 
 ### List Ad Accounts
@@ -191,7 +165,8 @@ GET /linkedin/rest/adAccounts/{adAccountId}/adCampaigns/{campaignId}
 
 ### List Organization ACLs
 ```bash
-GET /linkedin/v2/organizationAcls?q=roleAssignee
+GET /linkedin/rest/organizationAcls?q=roleAssignee
+LinkedIn-Version: 202506
 ```
 
 ### Lookup Organization by Vanity Name
@@ -209,15 +184,13 @@ GET /linkedin/rest/organizationalEntityShareStatistics?q=organizationalEntity&or
 GET /linkedin/rest/posts?q=author&author=urn:li:organization:12345
 ```
 
-## Media Upload (REST API)
-
-Required headers:
-- `LinkedIn-Version: 202502`
+## Media Upload
 
 ### Initialize Image Upload
 ```bash
 POST /linkedin/rest/images?action=initializeUpload
 Content-Type: application/json
+LinkedIn-Version: 202506
 
 {"initializeUploadRequest": {"owner": "urn:li:person:{personId}"}}
 ```
@@ -226,6 +199,7 @@ Content-Type: application/json
 ```bash
 POST /linkedin/rest/videos?action=initializeUpload
 Content-Type: application/json
+LinkedIn-Version: 202506
 
 {"initializeUploadRequest": {"owner": "urn:li:person:{personId}", "fileSizeBytes": 10000000}}
 ```
@@ -234,6 +208,7 @@ Content-Type: application/json
 ```bash
 POST /linkedin/rest/documents?action=initializeUpload
 Content-Type: application/json
+LinkedIn-Version: 202506
 
 {"initializeUploadRequest": {"owner": "urn:li:person:{personId}"}}
 ```
@@ -243,6 +218,7 @@ Content-Type: application/json
 ### Get Targeting Facets
 ```bash
 GET /linkedin/rest/adTargetingFacets
+LinkedIn-Version: 202506
 ```
 
 Returns 31 targeting facets (skills, industries, titles, locations, etc.)
@@ -250,10 +226,10 @@ Returns 31 targeting facets (skills, industries, titles, locations, etc.)
 ## Notes
 
 - Authentication is automatic - the router injects the OAuth token
-- Include `X-Restli-Protocol-Version: 2.0.0` header for all v2 API calls
+- Include `LinkedIn-Version: 202506` header for all REST API calls
 - Author URN format: `urn:li:person:{personId}`
-- Get person ID from `/v2/me` endpoint
-- Image uploads are 3-step: register, upload binary, create post
+- Get person ID from `/rest/me` endpoint
+- Image uploads are 3-step: initialize, upload binary, create post
 - Rate limits: 150 requests/day per member, 100K/day per app
 
 ## Visibility Options
