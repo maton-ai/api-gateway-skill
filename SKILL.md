@@ -2,6 +2,7 @@
 name: api-gateway
 description: |
   Connect to 100+ APIs (Google Workspace, Microsoft 365, Notion, Slack, Airtable, HubSpot, etc.) with managed OAuth.
+  Use this skill when users want to interact with external services.
   Security: The MATON_API_KEY authenticates with Maton.ai but grants NO access to third-party services by itself. Each service requires explicit OAuth authorization by the user through Maton's connect flow. Access is strictly scoped to connections the user has authorized. Provided by Maton (https://maton.ai).
 compatibility: Requires network access and valid Maton API key
 metadata:
@@ -209,6 +210,7 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | GetResponse | `getresponse` | `api.getresponse.com` |
 | GitHub | `github` | `api.github.com` |
 | Gumroad | `gumroad` | `api.gumroad.com` |
+| Granola | `granola` | `mcp.granola.ai` (MCP) |
 | Google Ads | `google-ads` | `googleads.googleapis.com` |
 | Google BigQuery | `google-bigquery` | `bigquery.googleapis.com` |
 | Google Analytics Admin | `google-analytics-admin` | `analyticsadmin.googleapis.com` |
@@ -255,13 +257,16 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | PDF.co | `pdf-co` | `api.pdf.co` |
 | Pipedrive | `pipedrive` | `api.pipedrive.com` |
 | Podio | `podio` | `api.podio.com` |
+| PostHog | `posthog` | `{subdomain}.posthog.com` |
 | QuickBooks | `quickbooks` | `quickbooks.api.intuit.com` |
 | Quo | `quo` | `api.openphone.com` |
 | Salesforce | `salesforce` | `{instance}.salesforce.com` |
+| Sentry | `sentry` | `{subdomain}.sentry.io` |
 | SignNow | `signnow` | `api.signnow.com` |
 | Slack | `slack` | `slack.com` |
 | Snapchat | `snapchat` | `adsapi.snapchat.com` |
 | Square | `squareup` | `connect.squareup.com` |
+| Squarespace | `squarespace` | `api.squarespace.com` |
 | Stripe | `stripe` | `api.stripe.com` |
 | Systeme.io | `systeme` | `api.systeme.io` |
 | Tally | `tally` | `api.tally.so` |
@@ -322,6 +327,7 @@ See [references/](references/) for detailed routing guides per provider:
 - [GetResponse](references/getresponse.md) - Campaigns, contacts, newsletters, autoresponders, tags, segments
 - [GitHub](references/github.md) - Repositories, issues, pull requests, commits
 - [Gumroad](references/gumroad.md) - Products, sales, subscribers, licenses, webhooks
+- [Granola](references/granola.md) - Meeting notes, transcripts, queries (MCP)
 - [Google Ads](references/google-ads.md) - Campaigns, ad groups, GAQL queries
 - [Google Analytics Admin](references/google-analytics-admin.md) - Reports, dimensions, metrics
 - [Google Analytics Data](references/google-analytics-data.md) - Reports, dimensions, metrics
@@ -368,14 +374,17 @@ See [references/](references/) for detailed routing guides per provider:
 - [PDF.co](references/pdf-co.md) - PDF conversion, merge, split, edit, text extraction, barcodes
 - [Pipedrive](references/pipedrive.md) - Deals, persons, organizations, activities
 - [Podio](references/podio.md) - Organizations, workspaces, apps, items, tasks, comments
+- [PostHog](references/posthog.md) - Product analytics, feature flags, session recordings, experiments, HogQL queries
 - [QuickBooks](references/quickbooks.md) - Customers, invoices, reports
 - [Quo](references/quo.md) - Calls, messages, contacts, conversations, webhooks
 - [Salesforce](references/salesforce.md) - SOQL, sObjects, CRUD
 - [SignNow](references/signnow.md) - Documents, templates, invites, e-signatures
 - [SendGrid](references/sendgrid.md) - Email sending, contacts, templates, suppressions, statistics
+- [Sentry](references/sentry.md) - Issues, events, projects, teams, releases
 - [Slack](references/slack.md) - Messages, channels, users
 - [Snapchat](references/snapchat.md) - Ad accounts, campaigns, ad squads, ads, creatives, audiences
 - [Square](references/squareup.md) - Payments, customers, orders, catalog, inventory, invoices
+- [Squarespace](references/squarespace.md) - Products, inventory, orders, profiles, transactions
 - [Stripe](references/stripe.md) - Customers, subscriptions, payments
 - [Systeme.io](references/systeme.md) - Contacts, tags, courses, communities, webhooks
 - [Tally](references/tally.md) - Forms, submissions, workspaces, webhooks

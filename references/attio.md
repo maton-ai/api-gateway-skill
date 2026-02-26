@@ -90,6 +90,7 @@ Content-Type: application/json
   "data": {
     "content": "Task description",
     "format": "plaintext",
+    "deadline_at": null,
     "assignees": [],
     "linked_records": []
   }
@@ -106,14 +107,182 @@ GET /attio/v2/workspace_members
 GET /attio/v2/self
 ```
 
-## Notes
+### Notes
+
+#### List Notes
+```bash
+GET /attio/v2/notes?limit=50&parent_object={object}&parent_record_id={record_id}
+```
+
+#### Get Note
+```bash
+GET /attio/v2/notes/{note_id}
+```
+
+#### Create Note
+```bash
+POST /attio/v2/notes
+Content-Type: application/json
+
+{
+  "data": {
+    "format": "plaintext",
+    "title": "Meeting Summary",
+    "content": "Note content here",
+    "parent_object": "companies",
+    "parent_record_id": "{record_id}",
+    "created_by_actor": {
+      "type": "workspace-member",
+      "id": "{workspace_member_id}"
+    }
+  }
+}
+```
+
+#### Delete Note
+```bash
+DELETE /attio/v2/notes/{note_id}
+```
+
+### Comments
+
+#### Create Comment on Record
+```bash
+POST /attio/v2/comments
+Content-Type: application/json
+
+{
+  "data": {
+    "format": "plaintext",
+    "content": "Comment text",
+    "author": {
+      "type": "workspace-member",
+      "id": "{workspace_member_id}"
+    },
+    "record": {
+      "object": "companies",
+      "record_id": "{record_id}"
+    }
+  }
+}
+```
+
+#### Reply to Comment Thread
+```bash
+POST /attio/v2/comments
+Content-Type: application/json
+
+{
+  "data": {
+    "format": "plaintext",
+    "content": "This is a reply",
+    "author": {
+      "type": "workspace-member",
+      "id": "{workspace_member_id}"
+    },
+    "thread_id": "{thread_id}"
+  }
+}
+```
+
+### Lists
+
+#### List All Lists
+```bash
+GET /attio/v2/lists
+```
+
+#### Get List
+```bash
+GET /attio/v2/lists/{list_id}
+```
+
+### List Entries
+
+#### Query List Entries
+```bash
+POST /attio/v2/lists/{list}/entries/query
+Content-Type: application/json
+
+{
+  "limit": 50,
+  "offset": 0
+}
+```
+
+#### Create List Entry
+```bash
+POST /attio/v2/lists/{list}/entries
+Content-Type: application/json
+
+{
+  "data": {
+    "parent_record_id": "{record_id}",
+    "parent_object": "companies",
+    "entry_values": {}
+  }
+}
+```
+
+#### Get List Entry
+```bash
+GET /attio/v2/lists/{list}/entries/{entry_id}
+```
+
+#### Update List Entry
+```bash
+PATCH /attio/v2/lists/{list}/entries/{entry_id}
+Content-Type: application/json
+
+{
+  "data": {
+    "entry_values": {
+      "status": "Active"
+    }
+  }
+}
+```
+
+#### Delete List Entry
+```bash
+DELETE /attio/v2/lists/{list}/entries/{entry_id}
+```
+
+### Meetings
+
+#### List Meetings
+```bash
+GET /attio/v2/meetings?limit=50
+```
+
+#### Get Meeting
+```bash
+GET /attio/v2/meetings/{meeting_id}
+```
+
+### Call Recordings
+
+#### List Call Recordings for Meeting
+```bash
+GET /attio/v2/meetings/{meeting_id}/call_recordings?limit=50
+```
+
+#### Get Call Recording
+```bash
+GET /attio/v2/meetings/{meeting_id}/call_recordings/{call_recording_id}
+```
+
+## Usage Notes
 
 - Object slugs are lowercase snake_case (e.g., `people`, `companies`)
 - Record IDs are UUIDs
 - For personal-name attributes, include `full_name` when creating records
-- Task creation requires `format` and `assignees` fields
+- Task creation requires `format`, `deadline_at`, `assignees`, and `linked_records` fields
+- Note creation requires `format`, `content`, `parent_object`, and `parent_record_id`
+- Comment creation requires `format`, `content`, `author`, plus one of `record`, `entry`, or `thread_id`
+- Meetings use cursor-based pagination
 - Rate limits: 100 read/sec, 25 write/sec
-- Pagination uses `limit` and `offset` parameters
+- Pagination uses `limit` and `offset` parameters (or `cursor` for meetings)
 
 ## Resources
 
