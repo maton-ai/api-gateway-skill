@@ -1,7 +1,7 @@
 ---
 name: api-gateway
 description: |
-  Connect to 100+ APIs (Google Workspace, Microsoft 365, Notion, Slack, Airtable, HubSpot, etc.) with managed OAuth.
+  Connect to 100+ APIs (Google Workspace, Microsoft 365, GitHub, Notion, Slack, Airtable, HubSpot, etc.) with managed OAuth.
   Use this skill when users want to interact with external services.
   Security: The MATON_API_KEY authenticates with Maton.ai but grants NO access to third-party services by itself. Each service requires explicit OAuth authorization by the user through Maton's connect flow. Access is strictly scoped to connections the user has authorized. Provided by Maton (https://maton.ai).
 compatibility: Requires network access and valid Maton API key
@@ -97,6 +97,7 @@ EOF
       "last_updated_time": "2026-01-31T20:03:32.593153Z",
       "url": "https://connect.maton.ai/?session_token=5e9...",
       "app": "slack",
+      "method": "OAUTH2",
       "metadata": {}
     }
   ]
@@ -115,6 +116,10 @@ req.add_header('Content-Type', 'application/json')
 print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
+
+**Request Body:**
+- `app` (required) - Service name (e.g., `slack`, `notion`)
+- `method` (optional) - Connection method (`API_KEY`, `BASIC`, `OAUTH1`, `OAUTH2`, `MCP`)
 
 ### Get Connection
 
@@ -184,6 +189,7 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | Asana | `asana` | `app.asana.com` |
 | Attio | `attio` | `api.attio.com` |
 | Basecamp | `basecamp` | `3.basecampapi.com` |
+| Baserow | `baserow` | `api.baserow.io` |
 | beehiiv | `beehiiv` | `api.beehiiv.com` |
 | Box | `box` | `api.box.com` |
 | Brevo | `brevo` | `api.brevo.com` |
@@ -210,7 +216,7 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | GetResponse | `getresponse` | `api.getresponse.com` |
 | GitHub | `github` | `api.github.com` |
 | Gumroad | `gumroad` | `api.gumroad.com` |
-| Granola | `granola` | `mcp.granola.ai` (MCP) |
+| Granola MCP | `granola` | `mcp.granola.ai` |
 | Google Ads | `google-ads` | `googleads.googleapis.com` |
 | Google BigQuery | `google-bigquery` | `bigquery.googleapis.com` |
 | Google Analytics Admin | `google-analytics-admin` | `analyticsadmin.googleapis.com` |
@@ -245,6 +251,7 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | MailerLite | `mailerlite` | `connect.mailerlite.com` |
 | Mailgun | `mailgun` | `api.mailgun.net` |
 | ManyChat | `manychat` | `api.manychat.com` |
+| Manus | `manus` | `api.manus.ai` |
 | Microsoft Excel | `microsoft-excel` | `graph.microsoft.com` |
 | Microsoft Teams | `microsoft-teams` | `graph.microsoft.com` |
 | Microsoft To Do | `microsoft-to-do` | `graph.microsoft.com` |
@@ -252,6 +259,7 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | Motion | `motion` | `api.usemotion.com` |
 | Netlify | `netlify` | `api.netlify.com` |
 | Notion | `notion` | `api.notion.com` |
+| Notion MCP | `notion` | `mcp.notion.com` |
 | OneDrive | `one-drive` | `graph.microsoft.com` |
 | Outlook | `outlook` | `graph.microsoft.com` |
 | PDF.co | `pdf-co` | `api.pdf.co` |
@@ -260,6 +268,7 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | PostHog | `posthog` | `{subdomain}.posthog.com` |
 | QuickBooks | `quickbooks` | `quickbooks.api.intuit.com` |
 | Quo | `quo` | `api.openphone.com` |
+| Reducto | `reducto` | `platform.reducto.ai` |
 | Salesforce | `salesforce` | `{instance}.salesforce.com` |
 | Sentry | `sentry` | `{subdomain}.sentry.io` |
 | SignNow | `signnow` | `api.signnow.com` |
@@ -267,6 +276,7 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | Snapchat | `snapchat` | `adsapi.snapchat.com` |
 | Square | `squareup` | `connect.squareup.com` |
 | Squarespace | `squarespace` | `api.squarespace.com` |
+| Sunsama MCP | `sunsama` | MCP server |
 | Stripe | `stripe` | `api.stripe.com` |
 | Systeme.io | `systeme` | `api.systeme.io` |
 | Tally | `tally` | `api.tally.so` |
@@ -277,6 +287,7 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | Trello | `trello` | `api.trello.com` |
 | Twilio | `twilio` | `api.twilio.com` |
 | Typeform | `typeform` | `api.typeform.com` |
+| Unbounce | `unbounce` | `api.unbounce.com` |
 | Vimeo | `vimeo` | `api.vimeo.com` |
 | WhatsApp Business | `whatsapp-business` | `graph.facebook.com` |
 | WooCommerce | `woocommerce` | `{store-url}/wp-json/wc/v3` |
@@ -291,125 +302,133 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | Zoho Inventory | `zoho-inventory` | `www.zohoapis.com` |
 | Zoho Mail | `zoho-mail` | `mail.zoho.com` |
 | Zoho People | `zoho-people` | `people.zoho.com` |
+| Zoho Projects | `zoho-projects` | `projectsapi.zoho.com` |
 | Zoho Recruit | `zoho-recruit` | `recruit.zoho.com` |
 
 See [references/](references/) for detailed routing guides per provider:
-- [ActiveCampaign](references/active-campaign.md) - Contacts, deals, tags, lists, automations, campaigns
-- [Acuity Scheduling](references/acuity-scheduling.md) - Appointments, calendars, clients, availability
-- [Airtable](references/airtable.md) - Records, bases, tables
-- [Apollo](references/apollo.md) - People search, enrichment, contacts
-- [Asana](references/asana.md) - Tasks, projects, workspaces, webhooks
-- [Attio](references/attio.md) - People, companies, records, tasks
-- [Basecamp](references/basecamp.md) - Projects, to-dos, messages, schedules, documents
-- [beehiiv](references/beehiiv.md) - Publications, subscriptions, posts, custom fields
-- [Box](references/box.md) - Files, folders, collaborations, shared links
-- [Brevo](references/brevo.md) - Contacts, email campaigns, transactional emails, templates
-- [Calendly](references/calendly.md) - Event types, scheduled events, availability, webhooks
-- [Cal.com](references/cal-com.md) - Event types, bookings, schedules, availability slots, webhooks
-- [CallRail](references/callrail.md) - Calls, trackers, companies, tags, analytics
-- [Chargebee](references/chargebee.md) - Subscriptions, customers, invoices
-- [ClickFunnels](references/clickfunnels.md) - Contacts, products, orders, courses, webhooks
-- [ClickSend](references/clicksend.md) - SMS, MMS, voice messages, contacts, lists
-- [ClickUp](references/clickup.md) - Tasks, lists, folders, spaces, webhooks
-- [Clockify](references/clockify.md) - Time tracking, projects, clients, tasks, workspaces
-- [Coda](references/coda.md) - Docs, pages, tables, rows, formulas, controls
-- [Confluence](references/confluence.md) - Pages, spaces, blogposts, comments, attachments
-- [CompanyCam](references/companycam.md) - Projects, photos, users, tags, groups, documents
-- [Cognito Forms](references/cognito-forms.md) - Forms, entries, documents, files
-- [Constant Contact](references/constant-contact.md) - Contacts, email campaigns, lists, segments
-- [Dropbox](references/dropbox.md) - Files, folders, search, metadata, revisions, tags
-- [Dropbox Business](references/dropbox-business.md) - Team members, groups, team folders, devices, audit logs
-- [ElevenLabs](references/elevenlabs.md) - Text-to-speech, voice cloning, sound effects, audio processing
-- [Eventbrite](references/eventbrite.md) - Events, venues, tickets, orders, attendees
-- [Fathom](references/fathom.md) - Meeting recordings, transcripts, summaries, webhooks
-- [Firebase](references/firebase.md) - Projects, web apps, Android apps, iOS apps, configurations
-- [Fireflies](references/fireflies.md) - Meeting transcripts, summaries, AskFred AI, channels
-- [GetResponse](references/getresponse.md) - Campaigns, contacts, newsletters, autoresponders, tags, segments
-- [GitHub](references/github.md) - Repositories, issues, pull requests, commits
-- [Gumroad](references/gumroad.md) - Products, sales, subscribers, licenses, webhooks
-- [Granola](references/granola.md) - Meeting notes, transcripts, queries (MCP)
-- [Google Ads](references/google-ads.md) - Campaigns, ad groups, GAQL queries
-- [Google Analytics Admin](references/google-analytics-admin.md) - Reports, dimensions, metrics
-- [Google Analytics Data](references/google-analytics-data.md) - Reports, dimensions, metrics
-- [Google BigQuery](references/google-bigquery.md) - Datasets, tables, jobs, SQL queries
-- [Google Calendar](references/google-calendar.md) - Events, calendars, free/busy
-- [Google Classroom](references/google-classroom.md) - Courses, coursework, students, teachers, announcements
-- [Google Contacts](references/google-contacts.md) - Contacts, contact groups, people search
-- [Google Docs](references/google-docs.md) - Document creation, batch updates
-- [Google Drive](references/google-drive.md) - Files, folders, permissions
-- [Google Forms](references/google-forms.md) - Forms, questions, responses
-- [Gmail](references/google-mail.md) - Messages, threads, labels
-- [Google Meet](references/google-meet.md) - Spaces, conference records, participants
-- [Google Merchant](references/google-merchant.md) - Products, inventories, promotions, reports
-- [Google Play](references/google-play.md) - In-app products, subscriptions, reviews
-- [Google Search Console](references/google-search-console.md) - Search analytics, sitemaps
-- [Google Sheets](references/google-sheets.md) - Values, ranges, formatting
-- [Google Slides](references/google-slides.md) - Presentations, slides, formatting
-- [Google Tasks](references/google-tasks.md) - Task lists, tasks, subtasks
-- [Google Workspace Admin](references/google-workspace-admin.md) - Users, groups, org units, domains, roles
-- [HubSpot](references/hubspot.md) - Contacts, companies, deals
-- [Instantly](references/instantly.md) - Campaigns, leads, accounts, email outreach
-- [Jira](references/jira.md) - Issues, projects, JQL queries
-- [Jobber](references/jobber.md) - Clients, jobs, invoices, quotes (GraphQL)
-- [JotForm](references/jotform.md) - Forms, submissions, webhooks
-- [Keap](references/keap.md) - Contacts, companies, tags, tasks, opportunities, campaigns
-- [Kit](references/kit.md) - Subscribers, tags, forms, sequences, broadcasts
-- [Klaviyo](references/klaviyo.md) - Profiles, lists, campaigns, flows, events
-- [Lemlist](references/lemlist.md) - Campaigns, leads, activities, schedules, unsubscribes
-- [Linear](references/linear.md) - Issues, projects, teams, cycles (GraphQL)
-- [LinkedIn](references/linkedin.md) - Profile, posts, shares, media uploads
-- [Mailchimp](references/mailchimp.md) - Audiences, campaigns, templates, automations
-- [MailerLite](references/mailerlite.md) - Subscribers, groups, campaigns, automations, forms
-- [Mailgun](references/mailgun.md) - Email sending, domains, routes, templates, mailing lists, suppressions
-- [ManyChat](references/manychat.md) - Subscribers, tags, flows, messaging
-- [Microsoft Excel](references/microsoft-excel.md) - Workbooks, worksheets, ranges, tables, charts
-- [Microsoft Teams](references/microsoft-teams.md) - Teams, channels, messages, members, chats
-- [Microsoft To Do](references/microsoft-to-do.md) - Task lists, tasks, checklist items, linked resources
-- [Monday.com](references/monday.md) - Boards, items, columns, groups (GraphQL)
-- [Motion](references/motion.md) - Tasks, projects, workspaces, schedules
-- [Netlify](references/netlify.md) - Sites, deploys, builds, DNS, environment variables
-- [Notion](references/notion.md) - Pages, databases, blocks
-- [OneDrive](references/one-drive.md) - Files, folders, drives, sharing
-- [Outlook](references/outlook.md) - Mail, calendar, contacts
-- [PDF.co](references/pdf-co.md) - PDF conversion, merge, split, edit, text extraction, barcodes
-- [Pipedrive](references/pipedrive.md) - Deals, persons, organizations, activities
-- [Podio](references/podio.md) - Organizations, workspaces, apps, items, tasks, comments
-- [PostHog](references/posthog.md) - Product analytics, feature flags, session recordings, experiments, HogQL queries
-- [QuickBooks](references/quickbooks.md) - Customers, invoices, reports
-- [Quo](references/quo.md) - Calls, messages, contacts, conversations, webhooks
-- [Salesforce](references/salesforce.md) - SOQL, sObjects, CRUD
-- [SignNow](references/signnow.md) - Documents, templates, invites, e-signatures
-- [SendGrid](references/sendgrid.md) - Email sending, contacts, templates, suppressions, statistics
-- [Sentry](references/sentry.md) - Issues, events, projects, teams, releases
-- [Slack](references/slack.md) - Messages, channels, users
-- [Snapchat](references/snapchat.md) - Ad accounts, campaigns, ad squads, ads, creatives, audiences
-- [Square](references/squareup.md) - Payments, customers, orders, catalog, inventory, invoices
-- [Squarespace](references/squarespace.md) - Products, inventory, orders, profiles, transactions
-- [Stripe](references/stripe.md) - Customers, subscriptions, payments
-- [Systeme.io](references/systeme.md) - Contacts, tags, courses, communities, webhooks
-- [Tally](references/tally.md) - Forms, submissions, workspaces, webhooks
-- [Telegram](references/telegram.md) - Messages, chats, bots, updates, polls
-- [TickTick](references/ticktick.md) - Tasks, projects, task lists
-- [Todoist](references/todoist.md) - Tasks, projects, sections, labels, comments
-- [Toggl Track](references/toggl-track.md) - Time entries, projects, clients, tags, workspaces
-- [Trello](references/trello.md) - Boards, lists, cards, checklists
-- [Twilio](references/twilio.md) - SMS, voice calls, phone numbers, messaging
-- [Typeform](references/typeform.md) - Forms, responses, insights
-- [Vimeo](references/vimeo.md) - Videos, folders, albums, comments, likes
-- [WhatsApp Business](references/whatsapp-business.md) - Messages, templates, media
-- [WooCommerce](references/woocommerce.md) - Products, orders, customers, coupons
-- [WordPress.com](references/wordpress.md) - Posts, pages, sites, users, settings
-- [Xero](references/xero.md) - Contacts, invoices, reports
-- [YouTube](references/youtube.md) - Videos, playlists, channels, subscriptions
-- [Zoho Bigin](references/zoho-bigin.md) - Contacts, companies, pipelines, products
-- [Zoho Bookings](references/zoho-bookings.md) - Appointments, services, staff, workspaces
-- [Zoho Books](references/zoho-books.md) - Invoices, contacts, bills, expenses
-- [Zoho Calendar](references/zoho-calendar.md) - Calendars, events, attendees, reminders
-- [Zoho CRM](references/zoho-crm.md) - Leads, contacts, accounts, deals, search
-- [Zoho Inventory](references/zoho-inventory.md) - Items, sales orders, invoices, purchase orders, bills
-- [Zoho Mail](references/zoho-mail.md) - Messages, folders, labels, attachments
-- [Zoho People](references/zoho-people.md) - Employees, departments, designations, attendance, leave
-- [Zoho Recruit](references/zoho-recruit.md) - Candidates, job openings, interviews, applications
+- [ActiveCampaign](references/active-campaign/README.md) - Contacts, deals, tags, lists, automations, campaigns
+- [Acuity Scheduling](references/acuity-scheduling/README.md) - Appointments, calendars, clients, availability
+- [Airtable](references/airtable/README.md) - Records, bases, tables
+- [Apollo](references/apollo/README.md) - People search, enrichment, contacts
+- [Asana](references/asana/README.md) - Tasks, projects, workspaces, webhooks
+- [Attio](references/attio/README.md) - People, companies, records, tasks
+- [Basecamp](references/basecamp/README.md) - Projects, to-dos, messages, schedules, documents
+- [Baserow](references/baserow/README.md) - Database rows, fields, tables, batch operations
+- [beehiiv](references/beehiiv/README.md) - Publications, subscriptions, posts, custom fields
+- [Box](references/box/README.md) - Files, folders, collaborations, shared links
+- [Brevo](references/brevo/README.md) - Contacts, email campaigns, transactional emails, templates
+- [Calendly](references/calendly/README.md) - Event types, scheduled events, availability, webhooks
+- [Cal.com](references/cal-com/README.md) - Event types, bookings, schedules, availability slots, webhooks
+- [CallRail](references/callrail/README.md) - Calls, trackers, companies, tags, analytics
+- [Chargebee](references/chargebee/README.md) - Subscriptions, customers, invoices
+- [ClickFunnels](references/clickfunnels/README.md) - Contacts, products, orders, courses, webhooks
+- [ClickSend](references/clicksend/README.md) - SMS, MMS, voice messages, contacts, lists
+- [ClickUp](references/clickup/README.md) - Tasks, lists, folders, spaces, webhooks
+- [Clockify](references/clockify/README.md) - Time tracking, projects, clients, tasks, workspaces
+- [Coda](references/coda/README.md) - Docs, pages, tables, rows, formulas, controls
+- [Confluence](references/confluence/README.md) - Pages, spaces, blogposts, comments, attachments
+- [CompanyCam](references/companycam/README.md) - Projects, photos, users, tags, groups, documents
+- [Cognito Forms](references/cognito-forms/README.md) - Forms, entries, documents, files
+- [Constant Contact](references/constant-contact/README.md) - Contacts, email campaigns, lists, segments
+- [Dropbox](references/dropbox/README.md) - Files, folders, search, metadata, revisions, tags
+- [Dropbox Business](references/dropbox-business/README.md) - Team members, groups, team folders, devices, audit logs
+- [ElevenLabs](references/elevenlabs/README.md) - Text-to-speech, voice cloning, sound effects, audio processing
+- [Eventbrite](references/eventbrite/README.md) - Events, venues, tickets, orders, attendees
+- [Fathom](references/fathom/README.md) - Meeting recordings, transcripts, summaries, webhooks
+- [Firebase](references/firebase/README.md) - Projects, web apps, Android apps, iOS apps, configurations
+- [Fireflies](references/fireflies/README.md) - Meeting transcripts, summaries, AskFred AI, channels
+- [GetResponse](references/getresponse/README.md) - Campaigns, contacts, newsletters, autoresponders, tags, segments
+- [GitHub](references/github/README.md) - Repositories, issues, pull requests, commits
+- [Gumroad](references/gumroad/README.md) - Products, sales, subscribers, licenses, webhooks
+- [Granola MCP](references/granola-mcp/README.md) - MCP-based interface for meeting notes, transcripts, queries
+- [Google Ads](references/google-ads/README.md) - Campaigns, ad groups, GAQL queries
+- [Google Analytics Admin](references/google-analytics-admin/README.md) - Reports, dimensions, metrics
+- [Google Analytics Data](references/google-analytics-data/README.md) - Reports, dimensions, metrics
+- [Google BigQuery](references/google-bigquery/README.md) - Datasets, tables, jobs, SQL queries
+- [Google Calendar](references/google-calendar/README.md) - Events, calendars, free/busy
+- [Google Classroom](references/google-classroom/README.md) - Courses, coursework, students, teachers, announcements
+- [Google Contacts](references/google-contacts/README.md) - Contacts, contact groups, people search
+- [Google Docs](references/google-docs/README.md) - Document creation, batch updates
+- [Google Drive](references/google-drive/README.md) - Files, folders, permissions
+- [Google Forms](references/google-forms/README.md) - Forms, questions, responses
+- [Gmail](references/google-mail/README.md) - Messages, threads, labels
+- [Google Meet](references/google-meet/README.md) - Spaces, conference records, participants
+- [Google Merchant](references/google-merchant/README.md) - Products, inventories, promotions, reports
+- [Google Play](references/google-play/README.md) - In-app products, subscriptions, reviews
+- [Google Search Console](references/google-search-console/README.md) - Search analytics, sitemaps
+- [Google Sheets](references/google-sheets/README.md) - Values, ranges, formatting
+- [Google Slides](references/google-slides/README.md) - Presentations, slides, formatting
+- [Google Tasks](references/google-tasks/README.md) - Task lists, tasks, subtasks
+- [Google Workspace Admin](references/google-workspace-admin/README.md) - Users, groups, org units, domains, roles
+- [HubSpot](references/hubspot/README.md) - Contacts, companies, deals
+- [Instantly](references/instantly/README.md) - Campaigns, leads, accounts, email outreach
+- [Jira](references/jira/README.md) - Issues, projects, JQL queries
+- [Jobber](references/jobber/README.md) - Clients, jobs, invoices, quotes (GraphQL)
+- [JotForm](references/jotform/README.md) - Forms, submissions, webhooks
+- [Keap](references/keap/README.md) - Contacts, companies, tags, tasks, opportunities, campaigns
+- [Kit](references/kit/README.md) - Subscribers, tags, forms, sequences, broadcasts
+- [Klaviyo](references/klaviyo/README.md) - Profiles, lists, campaigns, flows, events
+- [Lemlist](references/lemlist/README.md) - Campaigns, leads, activities, schedules, unsubscribes
+- [Linear](references/linear/README.md) - Issues, projects, teams, cycles (GraphQL)
+- [LinkedIn](references/linkedin/README.md) - Profile, posts, shares, media uploads
+- [Mailchimp](references/mailchimp/README.md) - Audiences, campaigns, templates, automations
+- [MailerLite](references/mailerlite/README.md) - Subscribers, groups, campaigns, automations, forms
+- [Mailgun](references/mailgun/README.md) - Email sending, domains, routes, templates, mailing lists, suppressions
+- [ManyChat](references/manychat/README.md) - Subscribers, tags, flows, messaging
+- [Manus](references/manus/README.md) - AI agent tasks, projects, files, webhooks
+- [Microsoft Excel](references/microsoft-excel/README.md) - Workbooks, worksheets, ranges, tables, charts
+- [Microsoft Teams](references/microsoft-teams/README.md) - Teams, channels, messages, members, chats
+- [Microsoft To Do](references/microsoft-to-do/README.md) - Task lists, tasks, checklist items, linked resources
+- [Monday.com](references/monday/README.md) - Boards, items, columns, groups (GraphQL)
+- [Motion](references/motion/README.md) - Tasks, projects, workspaces, schedules
+- [Netlify](references/netlify/README.md) - Sites, deploys, builds, DNS, environment variables
+- [Notion](references/notion/README.md) - Pages, databases, blocks
+- [Notion MCP](references/notion-mcp/README.md) - MCP-based interface for pages, databases, comments, teams, users
+- [OneDrive](references/one-drive/README.md) - Files, folders, drives, sharing
+- [Outlook](references/outlook/README.md) - Mail, calendar, contacts
+- [PDF.co](references/pdf-co/README.md) - PDF conversion, merge, split, edit, text extraction, barcodes
+- [Pipedrive](references/pipedrive/README.md) - Deals, persons, organizations, activities
+- [Podio](references/podio/README.md) - Organizations, workspaces, apps, items, tasks, comments
+- [PostHog](references/posthog/README.md) - Product analytics, feature flags, session recordings, experiments, HogQL queries
+- [QuickBooks](references/quickbooks/README.md) - Customers, invoices, reports
+- [Quo](references/quo/README.md) - Calls, messages, contacts, conversations, webhooks
+- [Reducto](references/reducto/README.md) - Document parsing, extraction, splitting, editing
+- [Salesforce](references/salesforce/README.md) - SOQL, sObjects, CRUD
+- [SignNow](references/signnow/README.md) - Documents, templates, invites, e-signatures
+- [SendGrid](references/sendgrid/README.md) - Email sending, contacts, templates, suppressions, statistics
+- [Sentry](references/sentry/README.md) - Issues, events, projects, teams, releases
+- [Slack](references/slack/README.md) - Messages, channels, users
+- [Snapchat](references/snapchat/README.md) - Ad accounts, campaigns, ad squads, ads, creatives, audiences
+- [Square](references/squareup/README.md) - Payments, customers, orders, catalog, inventory, invoices
+- [Squarespace](references/squarespace/README.md) - Products, inventory, orders, profiles, transactions
+- [Sunsama MCP](references/sunsama-mcp/README.md) - MCP-based interface for tasks, calendar, backlog, objectives, time tracking
+- [Stripe](references/stripe/README.md) - Customers, subscriptions, payments
+- [Systeme.io](references/systeme/README.md) - Contacts, tags, courses, communities, webhooks
+- [Tally](references/tally/README.md) - Forms, submissions, workspaces, webhooks
+- [Telegram](references/telegram/README.md) - Messages, chats, bots, updates, polls
+- [TickTick](references/ticktick/README.md) - Tasks, projects, task lists
+- [Todoist](references/todoist/README.md) - Tasks, projects, sections, labels, comments
+- [Toggl Track](references/toggl-track/README.md) - Time entries, projects, clients, tags, workspaces
+- [Trello](references/trello/README.md) - Boards, lists, cards, checklists
+- [Twilio](references/twilio/README.md) - SMS, voice calls, phone numbers, messaging
+- [Typeform](references/typeform/README.md) - Forms, responses, insights
+- [Unbounce](references/unbounce/README.md) - Landing pages, leads, accounts, sub-accounts, domains
+- [Vimeo](references/vimeo/README.md) - Videos, folders, albums, comments, likes
+- [WhatsApp Business](references/whatsapp-business/README.md) - Messages, templates, media
+- [WooCommerce](references/woocommerce/README.md) - Products, orders, customers, coupons
+- [WordPress.com](references/wordpress/README.md) - Posts, pages, sites, users, settings
+- [Xero](references/xero/README.md) - Contacts, invoices, reports
+- [YouTube](references/youtube/README.md) - Videos, playlists, channels, subscriptions
+- [Zoho Bigin](references/zoho-bigin/README.md) - Contacts, companies, pipelines, products
+- [Zoho Bookings](references/zoho-bookings/README.md) - Appointments, services, staff, workspaces
+- [Zoho Books](references/zoho-books/README.md) - Invoices, contacts, bills, expenses
+- [Zoho Calendar](references/zoho-calendar/README.md) - Calendars, events, attendees, reminders
+- [Zoho CRM](references/zoho-crm/README.md) - Leads, contacts, accounts, deals, search
+- [Zoho Inventory](references/zoho-inventory/README.md) - Items, sales orders, invoices, purchase orders, bills
+- [Zoho Mail](references/zoho-mail/README.md) - Messages, folders, labels, attachments
+- [Zoho People](references/zoho-people/README.md) - Employees, departments, designations, attendance, leave
+- [Zoho Projects](references/zoho-projects/README.md) - Projects, tasks, milestones, tasklists, comments
+- [Zoho Recruit](references/zoho-recruit/README.md) - Candidates, job openings, interviews, applications
 
 ## Examples
 
