@@ -241,6 +241,7 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | Jira | `jira` | `api.atlassian.com` |
 | Jobber | `jobber` | `api.getjobber.com` |
 | JotForm | `jotform` | `api.jotform.com` |
+| Kaggle | `kaggle` | `api.kaggle.com` |
 | Keap | `keap` | `api.infusionsoft.com` |
 | Kit | `kit` | `api.kit.com` |
 | Klaviyo | `klaviyo` | `a.klaviyo.com` |
@@ -271,6 +272,7 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | Reducto | `reducto` | `platform.reducto.ai` |
 | Salesforce | `salesforce` | `{instance}.salesforce.com` |
 | Sentry | `sentry` | `{subdomain}.sentry.io` |
+| SharePoint | `sharepoint` | `graph.microsoft.com` |
 | SignNow | `signnow` | `api.signnow.com` |
 | Slack | `slack` | `slack.com` |
 | Snapchat | `snapchat` | `adsapi.snapchat.com` |
@@ -365,6 +367,7 @@ See [references/](references/) for detailed routing guides per provider:
 - [Jira](references/jira/README.md) - Issues, projects, JQL queries
 - [Jobber](references/jobber/README.md) - Clients, jobs, invoices, quotes (GraphQL)
 - [JotForm](references/jotform/README.md) - Forms, submissions, webhooks
+- [Kaggle](references/kaggle/README.md) - Datasets, models, competitions, kernels
 - [Keap](references/keap/README.md) - Contacts, companies, tags, tasks, opportunities, campaigns
 - [Kit](references/kit/README.md) - Subscribers, tags, forms, sequences, broadcasts
 - [Klaviyo](references/klaviyo/README.md) - Profiles, lists, campaigns, flows, events
@@ -397,6 +400,7 @@ See [references/](references/) for detailed routing guides per provider:
 - [SignNow](references/signnow/README.md) - Documents, templates, invites, e-signatures
 - [SendGrid](references/sendgrid/README.md) - Email sending, contacts, templates, suppressions, statistics
 - [Sentry](references/sentry/README.md) - Issues, events, projects, teams, releases
+- [SharePoint](references/sharepoint/README.md) - Sites, lists, document libraries, files, folders, versions
 - [Slack](references/slack/README.md) - Messages, channels, users
 - [Snapchat](references/snapchat/README.md) - Ad accounts, campaigns, ad squads, ads, creatives, audiences
 - [Square](references/squareup/README.md) - Payments, customers, orders, catalog, inventory, invoices
