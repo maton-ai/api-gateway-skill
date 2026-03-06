@@ -214,6 +214,7 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | Firebase | `firebase` | `firebase.googleapis.com` |
 | Fireflies | `fireflies` | `api.fireflies.ai` |
 | GetResponse | `getresponse` | `api.getresponse.com` |
+| Grafana | `grafana` | User's Grafana instance |
 | GitHub | `github` | `api.github.com` |
 | Gumroad | `gumroad` | `api.gumroad.com` |
 | Granola MCP | `granola` | `mcp.granola.ai` |
@@ -243,6 +244,7 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | JotForm | `jotform` | `api.jotform.com` |
 | Kaggle | `kaggle` | `api.kaggle.com` |
 | Keap | `keap` | `api.infusionsoft.com` |
+| Kibana | `kibana` | User's Kibana instance |
 | Kit | `kit` | `api.kit.com` |
 | Klaviyo | `klaviyo` | `a.klaviyo.com` |
 | Lemlist | `lemlist` | `api.lemlist.com` |
@@ -340,6 +342,7 @@ See [references/](references/) for detailed routing guides per provider:
 - [Firebase](references/firebase/README.md) - Projects, web apps, Android apps, iOS apps, configurations
 - [Fireflies](references/fireflies/README.md) - Meeting transcripts, summaries, AskFred AI, channels
 - [GetResponse](references/getresponse/README.md) - Campaigns, contacts, newsletters, autoresponders, tags, segments
+- [Grafana](references/grafana/README.md) - Dashboards, data sources, folders, annotations, alerts, teams
 - [GitHub](references/github/README.md) - Repositories, issues, pull requests, commits
 - [Gumroad](references/gumroad/README.md) - Products, sales, subscribers, licenses, webhooks
 - [Granola MCP](references/granola-mcp/README.md) - MCP-based interface for meeting notes, transcripts, queries
@@ -369,6 +372,7 @@ See [references/](references/) for detailed routing guides per provider:
 - [JotForm](references/jotform/README.md) - Forms, submissions, webhooks
 - [Kaggle](references/kaggle/README.md) - Datasets, models, competitions, kernels
 - [Keap](references/keap/README.md) - Contacts, companies, tags, tasks, opportunities, campaigns
+- [Kibana](references/kibana/README.md) - Saved objects, dashboards, data views, spaces, alerts, fleet
 - [Kit](references/kit/README.md) - Subscribers, tags, forms, sequences, broadcasts
 - [Klaviyo](references/klaviyo/README.md) - Profiles, lists, campaigns, flows, events
 - [Lemlist](references/lemlist/README.md) - Campaigns, leads, activities, schedules, unsubscribes
