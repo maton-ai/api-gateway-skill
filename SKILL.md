@@ -210,6 +210,7 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | Dropbox Business | `dropbox-business` | `api.dropboxapi.com` |
 | ElevenLabs | `elevenlabs` | `api.elevenlabs.io` |
 | Eventbrite | `eventbrite` | `www.eventbriteapi.com` |
+| Exa | `exa` | `api.exa.ai` |
 | Fathom | `fathom` | `api.fathom.ai` |
 | Firebase | `firebase` | `firebase.googleapis.com` |
 | Fireflies | `fireflies` | `api.fireflies.ai` |
@@ -284,6 +285,7 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | Stripe | `stripe` | `api.stripe.com` |
 | Systeme.io | `systeme` | `api.systeme.io` |
 | Tally | `tally` | `api.tally.so` |
+| Tavily | `tavily` | `api.tavily.com` |
 | Telegram | `telegram` | `api.telegram.org` |
 | TickTick | `ticktick` | `api.ticktick.com` |
 | Todoist | `todoist` | `api.todoist.com` |
@@ -296,6 +298,7 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | WhatsApp Business | `whatsapp-business` | `graph.facebook.com` |
 | WooCommerce | `woocommerce` | `{store-url}/wp-json/wc/v3` |
 | WordPress.com | `wordpress` | `public-api.wordpress.com` |
+| Wrike | `wrike` | `www.wrike.com` |
 | Xero | `xero` | `api.xero.com` |
 | YouTube | `youtube` | `www.googleapis.com` |
 | Zoho Bigin | `zoho-bigin` | `www.zohoapis.com` |
@@ -338,6 +341,7 @@ See [references/](references/) for detailed routing guides per provider:
 - [Dropbox Business](references/dropbox-business/README.md) - Team members, groups, team folders, devices, audit logs
 - [ElevenLabs](references/elevenlabs/README.md) - Text-to-speech, voice cloning, sound effects, audio processing
 - [Eventbrite](references/eventbrite/README.md) - Events, venues, tickets, orders, attendees
+- [Exa](references/exa/README.md) - Neural web search, content extraction, similar pages, AI answers, research tasks
 - [Fathom](references/fathom/README.md) - Meeting recordings, transcripts, summaries, webhooks
 - [Firebase](references/firebase/README.md) - Projects, web apps, Android apps, iOS apps, configurations
 - [Fireflies](references/fireflies/README.md) - Meeting transcripts, summaries, AskFred AI, channels
@@ -413,6 +417,7 @@ See [references/](references/) for detailed routing guides per provider:
 - [Stripe](references/stripe/README.md) - Customers, subscriptions, payments
 - [Systeme.io](references/systeme/README.md) - Contacts, tags, courses, communities, webhooks
 - [Tally](references/tally/README.md) - Forms, submissions, workspaces, webhooks
+- [Tavily](references/tavily/README.md) - AI web search, content extraction, crawling, research tasks
 - [Telegram](references/telegram/README.md) - Messages, chats, bots, updates, polls
 - [TickTick](references/ticktick/README.md) - Tasks, projects, task lists
 - [Todoist](references/todoist/README.md) - Tasks, projects, sections, labels, comments
@@ -425,6 +430,7 @@ See [references/](references/) for detailed routing guides per provider:
 - [WhatsApp Business](references/whatsapp-business/README.md) - Messages, templates, media
 - [WooCommerce](references/woocommerce/README.md) - Products, orders, customers, coupons
 - [WordPress.com](references/wordpress/README.md) - Posts, pages, sites, users, settings
+- [Wrike](references/wrike/README.md) - Tasks, folders, projects, spaces, comments, timelogs, workflows
 - [Xero](references/xero/README.md) - Contacts, invoices, reports
 - [YouTube](references/youtube/README.md) - Videos, playlists, channels, subscriptions
 - [Zoho Bigin](references/zoho-bigin/README.md) - Contacts, companies, pipelines, products
