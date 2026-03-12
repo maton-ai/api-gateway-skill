@@ -193,6 +193,8 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | beehiiv | `beehiiv` | `api.beehiiv.com` |
 | Box | `box` | `api.box.com` |
 | Brevo | `brevo` | `api.brevo.com` |
+| Brave Search | `brave-search` | `api.search.brave.com` |
+| Buffer | `buffer` | `api.buffer.com` |
 | Calendly | `calendly` | `api.calendly.com` |
 | Cal.com | `cal-com` | `api.cal.com` |
 | CallRail | `callrail` | `api.callrail.com` |
@@ -212,6 +214,7 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | Eventbrite | `eventbrite` | `www.eventbriteapi.com` |
 | Exa | `exa` | `api.exa.ai` |
 | Fathom | `fathom` | `api.fathom.ai` |
+| Firecrawl | `firecrawl` | `api.firecrawl.dev` |
 | Firebase | `firebase` | `firebase.googleapis.com` |
 | Fireflies | `fireflies` | `api.fireflies.ai` |
 | GetResponse | `getresponse` | `api.getresponse.com` |
@@ -324,6 +327,8 @@ See [references/](references/) for detailed routing guides per provider:
 - [beehiiv](references/beehiiv/README.md) - Publications, subscriptions, posts, custom fields
 - [Box](references/box/README.md) - Files, folders, collaborations, shared links
 - [Brevo](references/brevo/README.md) - Contacts, email campaigns, transactional emails, templates
+- [Brave Search](references/brave-search/README.md) - Web search, image search, news search, video search
+- [Buffer](references/buffer/README.md) - Social media posts, channels, organizations, scheduling
 - [Calendly](references/calendly/README.md) - Event types, scheduled events, availability, webhooks
 - [Cal.com](references/cal-com/README.md) - Event types, bookings, schedules, availability slots, webhooks
 - [CallRail](references/callrail/README.md) - Calls, trackers, companies, tags, analytics
@@ -343,6 +348,7 @@ See [references/](references/) for detailed routing guides per provider:
 - [Eventbrite](references/eventbrite/README.md) - Events, venues, tickets, orders, attendees
 - [Exa](references/exa/README.md) - Neural web search, content extraction, similar pages, AI answers, research tasks
 - [Fathom](references/fathom/README.md) - Meeting recordings, transcripts, summaries, webhooks
+- [Firecrawl](references/firecrawl/README.md) - Web scraping, crawling, site mapping, web search
 - [Firebase](references/firebase/README.md) - Projects, web apps, Android apps, iOS apps, configurations
 - [Fireflies](references/fireflies/README.md) - Meeting transcripts, summaries, AskFred AI, channels
 - [GetResponse](references/getresponse/README.md) - Campaigns, contacts, newsletters, autoresponders, tags, segments
