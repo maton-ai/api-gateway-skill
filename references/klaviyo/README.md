@@ -14,7 +14,7 @@
 Include the `revision` header in all requests:
 
 ```
-revision: 2024-10-15
+revision: 2026-01-15
 ```
 
 ## Common Endpoints
@@ -106,8 +106,10 @@ GET /klaviyo/api/segments
 
 ### Get Campaigns
 ```bash
-GET /klaviyo/api/campaigns
+GET /klaviyo/api/campaigns?filter=equals(messages.channel,"email")
 ```
+
+> **Note:** A channel filter is required (email or sms).
 
 ### Create a Campaign
 ```bash
