@@ -223,6 +223,69 @@ Content-Type: application/json
 DELETE /klaviyo/api/webhooks/{webhook_id}
 ```
 
+### Get Webhook Topics
+```bash
+GET /klaviyo/api/webhook-topics
+```
+
+### Get Images
+```bash
+GET /klaviyo/api/images
+```
+
+### Get Forms
+```bash
+GET /klaviyo/api/forms
+```
+
+### Get Reviews
+```bash
+GET /klaviyo/api/reviews
+```
+
+### Get Tag Groups
+```bash
+GET /klaviyo/api/tag-groups
+```
+
+### Get Universal Content
+```bash
+GET /klaviyo/api/template-universal-content
+```
+
+### Bulk Subscribe Profiles
+```bash
+POST /klaviyo/api/profile-subscription-bulk-create-jobs
+Content-Type: application/json
+
+{
+  "data": {
+    "type": "profile-subscription-bulk-create-job",
+    "attributes": {
+      "profiles": {
+        "data": [{
+          "type": "profile",
+          "attributes": {
+            "email": "user@example.com",
+            "subscriptions": {
+              "email": {"marketing": {"consent": "SUBSCRIBED"}}
+            }
+          }
+        }]
+      }
+    },
+    "relationships": {
+      "list": {"data": {"type": "list", "id": "LIST_ID"}}
+    }
+  }
+}
+```
+
+### Get Bulk Import Jobs
+```bash
+GET /klaviyo/api/profile-bulk-import-jobs
+```
+
 ## Notes
 
 - All requests use JSON:API specification
