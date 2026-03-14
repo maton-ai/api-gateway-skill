@@ -213,6 +213,7 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | ElevenLabs | `elevenlabs` | `api.elevenlabs.io` |
 | Eventbrite | `eventbrite` | `www.eventbriteapi.com` |
 | Exa | `exa` | `api.exa.ai` |
+| fal.ai | `fal-ai` | `queue.fal.run` |
 | Fathom | `fathom` | `api.fathom.ai` |
 | Firecrawl | `firecrawl` | `api.firecrawl.dev` |
 | Firebase | `firebase` | `firebase.googleapis.com` |
@@ -267,6 +268,7 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | Netlify | `netlify` | `api.netlify.com` |
 | Notion | `notion` | `api.notion.com` |
 | Notion MCP | `notion` | `mcp.notion.com` |
+| OneNote | `one-note` | `graph.microsoft.com` |
 | OneDrive | `one-drive` | `graph.microsoft.com` |
 | Outlook | `outlook` | `graph.microsoft.com` |
 | PDF.co | `pdf-co` | `api.pdf.co` |
@@ -276,6 +278,7 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | QuickBooks | `quickbooks` | `quickbooks.api.intuit.com` |
 | Quo | `quo` | `api.openphone.com` |
 | Reducto | `reducto` | `platform.reducto.ai` |
+| Resend | `resend` | `api.resend.com` |
 | Salesforce | `salesforce` | `{instance}.salesforce.com` |
 | Sentry | `sentry` | `{subdomain}.sentry.io` |
 | SharePoint | `sharepoint` | `graph.microsoft.com` |
@@ -298,6 +301,7 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | Typeform | `typeform` | `api.typeform.com` |
 | Unbounce | `unbounce` | `api.unbounce.com` |
 | Vimeo | `vimeo` | `api.vimeo.com` |
+| WATI | `wati` | `{tenant}.wati.io` |
 | WhatsApp Business | `whatsapp-business` | `graph.facebook.com` |
 | WooCommerce | `woocommerce` | `{store-url}/wp-json/wc/v3` |
 | WordPress.com | `wordpress` | `public-api.wordpress.com` |
@@ -347,6 +351,7 @@ See [references/](references/) for detailed routing guides per provider:
 - [ElevenLabs](references/elevenlabs/README.md) - Text-to-speech, voice cloning, sound effects, audio processing
 - [Eventbrite](references/eventbrite/README.md) - Events, venues, tickets, orders, attendees
 - [Exa](references/exa/README.md) - Neural web search, content extraction, similar pages, AI answers, research tasks
+- [fal.ai](references/fal-ai/README.md) - AI model inference (image generation, video, audio, upscaling)
 - [Fathom](references/fathom/README.md) - Meeting recordings, transcripts, summaries, webhooks
 - [Firecrawl](references/firecrawl/README.md) - Web scraping, crawling, site mapping, web search
 - [Firebase](references/firebase/README.md) - Projects, web apps, Android apps, iOS apps, configurations
@@ -401,6 +406,7 @@ See [references/](references/) for detailed routing guides per provider:
 - [Netlify](references/netlify/README.md) - Sites, deploys, builds, DNS, environment variables
 - [Notion](references/notion/README.md) - Pages, databases, blocks
 - [Notion MCP](references/notion-mcp/README.md) - MCP-based interface for pages, databases, comments, teams, users
+- [OneNote](references/one-note/README.md) - Notebooks, sections, section groups, pages via Microsoft Graph
 - [OneDrive](references/one-drive/README.md) - Files, folders, drives, sharing
 - [Outlook](references/outlook/README.md) - Mail, calendar, contacts
 - [PDF.co](references/pdf-co/README.md) - PDF conversion, merge, split, edit, text extraction, barcodes
@@ -410,6 +416,7 @@ See [references/](references/) for detailed routing guides per provider:
 - [QuickBooks](references/quickbooks/README.md) - Customers, invoices, reports
 - [Quo](references/quo/README.md) - Calls, messages, contacts, conversations, webhooks
 - [Reducto](references/reducto/README.md) - Document parsing, extraction, splitting, editing
+- [Resend](references/resend/README.md) - Transactional emails, domains, audiences, contacts, broadcasts, webhooks
 - [Salesforce](references/salesforce/README.md) - SOQL, sObjects, CRUD
 - [SignNow](references/signnow/README.md) - Documents, templates, invites, e-signatures
 - [SendGrid](references/sendgrid/README.md) - Email sending, contacts, templates, suppressions, statistics
@@ -433,6 +440,7 @@ See [references/](references/) for detailed routing guides per provider:
 - [Typeform](references/typeform/README.md) - Forms, responses, insights
 - [Unbounce](references/unbounce/README.md) - Landing pages, leads, accounts, sub-accounts, domains
 - [Vimeo](references/vimeo/README.md) - Videos, folders, albums, comments, likes
+- [WATI](references/wati/README.md) - WhatsApp messages, contacts, templates, interactive messages
 - [WhatsApp Business](references/whatsapp-business/README.md) - Messages, templates, media
 - [WooCommerce](references/woocommerce/README.md) - Products, orders, customers, coupons
 - [WordPress.com](references/wordpress/README.md) - Posts, pages, sites, users, settings
