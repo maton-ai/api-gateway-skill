@@ -298,6 +298,7 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | Toggl Track | `toggl-track` | `api.track.toggl.com` |
 | Trello | `trello` | `api.trello.com` |
 | Twilio | `twilio` | `api.twilio.com` |
+| Twenty CRM | `twenty` | `api.twenty.com` |
 | Typeform | `typeform` | `api.typeform.com` |
 | Unbounce | `unbounce` | `api.unbounce.com` |
 | Vimeo | `vimeo` | `api.vimeo.com` |
@@ -437,6 +438,7 @@ See [references/](references/) for detailed routing guides per provider:
 - [Toggl Track](references/toggl-track/README.md) - Time entries, projects, clients, tags, workspaces
 - [Trello](references/trello/README.md) - Boards, lists, cards, checklists
 - [Twilio](references/twilio/README.md) - SMS, voice calls, phone numbers, messaging
+- [Twenty CRM](references/twenty/README.md) - Companies, people, opportunities, notes, tasks
 - [Typeform](references/typeform/README.md) - Forms, responses, insights
 - [Unbounce](references/unbounce/README.md) - Landing pages, leads, accounts, sub-accounts, domains
 - [Vimeo](references/vimeo/README.md) - Videos, folders, albums, comments, likes
