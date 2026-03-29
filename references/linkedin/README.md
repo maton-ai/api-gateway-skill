@@ -186,6 +186,10 @@ GET /linkedin/rest/posts?q=author&author=urn:li:organization:12345
 
 ## Media Upload
 
+> **CRITICAL — URL Encoding:** The upload URLs returned by initialize endpoints contain URL-encoded characters (e.g., `%253D`) that get corrupted when passed through shell variables or `curl`. You **MUST** use Python `urllib` for the entire upload flow — parse the JSON response with `json.load()` and use the URL directly in Python without ever passing it through the shell.
+
+> **Upload URLs are pre-signed.** They point to `www.linkedin.com` (NOT `api.linkedin.com`), do NOT go through the gateway, and do NOT require an Authorization header.
+
 ### Initialize Image Upload
 ```bash
 POST /linkedin/rest/images?action=initializeUpload
@@ -195,14 +199,76 @@ LinkedIn-Version: 202506
 {"initializeUploadRequest": {"owner": "urn:li:person:{personId}"}}
 ```
 
-### Initialize Video Upload
-```bash
-POST /linkedin/rest/videos?action=initializeUpload
-Content-Type: application/json
-LinkedIn-Version: 202506
+### Video Upload (4-step process)
 
-{"initializeUploadRequest": {"owner": "urn:li:person:{personId}", "fileSizeBytes": 10000000}}
+Video uploads require: initialize → upload binary → finalize → create post.
+
+**Complete working example:**
+```bash
+python <<'EOF'
+import urllib.request, os, json
+
+GATEWAY = 'https://gateway.maton.ai'
+HEADERS = {
+    'Authorization': f'Bearer {os.environ["MATON_API_KEY"]}',
+    'Content-Type': 'application/json',
+    'LinkedIn-Version': '202506',
+    'X-Restli-Protocol-Version': '2.0.0',
+}
+
+# Step 1: Initialize upload (via gateway)
+file_path = '/path/to/video.mp4'
+init_data = json.dumps({
+    'initializeUploadRequest': {
+        'owner': 'urn:li:person:{personId}',
+        'fileSizeBytes': os.path.getsize(file_path),
+        'uploadCaptions': False,
+        'uploadThumbnail': False,
+    }
+}).encode()
+req = urllib.request.Request(f'{GATEWAY}/linkedin/rest/videos?action=initializeUpload', data=init_data, method='POST')
+for k, v in HEADERS.items(): req.add_header(k, v)
+init_resp = json.load(urllib.request.urlopen(req))
+upload_url = init_resp['value']['uploadInstructions'][0]['uploadUrl']
+video_urn = init_resp['value']['video']
+
+# Step 2: Upload binary DIRECTLY to pre-signed URL (NOT through gateway, NO auth header)
+with open(file_path, 'rb') as f:
+    video_data = f.read()
+upload_req = urllib.request.Request(upload_url, data=video_data, method='PUT')
+upload_req.add_header('Content-Type', 'application/octet-stream')
+upload_resp = urllib.request.urlopen(upload_req)
+etag = upload_resp.headers['etag']
+
+# Step 3: Finalize upload (via gateway)
+finalize_data = json.dumps({
+    'finalizeUploadRequest': {
+        'video': video_urn,
+        'uploadToken': '',
+        'uploadedPartIds': [etag],
+    }
+}).encode()
+req = urllib.request.Request(f'{GATEWAY}/linkedin/rest/videos?action=finalizeUpload', data=finalize_data, method='POST')
+for k, v in HEADERS.items(): req.add_header(k, v)
+urllib.request.urlopen(req)
+
+# Step 4: Create post with video (via gateway)
+post_data = json.dumps({
+    'author': 'urn:li:person:{personId}',
+    'lifecycleState': 'PUBLISHED',
+    'visibility': 'PUBLIC',
+    'commentary': 'Check out this video!',
+    'distribution': {'feedDistribution': 'MAIN_FEED'},
+    'content': {'media': {'id': video_urn}},
+}).encode()
+req = urllib.request.Request(f'{GATEWAY}/linkedin/rest/posts', data=post_data, method='POST')
+for k, v in HEADERS.items(): req.add_header(k, v)
+resp = urllib.request.urlopen(req)
+print(f'Video post created! {resp.headers.get("location")}')
+EOF
 ```
+
+**Video specs:** 3s–30min, 75KB–500MB, MP4 format. For videos >4MB, LinkedIn returns multiple `uploadInstructions` — upload each chunk and collect all etags.
 
 ### Initialize Document Upload
 ```bash
@@ -230,6 +296,8 @@ Returns 31 targeting facets (skills, industries, titles, locations, etc.)
 - Author URN format: `urn:li:person:{personId}`
 - Get person ID from `/rest/me` endpoint
 - Image uploads are 3-step: initialize, upload binary, create post
+- Video uploads are 4-step: initialize, upload binary, finalize, create post
+- **Media upload URLs point to `www.linkedin.com` (not `api.linkedin.com`).** They are pre-signed — do NOT send through the gateway, do NOT add an Authorization header. MUST use Python `urllib` (not shell `curl`) due to URL encoding issues.
 - Rate limits: 150 requests/day per member, 100K/day per app
 
 ## Visibility Options

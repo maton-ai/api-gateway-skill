@@ -301,6 +301,7 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | Twenty CRM | `twenty` | `api.twenty.com` |
 | Typeform | `typeform` | `api.typeform.com` |
 | Unbounce | `unbounce` | `api.unbounce.com` |
+| Vercel | `vercel` | `api.vercel.com` |
 | Vimeo | `vimeo` | `api.vimeo.com` |
 | WATI | `wati` | `{tenant}.wati.io` |
 | WhatsApp Business | `whatsapp-business` | `graph.facebook.com` |
@@ -441,6 +442,7 @@ See [references/](references/) for detailed routing guides per provider:
 - [Twenty CRM](references/twenty/README.md) - Companies, people, opportunities, notes, tasks
 - [Typeform](references/typeform/README.md) - Forms, responses, insights
 - [Unbounce](references/unbounce/README.md) - Landing pages, leads, accounts, sub-accounts, domains
+- [Vercel](references/vercel/README.md) - Projects, deployments, domains, environment variables
 - [Vimeo](references/vimeo/README.md) - Videos, folders, albums, comments, likes
 - [WATI](references/wati/README.md) - WhatsApp messages, contacts, templates, interactive messages
 - [WhatsApp Business](references/whatsapp-business/README.md) - Messages, templates, media
@@ -643,6 +645,7 @@ A 500 error may indicate an expired OAuth token. Try creating a new connection v
 
 - When using curl with URLs containing brackets (`fields[]`, `sort[]`, `records[]`), use the `-g` flag to disable glob parsing
 - When piping curl output to `jq`, environment variables may not expand correctly in some shells, which can cause "Invalid API key" errors
+- **Media upload URLs (LinkedIn, etc.):** Some APIs return pre-signed upload URLs that point to a different host than the gateway proxies (e.g., LinkedIn returns `www.linkedin.com` upload URLs, but the gateway proxies `api.linkedin.com`). These upload URLs are pre-signed and do NOT require an Authorization header — upload the binary directly to the returned URL without going through the gateway. **You MUST use Python `urllib`** for these uploads because the URLs contain encoded characters (e.g., `%253D`) that get corrupted when passed through shell variables or `curl`. Always parse the JSON response with `json.load()` and use the URL directly in Python.
 
 ## Tips
 
