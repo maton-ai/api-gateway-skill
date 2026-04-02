@@ -218,6 +218,7 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | Firecrawl | `firecrawl` | `api.firecrawl.dev` |
 | Firebase | `firebase` | `firebase.googleapis.com` |
 | Fireflies | `fireflies` | `api.fireflies.ai` |
+| Front | `front` | `api2.frontapp.com` |
 | GetResponse | `getresponse` | `api.getresponse.com` |
 | Grafana | `grafana` | User's Grafana instance |
 | GitHub | `github` | `api.github.com` |
@@ -360,6 +361,7 @@ See [references/](references/) for detailed routing guides per provider:
 - [Firecrawl](references/firecrawl/README.md) - Web scraping, crawling, site mapping, web search
 - [Firebase](references/firebase/README.md) - Projects, web apps, Android apps, iOS apps, configurations
 - [Fireflies](references/fireflies/README.md) - Meeting transcripts, summaries, AskFred AI, channels
+- [Front](references/front/README.md) - Conversations, messages, contacts, tags, inboxes, teammates
 - [GetResponse](references/getresponse/README.md) - Campaigns, contacts, newsletters, autoresponders, tags, segments
 - [Grafana](references/grafana/README.md) - Dashboards, data sources, folders, annotations, alerts, teams
 - [GitHub](references/github/README.md) - Repositories, issues, pull requests, commits
