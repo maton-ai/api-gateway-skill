@@ -289,12 +289,51 @@ LinkedIn-Version: 202506
 
 Returns 31 targeting facets (skills, industries, titles, locations, etc.)
 
+## Little Text Format (Commentary Field)
+
+The `commentary` field in posts uses LinkedIn's "Little Text Format". **Reserved characters must be escaped with a backslash or the post content will be truncated.**
+
+### Reserved Characters (Must Escape)
+
+| Character | Escape As |
+|-----------|-----------|
+| `\` | `\\` |
+| `\|` | `\\|` |
+| `{` | `\{` |
+| `}` | `\}` |
+| `@` | `\@` |
+| `[` | `\[` |
+| `]` | `\]` |
+| `(` | `\(` |
+| `)` | `\)` |
+| `<` | `\<` |
+| `>` | `\>` |
+| `#` | `\#` |
+| `*` | `\*` |
+| `_` | `\_` |
+| `~` | `\~` |
+
+### Example
+
+```json
+{
+  "commentary": "Hello\\! Check out these bullet points:\\n\\n\\* Point 1\\n\\* Point 2\\n\\* More info \\(details inside\\)"
+}
+```
+
+### Mentions and Hashtags
+
+- **Mention a person:** `@[Display Name](urn:li:person:123)`
+- **Mention an organization:** `@[Company Name](urn:li:organization:456)`
+- **Hashtag:** `{hashtag|\\#|MyTag}` or simply `#hashtag` for single words
+
 ## Notes
 
 - Authentication is automatic - the router injects the OAuth token
 - Include `LinkedIn-Version: 202506` header for all REST API calls
 - Author URN format: `urn:li:person:{personId}`
 - Get person ID from `/rest/me` endpoint
+- **Commentary uses Little Text Format** — escape reserved characters (`|{}@[]()<>#\*_~`) with backslash or content will be truncated
 - Image uploads are 3-step: initialize, upload binary, create post
 - Video uploads are 4-step: initialize, upload binary, finalize, create post
 - **Media upload URLs point to `www.linkedin.com` (not `api.linkedin.com`).** They are pre-signed — do NOT send through the gateway, do NOT add an Authorization header. MUST use Python `urllib` (not shell `curl`) due to URL encoding issues.

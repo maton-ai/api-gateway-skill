@@ -260,6 +260,7 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | Mailgun | `mailgun` | `api.mailgun.net` |
 | ManyChat | `manychat` | `api.manychat.com` |
 | Manus | `manus` | `api.manus.ai` |
+| Memelord | `memelord` | `www.memelord.com` |
 | Microsoft Excel | `microsoft-excel` | `graph.microsoft.com` |
 | Microsoft Teams | `microsoft-teams` | `graph.microsoft.com` |
 | Microsoft To Do | `microsoft-to-do` | `graph.microsoft.com` |
@@ -287,8 +288,9 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | Snapchat | `snapchat` | `adsapi.snapchat.com` |
 | Square | `squareup` | `connect.squareup.com` |
 | Squarespace | `squarespace` | `api.squarespace.com` |
-| Sunsama MCP | `sunsama` | MCP server |
 | Stripe | `stripe` | `api.stripe.com` |
+| Sunsama MCP | `sunsama` | MCP server |
+| Supabase | `supabase` | `{project_ref}.supabase.co` |
 | Systeme.io | `systeme` | `api.systeme.io` |
 | Tally | `tally` | `api.tally.so` |
 | Tavily | `tavily` | `api.tavily.com` |
@@ -400,6 +402,7 @@ See [references/](references/) for detailed routing guides per provider:
 - [Mailgun](references/mailgun/README.md) - Email sending, domains, routes, templates, mailing lists, suppressions
 - [ManyChat](references/manychat/README.md) - Subscribers, tags, flows, messaging
 - [Manus](references/manus/README.md) - AI agent tasks, projects, files, webhooks
+- [Memelord](references/memelord/README.md) - AI meme generation, video memes, template editing
 - [Microsoft Excel](references/microsoft-excel/README.md) - Workbooks, worksheets, ranges, tables, charts
 - [Microsoft Teams](references/microsoft-teams/README.md) - Teams, channels, messages, members, chats
 - [Microsoft To Do](references/microsoft-to-do/README.md) - Task lists, tasks, checklist items, linked resources
@@ -428,8 +431,9 @@ See [references/](references/) for detailed routing guides per provider:
 - [Snapchat](references/snapchat/README.md) - Ad accounts, campaigns, ad squads, ads, creatives, audiences
 - [Square](references/squareup/README.md) - Payments, customers, orders, catalog, inventory, invoices
 - [Squarespace](references/squarespace/README.md) - Products, inventory, orders, profiles, transactions
-- [Sunsama MCP](references/sunsama-mcp/README.md) - MCP-based interface for tasks, calendar, backlog, objectives, time tracking
 - [Stripe](references/stripe/README.md) - Customers, subscriptions, payments
+- [Sunsama MCP](references/sunsama-mcp/README.md) - MCP-based interface for tasks, calendar, backlog, objectives, time tracking
+- [Supabase](references/supabase/README.md) - Database tables, auth users, storage buckets
 - [Systeme.io](references/systeme/README.md) - Contacts, tags, courses, communities, webhooks
 - [Tally](references/tally/README.md) - Forms, submissions, workspaces, webhooks
 - [Tavily](references/tavily/README.md) - AI web search, content extraction, crawling, research tasks
