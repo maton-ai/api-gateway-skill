@@ -185,6 +185,7 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | ActiveCampaign | `active-campaign` | `{account}.api-us1.com` |
 | Acuity Scheduling | `acuity-scheduling` | `acuityscheduling.com` |
 | Airtable | `airtable` | `api.airtable.com` |
+| Apify | `apify` | `api.apify.com` |
 | Apollo | `apollo` | `api.apollo.io` |
 | Asana | `asana` | `app.asana.com` |
 | Attio | `attio` | `api.attio.com` |
@@ -259,6 +260,7 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | Mailchimp | `mailchimp` | `{dc}.api.mailchimp.com` |
 | MailerLite | `mailerlite` | `connect.mailerlite.com` |
 | Mailgun | `mailgun` | `api.mailgun.net` |
+| Make | `make` | `{zone}.make.com` |
 | ManyChat | `manychat` | `api.manychat.com` |
 | Manus | `manus` | `api.manus.ai` |
 | Memelord | `memelord` | `www.memelord.com` |
@@ -328,6 +330,7 @@ See [references/](references/) for detailed routing guides per provider:
 - [ActiveCampaign](references/active-campaign/README.md) - Contacts, deals, tags, lists, automations, campaigns
 - [Acuity Scheduling](references/acuity-scheduling/README.md) - Appointments, calendars, clients, availability
 - [Airtable](references/airtable/README.md) - Records, bases, tables
+- [Apify](references/apify/README.md) - Actors, runs, datasets, key-value stores, request queues, schedules
 - [Apollo](references/apollo/README.md) - People search, enrichment, contacts
 - [Asana](references/asana/README.md) - Tasks, projects, workspaces, webhooks
 - [Attio](references/attio/README.md) - People, companies, records, tasks
@@ -402,6 +405,7 @@ See [references/](references/) for detailed routing guides per provider:
 - [Mailchimp](references/mailchimp/README.md) - Audiences, campaigns, templates, automations
 - [MailerLite](references/mailerlite/README.md) - Subscribers, groups, campaigns, automations, forms
 - [Mailgun](references/mailgun/README.md) - Email sending, domains, routes, templates, mailing lists, suppressions
+- [Make](references/make/README.md) - Scenarios, organizations, teams, connections, data stores, hooks
 - [ManyChat](references/manychat/README.md) - Subscribers, tags, flows, messaging
 - [Manus](references/manus/README.md) - AI agent tasks, projects, files, webhooks
 - [Memelord](references/memelord/README.md) - AI meme generation, video memes, template editing
