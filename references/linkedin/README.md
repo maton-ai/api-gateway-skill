@@ -96,6 +96,8 @@ Required headers for all Marketing API calls:
 LinkedIn-Version: 202506
 ```
 
+**Ad Account Allowlist:** If you receive a 403 Forbidden error when creating campaigns ("Your application is not configured to access the related advertiser account(s)"), contact [support@maton.ai](mailto:support@maton.ai) with your ad account ID to request access.
+
 ### List Ad Accounts
 ```bash
 GET /linkedin/rest/adAccounts?q=search

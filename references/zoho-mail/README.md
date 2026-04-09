@@ -139,11 +139,50 @@ GET /zoho-mail/api/accounts/{accountId}/folders/{folderId}/messages/{messageId}/
 | `markAsRead` | Mark messages as read |
 | `markAsUnread` | Mark messages as unread |
 | `moveMessage` | Move messages (requires `destfolderId`) |
-| `flag` | Set flag (requires `flagid`: 1-4) |
+| `setFlag` | Set flag (requires `flagid`) |
+| `applyLabel` | Apply labels (requires `labelId`) |
 | `archive` | Archive messages |
 | `unArchive` | Unarchive messages |
 | `spam` | Mark as spam |
 | `notSpam` | Mark as not spam |
+
+### Set Flag on Messages
+
+```bash
+PUT /zoho-mail/api/accounts/{accountId}/updatemessage
+Content-Type: application/json
+
+{
+  "mode": "setFlag",
+  "messageId": ["messageId1"],
+  "flagid": "important"
+}
+```
+
+**Flag ID Options:**
+- `info` - Info flag (blue)
+- `important` - Important flag (red)
+- `followup` - Follow-up flag (orange)
+- `flag_not_set` - Remove flag
+
+**Optional:** `threadId`, `isFolderSpecific`, `folderId`, `isArchive`
+
+### Apply Label to Messages
+
+```bash
+PUT /zoho-mail/api/accounts/{accountId}/updatemessage
+Content-Type: application/json
+
+{
+  "mode": "applyLabel",
+  "messageId": ["messageId1"],
+  "labelId": ["labelId1", "labelId2"]
+}
+```
+
+**Required:** Either `messageId` or `threadId` array, plus `labelId` array
+
+**Optional:** `isFolderSpecific`, `folderId`, `isArchive`
 
 ## Default Folders
 
