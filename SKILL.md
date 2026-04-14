@@ -315,6 +315,7 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | Wrike | `wrike` | `www.wrike.com` |
 | Xero | `xero` | `api.xero.com` |
 | YouTube | `youtube` | `www.googleapis.com` |
+| Zoom | `zoom` | `api.zoom.us` |
 | Zoho Bigin | `zoho-bigin` | `www.zohoapis.com` |
 | Zoho Bookings | `zoho-bookings` | `www.zohoapis.com` |
 | Zoho Books | `zoho-books` | `www.zohoapis.com` |
@@ -461,6 +462,7 @@ See [references/](references/) for detailed routing guides per provider:
 - [Wrike](references/wrike/README.md) - Tasks, folders, projects, spaces, comments, timelogs, workflows
 - [Xero](references/xero/README.md) - Contacts, invoices, reports
 - [YouTube](references/youtube/README.md) - Videos, playlists, channels, subscriptions
+- [Zoom](references/zoom/README.md) - Meetings, recordings, webinars, users
 - [Zoho Bigin](references/zoho-bigin/README.md) - Contacts, companies, pipelines, products
 - [Zoho Bookings](references/zoho-bookings/README.md) - Appointments, services, staff, workspaces
 - [Zoho Books](references/zoho-books/README.md) - Invoices, contacts, bills, expenses
