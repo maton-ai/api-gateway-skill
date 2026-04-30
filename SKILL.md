@@ -91,7 +91,7 @@ EOF
 {
   "connections": [
     {
-      "connection_id": "21fd90f9-5935-43cd-b6c8-bde9d915ca80",
+      "connection_id": "{connection_id}",
       "status": "ACTIVE",
       "creation_time": "2025-12-08T07:20:53.488460Z",
       "last_updated_time": "2026-01-31T20:03:32.593153Z",
@@ -136,7 +136,7 @@ EOF
 ```json
 {
   "connection": {
-    "connection_id": "21fd90f9-5935-43cd-b6c8-bde9d915ca80",
+    "connection_id": "{connection_id}",
     "status": "ACTIVE",
     "creation_time": "2025-12-08T07:20:53.488460Z",
     "last_updated_time": "2026-01-31T20:03:32.593153Z",
@@ -171,7 +171,7 @@ data = json.dumps({'channel': 'C0123456', 'text': 'Hello!'}).encode()
 req = urllib.request.Request('https://gateway.maton.ai/slack/api/chat.postMessage', data=data, method='POST')
 req.add_header('Authorization', f'Bearer {os.environ["MATON_API_KEY"]}')
 req.add_header('Content-Type', 'application/json')
-req.add_header('Maton-Connection', '21fd90f9-5935-43cd-b6c8-bde9d915ca80')
+req.add_header('Maton-Connection', '{connection_id}')
 print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
@@ -203,6 +203,7 @@ If omitted, the gateway uses the default (oldest) active connection for that app
 | ClickFunnels | `clickfunnels` | `{subdomain}.myclickfunnels.com` |
 | ClickSend | `clicksend` | `rest.clicksend.com` |
 | ClickUp | `clickup` | `api.clickup.com` |
+| Clio | `clio` | `app.clio.com` |
 | Clockify | `clockify` | `api.clockify.me` |
 | Coda | `coda` | `coda.io` |
 | Confluence | `confluence` | `api.atlassian.com` |
@@ -349,12 +350,13 @@ See [references/](references/) for detailed routing guides per provider:
 - [ClickFunnels](references/clickfunnels/README.md) - Contacts, products, orders, courses, webhooks
 - [ClickSend](references/clicksend/README.md) - SMS, MMS, voice messages, contacts, lists
 - [ClickUp](references/clickup/README.md) - Tasks, lists, folders, spaces, webhooks
+- [Clio](references/clio/README.md) - Matters, contacts, activities, tasks, calendar entries, documents
 - [Clockify](references/clockify/README.md) - Time tracking, projects, clients, tasks, workspaces
 - [Coda](references/coda/README.md) - Docs, pages, tables, rows, formulas, controls
 - [Confluence](references/confluence/README.md) - Pages, spaces, blogposts, comments, attachments
 - [CompanyCam](references/companycam/README.md) - Projects, photos, users, tags, groups, documents
 - [Cognito Forms](references/cognito-forms/README.md) - Forms, entries, documents, files
-- [Constant Contact](references/constant-contact/README.md) - Contacts, email campaigns, lists, segments
+- [Constant Contact](references/constant-contact/README.md) - Contacts, email campaigns, lists, tags, custom fields, segments, bulk activities, reporting
 - [Dropbox](references/dropbox/README.md) - Files, folders, search, metadata, revisions, tags
 - [Dropbox Business](references/dropbox-business/README.md) - Team members, groups, team folders, devices, audit logs
 - [ElevenLabs](references/elevenlabs/README.md) - Text-to-speech, voice cloning, sound effects, audio processing
@@ -510,7 +512,7 @@ EOF
 # Native Sheets API: GET https://sheets.googleapis.com/v4/spreadsheets/{id}/values/{range}
 python <<'EOF'
 import urllib.request, os, json
-req = urllib.request.Request('https://gateway.maton.ai/google-sheets/v4/spreadsheets/122BS1sFN2RKL8AOUQjkLdubzOwgqzPT64KfZ2rvYI4M/values/Sheet1!A1:B2')
+req = urllib.request.Request('https://gateway.maton.ai/google-sheets/v4/spreadsheets/{spreadsheet_id}/values/Sheet1!A1:B2')
 req.add_header('Authorization', f'Bearer {os.environ["MATON_API_KEY"]}')
 print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
@@ -534,7 +536,7 @@ EOF
 # Native Airtable API: GET https://api.airtable.com/v0/meta/bases/{id}/tables
 python <<'EOF'
 import urllib.request, os, json
-req = urllib.request.Request('https://gateway.maton.ai/airtable/v0/meta/bases/appgqan2NzWGP5sBK/tables')
+req = urllib.request.Request('https://gateway.maton.ai/airtable/v0/meta/bases/{base_id}/tables')
 req.add_header('Authorization', f'Bearer {os.environ["MATON_API_KEY"]}')
 print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
@@ -547,7 +549,7 @@ EOF
 python <<'EOF'
 import urllib.request, os, json
 data = json.dumps({}).encode()
-req = urllib.request.Request('https://gateway.maton.ai/notion/v1/data_sources/23702dc5-9a3b-8001-9e1c-000b5af0a980/query', data=data, method='POST')
+req = urllib.request.Request('https://gateway.maton.ai/notion/v1/data_sources/{data_source_id}/query', data=data, method='POST')
 req.add_header('Authorization', f'Bearer {os.environ["MATON_API_KEY"]}')
 req.add_header('Content-Type', 'application/json')
 req.add_header('Notion-Version', '2025-09-03')

@@ -1,7 +1,11 @@
 # Dropbox Routing Reference
 
 **App name:** `dropbox`
-**Base URL proxied:** `api.dropboxapi.com`
+**Base URLs proxied:**
+- `api.dropboxapi.com` - Standard RPC endpoints (metadata, search, etc.)
+- `content.dropboxapi.com` - Content endpoints (upload, download)
+
+The gateway automatically routes to the correct host based on the endpoint path.
 
 ## API Path Pattern
 
@@ -9,7 +13,7 @@
 /dropbox/2/{endpoint}
 ```
 
-**Important:** All Dropbox API v2 endpoints use HTTP POST with JSON request bodies.
+**Important:** All Dropbox API v2 endpoints use HTTP POST. Most endpoints use JSON request bodies, but upload/download endpoints use binary content with parameters in the `Dropbox-API-Arg` header.
 
 ## Common Endpoints
 
@@ -118,6 +122,103 @@ Content-Type: application/json
 }
 ```
 
+### Upload (Content Endpoints)
+
+Content endpoints use `Content-Type: application/octet-stream` with parameters in the `Dropbox-API-Arg` header.
+
+#### Upload File (up to 150 MB)
+```bash
+POST /dropbox/2/files/upload
+Content-Type: application/octet-stream
+Dropbox-API-Arg: {"path": "/test.txt", "mode": "add", "autorename": true}
+
+<file contents>
+```
+
+#### Upload Session Start
+```bash
+POST /dropbox/2/files/upload_session/start
+Content-Type: application/octet-stream
+Dropbox-API-Arg: {"close": false}
+
+<first chunk>
+```
+
+#### Upload Session Append
+```bash
+POST /dropbox/2/files/upload_session/append_v2
+Content-Type: application/octet-stream
+Dropbox-API-Arg: {"cursor": {"session_id": "...", "offset": 10000000}, "close": false}
+
+<next chunk>
+```
+
+#### Upload Session Finish
+```bash
+POST /dropbox/2/files/upload_session/finish
+Content-Type: application/octet-stream
+Dropbox-API-Arg: {"cursor": {"session_id": "...", "offset": 50000000}, "commit": {"path": "/file.zip", "mode": "add"}}
+
+<final chunk>
+```
+
+#### Finish Batch Upload Sessions
+```bash
+POST /dropbox/2/files/upload_session/finish_batch
+Content-Type: application/json
+
+{
+  "entries": [
+    {
+      "cursor": {"session_id": "...", "offset": 50000000},
+      "commit": {"path": "/file1.zip", "mode": "add"}
+    }
+  ]
+}
+```
+
+#### Check Batch Status
+```bash
+POST /dropbox/2/files/upload_session/finish_batch/check
+Content-Type: application/json
+
+{
+  "async_job_id": "dbjid:..."
+}
+```
+
+### Download (Content Endpoints)
+
+#### Download File
+```bash
+POST /dropbox/2/files/download
+Dropbox-API-Arg: {"path": "/document.pdf"}
+```
+
+#### Download ZIP
+```bash
+POST /dropbox/2/files/download_zip
+Dropbox-API-Arg: {"path": "/folder"}
+```
+
+#### Export
+```bash
+POST /dropbox/2/files/export
+Dropbox-API-Arg: {"path": "/document.paper"}
+```
+
+#### Get Preview
+```bash
+POST /dropbox/2/files/get_preview
+Dropbox-API-Arg: {"path": "/document.docx"}
+```
+
+#### Get Thumbnail
+```bash
+POST /dropbox/2/files/get_thumbnail_v2
+Dropbox-API-Arg: {"resource": {".tag": "path", "path": "/photo.jpg"}, "format": "jpeg", "size": "w128h128"}
+```
+
 ### Search
 
 #### Search Files
@@ -191,11 +292,29 @@ POST /dropbox/2/files/list_folder/continue
 ## Notes
 
 - All endpoints use POST method
-- Request bodies are JSON
+- Standard endpoints use JSON request bodies (`Content-Type: application/json`)
+- Content endpoints (upload/download) use binary content (`Content-Type: application/octet-stream`) with params in `Dropbox-API-Arg` header
+- Gateway automatically routes content endpoints to `content.dropboxapi.com`
 - Use empty string `""` for root folder path
 - Paths are case-insensitive but case-preserving
 - Tag text must match pattern `[\w]+` (alphanumeric and underscores)
 - Temporary links expire after 4 hours
+- Max single upload: 150 MB (use upload sessions for up to 350 GB)
+
+## Content Endpoints (routed to content.dropboxapi.com)
+
+The following endpoints are automatically routed to `content.dropboxapi.com`:
+- `/2/files/upload`
+- `/2/files/upload_session/start`
+- `/2/files/upload_session/append_v2`
+- `/2/files/upload_session/finish`
+- `/2/files/download`
+- `/2/files/download_zip`
+- `/2/files/export`
+- `/2/files/get_preview`
+- `/2/files/get_thumbnail`
+- `/2/files/get_thumbnail_v2`
+- `/2/paper/docs/download`
 
 ## Resources
 
