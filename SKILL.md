@@ -53,9 +53,11 @@ All requests require the Maton API key in the Authorization header:
 Authorization: Bearer $MATON_API_KEY
 ```
 
-The API gateway automatically injects the appropriate OAuth token for the target service.
+The gateway exchanges the Maton API key for the appropriate OAuth token scoped to the specific service connection.
 
-**Environment Variable:** You can set your API key as the `MATON_API_KEY` environment variable:
+**IMPORTANT:** Treat `MATON_API_KEY` as a secret. Do not log it, include it in prompts visible to others, or expose it in shared outputs. The key provides access to all service connections the user has authorized — if compromised, revoke it immediately at [maton.ai/settings](https://maton.ai/settings) and create a new one.
+
+**Environment Variable:** Set your API key as the `MATON_API_KEY` environment variable:
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
@@ -180,9 +182,10 @@ If you have multiple connections, always include this header to ensure requests 
 
 ## Security & Permissions
 
-- Access is scoped to the specific third-party service connected through each Maton connection. Each connection grants access to one service's API only within the OAuth scopes the user authorized.
+- **Least-privilege connections.** When authorizing a new service connection, review the requested OAuth scopes and grant only what is needed. Prefer read-only scopes where available. Revoke unused connections promptly via the Connection Management endpoints above.
+- **Default to read-only operations.** Always start by listing or retrieving resources (GET requests) to confirm identifiers and context before proposing any changes. Use the per-service reference files below for endpoint-specific guidance.
 - **All operations that modify data require explicit user approval.** Before executing any POST, PUT, PATCH, or DELETE call, confirm the target service, resource, and intended effect with the user. This includes sending messages, creating records, modifying content, deleting resources, and triggering workflows.
-- **High-impact operations require extra caution.** Actions such as bulk deletions, publishing content, sending emails/messages to external recipients, modifying billing or financial data, or changing permissions must be clearly described and confirmed before execution.
+- **High-impact operations require extra caution.** Actions such as sending emails/messages to external recipients, publishing public content, bulk deletions, modifying billing or payment data, or changing permissions must be clearly described with specific resource identifiers and confirmed before execution.
 - **Always specify the connection.** Use the `Maton-Connection` header to ensure requests go to the intended account, especially when the user has multiple connections for the same service.
 
 ## Supported Services
@@ -327,7 +330,6 @@ If you have multiple connections, always include this header to ensure requests 
 | Xero | `xero` | `api.xero.com` |
 | YouTube | `youtube` | `www.googleapis.com` |
 | Zoom | `zoom` | `api.zoom.us` |
-| Zoom Admin | `zoom-admin` | `api.zoom.us` |
 | Zoho Bigin | `zoho-bigin` | `www.zohoapis.com` |
 | Zoho Bookings | `zoho-bookings` | `www.zohoapis.com` |
 | Zoho Books | `zoho-books` | `www.zohoapis.com` |
@@ -479,7 +481,6 @@ See [references/](https://github.com/maton-ai/api-gateway-skill/tree/main/refere
 - [Xero](https://github.com/maton-ai/api-gateway-skill/tree/main/references/xero/README.md) - Contacts, invoices, reports
 - [YouTube](https://github.com/maton-ai/api-gateway-skill/tree/main/references/youtube/README.md) - Videos, playlists, channels, subscriptions
 - [Zoom](https://github.com/maton-ai/api-gateway-skill/tree/main/references/zoom/README.md) - Meetings, recordings, webinars, users
-- [Zoom Admin](https://github.com/maton-ai/api-gateway-skill/tree/main/references/zoom-admin/README.md) - Users, meetings, webinars, recordings, account settings (admin scopes)
 - [Zoho Bigin](https://github.com/maton-ai/api-gateway-skill/tree/main/references/zoho-bigin/README.md) - Contacts, companies, pipelines, products
 - [Zoho Bookings](https://github.com/maton-ai/api-gateway-skill/tree/main/references/zoho-bookings/README.md) - Appointments, services, staff, workspaces
 - [Zoho Books](https://github.com/maton-ai/api-gateway-skill/tree/main/references/zoho-books/README.md) - Invoices, contacts, bills, expenses
