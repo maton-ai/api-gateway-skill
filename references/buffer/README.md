@@ -154,6 +154,13 @@ Each platform supports specific metadata in `CreatePostInput.metadata`:
 
 Cursor-based pagination with `first`, `after`, and `pageInfo`.
 
+## Security & Write Operations
+
+- **Publishing posts (`schedulingType: "now"`) is irreversible** — content is immediately visible on connected social media channels. Before publishing, confirm the exact channel, post content, and timing with the user.
+- **Default to draft mode.** Always use `schedulingType: "draft"` unless the user explicitly requests immediate publishing or scheduling.
+- **Scheduled posts should be confirmed.** Before scheduling, display the target channel name/service, post text, and scheduled time for user review.
+- All mutations (createPost, createIdea) require explicit user confirmation with the specific channel, content, and scheduling details.
+
 ## Notes
 
 - All requests are POST with JSON body
