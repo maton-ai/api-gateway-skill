@@ -23,13 +23,11 @@ Managed OAuth proxy for third-party APIs, provided by [Maton](https://maton.ai).
 ## Quick Start
 
 ```bash
-# Native Slack API call
+# List Slack channels (read-only)
 python <<'EOF'
 import urllib.request, os, json
-data = json.dumps({'channel': 'C0123456', 'text': 'Hello from gateway!'}).encode()
-req = urllib.request.Request('https://api.maton.ai/slack/api/chat.postMessage', data=data, method='POST')
+req = urllib.request.Request('https://api.maton.ai/slack/api/conversations.list?types=public_channel&limit=10')
 req.add_header('Authorization', f'Bearer {os.environ["MATON_API_KEY"]}')
-req.add_header('Content-Type', 'application/json')
 print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
@@ -55,7 +53,7 @@ Authorization: Bearer $MATON_API_KEY
 
 The gateway exchanges the Maton API key for the appropriate OAuth token scoped to the specific service connection.
 
-**IMPORTANT:** Treat `MATON_API_KEY` as a secret. Do not log it, include it in prompts visible to others, or expose it in shared outputs. The key provides access to all service connections the user has authorized — if compromised, revoke it immediately at [maton.ai/settings](https://maton.ai/settings) and create a new one.
+**IMPORTANT:** Treat `MATON_API_KEY` as a secret — do not log it, include it in chats or prompts visible to others, or expose it in shared files or outputs. The key authenticates with Maton, and each service connection is independently scoped via OAuth. Only authorize the services you actively need, revoke unused connections promptly, and if the key is compromised, rotate it immediately at [maton.ai/settings](https://maton.ai/settings).
 
 **Environment Variable:** Set your API key as the `MATON_API_KEY` environment variable:
 
@@ -169,10 +167,8 @@ If you have multiple connections for the same app, you can specify which connect
 ```bash
 python <<'EOF'
 import urllib.request, os, json
-data = json.dumps({'channel': 'C0123456', 'text': 'Hello!'}).encode()
-req = urllib.request.Request('https://api.maton.ai/slack/api/chat.postMessage', data=data, method='POST')
+req = urllib.request.Request('https://api.maton.ai/slack/api/conversations.list?types=public_channel&limit=10')
 req.add_header('Authorization', f'Bearer {os.environ["MATON_API_KEY"]}')
-req.add_header('Content-Type', 'application/json')
 req.add_header('Maton-Connection', '{connection_id}')
 print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
@@ -494,30 +490,26 @@ See [references/](https://github.com/maton-ai/api-gateway-skill/tree/main/refere
 
 ## Examples
 
-### Slack - Post Message (Native API)
+### Slack - List Channels (Native API)
 
 ```bash
-# Native Slack API: POST https://slack.com/api/chat.postMessage
+# Native Slack API: GET https://slack.com/api/conversations.list
 python <<'EOF'
 import urllib.request, os, json
-data = json.dumps({'channel': 'C0123456', 'text': 'Hello!'}).encode()
-req = urllib.request.Request('https://api.maton.ai/slack/api/chat.postMessage', data=data, method='POST')
+req = urllib.request.Request('https://api.maton.ai/slack/api/conversations.list?types=public_channel&limit=10')
 req.add_header('Authorization', f'Bearer {os.environ["MATON_API_KEY"]}')
-req.add_header('Content-Type', 'application/json; charset=utf-8')
 print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### HubSpot - Create Contact (Native API)
+### HubSpot - List Contacts (Native API)
 
 ```bash
-# Native HubSpot API: POST https://api.hubapi.com/crm/v3/objects/contacts
+# Native HubSpot API: GET https://api.hubapi.com/crm/v3/objects/contacts
 python <<'EOF'
 import urllib.request, os, json
-data = json.dumps({'properties': {'email': 'john@example.com', 'firstname': 'John', 'lastname': 'Doe'}}).encode()
-req = urllib.request.Request('https://api.maton.ai/hubspot/crm/v3/objects/contacts', data=data, method='POST')
+req = urllib.request.Request('https://api.maton.ai/hubspot/crm/v3/objects/contacts?limit=10')
 req.add_header('Authorization', f'Bearer {os.environ["MATON_API_KEY"]}')
-req.add_header('Content-Type', 'application/json')
 print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
@@ -590,14 +582,12 @@ EOF
 ### JavaScript (Node.js)
 
 ```javascript
-const response = await fetch('https://api.maton.ai/slack/api/chat.postMessage', {
-  method: 'POST',
+const response = await fetch('https://api.maton.ai/slack/api/conversations.list?types=public_channel&limit=10', {
   headers: {
-    'Content-Type': 'application/json',
     'Authorization': `Bearer ${process.env.MATON_API_KEY}`
-  },
-  body: JSON.stringify({ channel: 'C0123456', text: 'Hello!' })
+  }
 });
+const data = await response.json();
 ```
 
 ### Python
@@ -606,11 +596,12 @@ const response = await fetch('https://api.maton.ai/slack/api/chat.postMessage', 
 import os
 import requests
 
-response = requests.post(
-    'https://api.maton.ai/slack/api/chat.postMessage',
+response = requests.get(
+    'https://api.maton.ai/slack/api/conversations.list',
     headers={'Authorization': f'Bearer {os.environ["MATON_API_KEY"]}'},
-    json={'channel': 'C0123456', 'text': 'Hello!'}
+    params={'types': 'public_channel', 'limit': 10}
 )
+data = response.json()
 ```
 
 ## Error Handling
