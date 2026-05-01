@@ -5,7 +5,7 @@
 - `api.dropboxapi.com` - Standard RPC endpoints (metadata, search, etc.)
 - `content.dropboxapi.com` - Content endpoints (upload, download)
 
-The gateway automatically routes to the correct host based on the endpoint path.
+Maton automatically routes to the correct host based on the endpoint path.
 
 ## API Path Pattern
 

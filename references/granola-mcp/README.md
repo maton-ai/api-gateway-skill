@@ -5,19 +5,19 @@
 
 ## Connection Management
 
-Manage MCP connections at `https://ctrl.maton.ai`.
+Manage MCP connections at `https://api.maton.ai`.
 
 ### List Connections
 
 ```bash
-GET https://ctrl.maton.ai/connections?app=granola&method=MCP&status=ACTIVE
+GET https://api.maton.ai/connections?app=granola&method=MCP&status=ACTIVE
 Authorization: Bearer $MATON_API_KEY
 ```
 
 ### Create Connection
 
 ```bash
-POST https://ctrl.maton.ai/connections
+POST https://api.maton.ai/connections
 Content-Type: application/json
 Authorization: Bearer $MATON_API_KEY
 

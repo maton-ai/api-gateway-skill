@@ -5,7 +5,7 @@
 - `api.box.com` - Standard API endpoints (metadata, folders, search, etc.)
 - `upload.box.com` - Upload endpoints (file upload, chunked upload sessions)
 
-The gateway automatically routes to the correct host based on the endpoint path.
+Maton automatically routes to the correct host based on the endpoint path.
 
 ## API Path Pattern
 

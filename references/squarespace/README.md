@@ -217,7 +217,7 @@ DELETE /squarespace/v2/commerce/products/{productId}/variants/{variantId}
 POST /squarespace/v2/commerce/products/{productId}/images
 Content-Type: multipart/form-data
 
-curl "https://gateway.maton.ai/squarespace/v2/commerce/products/{productId}/images" \
+curl "https://api.maton.ai/squarespace/v2/commerce/products/{productId}/images" \
   -H "Authorization: Bearer $MATON_API_KEY" \
   -H "User-Agent: MyClaude/1.0" \
   -X POST \

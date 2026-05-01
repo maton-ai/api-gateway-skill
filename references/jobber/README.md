@@ -17,7 +17,7 @@ All operations use POST with a JSON body containing the `query` field.
 
 ## Version Header
 
-The gateway automatically injects the `X-JOBBER-GRAPHQL-VERSION` header (currently `2025-04-16`).
+Maton automatically injects the `X-JOBBER-GRAPHQL-VERSION` header (currently `2025-04-16`).
 
 ## Common Operations
 

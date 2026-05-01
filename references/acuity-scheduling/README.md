@@ -9,7 +9,7 @@
 /acuity-scheduling/api/v1/{resource}
 ```
 
-The gateway automatically prepends `/api/v1` when proxying to Acuity.
+Maton automatically prepends `/api/v1` when proxying to Acuity.
 
 ## Common Endpoints
 

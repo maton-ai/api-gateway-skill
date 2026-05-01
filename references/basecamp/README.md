@@ -3,7 +3,7 @@
 **App name:** `basecamp`
 **Base URL proxied:** `3.basecampapi.com/{account_id}`
 
-Note: The gateway automatically injects the account ID from the OAuth connection.
+Note: Maton automatically injects the account ID from the OAuth connection.
 
 ## API Path Pattern
 

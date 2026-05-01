@@ -210,7 +210,7 @@ Video uploads require: initialize → upload binary → finalize → create post
 python <<'EOF'
 import urllib.request, os, json
 
-GATEWAY = 'https://gateway.maton.ai'
+GATEWAY = 'https://api.maton.ai'
 HEADERS = {
     'Authorization': f'Bearer {os.environ["MATON_API_KEY"]}',
     'Content-Type': 'application/json',

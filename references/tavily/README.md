@@ -119,7 +119,7 @@ GET /tavily/research/{request_id}
 
 - All search/extract/crawl/map endpoints use POST method
 - Research task GET uses GET method
-- Authentication is automatic - the gateway injects the API key
+- Authentication is automatic - Maton injects the API key
 - Search includes optional AI-generated answers
 - Map returns URLs only; Crawl returns URLs with content
 - Using `instructions` in crawl/map doubles credit cost

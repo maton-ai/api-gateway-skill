@@ -177,7 +177,7 @@ Pagination with `cursor` and `limit` (1-50).
 
 - Search/contents/answer endpoints use POST method
 - Research task list/get use GET method
-- Authentication is automatic - the gateway injects the API key
+- Authentication is automatic - Maton injects the API key
 - Search types: `neural` (semantic), `auto` (hybrid), `keyword` (traditional)
 - Maximum 100 results per request
 - Content extraction (text, highlights, summary) incurs additional costs
