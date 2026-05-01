@@ -39,7 +39,7 @@ EOF
 https://api.maton.ai/{app}/{native-api-path}
 ```
 
-Replace `{app}` with the service name and `{native-api-path}` with the actual API endpoint path.
+Replace `{app}` with the service name and `{native-api-path}` with the actual API endpoint path. This is a broad, write-capable API gateway — install only if you intentionally need multi-service API access. Each service connection is independently authorized via OAuth, so authorize only the services you need and use connection IDs to target the correct account. All write, delete, send, publish, purchase, and administrative operations require explicit user confirmation before execution.
 
 IMPORTANT: The URL path MUST start with the connection's app name (eg. `/google-mail/...`). This prefix tells the gateway which app connection to use. For example, the native Gmail API path starts with `gmail/v1/`, so full paths look like `/google-mail/gmail/v1/users/me/messages`.
 
