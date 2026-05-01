@@ -18,7 +18,7 @@ metadata:
 
 # API Gateway
 
-Managed OAuth proxy for third-party APIs, provided by [Maton](https://maton.ai). The API gateway automatically injects the appropriate OAuth token for the target service.
+Managed OAuth proxy for third-party APIs, provided by [Maton](https://maton.ai). The gateway routes requests through user-authorized service connections without exposing third-party OAuth tokens to the agent.
 
 ## Quick Start
 
@@ -33,25 +33,31 @@ EOF
 ```
 
 
+## Scope of Use
+
+- Prefer a service-specific Maton skill when one exists for the requested task. Use this gateway when the user needs a native API endpoint or a supported service that does not have a narrower skill.
+- Limit each task to the user-requested service, endpoint, and connection. Do not use the gateway to explore unrelated services or capabilities.
+- Use read-only calls first when possible, then ask for explicit approval before any state-changing request.
+
 ## Base URL
 
 ```
 https://api.maton.ai/{app}/{native-api-path}
 ```
 
-Replace `{app}` with the service name and `{native-api-path}` with the actual API endpoint path. This is a broad, write-capable API gateway — install only if you intentionally need multi-service API access. Each service connection is independently authorized via OAuth, so authorize only the services you need and use connection IDs to target the correct account. All write, delete, send, publish, purchase, and administrative operations require explicit user confirmation before execution.
+Replace `{app}` with the service name and `{native-api-path}` with the actual API endpoint path. Use the gateway only for the specific user-requested service and endpoint. Each service connection is independently authorized via OAuth, so authorize only the services and scopes needed for the task and use connection IDs to target the correct account.
 
 IMPORTANT: The URL path MUST start with the connection's app name (eg. `/google-mail/...`). This prefix tells the gateway which app connection to use. For example, the native Gmail API path starts with `gmail/v1/`, so full paths look like `/google-mail/gmail/v1/users/me/messages`.
 
 ## Authentication
 
-All requests require the Maton API key in the Authorization header:
+When calling Maton, pass the API key from the environment in the Authorization header:
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-The gateway exchanges the Maton API key for the appropriate OAuth token scoped to the specific service connection.
+Maton uses the API key to authenticate the request, selects the requested user-authorized connection, and forwards the request server-side. Third-party OAuth tokens are not returned to or handled directly by the agent.
 
 **IMPORTANT:** Treat `MATON_API_KEY` as a secret — do not log it, include it in chats or prompts visible to others, or expose it in shared files or outputs. The key authenticates with Maton, and each service connection is independently scoped via OAuth. Only authorize the services you actively need, revoke unused connections promptly, and if the key is compromised, rotate it immediately at [maton.ai/settings](https://maton.ai/settings).
 
@@ -178,10 +184,10 @@ If you have multiple connections, always include this header to ensure requests 
 
 ## Security & Permissions
 
-- **Least-privilege connections.** When authorizing a new service connection, review the requested OAuth scopes and grant only what is needed. Prefer read-only scopes where available. Revoke unused connections promptly via the Connection Management endpoints above.
-- **Default to read-only operations.** Always start by listing or retrieving resources (GET requests) to confirm identifiers and context before proposing any changes. Use the per-service reference files below for endpoint-specific guidance.
-- **All operations that modify data require explicit user approval.** Before executing any POST, PUT, PATCH, or DELETE call, confirm the target service, resource, and intended effect with the user. This includes sending messages, creating records, modifying content, deleting resources, and triggering workflows.
-- **High-impact operations require extra caution.** Actions such as sending emails/messages to external recipients, publishing public content, bulk deletions, modifying billing or payment data, or changing permissions must be clearly described with specific resource identifiers and confirmed before execution.
+- **Least-privilege connections.** When authorizing a new service connection, review the requested OAuth scopes and grant only what is needed for the requested task. Prefer read-only scopes where available. Revoke unused connections promptly via the Connection Management endpoints above.
+- **Default to read-only operations.** Start by listing or retrieving resources to confirm identifiers, account context, and current state before proposing any change. Use the per-service reference files below for endpoint-specific guidance.
+- **Require user approval for state changes.** Before any request that changes remote state or triggers side effects, confirm the target service, connection ID, resource ID, request method, payload summary, and intended effect with the user.
+- **Use exact targets for high-impact actions.** For irreversible, external-facing, bulk, access-changing, or financially sensitive actions, describe the exact resource identifiers and impact before execution. Do not infer these targets from ambiguous user instructions.
 - **Always specify the connection.** Use the `Maton-Connection` header to ensure requests go to the intended account, especially when the user has multiple connections for the same service.
 
 ## Supported Services
@@ -411,7 +417,7 @@ See [references/](https://github.com/maton-ai/api-gateway-skill/tree/main/refere
 - [Kaggle](https://github.com/maton-ai/api-gateway-skill/tree/main/references/kaggle/README.md) - Datasets, models, competitions, kernels
 - [Keap](https://github.com/maton-ai/api-gateway-skill/tree/main/references/keap/README.md) - Contacts, companies, tags, tasks, opportunities, campaigns
 - [Kibana](https://github.com/maton-ai/api-gateway-skill/tree/main/references/kibana/README.md) - Saved objects, dashboards, data views, spaces, alerts, fleet
-- [Kit](https://github.com/maton-ai/api-gateway-skill/tree/main/references/kit/README.md) - Subscribers, tags, forms, sequences, broadcasts
+- [Kit](https://github.com/maton-ai/api-gateway-skill/tree/main/references/kit/README.md) - Subscribers, tags, forms, sequences, campaigns
 - [Klaviyo](https://github.com/maton-ai/api-gateway-skill/tree/main/references/klaviyo/README.md) - Profiles, lists, campaigns, flows, events
 - [Lemlist](https://github.com/maton-ai/api-gateway-skill/tree/main/references/lemlist/README.md) - Campaigns, leads, activities, schedules, unsubscribes
 - [Linear](https://github.com/maton-ai/api-gateway-skill/tree/main/references/linear/README.md) - Issues, projects, teams, cycles (GraphQL)
@@ -442,7 +448,7 @@ See [references/](https://github.com/maton-ai/api-gateway-skill/tree/main/refere
 - [QuickBooks](https://github.com/maton-ai/api-gateway-skill/tree/main/references/quickbooks/README.md) - Customers, invoices, reports
 - [Quo](https://github.com/maton-ai/api-gateway-skill/tree/main/references/quo/README.md) - Calls, messages, contacts, conversations, webhooks
 - [Reducto](https://github.com/maton-ai/api-gateway-skill/tree/main/references/reducto/README.md) - Document parsing, extraction, splitting, editing
-- [Resend](https://github.com/maton-ai/api-gateway-skill/tree/main/references/resend/README.md) - Transactional emails, domains, audiences, contacts, broadcasts, webhooks
+- [Resend](https://github.com/maton-ai/api-gateway-skill/tree/main/references/resend/README.md) - Transactional emails, domains, audiences, contacts, campaigns, webhooks
 - [Salesforce](https://github.com/maton-ai/api-gateway-skill/tree/main/references/salesforce/README.md) - SOQL, sObjects, CRUD
 - [SignNow](https://github.com/maton-ai/api-gateway-skill/tree/main/references/signnow/README.md) - Documents, templates, invites, e-signatures
 - [SendGrid](https://github.com/maton-ai/api-gateway-skill/tree/main/references/sendgrid/README.md) - Email sending, contacts, templates, suppressions, statistics
@@ -482,7 +488,7 @@ See [references/](https://github.com/maton-ai/api-gateway-skill/tree/main/refere
 - [Zoho Books](https://github.com/maton-ai/api-gateway-skill/tree/main/references/zoho-books/README.md) - Invoices, contacts, bills, expenses
 - [Zoho Calendar](https://github.com/maton-ai/api-gateway-skill/tree/main/references/zoho-calendar/README.md) - Calendars, events, attendees, reminders
 - [Zoho CRM](https://github.com/maton-ai/api-gateway-skill/tree/main/references/zoho-crm/README.md) - Leads, contacts, accounts, deals, search
-- [Zoho Inventory](https://github.com/maton-ai/api-gateway-skill/tree/main/references/zoho-inventory/README.md) - Items, sales orders, invoices, purchase orders, bills
+- [Zoho Inventory](https://github.com/maton-ai/api-gateway-skill/tree/main/references/zoho-inventory/README.md) - Items, sales orders, invoices, vendor orders, bills
 - [Zoho Mail](https://github.com/maton-ai/api-gateway-skill/tree/main/references/zoho-mail/README.md) - Messages, folders, labels, attachments
 - [Zoho People](https://github.com/maton-ai/api-gateway-skill/tree/main/references/zoho-people/README.md) - Employees, departments, designations, attendance, leave
 - [Zoho Projects](https://github.com/maton-ai/api-gateway-skill/tree/main/references/zoho-projects/README.md) - Projects, tasks, milestones, tasklists, comments
@@ -621,7 +627,7 @@ Errors from the target API are passed through with their original status codes a
 1. Check that the `MATON_API_KEY` environment variable is set:
 
 ```bash
-echo $MATON_API_KEY
+test -n "${MATON_API_KEY:-}" && echo "MATON_API_KEY is set" || echo "MATON_API_KEY is not set"
 ```
 
 2. Verify the API key is valid by listing connections:
@@ -676,7 +682,7 @@ A 500 error may indicate an expired OAuth token. Try creating a new connection v
 
 3. **Query params work**: URL query parameters are passed through to the target API.
 
-4. **All HTTP methods supported**: GET, POST, PUT, PATCH, DELETE are all supported.
+4. **HTTP methods**: The gateway forwards standard HTTP methods. Follow the Security & Permissions guidance before any state-changing request.
 
 5. **QuickBooks special case**: Use `:realmId` in the path and it will be replaced with the connected realm ID.
 
