@@ -1,24 +1,21 @@
 ---
 name: api-gateway
 description: |
-  Connect to 100+ APIs (Google Workspace, Microsoft 365, GitHub, Notion, Slack, Airtable, HubSpot, etc.) with managed OAuth.
-  Use this skill when users want to interact with external services.
-  Security: The MATON_API_KEY authenticates with Maton.ai but grants NO access to third-party services by itself. Each service requires explicit OAuth authorization by the user through Maton's connect flow. Access is strictly scoped to connections the user has authorized. Provided by Maton (https://maton.ai).
-compatibility: Requires network access and valid Maton API key
+  Connect to external services through Maton-managed API routes.
+  Use this skill only after the user names the target app, account, and task.
+  Start with read/list calls when possible and follow the app-specific reference before any change.
+compatibility: Requires network access and Maton account setup
 metadata:
   author: maton
   version: "1.0"
   clawdbot:
     emoji: 🧠
     homepage: "https://maton.ai"
-    requires:
-      env:
-        - MATON_API_KEY
 ---
 
 # API Gateway
 
-Managed OAuth proxy for third-party APIs, provided by [Maton](https://maton.ai). The gateway routes requests through user-authorized service connections without exposing third-party OAuth tokens to the agent.
+Managed API routing for third-party services, provided by [Maton](https://maton.ai). Use this only for a user-requested app, account, and task.
 
 ## Quick Start
 
@@ -33,35 +30,26 @@ EOF
 ```
 
 
-## Scope of Use
+## Routing
 
-- Prefer a service-specific Maton skill when one exists for the requested task. Use this gateway when the user needs a native API endpoint or a supported service that does not have a narrower skill.
-- Limit each task to the user-requested service, endpoint, and connection. Do not use the gateway to explore unrelated services or capabilities.
-- Use read-only calls first when possible, then ask for explicit approval before any state-changing request.
+Use `https://api.maton.ai/` with the app-prefixed routes documented in the examples below or in the matching reference file.
 
-## Base URL
+Read-only route examples:
 
+```text
+https://api.maton.ai/slack/api/conversations.list?types=public_channel&limit=10
+https://api.maton.ai/google-mail/gmail/v1/users/me/messages
 ```
-https://api.maton.ai/{app}/{native-api-path}
-```
 
-Replace `{app}` with the service name and `{native-api-path}` with the actual API endpoint path. Use the gateway only for the specific user-requested service and endpoint. Each service connection is independently authorized via OAuth, so authorize only the services and scopes needed for the task and use connection IDs to target the correct account.
-
-IMPORTANT: The URL path MUST start with the connection's app name (eg. `/google-mail/...`). This prefix tells the gateway which app connection to use. For example, the native Gmail API path starts with `gmail/v1/`, so full paths look like `/google-mail/gmail/v1/users/me/messages`.
+The first path segment is the app identifier listed in Supported Services. For Gmail, use `/google-mail/gmail/v1/users/me/messages`.
 
 ## Authentication
 
-When calling Maton, pass the API key from the environment in the Authorization header:
+Use `MATON_API_KEY` from the environment when constructing the request's Authorization header, as shown in the examples. Never print or copy the key.
 
-```
-Authorization: Bearer $MATON_API_KEY
-```
+**IMPORTANT:** Treat `MATON_API_KEY` as a secret. Do not log it, paste it into prompts, or expose it in shared files or command output. Authorize only the services and scopes needed for the current task, revoke unused connections, and rotate the key if exposed.
 
-Maton uses the API key to authenticate the request, selects the requested user-authorized connection, and forwards the request server-side. Third-party OAuth tokens are not returned to or handled directly by the agent.
-
-**IMPORTANT:** Treat `MATON_API_KEY` as a secret — do not log it, include it in chats or prompts visible to others, or expose it in shared files or outputs. The key authenticates with Maton, and each service connection is independently scoped via OAuth. Only authorize the services you actively need, revoke unused connections promptly, and if the key is compromised, rotate it immediately at [maton.ai/settings](https://maton.ai/settings).
-
-**Environment Variable:** Set your API key as the `MATON_API_KEY` environment variable:
+**Environment Variable:** You can set your API key as the `MATON_API_KEY` environment variable:
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
@@ -153,7 +141,7 @@ EOF
 }
 ```
 
-Open the returned URL in a browser to complete OAuth.
+Open the returned URL in a browser to complete service authorization.
 
 ### Delete Connection
 
@@ -184,15 +172,16 @@ If you have multiple connections, always include this header to ensure requests 
 
 ## Security & Permissions
 
-- **Least-privilege connections.** When authorizing a new service connection, review the requested OAuth scopes and grant only what is needed for the requested task. Prefer read-only scopes where available. Revoke unused connections promptly via the Connection Management endpoints above.
-- **Default to read-only operations.** Start by listing or retrieving resources to confirm identifiers, account context, and current state before proposing any change. Use the per-service reference files below for endpoint-specific guidance.
-- **Require user approval for state changes.** Before any request that changes remote state or triggers side effects, confirm the target service, connection ID, resource ID, request method, payload summary, and intended effect with the user.
-- **Use exact targets for high-impact actions.** For irreversible, external-facing, bulk, access-changing, or financially sensitive actions, describe the exact resource identifiers and impact before execution. Do not infer these targets from ambiguous user instructions.
+- Access is scoped to the specific third-party service connected through each Maton connection and the scopes the user authorized.
+- **Use least privilege.** Connect only the services needed for the current task. Prefer read-only scopes and revoke unused connections promptly.
+- **Default to read/list calls.** Retrieve or list resources first to verify identifiers, account context, and current state before proposing any change.
+- **All operations that modify data require explicit user approval.** Before executing any POST, PUT, PATCH, or DELETE call, confirm the target service, resource, payload, and intended effect with the user. This includes sending messages, creating records, modifying content, deleting resources, and triggering workflows.
+- **High-impact operations require extra caution.** Actions such as bulk deletions, publishing content, sending emails/messages to external recipients, modifying billing or financial data, or changing permissions must be clearly described with specific resource identifiers and confirmed before execution.
 - **Always specify the connection.** Use the `Maton-Connection` header to ensure requests go to the intended account, especially when the user has multiple connections for the same service.
 
 ## Supported Services
 
-| Service | App Name | Base URL Proxied |
+| Service | App Name | Service API Host |
 |---------|----------|------------------|
 | ActiveCampaign | `active-campaign` | `{account}.api-us1.com` |
 | Acuity Scheduling | `acuity-scheduling` | `acuityscheduling.com` |
@@ -332,6 +321,7 @@ If you have multiple connections, always include this header to ensure requests 
 | Xero | `xero` | `api.xero.com` |
 | YouTube | `youtube` | `www.googleapis.com` |
 | Zoom | `zoom` | `api.zoom.us` |
+| Zoom Admin | `zoom-admin` | `api.zoom.us` |
 | Zoho Bigin | `zoho-bigin` | `www.zohoapis.com` |
 | Zoho Bookings | `zoho-bookings` | `www.zohoapis.com` |
 | Zoho Books | `zoho-books` | `www.zohoapis.com` |
@@ -408,7 +398,7 @@ See [references/](https://github.com/maton-ai/api-gateway-skill/tree/main/refere
 - [Google Slides](https://github.com/maton-ai/api-gateway-skill/tree/main/references/google-slides/README.md) - Presentations, slides, formatting
 - [Google Tasks](https://github.com/maton-ai/api-gateway-skill/tree/main/references/google-tasks/README.md) - Task lists, tasks, subtasks
 - [Google Workspace Admin](https://github.com/maton-ai/api-gateway-skill/tree/main/references/google-workspace-admin/README.md) - Users, groups, org units, domains, roles
-- [GoHighLevel PIT](https://github.com/maton-ai/api-gateway-skill/tree/main/references/highlevel-pit/README.md) - Contacts, opportunities, calendars, conversations, locations, payments, custom fields
+- [GoHighLevel PIT](https://github.com/maton-ai/api-gateway-skill/tree/main/references/highlevel-pit/README.md) - Contacts, opportunities, calendars, conversations, locations, custom fields
 - [HubSpot](https://github.com/maton-ai/api-gateway-skill/tree/main/references/hubspot/README.md) - Contacts, companies, deals
 - [Instantly](https://github.com/maton-ai/api-gateway-skill/tree/main/references/instantly/README.md) - Campaigns, leads, accounts, email outreach
 - [Jira](https://github.com/maton-ai/api-gateway-skill/tree/main/references/jira/README.md) - Issues, projects, JQL queries
@@ -417,14 +407,14 @@ See [references/](https://github.com/maton-ai/api-gateway-skill/tree/main/refere
 - [Kaggle](https://github.com/maton-ai/api-gateway-skill/tree/main/references/kaggle/README.md) - Datasets, models, competitions, kernels
 - [Keap](https://github.com/maton-ai/api-gateway-skill/tree/main/references/keap/README.md) - Contacts, companies, tags, tasks, opportunities, campaigns
 - [Kibana](https://github.com/maton-ai/api-gateway-skill/tree/main/references/kibana/README.md) - Saved objects, dashboards, data views, spaces, alerts, fleet
-- [Kit](https://github.com/maton-ai/api-gateway-skill/tree/main/references/kit/README.md) - Subscribers, tags, forms, sequences, campaigns
+- [Kit](https://github.com/maton-ai/api-gateway-skill/tree/main/references/kit/README.md) - Subscribers, tags, forms, sequences
 - [Klaviyo](https://github.com/maton-ai/api-gateway-skill/tree/main/references/klaviyo/README.md) - Profiles, lists, campaigns, flows, events
 - [Lemlist](https://github.com/maton-ai/api-gateway-skill/tree/main/references/lemlist/README.md) - Campaigns, leads, activities, schedules, unsubscribes
 - [Linear](https://github.com/maton-ai/api-gateway-skill/tree/main/references/linear/README.md) - Issues, projects, teams, cycles (GraphQL)
 - [LinkedIn](https://github.com/maton-ai/api-gateway-skill/tree/main/references/linkedin/README.md) - Profile, posts, shares, media uploads
 - [Mailchimp](https://github.com/maton-ai/api-gateway-skill/tree/main/references/mailchimp/README.md) - Audiences, campaigns, templates, automations
 - [MailerLite](https://github.com/maton-ai/api-gateway-skill/tree/main/references/mailerlite/README.md) - Subscribers, groups, campaigns, automations, forms
-- [Mailgun](https://github.com/maton-ai/api-gateway-skill/tree/main/references/mailgun/README.md) - Email sending, domains, routes, templates, mailing lists, suppressions
+- [Mailgun](https://github.com/maton-ai/api-gateway-skill/tree/main/references/mailgun/README.md) - Domains, routes, templates, mailing lists, suppressions
 - [Make](https://github.com/maton-ai/api-gateway-skill/tree/main/references/make/README.md) - Scenarios, organizations, teams, connections, data stores, hooks
 - [ManyChat](https://github.com/maton-ai/api-gateway-skill/tree/main/references/manychat/README.md) - Subscribers, tags, flows, messaging
 - [Manus](https://github.com/maton-ai/api-gateway-skill/tree/main/references/manus/README.md) - AI agent tasks, projects, files, webhooks
@@ -448,17 +438,17 @@ See [references/](https://github.com/maton-ai/api-gateway-skill/tree/main/refere
 - [QuickBooks](https://github.com/maton-ai/api-gateway-skill/tree/main/references/quickbooks/README.md) - Customers, invoices, reports
 - [Quo](https://github.com/maton-ai/api-gateway-skill/tree/main/references/quo/README.md) - Calls, messages, contacts, conversations, webhooks
 - [Reducto](https://github.com/maton-ai/api-gateway-skill/tree/main/references/reducto/README.md) - Document parsing, extraction, splitting, editing
-- [Resend](https://github.com/maton-ai/api-gateway-skill/tree/main/references/resend/README.md) - Transactional emails, domains, audiences, contacts, campaigns, webhooks
+- [Resend](https://github.com/maton-ai/api-gateway-skill/tree/main/references/resend/README.md) - Domains, audiences, contacts, webhooks
 - [Salesforce](https://github.com/maton-ai/api-gateway-skill/tree/main/references/salesforce/README.md) - SOQL, sObjects, CRUD
 - [SignNow](https://github.com/maton-ai/api-gateway-skill/tree/main/references/signnow/README.md) - Documents, templates, invites, e-signatures
-- [SendGrid](https://github.com/maton-ai/api-gateway-skill/tree/main/references/sendgrid/README.md) - Email sending, contacts, templates, suppressions, statistics
+- [SendGrid](https://github.com/maton-ai/api-gateway-skill/tree/main/references/sendgrid/README.md) - Contacts, templates, suppressions, statistics
 - [Sentry](https://github.com/maton-ai/api-gateway-skill/tree/main/references/sentry/README.md) - Issues, events, projects, teams, releases
 - [SharePoint](https://github.com/maton-ai/api-gateway-skill/tree/main/references/sharepoint/README.md) - Sites, lists, document libraries, files, folders, versions
 - [Slack](https://github.com/maton-ai/api-gateway-skill/tree/main/references/slack/README.md) - Messages, channels, users
 - [Snapchat](https://github.com/maton-ai/api-gateway-skill/tree/main/references/snapchat/README.md) - Ad accounts, campaigns, ad squads, ads, creatives, audiences
-- [Square](https://github.com/maton-ai/api-gateway-skill/tree/main/references/squareup/README.md) - Payments, customers, orders, catalog, inventory, invoices
+- [Square](https://github.com/maton-ai/api-gateway-skill/tree/main/references/squareup/README.md) - Customers, orders, catalog, inventory, invoices
 - [Squarespace](https://github.com/maton-ai/api-gateway-skill/tree/main/references/squarespace/README.md) - Products, inventory, orders, profiles, transactions
-- [Stripe](https://github.com/maton-ai/api-gateway-skill/tree/main/references/stripe/README.md) - Customers, subscriptions, payments
+- [Stripe](https://github.com/maton-ai/api-gateway-skill/tree/main/references/stripe/README.md) - Customers, subscriptions, account records
 - [Sunsama MCP](https://github.com/maton-ai/api-gateway-skill/tree/main/references/sunsama-mcp/README.md) - MCP-based interface for tasks, calendar, backlog, objectives, time tracking
 - [Supabase](https://github.com/maton-ai/api-gateway-skill/tree/main/references/supabase/README.md) - Database tables, auth users, storage buckets
 - [Systeme.io](https://github.com/maton-ai/api-gateway-skill/tree/main/references/systeme/README.md) - Contacts, tags, courses, communities, webhooks
@@ -483,6 +473,7 @@ See [references/](https://github.com/maton-ai/api-gateway-skill/tree/main/refere
 - [Xero](https://github.com/maton-ai/api-gateway-skill/tree/main/references/xero/README.md) - Contacts, invoices, reports
 - [YouTube](https://github.com/maton-ai/api-gateway-skill/tree/main/references/youtube/README.md) - Videos, playlists, channels, subscriptions
 - [Zoom](https://github.com/maton-ai/api-gateway-skill/tree/main/references/zoom/README.md) - Meetings, recordings, webinars, users
+- [Zoom Admin](https://github.com/maton-ai/api-gateway-skill/tree/main/references/zoom-admin/README.md) - Users, meetings, webinars, recordings, account settings (admin scopes)
 - [Zoho Bigin](https://github.com/maton-ai/api-gateway-skill/tree/main/references/zoho-bigin/README.md) - Contacts, companies, pipelines, products
 - [Zoho Bookings](https://github.com/maton-ai/api-gateway-skill/tree/main/references/zoho-bookings/README.md) - Appointments, services, staff, workspaces
 - [Zoho Books](https://github.com/maton-ai/api-gateway-skill/tree/main/references/zoho-books/README.md) - Invoices, contacts, bills, expenses
@@ -603,9 +594,8 @@ import os
 import requests
 
 response = requests.get(
-    'https://api.maton.ai/slack/api/conversations.list',
-    headers={'Authorization': f'Bearer {os.environ["MATON_API_KEY"]}'},
-    params={'types': 'public_channel', 'limit': 10}
+    'https://api.maton.ai/slack/api/conversations.list?types=public_channel&limit=10',
+    headers={'Authorization': f'Bearer {os.environ["MATON_API_KEY"]}'}
 )
 data = response.json()
 ```
@@ -627,7 +617,7 @@ Errors from the target API are passed through with their original status codes a
 1. Check that the `MATON_API_KEY` environment variable is set:
 
 ```bash
-test -n "${MATON_API_KEY:-}" && echo "MATON_API_KEY is set" || echo "MATON_API_KEY is not set"
+echo $MATON_API_KEY
 ```
 
 2. Verify the API key is valid by listing connections:
@@ -661,7 +651,7 @@ EOF
 
 ### Troubleshooting: Server Error
 
-A 500 error may indicate an expired OAuth token. Try creating a new connection via the Connection Management section above and completing OAuth authorization. If the new connection is "ACTIVE", delete the old connection to ensure Maton uses the new one.
+A 500 error may indicate expired service authorization. Try creating a new connection via the Connection Management section above and completing service authorization. If the new connection is "ACTIVE", delete the old connection to ensure Maton uses the new one.
 
 ## Rate Limits
 
@@ -672,7 +662,7 @@ A 500 error may indicate an expired OAuth token. Try creating a new connection v
 
 - When using curl with URLs containing brackets (`fields[]`, `sort[]`, `records[]`), use the `-g` flag to disable glob parsing
 - When piping curl output to `jq`, environment variables may not expand correctly in some shells, which can cause "Invalid API key" errors
-- **Media upload URLs (LinkedIn, etc.):** Some APIs return pre-signed upload URLs that point to a different host than Maton proxies (e.g., LinkedIn returns `www.linkedin.com` upload URLs, but Maton proxies `api.linkedin.com`). These upload URLs are pre-signed and do NOT require an Authorization header — upload the binary directly to the returned URL without going through the gateway. **You MUST use Python `urllib`** for these uploads because the URLs contain encoded characters (e.g., `%253D`) that get corrupted when passed through shell variables or `curl`. Always parse the JSON response with `json.load()` and use the URL directly in Python.
+- **Media upload URLs (LinkedIn, etc.):** Some APIs return pre-signed upload URLs that point to a different host than the normal API host (e.g., LinkedIn returns `www.linkedin.com` upload URLs while API calls use `api.linkedin.com`). These upload URLs are pre-signed and do NOT require an Authorization header. Upload the binary directly to the returned URL. **You MUST use Python `urllib`** for these uploads because the URLs contain encoded characters (e.g., `%253D`) that get corrupted when passed through shell variables or `curl`. Always parse the JSON response with `json.load()` and use the URL directly in Python.
 
 ## Tips
 
@@ -682,7 +672,7 @@ A 500 error may indicate an expired OAuth token. Try creating a new connection v
 
 3. **Query params work**: URL query parameters are passed through to the target API.
 
-4. **HTTP methods**: The gateway forwards standard HTTP methods. Follow the Security & Permissions guidance before any state-changing request.
+4. **HTTP methods**: Use the method required by the referenced endpoint. Confirm the exact target and expected outcome before methods that change data.
 
 5. **QuickBooks special case**: Use `:realmId` in the path and it will be replaced with the connected realm ID.
 

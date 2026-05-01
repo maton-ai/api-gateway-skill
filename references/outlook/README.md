@@ -1,13 +1,17 @@
 # Outlook Routing Reference
 
 **App name:** `outlook`
-**Base URL proxied:** `graph.microsoft.com`
+**Service API host:** `graph.microsoft.com`
 
 ## API Path Pattern
 
 ```
 /outlook/v1.0/me/{resource}
 ```
+
+## Review Requirements
+
+This file documents Outlook route shapes. For any non-read endpoint below, first retrieve the target item where possible, verify the connected mailbox, and confirm the exact recipient, resource, payload, and expected result with the user. Prefer draft and read-before-change workflows.
 
 ## Common Endpoints
 
@@ -222,10 +226,10 @@ DELETE /outlook/v1.0/me/contacts/{contactId}
 - `$orderby=receivedDateTime desc` - Sort results
 - `$search="keyword"` - Search content
 
-## Security & Write Operations
+## Security & Review Requirements
 
-- **Sending email (`sendMail`, sending drafts) is irreversible** — messages are delivered to external recipients immediately. Before sending, confirm the exact recipients, subject, and body content with the user.
-- **Deleting messages, events, and contacts is destructive.** Always retrieve and display the target resource first so the user can verify before confirming deletion.
+- **Outbound mail requires review.** Before delivery, confirm the exact recipients, subject, and body content with the user.
+- **Removal actions require review.** Always retrieve and display the target resource first so the user can verify before confirming.
 - **Prefer drafts over direct send.** Use `POST /outlook/v1.0/me/messages` to create a draft, then let the user review before sending with `POST /outlook/v1.0/me/messages/{messageId}/send`.
 - **Moving messages** changes folder location — confirm the destination folder with the user.
 - All write operations (send, delete, move, create events/contacts) require explicit user confirmation with specific resource details (message subject, event title, contact name).

@@ -1,7 +1,7 @@
 # Buffer Routing Reference
 
 **App name:** `buffer`
-**Base URL proxied:** `api.buffer.com`
+**Service API host:** `api.buffer.com`
 
 ## API Path Pattern
 
@@ -154,12 +154,12 @@ Each platform supports specific metadata in `CreatePostInput.metadata`:
 
 Cursor-based pagination with `first`, `after`, and `pageInfo`.
 
-## Security & Write Operations
+## Review Requirements
 
-- **Publishing posts (`schedulingType: "now"`) is irreversible** — content is immediately visible on connected social media channels. Before publishing, confirm the exact channel, post content, and timing with the user.
-- **Default to draft mode.** Always use `schedulingType: "draft"` unless the user explicitly requests immediate publishing or scheduling.
-- **Scheduled posts should be confirmed.** Before scheduling, display the target channel name/service, post text, and scheduled time for user review.
-- All mutations (createPost, createIdea) require explicit user confirmation with the specific channel, content, and scheduling details.
+- **Default to draft mode.** Use `schedulingType: "draft"` unless the user explicitly requests a scheduled or immediate release.
+- **Confirm channel and content.** Before any mutation, show the target channel name/service, post text, timing choice, and relevant metadata for user review.
+- **Use read checks first.** Retrieve the account, channel, and existing post details before changing Buffer content.
+- **Small scoped changes only.** Handle one channel/post set at a time unless the user confirms a broader batch.
 
 ## Notes
 

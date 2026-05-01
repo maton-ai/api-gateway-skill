@@ -1,7 +1,7 @@
 {
   "name": "notion-move-pages",
   "title": "Move Notion pages",
-  "description": "Move one or more Notion pages or databases to a new parent.",
+  "description": "Move user-selected Notion pages or databases to a new parent after confirming the exact source items and destination.",
   "inputSchema": {
     "type": "object",
     "properties": {
@@ -12,7 +12,7 @@
         },
         "minItems": 1,
         "maxItems": 100,
-        "description": "An array of up to 100 page or database IDs to move. IDs are v4 UUIDs and can be supplied with or without dashes (e.g. extracted from a <page> or <database> URL given by the \"search\" or \"fetch\" tool). Data Sources under Databases can't be moved individually."
+        "description": "Page or database IDs to move. Supply only the items the user explicitly selected, show the exact target list before moving, and use small confirmed batches for larger changes. IDs are v4 UUIDs and can be supplied with or without dashes (e.g. extracted from a <page> or <database> URL given by the \"search\" or \"fetch\" tool). Data Sources under Databases can't be moved individually."
       },
       "new_parent": {
         "anyOf": [
@@ -89,7 +89,7 @@
             "additionalProperties": true
           }
         ],
-        "description": "The new parent under which the pages will be moved. This can be a page, the workspace, a database, or a specific data source under a database when there are multiple. Moving pages to the workspace level adds them as private pages and should rarely be used."
+        "description": "The new parent under which the pages will be moved. Prefer a page, database, or specific data source parent. Use the workspace parent only when the user explicitly requests that destination and confirms the target list."
       }
     },
     "required": [
