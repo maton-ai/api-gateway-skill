@@ -256,6 +256,7 @@ If you have multiple connections, always include this header to ensure requests 
 | GoHighLevel (PIT) | `highlevel-pit` | `services.leadconnectorhq.com` |
 | HubSpot | `hubspot` | `api.hubapi.com` |
 | Instantly | `instantly` | `api.instantly.ai` |
+| Instagram | `instagram` | `graph.instagram.com` |
 | Jira | `jira` | `api.atlassian.com` |
 | Jobber | `jobber` | `api.getjobber.com` |
 | JotForm | `jotform` | `api.jotform.com` |
@@ -309,6 +310,7 @@ If you have multiple connections, always include this header to ensure requests 
 | Tally | `tally` | `api.tally.so` |
 | Tavily | `tavily` | `api.tavily.com` |
 | Telegram | `telegram` | `api.telegram.org` |
+| Threads | `threads` | `graph.threads.net` |
 | TickTick | `ticktick` | `api.ticktick.com` |
 | Todoist | `todoist` | `api.todoist.com` |
 | Toggl Track | `toggl-track` | `api.track.toggl.com` |
@@ -407,6 +409,7 @@ See [references/](https://github.com/maton-ai/api-gateway-skill/tree/main/refere
 - [GoHighLevel PIT](https://github.com/maton-ai/api-gateway-skill/tree/main/references/highlevel-pit/README.md) - Contacts, opportunities, calendars, conversations, locations, payments, custom fields
 - [HubSpot](https://github.com/maton-ai/api-gateway-skill/tree/main/references/hubspot/README.md) - Contacts, companies, deals
 - [Instantly](https://github.com/maton-ai/api-gateway-skill/tree/main/references/instantly/README.md) - Campaigns, leads, accounts, email outreach
+- [Instagram](https://github.com/maton-ai/api-gateway-skill/tree/main/references/instagram/README.md)
 - [Jira](https://github.com/maton-ai/api-gateway-skill/tree/main/references/jira/README.md) - Issues, projects, JQL queries
 - [Jobber](https://github.com/maton-ai/api-gateway-skill/tree/main/references/jobber/README.md) - Clients, jobs, invoices, quotes (GraphQL)
 - [JotForm](https://github.com/maton-ai/api-gateway-skill/tree/main/references/jotform/README.md) - Forms, submissions, webhooks
@@ -461,6 +464,7 @@ See [references/](https://github.com/maton-ai/api-gateway-skill/tree/main/refere
 - [Tally](https://github.com/maton-ai/api-gateway-skill/tree/main/references/tally/README.md) - Forms, submissions, workspaces, webhooks
 - [Tavily](https://github.com/maton-ai/api-gateway-skill/tree/main/references/tavily/README.md) - AI web search, content extraction, crawling, research tasks
 - [Telegram](https://github.com/maton-ai/api-gateway-skill/tree/main/references/telegram/README.md) - Messages, chats, bots, updates, polls
+- [Threads](https://github.com/maton-ai/api-gateway-skill/tree/main/references/threads/README.md)
 - [TickTick](https://github.com/maton-ai/api-gateway-skill/tree/main/references/ticktick/README.md) - Tasks, projects, task lists
 - [Todoist](https://github.com/maton-ai/api-gateway-skill/tree/main/references/todoist/README.md) - Tasks, projects, sections, labels, comments
 - [Toggl Track](https://github.com/maton-ai/api-gateway-skill/tree/main/references/toggl-track/README.md) - Time entries, projects, clients, tags, workspaces
