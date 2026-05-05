@@ -232,6 +232,7 @@ If you have multiple connections, always include this header to ensure requests 
 | Google BigQuery | `google-bigquery` | `bigquery.googleapis.com` |
 | Google Analytics Admin | `google-analytics-admin` | `analyticsadmin.googleapis.com` |
 | Google Analytics Data | `google-analytics-data` | `analyticsdata.googleapis.com` |
+| Google Apps Script | `google-apps-script` | `script.googleapis.com` |
 | Google Calendar | `google-calendar` | `www.googleapis.com` |
 | Google Classroom | `google-classroom` | `classroom.googleapis.com` |
 | Google Contacts | `google-contacts` | `people.googleapis.com` |
@@ -245,6 +246,7 @@ If you have multiple connections, always include this header to ensure requests 
 | Google Search Console | `google-search-console` | `www.googleapis.com` |
 | Google Sheets | `google-sheets` | `sheets.googleapis.com` |
 | Google Slides | `google-slides` | `slides.googleapis.com` |
+| Google Tag Manager | `google-tag-manager` | `tagmanager.googleapis.com` |
 | Google Tasks | `google-tasks` | `tasks.googleapis.com` |
 | Google Workspace Admin | `google-workspace-admin` | `admin.googleapis.com` |
 | GoHighLevel (PIT) | `highlevel-pit` | `services.leadconnectorhq.com` |
@@ -320,6 +322,8 @@ If you have multiple connections, always include this header to ensure requests 
 | Wrike | `wrike` | `www.wrike.com` |
 | Xero | `xero` | `api.xero.com` |
 | YouTube | `youtube` | `www.googleapis.com` |
+| YouTube Analytics | `youtube-analytics` | `youtubeanalytics.googleapis.com` |
+| YouTube Reporting | `youtube-reporting` | `youtubereporting.googleapis.com` |
 | Zoom | `zoom` | `api.zoom.us` |
 | Zoom Admin | `zoom-admin` | `api.zoom.us` |
 | Zoho Bigin | `zoho-bigin` | `www.zohoapis.com` |
@@ -382,6 +386,7 @@ See [references/](https://github.com/maton-ai/api-gateway-skill/tree/main/refere
 - [Google Ads](https://github.com/maton-ai/api-gateway-skill/tree/main/references/google-ads/README.md) - Campaigns, ad groups, GAQL queries
 - [Google Analytics Admin](https://github.com/maton-ai/api-gateway-skill/tree/main/references/google-analytics-admin/README.md) - Reports, dimensions, metrics
 - [Google Analytics Data](https://github.com/maton-ai/api-gateway-skill/tree/main/references/google-analytics-data/README.md) - Reports, dimensions, metrics
+- [Google Apps Script](https://github.com/maton-ai/api-gateway-skill/tree/main/references/google-apps-script/README.md) - Projects, deployments, versions, script execution
 - [Google BigQuery](https://github.com/maton-ai/api-gateway-skill/tree/main/references/google-bigquery/README.md) - Datasets, tables, jobs, SQL queries
 - [Google Calendar](https://github.com/maton-ai/api-gateway-skill/tree/main/references/google-calendar/README.md) - Events, calendars, free/busy
 - [Google Classroom](https://github.com/maton-ai/api-gateway-skill/tree/main/references/google-classroom/README.md) - Courses, coursework, students, teachers, announcements
@@ -396,6 +401,7 @@ See [references/](https://github.com/maton-ai/api-gateway-skill/tree/main/refere
 - [Google Search Console](https://github.com/maton-ai/api-gateway-skill/tree/main/references/google-search-console/README.md) - Search analytics, sitemaps
 - [Google Sheets](https://github.com/maton-ai/api-gateway-skill/tree/main/references/google-sheets/README.md) - Values, ranges, formatting
 - [Google Slides](https://github.com/maton-ai/api-gateway-skill/tree/main/references/google-slides/README.md) - Presentations, slides, formatting
+- [Google Tag Manager](https://github.com/maton-ai/api-gateway-skill/tree/main/references/google-tag-manager/README.md) - Accounts, containers, tags, triggers, variables, versions
 - [Google Tasks](https://github.com/maton-ai/api-gateway-skill/tree/main/references/google-tasks/README.md) - Task lists, tasks, subtasks
 - [Google Workspace Admin](https://github.com/maton-ai/api-gateway-skill/tree/main/references/google-workspace-admin/README.md) - Users, groups, org units, domains, roles
 - [GoHighLevel PIT](https://github.com/maton-ai/api-gateway-skill/tree/main/references/highlevel-pit/README.md) - Contacts, opportunities, calendars, conversations, locations, custom fields
@@ -472,6 +478,8 @@ See [references/](https://github.com/maton-ai/api-gateway-skill/tree/main/refere
 - [Wrike](https://github.com/maton-ai/api-gateway-skill/tree/main/references/wrike/README.md) - Tasks, folders, projects, spaces, comments, timelogs, workflows
 - [Xero](https://github.com/maton-ai/api-gateway-skill/tree/main/references/xero/README.md) - Contacts, invoices, reports
 - [YouTube](https://github.com/maton-ai/api-gateway-skill/tree/main/references/youtube/README.md) - Videos, playlists, channels, subscriptions
+- [YouTube Analytics](https://github.com/maton-ai/api-gateway-skill/tree/main/references/youtube-analytics/README.md) - Reports, metrics, groups, dimensions
+- [YouTube Reporting](https://github.com/maton-ai/api-gateway-skill/tree/main/references/youtube-reporting/README.md) - Bulk report jobs, report types, CSV downloads
 - [Zoom](https://github.com/maton-ai/api-gateway-skill/tree/main/references/zoom/README.md) - Meetings, recordings, webinars, users
 - [Zoom Admin](https://github.com/maton-ai/api-gateway-skill/tree/main/references/zoom-admin/README.md) - Users, meetings, webinars, recordings, account settings (admin scopes)
 - [Zoho Bigin](https://github.com/maton-ai/api-gateway-skill/tree/main/references/zoho-bigin/README.md) - Contacts, companies, pipelines, products
