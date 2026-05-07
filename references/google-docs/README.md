@@ -16,6 +16,13 @@
 GET /google-docs/v1/documents/{documentId}
 ```
 
+Example:
+
+```bash
+maton google-docs document view DOC_ID            # human-readable summary (id, title, revision)
+maton google-docs document view DOC_ID --json     # full document payload (body, styles, etc.)
+```
+
 ### Create Document
 ```bash
 POST /google-docs/v1/documents
@@ -24,6 +31,12 @@ Content-Type: application/json
 {
   "title": "New Document"
 }
+```
+
+Example:
+
+```bash
+maton google-docs document create --title 'New Document'
 ```
 
 ### Batch Update Document
@@ -41,6 +54,12 @@ Content-Type: application/json
     }
   ]
 }
+```
+
+Example:
+
+```bash
+maton google-docs document write DOC_ID --text 'Hello, World!'
 ```
 
 ## Common Requests for batchUpdate
@@ -156,3 +175,4 @@ The document body contains:
 - [Batch Update](https://developers.google.com/docs/api/reference/rest/v1/documents/batchUpdate)
 - [Request Types Reference](https://developers.google.com/docs/api/reference/rest/v1/documents/request)
 - [Document Structure Guide](https://developers.google.com/docs/api/concepts/structure)
+- [Maton CLI Manual](https://cli.maton.ai/manual)

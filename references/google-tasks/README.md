@@ -18,6 +18,12 @@
 GET /google-tasks/tasks/v1/users/@me/lists
 ```
 
+Example:
+
+```bash
+maton google-tasks tasklist list
+```
+
 With pagination:
 ```bash
 GET /google-tasks/tasks/v1/users/@me/lists?maxResults=20
@@ -26,6 +32,12 @@ GET /google-tasks/tasks/v1/users/@me/lists?maxResults=20
 #### Get Task List
 ```bash
 GET /google-tasks/tasks/v1/users/@me/lists/{tasklistId}
+```
+
+Example:
+
+```bash
+maton google-tasks tasklist view <tasklistId>
 ```
 
 #### Create Task List
@@ -38,6 +50,12 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton google-tasks tasklist create --title 'New Task List'
+```
+
 #### Update Task List
 ```bash
 PATCH /google-tasks/tasks/v1/users/@me/lists/{tasklistId}
@@ -48,9 +66,21 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton google-tasks tasklist update <tasklistId> --title 'Updated Title'
+```
+
 #### Delete Task List
 ```bash
 DELETE /google-tasks/tasks/v1/users/@me/lists/{tasklistId}
+```
+
+Example:
+
+```bash
+maton google-tasks tasklist delete <tasklistId>
 ```
 
 ### Tasks
@@ -60,9 +90,21 @@ DELETE /google-tasks/tasks/v1/users/@me/lists/{tasklistId}
 GET /google-tasks/tasks/v1/lists/{tasklistId}/tasks
 ```
 
+Example:
+
+```bash
+maton google-tasks task list -l <tasklistId>
+```
+
 With filters:
 ```bash
 GET /google-tasks/tasks/v1/lists/{tasklistId}/tasks?showCompleted=true&showHidden=true&maxResults=50
+```
+
+Example:
+
+```bash
+maton google-tasks task list -l <tasklistId> --show-completed
 ```
 
 With date filters:
@@ -75,6 +117,12 @@ GET /google-tasks/tasks/v1/lists/{tasklistId}/tasks?dueMin=2026-01-01T00:00:00Z&
 GET /google-tasks/tasks/v1/lists/{tasklistId}/tasks/{taskId}
 ```
 
+Example:
+
+```bash
+maton google-tasks task view <taskId> -l <tasklistId>
+```
+
 #### Create Task
 ```bash
 POST /google-tasks/tasks/v1/lists/{tasklistId}/tasks
@@ -85,6 +133,12 @@ Content-Type: application/json
   "notes": "Task description",
   "due": "2026-03-01T00:00:00.000Z"
 }
+```
+
+Example:
+
+```bash
+maton google-tasks task create -l <tasklistId> --title 'New Task' --notes 'Task description' --due 2026-03-01
 ```
 
 Create subtask:
@@ -108,6 +162,12 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton google-tasks task update <taskId> -l <tasklistId> --title 'Updated Title' --status completed
+```
+
 #### Update Task (full replace)
 ```bash
 PUT /google-tasks/tasks/v1/lists/{tasklistId}/tasks/{taskId}
@@ -120,14 +180,32 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton google-tasks task update <taskId> -l <tasklistId> --title 'Replaced Task' --notes 'New notes' --status needsAction --replace
+```
+
 #### Delete Task
 ```bash
 DELETE /google-tasks/tasks/v1/lists/{tasklistId}/tasks/{taskId}
 ```
 
+Example:
+
+```bash
+maton google-tasks task delete <taskId> -l <tasklistId>
+```
+
 #### Move Task
 ```bash
 POST /google-tasks/tasks/v1/lists/{tasklistId}/tasks/{taskId}/move?previous={previousTaskId}
+```
+
+Example:
+
+```bash
+maton google-tasks task move <taskId> -l <tasklistId> --previous <siblingTaskId>
 ```
 
 Make subtask:
@@ -139,6 +217,22 @@ POST /google-tasks/tasks/v1/lists/{tasklistId}/tasks/{taskId}/move?parent={paren
 ```bash
 POST /google-tasks/tasks/v1/lists/{tasklistId}/clear
 ```
+
+Example:
+
+```bash
+maton google-tasks tasklist clear <tasklistId>
+```
+
+## Pagination
+
+Google Tasks uses token-based pagination. The CLI handles this automatically with `--paginate`:
+
+```bash
+maton google-tasks task list -l <tasklistId> --paginate
+```
+
+For raw HTTP requests, pass the `nextPageToken` from the previous response as the `pageToken` query parameter.
 
 ## Notes
 
@@ -154,3 +248,4 @@ POST /google-tasks/tasks/v1/lists/{tasklistId}/clear
 - [Google Tasks API Overview](https://developers.google.com/workspace/tasks)
 - [Tasks Reference](https://developers.google.com/workspace/tasks/reference/rest/v1/tasks)
 - [TaskLists Reference](https://developers.google.com/workspace/tasks/reference/rest/v1/tasklists)
+- [Maton CLI Manual](https://cli.maton.ai/manual)

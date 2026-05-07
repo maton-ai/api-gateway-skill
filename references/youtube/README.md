@@ -24,6 +24,12 @@ Query parameters:
 - `order` - Sort: `date`, `rating`, `relevance`, `title`, `viewCount`
 - `videoDuration` - `short` (<4min), `medium` (4-20min), `long` (>20min)
 
+Example:
+
+```bash
+maton youtube search videos 'coding tutorial' --limit 10
+```
+
 ### Get Video Details
 ```bash
 GET /youtube/youtube/v3/videos?part=snippet,statistics,contentDetails&id={videoId}
@@ -31,9 +37,21 @@ GET /youtube/youtube/v3/videos?part=snippet,statistics,contentDetails&id={videoI
 
 Parts available: `snippet`, `statistics`, `contentDetails`, `status`, `player`
 
+Example:
+
+```bash
+maton youtube video view {videoId}
+```
+
 ### Get Trending Videos
 ```bash
 GET /youtube/youtube/v3/videos?part=snippet,statistics&chart=mostPopular&regionCode=US&maxResults=10
+```
+
+Example:
+
+```bash
+maton youtube video list --region US --limit 10
 ```
 
 ### Rate Video
@@ -43,9 +61,21 @@ POST /youtube/youtube/v3/videos/rate?id={videoId}&rating=like
 
 Rating values: `like`, `dislike`, `none`
 
+Example:
+
+```bash
+maton youtube video rate {videoId} --rating like
+```
+
 ### Get My Channel
 ```bash
 GET /youtube/youtube/v3/channels?part=snippet,statistics,contentDetails&mine=true
+```
+
+Example:
+
+```bash
+maton youtube channel mine
 ```
 
 ### Get Channel Details
@@ -53,9 +83,21 @@ GET /youtube/youtube/v3/channels?part=snippet,statistics,contentDetails&mine=tru
 GET /youtube/youtube/v3/channels?part=snippet,statistics&id={channelId}
 ```
 
+Example:
+
+```bash
+maton youtube channel view {channelId}
+```
+
 ### List My Playlists
 ```bash
 GET /youtube/youtube/v3/playlists?part=snippet,contentDetails&mine=true&maxResults=25
+```
+
+Example:
+
+```bash
+maton youtube playlist list --limit 25
 ```
 
 ### Create Playlist
@@ -76,14 +118,32 @@ Content-Type: application/json
 
 Privacy values: `public`, `private`, `unlisted`
 
+Example:
+
+```bash
+maton youtube playlist create --title 'My New Playlist' --description 'A collection of videos' --privacy private
+```
+
 ### Delete Playlist
 ```bash
 DELETE /youtube/youtube/v3/playlists?id={playlistId}
 ```
 
+Example:
+
+```bash
+maton youtube playlist delete {playlistId}
+```
+
 ### List Playlist Items
 ```bash
 GET /youtube/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId={playlistId}&maxResults=50
+```
+
+Example:
+
+```bash
+maton youtube playlist items {playlistId} --limit 50
 ```
 
 ### Add Video to Playlist
@@ -103,9 +163,21 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton youtube playlist add-video --playlist PLxyz123 --video abc123xyz --position 0
+```
+
 ### List My Subscriptions
 ```bash
 GET /youtube/youtube/v3/subscriptions?part=snippet&mine=true&maxResults=50
+```
+
+Example:
+
+```bash
+maton youtube subscription list --limit 50
 ```
 
 ### Subscribe to Channel
@@ -123,9 +195,21 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton youtube subscription create --channel UCxyz123
+```
+
 ### List Video Comments
 ```bash
 GET /youtube/youtube/v3/commentThreads?part=snippet,replies&videoId={videoId}&maxResults=100
+```
+
+Example:
+
+```bash
+maton youtube comment list --video {videoId} --limit 100
 ```
 
 ### Add Comment to Video
@@ -143,6 +227,20 @@ Content-Type: application/json
     }
   }
 }
+```
+
+Example:
+
+```bash
+maton youtube comment create --video abc123xyz --text 'Great video!'
+```
+
+## Pagination
+
+YouTube uses cursor-based pagination via `pageToken`. The CLI handles this automatically with `--paginate`:
+
+```bash
+maton youtube playlist items {playlistId} --paginate
 ```
 
 ## Notes
@@ -165,3 +263,4 @@ Content-Type: application/json
 - [Subscriptions](https://developers.google.com/youtube/v3/docs/subscriptions)
 - [Comments](https://developers.google.com/youtube/v3/docs/comments)
 - [Quota Calculator](https://developers.google.com/youtube/v3/determine_quota_cost)
+- [Maton CLI Manual](https://cli.maton.ai/manual)

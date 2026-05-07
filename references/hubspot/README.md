@@ -23,6 +23,12 @@ With properties:
 GET /hubspot/crm/v3/objects/contacts?limit=100&properties=email,firstname,lastname,phone
 ```
 
+Example:
+
+```bash
+maton hubspot contact list --properties email,firstname,lastname,phone -L 100
+```
+
 With pagination:
 ```bash
 GET /hubspot/crm/v3/objects/contacts?limit=100&properties=email,firstname&after={cursor}
@@ -31,6 +37,12 @@ GET /hubspot/crm/v3/objects/contacts?limit=100&properties=email,firstname&after=
 #### Get Contact
 ```bash
 GET /hubspot/crm/v3/objects/contacts/{contactId}?properties=email,firstname,lastname
+```
+
+Example:
+
+```bash
+maton hubspot contact view <contactId> --properties email,firstname,lastname
 ```
 
 #### Create Contact
@@ -48,6 +60,12 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton hubspot contact create --set email=john@example.com --set firstname=John --set lastname=Doe --set phone=+1234567890
+```
+
 #### Update Contact
 ```bash
 PATCH /hubspot/crm/v3/objects/contacts/{contactId}
@@ -60,9 +78,21 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton hubspot contact update <contactId> --set phone=+0987654321
+```
+
 #### Delete Contact
 ```bash
 DELETE /hubspot/crm/v3/objects/contacts/{contactId}
+```
+
+Example:
+
+```bash
+maton hubspot contact archive <contactId>
 ```
 
 #### Search Contacts
@@ -82,6 +112,12 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton hubspot contact search --filter email:EQ:john@example.com --properties email,firstname,lastname
+```
+
 ### Companies
 
 #### List Companies
@@ -89,9 +125,21 @@ Content-Type: application/json
 GET /hubspot/crm/v3/objects/companies?limit=100&properties=name,domain,industry
 ```
 
+Example:
+
+```bash
+maton hubspot company list --properties name,domain,industry -L 100
+```
+
 #### Get Company
 ```bash
 GET /hubspot/crm/v3/objects/companies/{companyId}?properties=name,domain,industry
+```
+
+Example:
+
+```bash
+maton hubspot company view <companyId> --properties name,domain,industry
 ```
 
 #### Create Company
@@ -106,6 +154,12 @@ Content-Type: application/json
     "industry": "COMPUTER_SOFTWARE"
   }
 }
+```
+
+Example:
+
+```bash
+maton hubspot company create --set name='Acme Corp' --set domain=acme.com --set industry=COMPUTER_SOFTWARE
 ```
 
 **Note:** The `industry` property requires specific enum values (e.g., `COMPUTER_SOFTWARE`, `FINANCE`, `HEALTHCARE`), not free text like "Technology". Use the List Properties endpoint to get valid values.
@@ -123,9 +177,21 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton hubspot company update <companyId> --set industry=COMPUTER_SOFTWARE --set numberofemployees=50
+```
+
 #### Delete Company
 ```bash
 DELETE /hubspot/crm/v3/objects/companies/{companyId}
+```
+
+Example:
+
+```bash
+maton hubspot company delete <companyId>
 ```
 
 #### Search Companies
@@ -146,6 +212,12 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton hubspot company search --filter 'domain:CONTAINS_TOKEN:*' --properties name,domain -L 10
+```
+
 ### Deals
 
 #### List Deals
@@ -153,9 +225,21 @@ Content-Type: application/json
 GET /hubspot/crm/v3/objects/deals?limit=100&properties=dealname,amount,dealstage
 ```
 
+Example:
+
+```bash
+maton hubspot deal list --properties dealname,amount,dealstage -L 100
+```
+
 #### Get Deal
 ```bash
 GET /hubspot/crm/v3/objects/deals/{dealId}?properties=dealname,amount,dealstage
+```
+
+Example:
+
+```bash
+maton hubspot deal view <dealId> --properties dealname,amount,dealstage
 ```
 
 #### Create Deal
@@ -172,6 +256,12 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton hubspot deal create --set dealname='New Deal' --set amount=10000 --set dealstage=appointmentscheduled
+```
+
 #### Update Deal
 ```bash
 PATCH /hubspot/crm/v3/objects/deals/{dealId}
@@ -185,9 +275,21 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton hubspot deal update <dealId> --set amount=15000 --set dealstage=qualifiedtobuy
+```
+
 #### Delete Deal
 ```bash
 DELETE /hubspot/crm/v3/objects/deals/{dealId}
+```
+
+Example:
+
+```bash
+maton hubspot deal delete <dealId>
 ```
 
 #### Search Deals
@@ -218,6 +320,12 @@ Content-Type: application/json
 [{"associationCategory": "HUBSPOT_DEFINED", "associationTypeId": 279}]
 ```
 
+Example:
+
+```bash
+maton hubspot associations create --from contacts:<fromObjectId> --to companies:<toObjectId> --type 279
+```
+
 Common association type IDs:
 - `279` - Contact to Company
 - `3` - Deal to Contact
@@ -228,7 +336,15 @@ Common association type IDs:
 GET /hubspot/crm/v4/objects/{objectType}/{objectId}/associations/{toObjectType}
 ```
 
+Example:
+
+```bash
+maton hubspot associations list --from contacts:12345 --to companies
+```
+
 ### Batch Operations
+
+Native batch subcommands are available for `contact`, `company`, and `deal`.
 
 #### Batch Read
 ```bash
@@ -239,6 +355,12 @@ Content-Type: application/json
   "properties": ["email", "firstname"],
   "inputs": [{"id": "123"}, {"id": "456"}]
 }
+```
+
+Example:
+
+```bash
+maton hubspot contact batch-read --id 123,456 --properties email,firstname
 ```
 
 #### Batch Create
@@ -254,6 +376,12 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton hubspot contact batch-create --data '[{"properties":{"email":"one@example.com","firstname":"One"}},{"properties":{"email":"two@example.com","firstname":"Two"}}]'
+```
+
 #### Batch Update
 ```bash
 POST /hubspot/crm/v3/objects/{objectType}/batch/update
@@ -267,6 +395,12 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton hubspot contact batch-update --data '[{"id":"123","properties":{"firstname":"Updated"}},{"id":"456","properties":{"firstname":"Also Updated"}}]'
+```
+
 #### Batch Archive
 ```bash
 POST /hubspot/crm/v3/objects/{objectType}/batch/archive
@@ -277,11 +411,23 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton hubspot contact batch-archive --id 123,456
+```
+
 ### Properties
 
 #### List Properties
 ```bash
 GET /hubspot/crm/v3/properties/{objectType}
+```
+
+Example:
+
+```bash
+maton hubspot properties list --type contacts
 ```
 
 ## Search Operators
@@ -355,3 +501,4 @@ GET /hubspot/crm/v3/objects/contacts?limit=100&after=12345
 - [Get Property](https://developers.hubspot.com/docs/api-reference/crm-properties-v3/core/get-crm-v3-properties-objectType-propertyName.md)
 - [Create Property](https://developers.hubspot.com/docs/api-reference/crm-properties-v3/core/post-crm-v3-properties-objectType.md)
 - [Search Reference](https://developers.hubspot.com/docs/api/crm/search)
+- [Maton CLI Manual](https://cli.maton.ai/manual)

@@ -16,6 +16,12 @@
 GET /google-ads/v23/customers:listAccessibleCustomers
 ```
 
+Example:
+
+```bash
+maton google-ads account list
+```
+
 ### Search (GAQL Query)
 ```bash
 POST /google-ads/v23/customers/{customerId}/googleAds:search
@@ -24,6 +30,12 @@ Content-Type: application/json
 {
   "query": "SELECT campaign.id, campaign.name, campaign.status FROM campaign ORDER BY campaign.id"
 }
+```
+
+Example:
+
+```bash
+maton google-ads query -c 1234567890 --resource campaign --fields 'campaign.id, campaign.name, campaign.status' --order-by 'campaign.id'
 ```
 
 ### Search Stream (for large result sets)
@@ -36,15 +48,35 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton google-ads query-stream -c 1234567890 --resource campaign --fields 'campaign.id, campaign.name'
+```
+
+### List Campaigns
+
+Example:
+
+```bash
+maton google-ads campaign list -c 1234567890
+```
+
+### List Keywords
+
+Example:
+
+```bash
+maton google-ads keyword list -c 1234567890 --date-range LAST_7_DAYS -L 25 --campaign-id 99999
+```
+
+Note: Keyword queries request metrics, so they cannot be run against a manager (MCC) account directly. Run against the client customer ID under the manager, optionally with `--login-customer-id`.
+
 ## Common GAQL Queries
 
 ### List Campaigns
 ```sql
-SELECT
-  campaign.id,
-  campaign.name,
-  campaign.status,
-  campaign.advertising_channel_type
+SELECT campaign.id, campaign.name, campaign.status, campaign.advertising_channel_type
 FROM campaign
 WHERE campaign.status != 'REMOVED'
 ORDER BY campaign.name
@@ -52,13 +84,7 @@ ORDER BY campaign.name
 
 ### Campaign Performance
 ```sql
-SELECT
-  campaign.id,
-  campaign.name,
-  metrics.impressions,
-  metrics.clicks,
-  metrics.cost_micros,
-  metrics.conversions
+SELECT campaign.id, campaign.name, metrics.impressions, metrics.clicks, metrics.cost_micros, metrics.conversions
 FROM campaign
 WHERE segments.date DURING LAST_30_DAYS
 ORDER BY metrics.impressions DESC
@@ -66,49 +92,34 @@ ORDER BY metrics.impressions DESC
 
 ### List Ad Groups
 ```sql
-SELECT
-  ad_group.id,
-  ad_group.name,
-  ad_group.status,
-  campaign.id,
-  campaign.name
+SELECT ad_group.id, ad_group.name, ad_group.status, campaign.id, campaign.name
 FROM ad_group
 WHERE ad_group.status != 'REMOVED'
 ```
 
-### Ad Group Performance
+### List Keywords with Performance
 ```sql
-SELECT
-  ad_group.id,
-  ad_group.name,
-  metrics.impressions,
-  metrics.clicks,
-  metrics.average_cpc
-FROM ad_group
-WHERE segments.date DURING LAST_7_DAYS
-```
-
-### List Keywords
-```sql
-SELECT
-  ad_group_criterion.keyword.text,
-  ad_group_criterion.keyword.match_type,
-  ad_group_criterion.status,
-  metrics.impressions,
-  metrics.clicks
+SELECT ad_group_criterion.keyword.text, ad_group_criterion.keyword.match_type, metrics.impressions, metrics.clicks, metrics.cost_micros
 FROM keyword_view
 WHERE segments.date DURING LAST_30_DAYS
+  AND ad_group_criterion.status = 'ENABLED'
+ORDER BY metrics.cost_micros DESC
+LIMIT 50
 ```
 
-### List Ads
+### Search Term Report
 ```sql
-SELECT
-  ad_group_ad.ad.id,
-  ad_group_ad.ad.name,
-  ad_group_ad.status,
-  ad_group_ad.ad.type
-FROM ad_group_ad
-WHERE ad_group_ad.status != 'REMOVED'
+SELECT search_term_view.search_term, campaign.name, ad_group.name, metrics.impressions, metrics.clicks, metrics.conversions
+FROM search_term_view
+WHERE segments.date DURING LAST_30_DAYS
+ORDER BY metrics.clicks DESC
+```
+
+### Account-level Performance
+```sql
+SELECT customer.descriptive_name, segments.date, metrics.impressions, metrics.clicks, metrics.cost_micros, metrics.conversions
+FROM customer
+WHERE segments.date DURING LAST_7_DAYS
 ```
 
 ## Mutate Operations
@@ -151,6 +162,23 @@ Content-Type: application/json
 }
 ```
 
+## Manager (MCC) Account Access
+
+When accessing a customer account through a Google Ads manager (MCC) account, pass the manager's customer ID via `--login-customer-id` (CLI) or the `login-customer-id` header (direct API). The customer ID in the path is still the client account being queried.
+
+```bash
+# List campaigns in client account 1234567890 via manager 9876543210
+maton google-ads campaign list -c 1234567890 --login-customer-id 9876543210
+```
+
+## Pagination
+
+Google Ads uses token-based pagination. The CLI handles this automatically with `--paginate`:
+
+```bash
+maton google-ads campaign list -c 1234567890 --paginate
+```
+
 ## Notes
 
 - Authentication is automatic - the router injects OAuth token and developer-token headers
@@ -170,3 +198,4 @@ Content-Type: application/json
 - [Search Stream](https://developers.google.com/google-ads/api/reference/rpc/v23/GoogleAdsService/SearchStream?transport=rest)
 - [GAQL Reference](https://developers.google.com/google-ads/api/docs/query/overview)
 - [Metrics Reference](https://developers.google.com/google-ads/api/fields/v23/metrics)
+- [Maton CLI Manual](https://cli.maton.ai/manual)

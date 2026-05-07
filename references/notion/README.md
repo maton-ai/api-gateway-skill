@@ -43,6 +43,12 @@ Notion-Version: 2025-09-03
 }
 ```
 
+Example:
+
+```bash
+maton notion search 'meeting notes' --filter page
+```
+
 Search for data sources:
 ```bash
 POST /notion/v1/search
@@ -52,6 +58,12 @@ Notion-Version: 2025-09-03
 {
   "filter": {"property": "object", "value": "data_source"}
 }
+```
+
+Example:
+
+```bash
+maton notion search --filter data_source
 ```
 
 With pagination:
@@ -78,6 +90,12 @@ Notion-Version: 2025-09-03
 
 Returns full schema with `properties` field.
 
+Example:
+
+```bash
+maton notion data-source view {dataSourceId}
+```
+
 #### Query Data Source
 ```bash
 POST /notion/v1/data_sources/{dataSourceId}/query
@@ -96,6 +114,15 @@ Notion-Version: 2025-09-03
 }
 ```
 
+Example:
+
+```bash
+maton notion data-source query {dataSourceId} \
+  --filter '{"property":"Status","select":{"equals":"Active"}}' \
+  --sorts '[{"property":"Created","direction":"descending"}]' \
+  --page-size 100
+```
+
 #### Update Data Source (title, schema, properties)
 ```bash
 PATCH /notion/v1/data_sources/{dataSourceId}
@@ -108,6 +135,13 @@ Notion-Version: 2025-09-03
     "NewColumn": {"rich_text": {}}
   }
 }
+```
+
+Example:
+
+```bash
+maton notion data-source update {dataSourceId} \
+  --body '{"title":[{"type":"text","text":{"content":"Updated Title"}}],"properties":{"NewColumn":{"rich_text":{}}}}'
 ```
 
 ### Databases
@@ -131,6 +165,12 @@ Response includes `data_sources` array:
 
 **Note:** This endpoint returns `properties: null`. Use `GET /data_sources/{id}` to get the schema.
 
+Example:
+
+```bash
+maton notion database view {databaseId}
+```
+
 #### Create Database
 ```bash
 POST /notion/v1/databases
@@ -147,7 +187,13 @@ Notion-Version: 2025-09-03
 }
 ```
 
-**Important:** Cannot create databases via `/data_sources` endpoint.
+**Important:** Cannot create databases via `/data_sources` endpoint. In API version 2025-09-03, `POST /databases` only accepts the title property — define schema afterward with `PATCH /data_sources/{dataSourceId}`.
+
+Example:
+
+```bash
+maton notion database create --parent-page PARENT_PAGE_ID --title 'New Database'
+```
 
 ### Pages
 
@@ -155,6 +201,12 @@ Notion-Version: 2025-09-03
 ```bash
 GET /notion/v1/pages/{pageId}
 Notion-Version: 2025-09-03
+```
+
+Example:
+
+```bash
+maton notion page view {pageId}
 ```
 
 #### Create Page in Data Source
@@ -173,6 +225,13 @@ Notion-Version: 2025-09-03
 }
 ```
 
+Example:
+
+```bash
+maton notion page create --data-source DATA_SOURCE_ID --title 'New Page' \
+  --properties '{"Status":{"select":{"name":"Active"}}}'
+```
+
 #### Create Child Page (under another page)
 ```bash
 POST /notion/v1/pages
@@ -185,6 +244,12 @@ Notion-Version: 2025-09-03
     "title": {"title": [{"text": {"content": "Child Page"}}]}
   }
 }
+```
+
+Example:
+
+```bash
+maton notion page create --parent-page PARENT_PAGE_ID --title 'Child Page'
 ```
 
 #### Update Page Properties
@@ -200,6 +265,12 @@ Notion-Version: 2025-09-03
 }
 ```
 
+Example:
+
+```bash
+maton notion page update {pageId} --properties '{"Status":{"select":{"name":"Done"}}}'
+```
+
 #### Archive Page
 ```bash
 PATCH /notion/v1/pages/{pageId}
@@ -209,6 +280,12 @@ Notion-Version: 2025-09-03
 {
   "archived": true
 }
+```
+
+Example:
+
+```bash
+maton notion page archive {pageId}
 ```
 
 ### Blocks
@@ -223,6 +300,12 @@ Notion-Version: 2025-09-03
 ```bash
 GET /notion/v1/blocks/{blockId}/children
 Notion-Version: 2025-09-03
+```
+
+Example:
+
+```bash
+maton notion block children {blockId}
 ```
 
 #### Append Block Children
@@ -251,6 +334,13 @@ Notion-Version: 2025-09-03
 }
 ```
 
+Example:
+
+```bash
+maton notion block append {blockId} \
+  --children '[{"object":"block","type":"paragraph","paragraph":{"rich_text":[{"type":"text","text":{"content":"New paragraph"}}]}}]'
+```
+
 #### Update Block
 ```bash
 PATCH /notion/v1/blocks/{blockId}
@@ -270,12 +360,24 @@ DELETE /notion/v1/blocks/{blockId}
 Notion-Version: 2025-09-03
 ```
 
+Example:
+
+```bash
+maton notion block delete {blockId}
+```
+
 ### Users
 
 #### List Users
 ```bash
 GET /notion/v1/users
 Notion-Version: 2025-09-03
+```
+
+Example:
+
+```bash
+maton notion user list
 ```
 
 #### Get User by ID
@@ -288,6 +390,12 @@ Notion-Version: 2025-09-03
 ```bash
 GET /notion/v1/users/me
 Notion-Version: 2025-09-03
+```
+
+Example:
+
+```bash
+maton notion whoami
 ```
 
 ## Filter Operators
@@ -319,6 +427,16 @@ Common block types for appending:
 | Parent: `{"database_id": "..."}` | Parent: `{"data_source_id": "..."}` |
 | Search filter: `"database"` | Search filter: `"data_source"` |
 
+## Pagination
+
+Notion uses cursor-based pagination. The CLI handles this automatically with `--paginate`:
+
+```bash
+maton notion data-source query {dataSourceId} --paginate
+```
+
+For raw HTTP requests, pass the `next_cursor` from the previous response as `start_cursor` in the next request.
+
 ## Notes
 
 - Use `GET /databases/{id}` to discover `data_source_id`, then use `/data_sources/` for all operations
@@ -343,3 +461,4 @@ Common block types for appending:
 - [Filter Reference](https://developers.notion.com/reference/post-database-query-filter.md)
 - [LLM Reference](https://developers.notion.com/llms.txt)
 - [Version Reference](https://developers.notion.com/guides/get-started/upgrade-guide-2025-09-03)
+- [Maton CLI Manual](https://cli.maton.ai/manual)

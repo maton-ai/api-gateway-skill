@@ -16,14 +16,32 @@
 GET /trello/1/members/me
 ```
 
+Example:
+
+```bash
+maton trello whoami
+```
+
 ### Get Member's Boards
 ```bash
 GET /trello/1/members/me/boards?filter=open
 ```
 
+Example:
+
+```bash
+maton trello board list --filter open
+```
+
 ### Get Board
 ```bash
 GET /trello/1/boards/{id}?lists=open&cards=open
+```
+
+Example:
+
+```bash
+maton trello board view {id} --lists open --cards open
 ```
 
 ### Create Board
@@ -39,14 +57,32 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton trello board create --name 'Project Alpha' --desc 'Main project board' --permission private
+```
+
 ### Get Board Lists
 ```bash
 GET /trello/1/boards/{id}/lists?filter=open
 ```
 
+Example:
+
+```bash
+maton trello list list --board {id} --filter open
+```
+
 ### Get Board Cards
 ```bash
 GET /trello/1/boards/{id}/cards
+```
+
+Example:
+
+```bash
+maton trello card list --board {id}
 ```
 
 ### Create List
@@ -61,14 +97,32 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton trello list create --board BOARD_ID --name 'To Do' --pos top
+```
+
 ### Get Cards in List
 ```bash
 GET /trello/1/lists/{id}/cards
 ```
 
+Example:
+
+```bash
+maton trello card list --list {id}
+```
+
 ### Get Card
 ```bash
 GET /trello/1/cards/{id}?members=true&checklists=all
+```
+
+Example:
+
+```bash
+maton trello card view {id} --members --checklists all
 ```
 
 ### Create Card
@@ -87,6 +141,12 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton trello card create --list LIST_ID --name 'Implement feature X' --desc 'Description of the task' --due 2025-03-30T12:00:00.000Z --member-ids MEMBER_ID --label-ids LABEL_ID
+```
+
 ### Update Card
 ```bash
 PUT /trello/1/cards/{id}
@@ -97,6 +157,12 @@ Content-Type: application/json
   "desc": "Updated description",
   "due": "2025-04-15T12:00:00.000Z"
 }
+```
+
+Example:
+
+```bash
+maton trello card update {id} --name 'Updated card name' --desc 'Updated description' --due 2025-04-15T12:00:00.000Z
 ```
 
 ### Move Card to List
@@ -110,9 +176,21 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton trello card update {id} --list NEW_LIST_ID
+```
+
 ### Delete Card
 ```bash
 DELETE /trello/1/cards/{id}
+```
+
+Example:
+
+```bash
+maton trello card delete {id}
 ```
 
 ### Add Comment to Card
@@ -125,6 +203,12 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton trello card comment {id} --text 'This is a comment'
+```
+
 ### Create Checklist
 ```bash
 POST /trello/1/checklists
@@ -134,6 +218,12 @@ Content-Type: application/json
   "idCard": "CARD_ID",
   "name": "Task Checklist"
 }
+```
+
+Example:
+
+```bash
+maton trello checklist create --card CARD_ID --name 'Task Checklist'
 ```
 
 ### Create Checklist Item
@@ -148,9 +238,21 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton trello checkitem create --checklist {id} --name 'Subtask 1' --pos bottom
+```
+
 ### Get Board Labels
 ```bash
 GET /trello/1/boards/{id}/labels
+```
+
+Example:
+
+```bash
+maton trello label list --board {id}
 ```
 
 ### Create Label
@@ -165,9 +267,21 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton trello label create --board BOARD_ID --name 'High Priority' --color red
+```
+
 ### Search
 ```bash
 GET /trello/1/search?query=keyword&modelTypes=cards,boards
+```
+
+Example:
+
+```bash
+maton trello search --query keyword --models cards,boards
 ```
 
 ## Notes
@@ -190,3 +304,4 @@ GET /trello/1/search?query=keyword&modelTypes=cards,boards
 - [Labels](https://developer.atlassian.com/cloud/trello/rest/api-group-labels/)
 - [Members](https://developer.atlassian.com/cloud/trello/rest/api-group-members/)
 - [Search](https://developer.atlassian.com/cloud/trello/rest/api-group-search/)
+- [Maton CLI Manual](https://cli.maton.ai/manual)

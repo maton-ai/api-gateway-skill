@@ -16,19 +16,32 @@
 GET /google-sheets/v4/spreadsheets/{spreadsheetId}
 ```
 
+Example:
+
+```bash
+maton google-sheets spreadsheet view <spreadsheetId>
+```
+
 ### Get Values
 ```bash
 GET /google-sheets/v4/spreadsheets/{spreadsheetId}/values/{range}
 ```
 
 Example:
+
 ```bash
-GET /google-sheets/v4/spreadsheets/SHEET_ID/values/Sheet1!A1:D10
+maton google-sheets values get <spreadsheetId> --range 'Sheet1!A1:D10'
 ```
 
 ### Get Multiple Ranges
 ```bash
 GET /google-sheets/v4/spreadsheets/{spreadsheetId}/values:batchGet?ranges=Sheet1!A1:B10&ranges=Sheet2!A1:C5
+```
+
+Example:
+
+```bash
+maton google-sheets values batch-get <spreadsheetId> --range 'Sheet1!A1:B10,Sheet2!A1:C5'
 ```
 
 ### Update Values
@@ -44,6 +57,12 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton google-sheets values update <spreadsheetId> --range 'Sheet1!A1:C2' --json-values '[["A1","B1","C1"],["A2","B2","C2"]]'
+```
+
 ### Append Values
 ```bash
 POST /google-sheets/v4/spreadsheets/{spreadsheetId}/values/{range}:append?valueInputOption=USER_ENTERED
@@ -55,6 +74,12 @@ Content-Type: application/json
     ["New Row 2", "Data", "More Data"]
   ]
 }
+```
+
+Example:
+
+```bash
+maton google-sheets values append <spreadsheetId> --range 'Sheet1!A1' --json-values '[["New Row 1","Data","More Data"],["New Row 2","Data","More Data"]]'
 ```
 
 ### Batch Update Values
@@ -71,9 +96,21 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton google-sheets values batch-update <spreadsheetId> --data '[{"range":"Sheet1!A1:B2","values":[["A1","B1"],["A2","B2"]]},{"range":"Sheet1!D1:E2","values":[["D1","E1"],["D2","E2"]]}]'
+```
+
 ### Clear Values
 ```bash
 POST /google-sheets/v4/spreadsheets/{spreadsheetId}/values/{range}:clear
+```
+
+Example:
+
+```bash
+maton google-sheets values clear <spreadsheetId> --range 'Sheet1!A1:D10'
 ```
 
 ### Create Spreadsheet
@@ -87,6 +124,12 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton google-sheets spreadsheet create --title 'New Spreadsheet' --sheet-title 'Sheet1'
+```
+
 ### Batch Update (formatting, add sheets, etc.)
 ```bash
 POST /google-sheets/v4/spreadsheets/{spreadsheetId}:batchUpdate
@@ -97,6 +140,12 @@ Content-Type: application/json
     {"addSheet": {"properties": {"title": "New Sheet"}}}
   ]
 }
+```
+
+Example:
+
+```bash
+maton google-sheets spreadsheet batch-update <spreadsheetId> --requests '[{"addSheet":{"properties":{"title":"New Sheet"}}}]'
 ```
 
 ## Common batchUpdate Requests
@@ -238,3 +287,4 @@ See [full list of request types](https://developers.google.com/workspace/sheets/
 - [Batch Get Values](https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets.values/batchGet)
 - [Batch Update Values](https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets.values/batchUpdate)
 - [Clear Values](https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets.values/clear)
+- [Maton CLI Manual](https://cli.maton.ai/manual)

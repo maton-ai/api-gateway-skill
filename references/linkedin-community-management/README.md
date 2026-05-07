@@ -1,5 +1,7 @@
 # LinkedIn Community Management Routing Reference
 
+> **Private Beta:** This integration is currently in private beta. Contact [support@maton.ai](mailto:support@maton.ai) to get added to the allowlist.
+
 **App name:** `linkedin-community-management`
 **Base URL proxied:** `api.linkedin.com`
 
@@ -15,7 +17,7 @@ All requests require these headers in addition to the Authorization header:
 
 | Header | Value |
 |--------|-------|
-| `Linkedin-Version` | `YYYYMM` (e.g., `202601`) |
+| `Linkedin-Version` | `YYYYMM` (e.g., `202604`) |
 | `X-Restli-Protocol-Version` | `2.0.0` |
 
 ## Common Endpoints
@@ -139,7 +141,7 @@ GET /linkedin-community-management/rest/organizationalEntityShareStatistics?q=or
 ## Notes
 
 - All URNs in URL paths and query parameters must be URL-encoded (`:` -> `%3A`)
-- `Linkedin-Version` header is mandatory (format: `YYYYMM`)
+- `Linkedin-Version` header is mandatory (format: `YYYYMM`, e.g., `202604`). LinkedIn keeps roughly the last ~12 monthly versions active and returns HTTP 426 `NONEXISTENT_VERSION` for retired or future-dated versions — pin to a recent month and bump periodically
 - Organization endpoints require admin role for full data; non-admins get limited fields
 - Statistics endpoints require `ADMINISTRATOR` role on the organization
 - Post content types: text, image, video, document, article, carousel (sponsored only)

@@ -34,6 +34,12 @@ EOF
 
 Use `https://api.maton.ai/` with the app-prefixed routes documented in the examples below or in the matching reference file.
 
+**Usage protocol:**
+1. Only invoke after the user specifies the exact app, account, and task.
+2. Always start with read-only (GET) calls to verify the target account, resource identifiers, and current state.
+3. **All non-GET requests are denied unless the user explicitly approves each one.** Before any POST, PUT, PATCH, or DELETE call, present the user with: the exact connection ID, the full endpoint path, the request body, and the expected outcome — then wait for approval.
+4. If the user's request implies a non-GET operation, first show them what you intend to call and ask for confirmation. Do not infer approval from the original request.
+
 Read-only route examples:
 
 ```text
@@ -47,7 +53,13 @@ The first path segment is the app identifier listed in Supported Services. For G
 
 Use `MATON_API_KEY` from the environment when constructing the request's Authorization header, as shown in the examples. Never print or copy the key.
 
-**IMPORTANT:** Treat `MATON_API_KEY` as a secret. Do not log it, paste it into prompts, or expose it in shared files or command output. Authorize only the services and scopes needed for the current task, revoke unused connections, and rotate the key if exposed.
+**IMPORTANT — Credential Safety:**
+- Treat `MATON_API_KEY` as a secret. Never log it, echo it, paste it into prompts, or expose it in shared files, command output, or tool results.
+- **Connection creation requires explicit user approval.** Before creating any connection, ask the user to confirm the specific service and confirm they intend to authorize access. Never create connections on the agent's own initiative.
+- **Least-privilege scopes:** When a service offers scope selection during OAuth, select only the scopes the current task requires. Do not accept broader scopes for convenience.
+- Remove connections immediately after the task is complete if they are no longer needed.
+- If the key may have been exposed (logs, screenshots, shared terminals), rotate it immediately at [maton.ai/settings](https://maton.ai/settings).
+- Never share the key across users, workflows, or environments that do not require it.
 
 **Environment Variable:** You can set your API key as the `MATON_API_KEY` environment variable:
 

@@ -18,9 +18,21 @@ The router automatically determines the instance URL from your OAuth credentials
 GET /salesforce/services/data/v59.0/query?q=SELECT+Id,Name+FROM+Contact+LIMIT+10
 ```
 
+Example:
+
+```bash
+maton salesforce query 'SELECT Id,Name FROM Contact LIMIT 10'
+```
+
 Complex query:
 ```bash
 GET /salesforce/services/data/v59.0/query?q=SELECT+Id,Name,Email+FROM+Contact+WHERE+Email+LIKE+'%example.com'+ORDER+BY+CreatedDate+DESC
+```
+
+Example:
+
+```bash
+maton salesforce query "SELECT Id,Name,Email FROM Contact WHERE Email LIKE '%example.com' ORDER BY CreatedDate DESC"
 ```
 
 ### Get Object
@@ -29,8 +41,9 @@ GET /salesforce/services/data/v59.0/sobjects/{objectType}/{recordId}
 ```
 
 Example:
+
 ```bash
-GET /salesforce/services/data/v59.0/sobjects/Contact/003XXXXXXXXXXXXXXX
+maton salesforce record view {recordId} --type {objectType}
 ```
 
 ### Create Object
@@ -45,6 +58,12 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton salesforce record create --type Contact --data '{"FirstName":"John","LastName":"Doe","Email":"john@example.com"}'
+```
+
 ### Update Object
 ```bash
 PATCH /salesforce/services/data/v59.0/sobjects/{objectType}/{recordId}
@@ -55,9 +74,21 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton salesforce record update {recordId} --type Contact --data '{"Phone":"+1234567890"}'
+```
+
 ### Delete Object
 ```bash
 DELETE /salesforce/services/data/v59.0/sobjects/{objectType}/{recordId}
+```
+
+Example:
+
+```bash
+maton salesforce record delete {recordId} --type Contact
 ```
 
 ### Describe Object (get schema)
@@ -65,14 +96,32 @@ DELETE /salesforce/services/data/v59.0/sobjects/{objectType}/{recordId}
 GET /salesforce/services/data/v59.0/sobjects/{objectType}/describe
 ```
 
+Example:
+
+```bash
+maton salesforce object describe {objectType}
+```
+
 ### List Objects
 ```bash
 GET /salesforce/services/data/v59.0/sobjects
 ```
 
+Example:
+
+```bash
+maton salesforce object list
+```
+
 ### Search (SOSL)
 ```bash
 GET /salesforce/services/data/v59.0/search?q=FIND+{searchTerm}+IN+ALL+FIELDS+RETURNING+Contact(Id,Name)
+```
+
+Example:
+
+```bash
+maton salesforce search 'FIND {John} IN ALL FIELDS RETURNING Contact(Id,Name)'
 ```
 
 ### Composite Request (batch multiple operations)
@@ -96,6 +145,13 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+echo '{"compositeRequest":[{"method":"GET","url":"/services/data/v59.0/sobjects/Contact/003XXXXXXX","referenceId":"contact1"},{"method":"GET","url":"/services/data/v59.0/sobjects/Account/001XXXXXXX","referenceId":"account1"}]}' \
+  | maton salesforce composite call -F -
+```
+
 ### Composite Batch Request
 ```bash
 POST /salesforce/services/data/v59.0/composite/batch
@@ -107,6 +163,13 @@ Content-Type: application/json
     {"method": "GET", "url": "v59.0/sobjects/Account/001XXXXXXX"}
   ]
 }
+```
+
+Example:
+
+```bash
+echo '{"batchRequests":[{"method":"GET","url":"v59.0/sobjects/Contact/003XXXXXXX"},{"method":"GET","url":"v59.0/sobjects/Account/001XXXXXXX"}]}' \
+  | maton salesforce composite batch -F -
 ```
 
 ### sObject Collections Create (batch create)
@@ -123,9 +186,21 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton salesforce record create --all-or-none --data '[{"attributes":{"type":"Contact"},"FirstName":"John","LastName":"Doe"},{"attributes":{"type":"Contact"},"FirstName":"Jane","LastName":"Smith"}]'
+```
+
 ### sObject Collections Delete (batch delete)
 ```bash
 DELETE /salesforce/services/data/v59.0/composite/sobjects?ids=003XXXXX,003YYYYY&allOrNone=true
+```
+
+Example:
+
+```bash
+maton salesforce record delete 003XXXXX 003YYYYY --all-or-none
 ```
 
 ### Get Updated Records
@@ -133,9 +208,21 @@ DELETE /salesforce/services/data/v59.0/composite/sobjects?ids=003XXXXX,003YYYYY&
 GET /salesforce/services/data/v59.0/sobjects/{objectType}/updated/?start=2026-01-30T00:00:00Z&end=2026-02-01T00:00:00Z
 ```
 
+Example:
+
+```bash
+maton salesforce record list --type {objectType} --start 2026-01-30T00:00:00Z --end 2026-02-01T00:00:00Z
+```
+
 ### Get Deleted Records
 ```bash
 GET /salesforce/services/data/v59.0/sobjects/{objectType}/deleted/?start=2026-01-30T00:00:00Z&end=2026-02-01T00:00:00Z
+```
+
+Example:
+
+```bash
+maton salesforce record list --type {objectType} --start 2026-01-30T00:00:00Z --end 2026-02-01T00:00:00Z --changes deleted
 ```
 
 ### Get API Limits
@@ -143,9 +230,21 @@ GET /salesforce/services/data/v59.0/sobjects/{objectType}/deleted/?start=2026-01
 GET /salesforce/services/data/v59.0/limits
 ```
 
+Example:
+
+```bash
+maton salesforce limit view
+```
+
 ### List API Versions
 ```bash
 GET /salesforce/services/data/
+```
+
+Example:
+
+```bash
+maton salesforce version list
 ```
 
 ## Common Objects
@@ -157,6 +256,16 @@ GET /salesforce/services/data/
 - `Case` - Support cases
 - `Task` - To-do items
 - `Event` - Calendar events
+
+## Pagination
+
+Salesforce uses cursor-based pagination. The CLI handles this automatically with `--paginate`:
+
+```bash
+maton salesforce query 'SELECT Id,Name FROM Contact' --paginate
+```
+
+For raw HTTP requests, follow the `nextRecordsUrl` returned in the query response.
 
 ## Notes
 
@@ -191,3 +300,4 @@ GET /salesforce/services/data/
 - [SOQL Reference](https://developer.salesforce.com/docs/atlas.en-us.soql_sosl.meta/soql_sosl/sforce_api_calls_soql.htm)
 - [SOSL Reference](https://developer.salesforce.com/docs/atlas.en-us.soql_sosl.meta/soql_sosl/sforce_api_calls_sosl.htm)
 - [API Resources List](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_list.htm)
+- [Maton CLI Manual](https://cli.maton.ai/manual)

@@ -16,9 +16,21 @@
 GET /google-drive/drive/v3/files?pageSize=10
 ```
 
+Example:
+
+```bash
+maton google-drive file list -L 10
+```
+
 With query:
 ```bash
 GET /google-drive/drive/v3/files?q=name%20contains%20'report'&pageSize=10
+```
+
+Example:
+
+```bash
+maton google-drive file list -Q "name contains 'report'" -L 10
 ```
 
 Only folders:
@@ -26,9 +38,21 @@ Only folders:
 GET /google-drive/drive/v3/files?q=mimeType='application/vnd.google-apps.folder'
 ```
 
+Example:
+
+```bash
+maton google-drive file list -Q "mimeType='application/vnd.google-apps.folder'"
+```
+
 Files in specific folder:
 ```bash
 GET /google-drive/drive/v3/files?q='FOLDER_ID'+in+parents
+```
+
+Example:
+
+```bash
+maton google-drive file list -Q "'FOLDER_ID' in parents"
 ```
 
 With fields:
@@ -41,14 +65,32 @@ GET /google-drive/drive/v3/files?fields=files(id,name,mimeType,createdTime,modif
 GET /google-drive/drive/v3/files/{fileId}?fields=id,name,mimeType,size,createdTime
 ```
 
+Example:
+
+```bash
+maton google-drive file view FILE_ID --fields 'id,name,mimeType,size,createdTime'
+```
+
 ### Download File Content
 ```bash
 GET /google-drive/drive/v3/files/{fileId}?alt=media
 ```
 
+Example:
+
+```bash
+maton google-drive file download FILE_ID --output ./report.pdf
+```
+
 ### Export Google Docs (to PDF, DOCX, etc.)
 ```bash
 GET /google-drive/drive/v3/files/{fileId}/export?mimeType=application/pdf
+```
+
+Example:
+
+```bash
+maton google-drive file export FILE_ID --mime-type application/pdf --output ./doc.pdf
 ```
 
 ### Create File (metadata only)
@@ -62,6 +104,12 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton google-drive file create --name 'New Document' --mime-type application/vnd.google-apps.document
+```
+
 ### Create Folder
 ```bash
 POST /google-drive/drive/v3/files
@@ -71,6 +119,12 @@ Content-Type: application/json
   "name": "New Folder",
   "mimeType": "application/vnd.google-apps.folder"
 }
+```
+
+Example:
+
+```bash
+maton google-drive file create --name 'New Folder' --mime-type application/vnd.google-apps.folder
 ```
 
 ### Update File Metadata
@@ -83,14 +137,32 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton google-drive file update FILE_ID --name 'Renamed File'
+```
+
 ### Move File to Folder
 ```bash
 PATCH /google-drive/drive/v3/files/{fileId}?addParents=NEW_FOLDER_ID&removeParents=OLD_FOLDER_ID
 ```
 
+Example:
+
+```bash
+maton google-drive file update FILE_ID --add-parents NEW_FOLDER_ID --remove-parents OLD_FOLDER_ID
+```
+
 ### Delete File
 ```bash
 DELETE /google-drive/drive/v3/files/{fileId}
+```
+
+Example:
+
+```bash
+maton google-drive file delete FILE_ID
 ```
 
 ### Copy File
@@ -101,6 +173,12 @@ Content-Type: application/json
 {
   "name": "Copy of File"
 }
+```
+
+Example:
+
+```bash
+maton google-drive file copy FILE_ID --name 'Copy of File'
 ```
 
 ### Create Permission (Share File)
@@ -115,9 +193,23 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton google-drive permission create -f FILE_ID --type user --role reader --email-address user@example.com
+```
+
 ## File Uploads
 
 Upload endpoints use a different path pattern: `/google-drive/upload/drive/v3/files`
+
+The CLI's `maton google-drive file upload` picks the upload type for you based on the file size and flags:
+
+| Flags | File size | Upload type used |
+|---|---|---|
+| `--no-metadata` | any | `uploadType=media` |
+| (default, with metadata) | < 5 MiB | `uploadType=multipart` |
+| (default, with metadata) | ≥ 5 MiB | `uploadType=resumable` (chunked, auto-resumes on transient errors) |
 
 ### Simple Upload (up to 5MB)
 ```bash
@@ -125,6 +217,12 @@ POST /google-drive/upload/drive/v3/files?uploadType=media
 Content-Type: text/plain
 
 <file content>
+```
+
+Example:
+
+```bash
+maton google-drive file upload ./hello.txt --no-metadata
 ```
 
 ### Multipart Upload (with metadata, up to 5MB)
@@ -143,6 +241,12 @@ Content-Type: text/plain
 --boundary--
 ```
 
+Example:
+
+```bash
+maton google-drive file upload ./myfile.txt
+```
+
 ### Resumable Upload (for large files)
 ```bash
 # Step 1: Initiate session
@@ -157,12 +261,34 @@ X-Upload-Content-Length: <file_size>
 # Step 2: Upload content to that URI
 ```
 
+Example:
+
+```bash
+maton google-drive file upload ./large_file.bin
+```
+
+The CLI automatically resumes from the last persisted offset if interrupted — re-run the same command.
+
+### Upload to Specific Folder
+
+Example:
+
+```bash
+maton google-drive file upload ./myfile.txt --parent FOLDER_ID
+```
+
 ### Update File Content
 ```bash
 PATCH /google-drive/upload/drive/v3/files/{fileId}?uploadType=media
 Content-Type: text/plain
 
 <new file content>
+```
+
+Example:
+
+```bash
+maton google-drive file update FILE_ID --file ./updated.txt
 ```
 
 ## Query Operators
@@ -188,6 +314,16 @@ name contains 'report' and mimeType = 'application/pdf'
 - `application/vnd.google-apps.folder` - Folder
 - `application/pdf` - PDF
 
+## Pagination
+
+Google Drive uses token-based pagination. The CLI handles this automatically with `--paginate`:
+
+```bash
+maton google-drive file list --paginate
+```
+
+For raw HTTP requests, pass the `nextPageToken` from the previous response as the `pageToken` query parameter.
+
 ## Notes
 
 - Authentication is automatic - the router injects the OAuth token
@@ -211,3 +347,4 @@ name contains 'report' and mimeType = 'application/pdf'
 - [Resumable Uploads](https://developers.google.com/drive/api/guides/manage-uploads#resumable)
 - [Create Permission](https://developers.google.com/workspace/drive/api/reference/rest/v3/permissions/create)
 - [Search Query Syntax](https://developers.google.com/drive/api/guides/search-files)
+- [Maton CLI Manual](https://cli.maton.ai/manual)

@@ -18,6 +18,12 @@ GET /slack/api/auth.test
 
 Returns current user and team info.
 
+Example:
+
+```bash
+maton slack whoami
+```
+
 ---
 
 ## Messages
@@ -33,6 +39,12 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton slack message send --channel C0123456789 --text 'Hello, world!'
+```
+
 With blocks:
 ```bash
 POST /slack/api/chat.postMessage
@@ -44,6 +56,12 @@ Content-Type: application/json
     {"type": "section", "text": {"type": "mrkdwn", "text": "*Bold* and _italic_"}}
   ]
 }
+```
+
+Example:
+
+```bash
+maton slack message send --channel C0123456789 --blocks '[{"type":"section","text":{"type":"mrkdwn","text":"*Bold* and _italic_"}}]'
 ```
 
 ### Post Thread Reply
@@ -58,6 +76,12 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton slack message reply --channel C0123456789 --thread-ts 1234567890.123456 --text 'This is a reply in a thread'
+```
+
 ### Update Message
 ```bash
 POST /slack/api/chat.update
@@ -70,6 +94,12 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton slack message update --channel C0123456789 --ts 1234567890.123456 --text 'Updated message'
+```
+
 ### Delete Message
 ```bash
 POST /slack/api/chat.delete
@@ -79,6 +109,12 @@ Content-Type: application/json
   "channel": "C0123456789",
   "ts": "1234567890.123456"
 }
+```
+
+Example:
+
+```bash
+maton slack message delete --channel C0123456789 --ts 1234567890.123456
 ```
 
 ### Schedule Message
@@ -93,9 +129,21 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton slack schedule create --channel C0123456789 --text 'Scheduled message' --post-at 1734567890
+```
+
 ### List Scheduled Messages
 ```bash
 GET /slack/api/chat.scheduledMessages.list
+```
+
+Example:
+
+```bash
+maton slack schedule list
 ```
 
 ### Delete Scheduled Message
@@ -109,9 +157,21 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton slack schedule delete --channel C0123456789 --id Q1234567890
+```
+
 ### Get Permalink
 ```bash
 GET /slack/api/chat.getPermalink?channel=C0123456789&message_ts=1234567890.123456
+```
+
+Example:
+
+```bash
+maton slack message permalink --channel C0123456789 --message-ts 1234567890.123456
 ```
 
 ---
@@ -125,9 +185,21 @@ GET /slack/api/conversations.list?types=public_channel,private_channel&limit=100
 
 Types: `public_channel`, `private_channel`, `im`, `mpim`
 
+Example:
+
+```bash
+maton slack channel list --types public_channel,private_channel --limit 100
+```
+
 ### Get Channel Info
 ```bash
 GET /slack/api/conversations.info?channel=C0123456789
+```
+
+Example:
+
+```bash
+maton slack channel view C0123456789
 ```
 
 ### Get Channel History
@@ -135,9 +207,21 @@ GET /slack/api/conversations.info?channel=C0123456789
 GET /slack/api/conversations.history?channel=C0123456789&limit=100
 ```
 
+Example:
+
+```bash
+maton slack message list --channel C0123456789 --limit 100
+```
+
 With time range:
 ```bash
 GET /slack/api/conversations.history?channel=C0123456789&oldest=1234567890&latest=1234567899
+```
+
+Example:
+
+```bash
+maton slack message list --channel C0123456789 --oldest 1234567890 --latest 1234567899
 ```
 
 ### Get Thread Replies
@@ -145,9 +229,21 @@ GET /slack/api/conversations.history?channel=C0123456789&oldest=1234567890&lates
 GET /slack/api/conversations.replies?channel=C0123456789&ts=1234567890.123456
 ```
 
+Example:
+
+```bash
+maton slack message replies --channel C0123456789 --ts 1234567890.123456
+```
+
 ### Get Channel Members
 ```bash
 GET /slack/api/conversations.members?channel=C0123456789&limit=100
+```
+
+Example:
+
+```bash
+maton slack channel members C0123456789 --limit 100
 ```
 
 ### Create Channel
@@ -161,6 +257,12 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton slack channel create --name new-channel-name
+```
+
 ### Join Channel
 ```bash
 POST /slack/api/conversations.join
@@ -169,6 +271,12 @@ Content-Type: application/json
 {
   "channel": "C0123456789"
 }
+```
+
+Example:
+
+```bash
+maton slack channel join C0123456789
 ```
 
 ### Leave Channel
@@ -181,6 +289,12 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton slack channel leave C0123456789
+```
+
 ### Archive Channel
 ```bash
 POST /slack/api/conversations.archive
@@ -191,6 +305,12 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton slack channel archive C0123456789
+```
+
 ### Unarchive Channel
 ```bash
 POST /slack/api/conversations.unarchive
@@ -199,6 +319,12 @@ Content-Type: application/json
 {
   "channel": "C0123456789"
 }
+```
+
+Example:
+
+```bash
+maton slack channel unarchive C0123456789
 ```
 
 ### Rename Channel
@@ -212,6 +338,12 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton slack channel rename C0123456789 --name new-name
+```
+
 ### Set Channel Topic
 ```bash
 POST /slack/api/conversations.setTopic
@@ -221,6 +353,12 @@ Content-Type: application/json
   "channel": "C0123456789",
   "topic": "Channel topic here"
 }
+```
+
+Example:
+
+```bash
+maton slack channel set-topic C0123456789 --topic 'Channel topic here'
 ```
 
 ### Set Channel Purpose
@@ -234,6 +372,12 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton slack channel set-purpose C0123456789 --purpose 'Channel purpose here'
+```
+
 ### Invite to Channel
 ```bash
 POST /slack/api/conversations.invite
@@ -243,6 +387,12 @@ Content-Type: application/json
   "channel": "C0123456789",
   "users": "U0123456789,U9876543210"
 }
+```
+
+Example:
+
+```bash
+maton slack channel invite C0123456789 --users U0123456789,U9876543210
 ```
 
 ### Kick from Channel
@@ -256,6 +406,12 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton slack channel kick C0123456789 --user U0123456789
+```
+
 ### Mark Channel Read
 ```bash
 POST /slack/api/conversations.mark
@@ -265,6 +421,12 @@ Content-Type: application/json
   "channel": "C0123456789",
   "ts": "1234567890.123456"
 }
+```
+
+Example:
+
+```bash
+maton slack channel mark C0123456789 --ts 1234567890.123456
 ```
 
 ---
@@ -281,6 +443,12 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton slack conversation open --users U0123456789
+```
+
 For group DM:
 ```bash
 POST /slack/api/conversations.open
@@ -291,9 +459,21 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton slack conversation open --users U0123456789,U9876543210
+```
+
 ### List DM Channels
 ```bash
 GET /slack/api/conversations.list?types=im
+```
+
+Example:
+
+```bash
+maton slack channel list --types im
 ```
 
 ### List Group DM Channels
@@ -301,9 +481,21 @@ GET /slack/api/conversations.list?types=im
 GET /slack/api/conversations.list?types=mpim
 ```
 
+Example:
+
+```bash
+maton slack channel list --types mpim
+```
+
 ### My Conversations
 ```bash
 GET /slack/api/users.conversations?limit=100
+```
+
+Example:
+
+```bash
+maton slack conversation list --limit 100
 ```
 
 ---
@@ -315,14 +507,32 @@ GET /slack/api/users.conversations?limit=100
 GET /slack/api/users.list?limit=100
 ```
 
+Example:
+
+```bash
+maton slack user list --limit 100
+```
+
 ### Get User Info
 ```bash
 GET /slack/api/users.info?user=U0123456789
 ```
 
+Example:
+
+```bash
+maton slack user view U0123456789
+```
+
 ### Get User Presence
 ```bash
 GET /slack/api/users.getPresence?user=U0123456789
+```
+
+Example:
+
+```bash
+maton slack user presence U0123456789
 ```
 
 ### Set User Presence
@@ -338,6 +548,12 @@ Content-Type: application/json
 ### Lookup User by Email
 ```bash
 GET /slack/api/users.lookupByEmail?email=user@example.com
+```
+
+Example:
+
+```bash
+maton slack user lookup --email user@example.com
 ```
 
 ---
@@ -356,6 +572,12 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton slack reaction add --channel C0123456789 --ts 1234567890.123456 --emoji thumbsup
+```
+
 ### Remove Reaction
 ```bash
 POST /slack/api/reactions.remove
@@ -368,14 +590,32 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton slack reaction remove --channel C0123456789 --ts 1234567890.123456 --emoji thumbsup
+```
+
 ### Get Reactions on Message
 ```bash
 GET /slack/api/reactions.get?channel=C0123456789&timestamp=1234567890.123456
 ```
 
+Example:
+
+```bash
+maton slack reaction get --channel C0123456789 --ts 1234567890.123456
+```
+
 ### List My Reactions
 ```bash
 GET /slack/api/reactions.list?limit=100
+```
+
+Example:
+
+```bash
+maton slack reaction list --limit 100
 ```
 
 ---
@@ -385,6 +625,12 @@ GET /slack/api/reactions.list?limit=100
 ### List Stars
 ```bash
 GET /slack/api/stars.list?limit=100
+```
+
+Example:
+
+```bash
+maton slack star list --limit 100
 ```
 
 ### Add Star
@@ -398,6 +644,12 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton slack star add --channel C0123456789 --ts 1234567890.123456
+```
+
 ### Remove Star
 ```bash
 POST /slack/api/stars.remove
@@ -409,6 +661,12 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton slack star remove --channel C0123456789 --ts 1234567890.123456
+```
+
 ---
 
 ## Bots
@@ -417,6 +675,14 @@ Content-Type: application/json
 ```bash
 GET /slack/api/bots.info?bot=B0123456789
 ```
+
+Example:
+
+```bash
+maton slack bot view B0123456789
+```
+
+Note: this expects the `B`-prefixed bot ID (from `bot_id` on a message), not the bot's `U`-prefixed user ID. Passing a `U…` ID returns `bot_not_found`.
 
 ---
 
@@ -449,6 +715,12 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton slack file upload --file ./example.txt --channel C0123456789 --title 'My File'
+```
+
 ### Delete File
 ```bash
 POST /slack/api/files.delete
@@ -459,12 +731,34 @@ Content-Type: application/json
 }
 ```
 
+Example:
+
+```bash
+maton slack file delete F0123456789
+```
+
 ### Get File Info
 ```bash
 GET /slack/api/files.info?file=F0123456789
 ```
 
+Example:
+
+```bash
+maton slack file view F0123456789
+```
+
 ---
+
+## Pagination
+
+Slack uses cursor-based pagination. The CLI handles this automatically with `--paginate`:
+
+```bash
+maton slack message list --channel C0123456789 --paginate
+```
+
+For raw HTTP requests, use the `cursor` from `response_metadata.next_cursor`.
 
 ## Notes
 
@@ -474,7 +768,6 @@ GET /slack/api/files.info?file=F0123456789
 - Message timestamps (`ts`) are unique identifiers
 - Use `mrkdwn` type for Slack-flavored markdown
 - Thread replies use `thread_ts` to reference parent message
-- Cursor-based pagination: use `cursor` from `response_metadata.next_cursor`
 - If you encounter `missing_scope` errors, contact [Maton Support](mailto:support@maton.ai) to request additional scopes
 
 ## Resources
@@ -484,3 +777,4 @@ GET /slack/api/files.info?file=F0123456789
 - [Block Kit Reference](https://api.slack.com/reference/block-kit)
 - [Message Formatting](https://api.slack.com/reference/surfaces/formatting)
 - [Rate Limits](https://api.slack.com/docs/rate-limits)
+- [Maton CLI Manual](https://cli.maton.ai/manual)
