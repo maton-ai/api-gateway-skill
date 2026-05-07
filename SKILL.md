@@ -19,8 +19,19 @@ Managed API routing for third-party services, provided by [Maton](https://maton.
 
 ## Quick Start
 
+**CLI:**
+
 ```bash
-# List Slack channels (read-only)
+maton slack channel list --types public_channel --limit 10
+```
+
+```bash
+maton api '/slack/api/conversations.list?types=public_channel&limit=10'
+```
+
+**Python:**
+
+```bash
 python <<'EOF'
 import urllib.request, os, json
 req = urllib.request.Request('https://api.maton.ai/slack/api/conversations.list?types=public_channel&limit=10')
@@ -28,7 +39,6 @@ req.add_header('Authorization', f'Bearer {os.environ["MATON_API_KEY"]}')
 print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
-
 
 ## Routing
 
@@ -49,35 +59,64 @@ https://api.maton.ai/google-mail/gmail/v1/users/me/messages
 
 The first path segment is the app identifier listed in Supported Services. For Gmail, use `/google-mail/gmail/v1/users/me/messages`.
 
-## Authentication
+## Installation
 
-Use `MATON_API_KEY` from the environment when constructing the request's Authorization header, as shown in the examples. Never print or copy the key.
+**NPM:**
+```bash
+npm install -g @maton-ai/cli
+```
+
+**Homebrew:**
+```bash
+brew install maton-ai/cli/maton
+```
+
+## Authentication
 
 **IMPORTANT — Credential Safety:**
 - Treat `MATON_API_KEY` as a secret. Never log it, echo it, paste it into prompts, or expose it in shared files, command output, or tool results.
 - **Connection creation requires explicit user approval.** Before creating any connection, ask the user to confirm the specific service and confirm they intend to authorize access. Never create connections on the agent's own initiative.
 - **Least-privilege scopes:** When a service offers scope selection during OAuth, select only the scopes the current task requires. Do not accept broader scopes for convenience.
-- Remove connections immediately after the task is complete if they are no longer needed.
+- Remove connections immediately after the task is complete if they are no longer needed (`maton connection delete {id}`).
 - If the key may have been exposed (logs, screenshots, shared terminals), rotate it immediately at [maton.ai/settings](https://maton.ai/settings).
 - Never share the key across users, workflows, or environments that do not require it.
 
-**Environment Variable:** You can set your API key as the `MATON_API_KEY` environment variable:
+**CLI:**
 
 ```bash
-export MATON_API_KEY="YOUR_API_KEY"
+maton login                          # Opens browser for API key
+maton login --interactive            # Skip browser, paste API key directly
+maton whoami                         # Show current auth state
 ```
 
-## Getting Your API Key
+**Manual:**
 
 1. Sign in or create an account at [maton.ai](https://maton.ai)
 2. Go to [maton.ai/settings](https://maton.ai/settings)
 3. Click the copy button on the right side of API Key section to copy it
+4. Set your API key as `MATON_API_KEY`:
+
+```bash
+export MATON_API_KEY="YOUR_API_KEY"
+```
 
 ## Connection Management
 
 Connection management uses a separate base URL: `https://api.maton.ai`
 
 ### List Connections
+
+**CLI:**
+
+```bash
+maton connection list slack --status ACTIVE
+```
+
+```bash
+maton api -X GET /connections -f app=slack -f status=ACTIVE
+```
+
+**Python:**
 
 ```bash
 python <<'EOF'
@@ -112,6 +151,18 @@ EOF
 
 ### Create Connection
 
+**CLI:**
+
+```bash
+maton connection create slack
+```
+
+```bash
+maton api /connections -f app=slack
+```
+
+**Python:**
+
 ```bash
 python <<'EOF'
 import urllib.request, os, json
@@ -128,6 +179,18 @@ EOF
 - `method` (optional) - Connection method (`API_KEY`, `BASIC`, `OAUTH1`, `OAUTH2`, `MCP`)
 
 ### Get Connection
+
+**CLI:**
+
+```bash
+maton connection view {connection_id}
+```
+
+```bash
+maton api /connections/{connection_id}
+```
+
+**Python:**
 
 ```bash
 python <<'EOF'
@@ -157,6 +220,18 @@ Open the returned URL in a browser to complete service authorization.
 
 ### Delete Connection
 
+**CLI:**
+
+```bash
+maton connection delete {connection_id}
+```
+
+```bash
+maton api -X DELETE /connections/{connection_id}
+```
+
+**Python:**
+
 ```bash
 python <<'EOF'
 import urllib.request, os, json
@@ -168,7 +243,19 @@ EOF
 
 ### Specifying Connection
 
-If you have multiple connections for the same app, you can specify which connection to use by adding the `Maton-Connection` header with the connection ID:
+If you have multiple connections for the same app, specify which connection to use:
+
+**CLI:**
+
+```bash
+maton slack channel list --types public_channel --limit 10 --connection {connection_id}
+```
+
+```bash
+maton api '/slack/api/conversations.list?types=public_channel&limit=10' --connection {connection_id}
+```
+
+**Python:**
 
 ```bash
 python <<'EOF'
@@ -180,7 +267,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If you have multiple connections, always include this header to ensure requests go to the intended account.
+If you have multiple connections, always specify the connection to ensure requests go to the intended account.
 
 ## Security & Permissions
 
@@ -189,7 +276,7 @@ If you have multiple connections, always include this header to ensure requests 
 - **Default to read/list calls.** Retrieve or list resources first to verify identifiers, account context, and current state before proposing any change.
 - **All operations that modify data require explicit user approval.** Before executing any POST, PUT, PATCH, or DELETE call, confirm the target service, resource, payload, and intended effect with the user. This includes sending messages, creating records, modifying content, deleting resources, and triggering workflows.
 - **High-impact operations require extra caution.** Actions such as bulk deletions, publishing content, sending emails/messages to external recipients, modifying billing or financial data, or changing permissions must be clearly described with specific resource identifiers and confirmed before execution.
-- **Always specify the connection.** Use the `Maton-Connection` header to ensure requests go to the intended account, especially when the user has multiple connections for the same service.
+- **Always specify the connection.** Use the `--connection` flag (CLI) or `Maton-Connection` header to ensure requests go to the intended account, especially when the user has multiple connections for the same service.
 
 ## Supported Services
 
@@ -511,6 +598,18 @@ See [references/](https://github.com/maton-ai/api-gateway-skill/tree/main/refere
 
 ### Slack - List Channels (Native API)
 
+**CLI:**
+
+```bash
+maton slack channel list --types public_channel --limit 10
+```
+
+```bash
+maton api '/slack/api/conversations.list?types=public_channel&limit=10'
+```
+
+**Python:**
+
 ```bash
 # Native Slack API: GET https://slack.com/api/conversations.list
 python <<'EOF'
@@ -522,6 +621,14 @@ EOF
 ```
 
 ### HubSpot - List Contacts (Native API)
+
+**CLI:**
+
+```bash
+maton hubspot contact list -L 10
+```
+
+**Python:**
 
 ```bash
 # Native HubSpot API: GET https://api.hubapi.com/crm/v3/objects/contacts
@@ -535,6 +642,14 @@ EOF
 
 ### Google Sheets - Get Spreadsheet Values (Native API)
 
+**CLI:**
+
+```bash
+maton google-sheets values get {spreadsheet_id} --range 'Sheet1!A1:B2'
+```
+
+**Python:**
+
 ```bash
 # Native Sheets API: GET https://sheets.googleapis.com/v4/spreadsheets/{id}/values/{range}
 python <<'EOF'
@@ -546,6 +661,14 @@ EOF
 ```
 
 ### Salesforce - SOQL Query (Native API)
+
+**CLI:**
+
+```bash
+maton salesforce query 'SELECT Id,Name FROM Contact LIMIT 10'
+```
+
+**Python:**
 
 ```bash
 # Native Salesforce API: GET https://{instance}.salesforce.com/services/data/v64.0/query?q=...
@@ -559,6 +682,14 @@ EOF
 
 ### Airtable - List Tables (Native API)
 
+**CLI:**
+
+```bash
+maton api '/airtable/v0/meta/bases/{base_id}/tables'
+```
+
+**Python:**
+
 ```bash
 # Native Airtable API: GET https://api.airtable.com/v0/meta/bases/{id}/tables
 python <<'EOF'
@@ -570,6 +701,14 @@ EOF
 ```
 
 ### Notion - Query Database (Native API)
+
+**CLI:**
+
+```bash
+maton notion data-source query {data_source_id}
+```
+
+**Python:**
 
 ```bash
 # Native Notion API: POST https://api.notion.com/v1/data_sources/{id}/query
@@ -586,6 +725,14 @@ EOF
 
 ### Stripe - List Customers (Native API)
 
+**CLI:**
+
+```bash
+maton stripe customer list -L 10
+```
+
+**Python:**
+
 ```bash
 # Native Stripe API: GET https://api.stripe.com/v1/customers
 python <<'EOF'
@@ -597,6 +744,20 @@ EOF
 ```
 
 ## Code Examples
+
+### CLI
+
+```bash
+# List public slack channels
+maton slack channel list --types public_channel --limit 10
+
+# List unread messages with headers
+maton google-mail message list --hydrate
+
+# Filter with jq — e.g., only active customers
+# Note: --jq requires --json
+maton stripe customer list -L 10 --json --jq '.data | map(select(.delinquent == false))'
+```
 
 ### JavaScript (Node.js)
 
@@ -636,6 +797,22 @@ Errors from the target API are passed through with their original status codes a
 
 ### Troubleshooting: API Key Issues
 
+**CLI:**
+
+1. Check your auth state:
+
+```bash
+maton whoami
+```
+
+2. Verify the API key is valid by listing connections:
+
+```bash
+maton connection list
+```
+
+**Manual:**
+
 1. Check that the `MATON_API_KEY` environment variable is set:
 
 ```bash
@@ -661,6 +838,14 @@ EOF
 - Incorrect: `https://api.maton.ai/gmail/v1/users/me/messages`
 
 2. Ensure you have an active connection for the app. List your connections to verify:
+
+**CLI:**
+
+```bash
+maton connection list google-mail --status ACTIVE
+```
+
+**Python:**
 
 ```bash
 python <<'EOF'
@@ -702,5 +887,6 @@ A 500 error may indicate expired service authorization. Try creating a new conne
 
 - [Github](https://github.com/maton-ai/api-gateway-skill)
 - [API Reference](https://www.maton.ai/docs/api-reference)
+- [Maton CLI Manual](https://cli.maton.ai/manual)
 - [Maton Community](https://discord.com/invite/dBfFAcefs2)
 - [Maton Support](mailto:support@maton.ai)
