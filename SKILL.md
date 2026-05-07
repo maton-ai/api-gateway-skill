@@ -263,6 +263,7 @@ If you have multiple connections, always include this header to ensure requests 
 | Lemlist | `lemlist` | `api.lemlist.com` |
 | Linear | `linear` | `api.linear.app` |
 | LinkedIn | `linkedin` | `api.linkedin.com` |
+| LinkedIn Community Management | `linkedin-community-management` | `api.linkedin.com` |
 | Mailchimp | `mailchimp` | `{dc}.api.mailchimp.com` |
 | MailerLite | `mailerlite` | `connect.mailerlite.com` |
 | Mailgun | `mailgun` | `api.mailgun.net` |
@@ -418,6 +419,7 @@ See [references/](https://github.com/maton-ai/api-gateway-skill/tree/main/refere
 - [Lemlist](https://github.com/maton-ai/api-gateway-skill/tree/main/references/lemlist/README.md) - Campaigns, leads, activities, schedules, unsubscribes
 - [Linear](https://github.com/maton-ai/api-gateway-skill/tree/main/references/linear/README.md) - Issues, projects, teams, cycles (GraphQL)
 - [LinkedIn](https://github.com/maton-ai/api-gateway-skill/tree/main/references/linkedin/README.md) - Profile, posts, shares, media uploads
+- [LinkedIn Community Management](https://github.com/maton-ai/api-gateway-skill/tree/main/references/linkedin-community-management/README.md) - Organizations, posts, comments, reactions, follower/page/share statistics
 - [Mailchimp](https://github.com/maton-ai/api-gateway-skill/tree/main/references/mailchimp/README.md) - Audiences, campaigns, templates, automations
 - [MailerLite](https://github.com/maton-ai/api-gateway-skill/tree/main/references/mailerlite/README.md) - Subscribers, groups, campaigns, automations, forms
 - [Mailgun](https://github.com/maton-ai/api-gateway-skill/tree/main/references/mailgun/README.md) - Domains, routes, templates, mailing lists, suppressions
