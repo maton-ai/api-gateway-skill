@@ -406,6 +406,7 @@ If you have multiple connections, always specify the connection to ensure reques
 | Tavily | `tavily` | `api.tavily.com` |
 | Telegram | `telegram` | `api.telegram.org` |
 | TickTick | `ticktick` | `api.ticktick.com` |
+| TikTok | `tiktok` | `open.tiktokapis.com` |
 | Todoist | `todoist` | `api.todoist.com` |
 | Toggl Track | `toggl-track` | `api.track.toggl.com` |
 | Trello | `trello` | `api.trello.com` |
@@ -563,6 +564,7 @@ See [references/](https://github.com/maton-ai/api-gateway-skill/tree/main/refere
 - [Tavily](https://github.com/maton-ai/api-gateway-skill/tree/main/references/tavily/README.md) - AI web search, content extraction, crawling, research tasks
 - [Telegram](https://github.com/maton-ai/api-gateway-skill/tree/main/references/telegram/README.md) - Messages, chats, bots, updates, polls
 - [TickTick](https://github.com/maton-ai/api-gateway-skill/tree/main/references/ticktick/README.md) - Tasks, projects, task lists
+- [TikTok](https://github.com/maton-ai/api-gateway-skill/tree/main/references/tiktok/README.md) - Videos, user info, content posting, drafts
 - [Todoist](https://github.com/maton-ai/api-gateway-skill/tree/main/references/todoist/README.md) - Tasks, projects, sections, labels, comments
 - [Toggl Track](https://github.com/maton-ai/api-gateway-skill/tree/main/references/toggl-track/README.md) - Time entries, projects, clients, tags, workspaces
 - [Trello](https://github.com/maton-ai/api-gateway-skill/tree/main/references/trello/README.md) - Boards, lists, cards, checklists
