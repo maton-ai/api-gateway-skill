@@ -370,7 +370,6 @@ If you have multiple connections, always specify the connection to ensure reques
 | ManyChat | `manychat` | `api.manychat.com` |
 | Manus | `manus` | `api.manus.ai` |
 | Memelord | `memelord` | `www.memelord.com` |
-| Meta Ads | `meta-ads` | `graph.facebook.com` |
 | Microsoft Excel | `microsoft-excel` | `graph.microsoft.com` |
 | Microsoft Teams | `microsoft-teams` | `graph.microsoft.com` |
 | Microsoft To Do | `microsoft-to-do` | `graph.microsoft.com` |
@@ -391,6 +390,7 @@ If you have multiple connections, always specify the connection to ensure reques
 | Reducto | `reducto` | `platform.reducto.ai` |
 | Resend | `resend` | `api.resend.com` |
 | Salesforce | `salesforce` | `{instance}.salesforce.com` |
+| SendGrid | `sendgrid` | `api.sendgrid.com` |
 | Sentry | `sentry` | `{subdomain}.sentry.io` |
 | SharePoint | `sharepoint` | `graph.microsoft.com` |
 | SignNow | `signnow` | `api.signnow.com` |
@@ -526,7 +526,6 @@ See [references/](https://github.com/maton-ai/api-gateway-skill/tree/main/refere
 - [ManyChat](https://github.com/maton-ai/api-gateway-skill/tree/main/references/manychat/README.md) - Subscribers, tags, flows, messaging
 - [Manus](https://github.com/maton-ai/api-gateway-skill/tree/main/references/manus/README.md) - AI agent tasks, projects, files, webhooks
 - [Memelord](https://github.com/maton-ai/api-gateway-skill/tree/main/references/memelord/README.md) - AI meme generation, video memes, template editing
-- [Meta Ads](https://github.com/maton-ai/api-gateway-skill/tree/main/references/meta-ads/README.md) - Ad accounts, campaigns, ad sets, ads, creatives, insights
 - [Microsoft Excel](https://github.com/maton-ai/api-gateway-skill/tree/main/references/microsoft-excel/README.md) - Workbooks, worksheets, ranges, tables, charts
 - [Microsoft Teams](https://github.com/maton-ai/api-gateway-skill/tree/main/references/microsoft-teams/README.md) - Teams, channels, messages, members, chats
 - [Microsoft To Do](https://github.com/maton-ai/api-gateway-skill/tree/main/references/microsoft-to-do/README.md) - Task lists, tasks, checklist items, linked resources

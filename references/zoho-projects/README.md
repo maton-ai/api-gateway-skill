@@ -6,21 +6,24 @@
 ## API Path Pattern
 
 ```
-/zoho-projects/restapi/portals/
-/zoho-projects/restapi/portal/{portal_id}/projects/
-/zoho-projects/restapi/portal/{portal_id}/projects/{project_id}/tasks/
-/zoho-projects/restapi/portal/{portal_id}/projects/{project_id}/tasklists/
-/zoho-projects/restapi/portal/{portal_id}/projects/{project_id}/milestones/
-/zoho-projects/restapi/portal/{portal_id}/users/
+/zoho-projects/api/v3/portals
+/zoho-projects/api/v3/portal/{portal_id}/projects
+/zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasks
+/zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasklists
+/zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/milestones
+/zoho-projects/api/v3/portal/{portal_id}/users
 ```
 
 ## Important Notes
 
-- All POST requests use `application/x-www-form-urlencoded`, not JSON
+- V3 uses `/api/v3/` prefix (not `/restapi/`)
+- No trailing slashes — trailing slashes return 400
+- All POST/PATCH requests use `application/json` (not form-urlencoded)
+- Updates use PATCH method (not POST)
 - Portal ID is required for most endpoints
-- Date format: `MM-dd-yyyy`
-- Empty lists return 204 No Content
-- Deleted items go to trash, not permanently deleted
+- Date format for milestones: `MM-dd-yyyy`
+- Delete operations return 204 No Content
+- Create operations return 201 Created
 
 ## Common Endpoints
 
@@ -28,146 +31,210 @@
 
 #### List Portals
 ```bash
-GET /zoho-projects/restapi/portals/
-```
-
-#### Get Portal
-```bash
-GET /zoho-projects/restapi/portal/{portal_id}/
+GET /zoho-projects/api/v3/portals
 ```
 
 ### Projects
 
 #### List Projects
 ```bash
-GET /zoho-projects/restapi/portal/{portal_id}/projects/
+GET /zoho-projects/api/v3/portal/{portal_id}/projects
 ```
 
 #### Get Project
 ```bash
-GET /zoho-projects/restapi/portal/{portal_id}/projects/{project_id}/
+GET /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}
 ```
 
 #### Create Project
 ```bash
-POST /zoho-projects/restapi/portal/{portal_id}/projects/
-Content-Type: application/x-www-form-urlencoded
+POST /zoho-projects/api/v3/portal/{portal_id}/projects
+Content-Type: application/json
 
-name=New+Project
+{
+  "name": "New Project",
+  "description": "Project description"
+}
 ```
 
 #### Update Project
 ```bash
-POST /zoho-projects/restapi/portal/{portal_id}/projects/{project_id}/
-Content-Type: application/x-www-form-urlencoded
+PATCH /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}
+Content-Type: application/json
 
-name=Updated+Name
+{
+  "name": "Updated Name"
+}
 ```
 
 #### Delete Project
 ```bash
-DELETE /zoho-projects/restapi/portal/{portal_id}/projects/{project_id}/
+DELETE /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}
 ```
 
 ### Tasks
 
 #### List Tasks
 ```bash
-GET /zoho-projects/restapi/portal/{portal_id}/projects/{project_id}/tasks/
+GET /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasks
 ```
 
 #### Get Task
 ```bash
-GET /zoho-projects/restapi/portal/{portal_id}/projects/{project_id}/tasks/{task_id}/
-```
-
-#### Get My Tasks
-```bash
-GET /zoho-projects/restapi/portal/{portal_id}/mytasks/
+GET /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasks/{task_id}
 ```
 
 #### Create Task
 ```bash
-POST /zoho-projects/restapi/portal/{portal_id}/projects/{project_id}/tasks/
-Content-Type: application/x-www-form-urlencoded
+POST /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasks
+Content-Type: application/json
 
-name=New+Task
+{
+  "name": "New Task",
+  "priority": "high"
+}
 ```
 
 #### Update Task
 ```bash
-POST /zoho-projects/restapi/portal/{portal_id}/projects/{project_id}/tasks/{task_id}/
-Content-Type: application/x-www-form-urlencoded
+PATCH /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasks/{task_id}
+Content-Type: application/json
 
-name=Updated+Name&priority=High
+{
+  "name": "Updated Name",
+  "priority": "medium"
+}
 ```
 
 #### Delete Task
 ```bash
-DELETE /zoho-projects/restapi/portal/{portal_id}/projects/{project_id}/tasks/{task_id}/
+DELETE /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasks/{task_id}
 ```
 
 ### Task Comments
 
 #### List Comments
 ```bash
-GET /zoho-projects/restapi/portal/{portal_id}/projects/{project_id}/tasks/{task_id}/comments/
+GET /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasks/{task_id}/comments
 ```
 
 #### Add Comment
 ```bash
-POST /zoho-projects/restapi/portal/{portal_id}/projects/{project_id}/tasks/{task_id}/comments/
-Content-Type: application/x-www-form-urlencoded
+POST /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasks/{task_id}/comments
+Content-Type: application/json
 
-content=Comment+text
+{
+  "comment": "Comment text"
+}
+```
+
+Note: The field name is `comment`, not `content`.
+
+#### Delete Comment
+```bash
+DELETE /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasks/{task_id}/comments/{comment_id}
 ```
 
 ### Tasklists
 
 #### List Tasklists
 ```bash
-GET /zoho-projects/restapi/portal/{portal_id}/projects/{project_id}/tasklists/
+GET /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasklists
 ```
 
 #### Create Tasklist
 ```bash
-POST /zoho-projects/restapi/portal/{portal_id}/projects/{project_id}/tasklists/
-Content-Type: application/x-www-form-urlencoded
+POST /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasklists
+Content-Type: application/json
 
-name=New+Tasklist
+{
+  "name": "New Tasklist",
+  "flag": "internal"
+}
+```
+
+#### Update Tasklist
+```bash
+PATCH /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasklists/{tasklist_id}
+Content-Type: application/json
+
+{
+  "name": "Updated Name"
+}
+```
+
+#### Delete Tasklist
+```bash
+DELETE /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasklists/{tasklist_id}
 ```
 
 ### Milestones
 
 #### List Milestones
 ```bash
-GET /zoho-projects/restapi/portal/{portal_id}/projects/{project_id}/milestones/
+GET /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/milestones
 ```
 
 #### Create Milestone
 ```bash
-POST /zoho-projects/restapi/portal/{portal_id}/projects/{project_id}/milestones/
-Content-Type: application/x-www-form-urlencoded
+POST /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/milestones
+Content-Type: application/json
 
-name=Phase+1&start_date=03-01-2026&end_date=03-15-2026&owner={user_id}&flag=internal
+{
+  "name": "Phase 1",
+  "start_date": "06-01-2026",
+  "end_date": "06-15-2026",
+  "flag": "internal",
+  "owner_zpuid": "{user_zpuid}"
+}
+```
+
+Required fields: `name`, `start_date`, `end_date`, `flag`, `owner_zpuid`
+
+#### Update Milestone
+```bash
+PATCH /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/milestones/{milestone_id}
+Content-Type: application/json
+
+{
+  "name": "Updated Phase"
+}
+```
+
+#### Delete Milestone
+```bash
+DELETE /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/milestones/{milestone_id}
 ```
 
 ### Users
 
 #### List Users
 ```bash
-GET /zoho-projects/restapi/portal/{portal_id}/users/
+GET /zoho-projects/api/v3/portal/{portal_id}/users
 ```
 
 ## Pagination
 
-Use `index` and `range` query parameters:
+Page-based pagination with `page` and `per_page` parameters:
 ```bash
-GET /zoho-projects/restapi/portal/{portal_id}/projects/{project_id}/tasks/?index=1&range=50
+GET /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasks?page=1&per_page=50
 ```
+
+Response includes `page_info`:
+```json
+{
+  "page_info": {
+    "page": 1,
+    "per_page": 50,
+    "has_next_page": true
+  },
+  "tasks": [...]
+}
+```
+
+When `has_next_page` is `true`, increment `page` to get the next batch.
 
 ## Resources
 
-- [Zoho Projects API Documentation](https://www.zoho.com/projects/help/rest-api/zohoprojectsapi.html)
-- [Projects API](https://www.zoho.com/projects/help/rest-api/projects-api.html)
-- [Tasks API](https://www.zoho.com/projects/help/rest-api/tasks-api.html)
+- [Zoho Projects API V3 Documentation](https://projects.zoho.com/api-docs)
+- [Zoho Projects Developer Portal](https://www.zoho.com/projects/help/rest-api/zohoprojectsapi.html)
