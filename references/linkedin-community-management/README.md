@@ -17,7 +17,7 @@ All requests require these headers in addition to the Authorization header:
 
 | Header | Value |
 |--------|-------|
-| `Linkedin-Version` | `YYYYMM` (e.g., `202604`) |
+| `Linkedin-Version` | `YYYYMM` (e.g., `202605`) |
 | `X-Restli-Protocol-Version` | `2.0.0` |
 
 ## Common Endpoints
@@ -25,6 +25,20 @@ All requests require these headers in addition to the Authorization header:
 ### Get Current Member Profile
 ```bash
 GET /linkedin-community-management/rest/me
+```
+
+### Get Person by ID
+```bash
+GET /linkedin-community-management/rest/people/(id:{personId})
+```
+
+Returns profile fields: `id`, `firstName`, `lastName`, `vanityName`, `localizedFirstName`, `localizedLastName`, `localizedHeadline`, `headline`, `profilePicture`.
+
+Non-connected members may return `{"id": "private"}`.
+
+Use `fields` query param to request a single field:
+```bash
+GET /linkedin-community-management/rest/people/(id:{personId})?fields=localizedHeadline
 ```
 
 ### Find Organization by Vanity Name
@@ -141,7 +155,7 @@ GET /linkedin-community-management/rest/organizationalEntityShareStatistics?q=or
 ## Notes
 
 - All URNs in URL paths and query parameters must be URL-encoded (`:` -> `%3A`)
-- `Linkedin-Version` header is mandatory (format: `YYYYMM`, e.g., `202604`). LinkedIn keeps roughly the last ~12 monthly versions active and returns HTTP 426 `NONEXISTENT_VERSION` for retired or future-dated versions — pin to a recent month and bump periodically
+- `Linkedin-Version` header is mandatory (format: `YYYYMM`, e.g., `202605`). LinkedIn keeps roughly the last ~12 monthly versions active and returns HTTP 426 `NONEXISTENT_VERSION` for retired or future-dated versions — pin to a recent month and bump periodically
 - Organization endpoints require admin role for full data; non-admins get limited fields
 - Statistics endpoints require `ADMINISTRATOR` role on the organization
 - Post content types: text, image, video, document, article, carousel (sponsored only)
