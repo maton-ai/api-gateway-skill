@@ -159,7 +159,7 @@ POST /quo/v1/webhooks
 Content-Type: application/json
 
 {
-  "url": "https://your-webhook-url.com/calls",
+  "url": "https://example.com/webhooks/calls",
   "resourceType": "call"
 }
 ```
