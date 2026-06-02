@@ -1,6 +1,6 @@
 {
   "name": "delete_email_thread",
-  "description": "Delete an email thread",
+  "description": "Delete an email thread. DESTRUCTIVE: permanently removes the thread and its messages. Confirm the thread subject and account with the user before executing.",
   "inputSchema": {
     "type": "object",
     "properties": {

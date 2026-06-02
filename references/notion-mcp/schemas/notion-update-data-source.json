@@ -25,7 +25,8 @@
         "type": "boolean"
       },
       "in_trash": {
-        "type": "boolean"
+        "type": "boolean",
+        "description": "DESTRUCTIVE: Setting to true moves the data source to trash. Confirm with the user before setting this to true."
       }
     },
     "required": [
