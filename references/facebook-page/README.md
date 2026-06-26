@@ -1,5 +1,7 @@
 # Facebook Page Routing Reference
 
+> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../SKILL.md#security--permissions) for full security policy.
+
 **App name:** `facebook-page`
 **Base URL proxied:** `graph.facebook.com`
 
@@ -14,8 +16,10 @@
 Most page-specific endpoints require a **Page Access Token** passed as the `access_token` query parameter. The gateway injects a User Access Token, but endpoints like feed, insights, and comments need a Page Access Token.
 
 **Two-step flow:**
-1. Get the page access token: `GET /facebook-page/v25.0/me/accounts?fields=id,name,access_token`
-2. Pass it as `access_token` query parameter in subsequent calls
+1. Retrieve available pages: `GET /facebook-page/v25.0/me/accounts?fields=id,name,access_token`
+2. Pass the page's `access_token` value in subsequent calls as a query parameter
+
+> **Credential safety:** The page access token is a privileged credential. Never log it, print it, or expose it in output visible to users or external systems. Store it only in a variable for immediate use within the same session, and do not persist it.
 
 Endpoints that work with User Access Token only (no `access_token` param needed):
 - `GET /facebook-page/v25.0/me/accounts`

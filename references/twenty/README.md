@@ -1,5 +1,7 @@
 # Twenty CRM Routing Reference
 
+> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../SKILL.md#security--permissions) for full security policy.
+
 **App name:** `twenty`
 **Base URL proxied:** `api.twenty.com`
 

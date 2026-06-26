@@ -1,5 +1,7 @@
 # Box Routing Reference
 
+> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../SKILL.md#security--permissions) for full security policy.
+
 **App name:** `box`
 **Base URLs proxied:**
 - `api.box.com` - Standard API endpoints (metadata, folders, search, etc.)
@@ -73,6 +75,9 @@ Content-Type: application/json
 ```
 
 ### Delete Folder
+
+> **Destructive.** `?recursive=true` permanently deletes the folder and all contents. Confirm folder name and path with the user before executing.
+
 ```bash
 DELETE /box/2.0/folders/{folder_id}
 DELETE /box/2.0/folders/{folder_id}?recursive=true
@@ -219,6 +224,11 @@ GET /box/2.0/events
 ### Trash
 ```bash
 GET /box/2.0/folders/trash/items
+```
+
+> **IRREVERSIBLE.** Deleting from trash permanently destroys the item — it cannot be recovered. Confirm the specific item with the user before executing.
+
+```bash
 DELETE /box/2.0/files/{file_id}/trash
 DELETE /box/2.0/folders/{folder_id}/trash
 ```

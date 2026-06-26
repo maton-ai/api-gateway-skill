@@ -1,5 +1,7 @@
 # Dropbox Business Routing Reference
 
+> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../SKILL.md#security--permissions) for full security policy.
+
 **App name:** `dropbox-business`
 **Base URL proxied:** `api.dropboxapi.com`
 
@@ -361,11 +363,14 @@ Content-Type: application/json
 ```
 
 ### Permanently Delete Team Folder
+
+> **IRREVERSIBLE.** This permanently destroys the folder and all its contents. The folder must be archived first. Confirm the exact folder ID and name with the user before executing.
+
 ```bash
 POST /dropbox-business/2/team/team_folder/permanently_delete
 Content-Type: application/json
 
-{"team_folder_id": "13646676387"}
+{"team_folder_id": "{team_folder_id}"}
 ```
 
 ## Namespaces

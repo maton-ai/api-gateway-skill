@@ -1,6 +1,6 @@
 # LinkedIn Community Management Routing Reference
 
-> **Private Beta:** This integration is currently in private beta. Contact [support@maton.ai](mailto:support@maton.ai) to get added to the allowlist.
+> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../SKILL.md#security--permissions) for full security policy.
 
 **App name:** `linkedin-community-management`
 **Base URL proxied:** `api.linkedin.com`

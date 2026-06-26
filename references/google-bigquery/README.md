@@ -1,5 +1,7 @@
 # Google BigQuery Routing Reference
 
+> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../SKILL.md#security--permissions) for full security policy.
+
 **App name:** `google-bigquery`
 **Base URL proxied:** `bigquery.googleapis.com`
 
@@ -137,6 +139,9 @@ POST /google-bigquery/bigquery/v2/projects/{projectId}/jobs/{jobId}/cancel?locat
 ```
 
 ### Query to Destination Table
+
+> **Caution:** `WRITE_TRUNCATE` overwrites the destination table entirely. Use `WRITE_APPEND` to add rows without destroying existing data. Confirm the disposition with the user before executing.
+
 ```json
 {
   "query": "SELECT * FROM `source_dataset.source_table`",
