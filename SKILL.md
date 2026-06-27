@@ -63,7 +63,7 @@ The first path segment is the app identifier listed in Supported Services. For G
 
 **NPM:**
 ```bash
-npm install -g @maton-ai/cli
+npm install -g @maton/cli
 ```
 
 **Homebrew:**
@@ -331,7 +331,7 @@ EOF
 
 ```bash
 maton trigger create --source github --event-type pull_request.opened \
-  --connection-id conn_123 \
+  --connection-id {connection_id} \
   --parameter repo=maton-ai/cli \
   --destination '{"url":"https://httpbin.org/post","method":"POST","name":"prod"}'
 ```
@@ -339,7 +339,7 @@ maton trigger create --source github --event-type pull_request.opened \
 ```bash
 maton api /triggers \
   -f source=github -f event_type=pull_request.opened \
-  -f name='PR opened' -f connection_id=conn_123 \
+  -f name='PR opened' -f connection_id={connection_id} \
   -F 'parameters[repo]=maton-ai/cli' \
   -F 'destinations[][url]=https://httpbin.org/post' \
   -F 'destinations[][method]=POST' \
@@ -355,7 +355,7 @@ data = json.dumps({
   "source": "github",
   "event_type": "pull_request.opened",
   "name": "PR opened",
-  "connection_id": "conn_123",
+  "connection_id": "{connection_id}",
   "parameters": {"repo": "maton-ai/cli"},
   "destinations": [{"url": "https://httpbin.org/post", "method": "POST", "name": "prod"}]
 }).encode()
@@ -950,7 +950,7 @@ After each event, the last processed event ID is checkpointed to a per-trigger s
 | Motion | `motion` | `api.usemotion.com` |  |
 | Netlify | `netlify` | `api.netlify.com` |  |
 | Notion | `notion` | `api.notion.com` | ✓ |
-| Notion MCP | `notion` | `mcp.notion.com` | ✓ |
+| Notion MCP | `notion` | `mcp.notion.com` |  |
 | OneNote | `one-note` | `graph.microsoft.com` |  |
 | OneDrive | `one-drive` | `graph.microsoft.com` |  |
 | Outlook | `outlook` | `graph.microsoft.com` |  |
@@ -1373,9 +1373,8 @@ EOF
 
 ```bash
 maton trigger create --source google-mail --event-type email.received \
-  --connection-id conn_123 \
-  --parameter labels=INBOX \
-  --destination '{"url":"https://httpbin.org/post","method":"POST","name":"prod"}'
+  --connection-id {connection_id} \
+  --parameter labels=INBOX
 ```
 
 ```bash
@@ -1399,7 +1398,7 @@ EOF
 
 ```bash
 maton trigger create --source google-mail --event-type email.received \
-  --connection-id conn_123 \
+  --connection-id {connection_id} \
   --parameter labels=INBOX \
   --destination '{"url":"https://api.maton.ai/slack/api/chat.postMessage","method":"POST","name":"slack","headers":{"Authorization":"Bearer '"$MATON_API_KEY"'","Content-Type":"application/json"},"body_template":"{\"channel\": \"C0123456789\", \"text\": \"New email: {{ payload.snippet }}\"}"}'
 ```
