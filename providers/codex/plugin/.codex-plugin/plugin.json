@@ -1,0 +1,11 @@
+{
+  "name": "api-gateway",
+  "description": "API gateway for calling third-party APIs with managed auth.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Maton",
+    "url": "https://maton.ai"
+  },
+  "repository": "https://github.com/maton-ai/api-gateway-skill",
+  "license": "MIT"
+}
