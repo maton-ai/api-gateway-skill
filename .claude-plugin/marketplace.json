@@ -1,0 +1,18 @@
+{
+  "name": "maton-plugins",
+  "owner": {
+    "name": "Maton",
+    "email": "support@maton.ai"
+  },
+  "plugins": [
+    {
+      "name": "api-gateway",
+      "source": "./providers/claude/plugin/",
+      "description": "API gateway for calling third-party APIs with managed auth.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Maton"
+      }
+    }
+  ]
+}
