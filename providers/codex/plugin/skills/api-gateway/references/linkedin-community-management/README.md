@@ -17,7 +17,7 @@ All requests require these headers in addition to the Authorization header:
 
 | Header | Value |
 |--------|-------|
-| `Linkedin-Version` | `YYYYMM` (e.g., `202605`) |
+| `Linkedin-Version` | `YYYYMM` (e.g., `202606`) |
 | `X-Restli-Protocol-Version` | `2.0.0` |
 
 ## Common Endpoints
@@ -155,7 +155,7 @@ GET /linkedin-community-management/rest/organizationalEntityShareStatistics?q=or
 ## Notes
 
 - All URNs in URL paths and query parameters must be URL-encoded (`:` -> `%3A`)
-- `Linkedin-Version` header is mandatory (format: `YYYYMM`, e.g., `202605`). LinkedIn keeps roughly the last ~12 monthly versions active and returns HTTP 426 `NONEXISTENT_VERSION` for retired or future-dated versions — pin to a recent month and bump periodically
+- `Linkedin-Version` header is mandatory (format: `YYYYMM`, e.g., `202606`). LinkedIn keeps roughly the last ~12 monthly versions active and returns HTTP 426 `NONEXISTENT_VERSION` for retired or future-dated versions — pin to a recent month and bump periodically
 - Organization endpoints require admin role for full data; non-admins get limited fields
 - Statistics endpoints require `ADMINISTRATOR` role on the organization
 - Post content types: text, image, video, document, article, carousel (sponsored only)

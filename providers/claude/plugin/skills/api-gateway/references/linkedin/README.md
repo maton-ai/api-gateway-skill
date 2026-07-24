@@ -14,7 +14,7 @@
 ## Required Headers
 
 ```
-LinkedIn-Version: 202506
+LinkedIn-Version: 202606
 ```
 
 ## Common Endpoints
@@ -22,14 +22,14 @@ LinkedIn-Version: 202506
 ### Get Current User Profile
 ```bash
 GET /linkedin/rest/me
-LinkedIn-Version: 202506
+LinkedIn-Version: 202606
 ```
 
 ### Create Text Post
 ```bash
 POST /linkedin/rest/posts
 Content-Type: application/json
-LinkedIn-Version: 202506
+LinkedIn-Version: 202606
 
 {
   "author": "urn:li:person:{personId}",
@@ -46,7 +46,7 @@ LinkedIn-Version: 202506
 ```bash
 POST /linkedin/rest/posts
 Content-Type: application/json
-LinkedIn-Version: 202506
+LinkedIn-Version: 202606
 
 {
   "author": "urn:li:person:{personId}",
@@ -70,7 +70,7 @@ LinkedIn-Version: 202506
 ```bash
 POST /linkedin/rest/images?action=initializeUpload
 Content-Type: application/json
-LinkedIn-Version: 202506
+LinkedIn-Version: 202606
 
 {
   "initializeUploadRequest": {
@@ -82,20 +82,20 @@ LinkedIn-Version: 202506
 ### Ad Library - Search Ads
 ```bash
 GET /linkedin/rest/adLibrary?q=criteria&keyword=linkedin
-LinkedIn-Version: 202506
+LinkedIn-Version: 202606
 ```
 
 ### Job Library - Search Jobs
 ```bash
 GET /linkedin/rest/jobLibrary?q=criteria&keyword=software
-LinkedIn-Version: 202506
+LinkedIn-Version: 202606
 ```
 
 ## Marketing API (Advertising)
 
 Required headers for all Marketing API calls:
 ```
-LinkedIn-Version: 202506
+LinkedIn-Version: 202606
 ```
 
 ### List Ad Accounts
@@ -168,7 +168,7 @@ GET /linkedin/rest/adAccounts/{adAccountId}/adCampaigns/{campaignId}
 ### List Organization ACLs
 ```bash
 GET /linkedin/rest/organizationAcls?q=roleAssignee
-LinkedIn-Version: 202506
+LinkedIn-Version: 202606
 ```
 
 ### Lookup Organization by Vanity Name
@@ -196,7 +196,7 @@ GET /linkedin/rest/posts?q=author&author=urn:li:organization:12345
 ```bash
 POST /linkedin/rest/images?action=initializeUpload
 Content-Type: application/json
-LinkedIn-Version: 202506
+LinkedIn-Version: 202606
 
 {"initializeUploadRequest": {"owner": "urn:li:person:{personId}"}}
 ```
@@ -214,7 +214,7 @@ GATEWAY = 'https://api.maton.ai'
 HEADERS = {
     'Authorization': f'Bearer {os.environ["MATON_API_KEY"]}',
     'Content-Type': 'application/json',
-    'LinkedIn-Version': '202506',
+    'LinkedIn-Version': '202606',
     'X-Restli-Protocol-Version': '2.0.0',
 }
 
@@ -276,7 +276,7 @@ EOF
 ```bash
 POST /linkedin/rest/documents?action=initializeUpload
 Content-Type: application/json
-LinkedIn-Version: 202506
+LinkedIn-Version: 202606
 
 {"initializeUploadRequest": {"owner": "urn:li:person:{personId}"}}
 ```
@@ -286,7 +286,7 @@ LinkedIn-Version: 202506
 ### Get Targeting Facets
 ```bash
 GET /linkedin/rest/adTargetingFacets
-LinkedIn-Version: 202506
+LinkedIn-Version: 202606
 ```
 
 Returns 31 targeting facets (skills, industries, titles, locations, etc.)
@@ -332,7 +332,7 @@ The `commentary` field in posts uses LinkedIn's "Little Text Format". **Reserved
 ## Notes
 
 - Authentication is automatic - the router injects the OAuth token
-- Include `LinkedIn-Version: 202506` header for all REST API calls
+- Include `LinkedIn-Version: 202606` header for all REST API calls
 - Author URN format: `urn:li:person:{personId}`
 - Get person ID from `/rest/me` endpoint
 - **Commentary uses Little Text Format** — escape reserved characters (`|{}@[]()<>#\*_~`) with backslash or content will be truncated
