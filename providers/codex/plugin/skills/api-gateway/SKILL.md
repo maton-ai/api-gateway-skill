@@ -890,6 +890,7 @@ After each event, the last processed event ID is checkpointed to a per-trigger s
 | Exa | `exa` | `api.exa.ai` |  |
 | Facebook Page | `facebook-page` | `graph.facebook.com` |  |
 | fal.ai | `fal-ai` | `queue.fal.run` |  |
+| Fastmail | `fastmail` | `api.fastmail.com` |  |
 | Fathom | `fathom` | `api.fathom.ai` |  |
 | Firecrawl | `firecrawl` | `api.firecrawl.dev` |  |
 | Firebase | `firebase` | `firebase.googleapis.com` |  |
@@ -987,6 +988,7 @@ After each event, the last processed event ID is checkpointed to a per-trigger s
 | Typeform | `typeform` | `api.typeform.com` |  |
 | Unbounce | `unbounce` | `api.unbounce.com` |  |
 | Vercel | `vercel` | `api.vercel.com` |  |
+| Vercel AI Gateway | `vercel-ai-gateway` | `ai-gateway.vercel.sh` |  |
 | Vimeo | `vimeo` | `api.vimeo.com` |  |
 | WATI | `wati` | `{tenant}.wati.io` |  |
 | WhatsApp Business | `whatsapp-business` | `graph.facebook.com` |  |
@@ -1046,6 +1048,7 @@ See [references/](references/) for detailed routing guides per provider:
 - [Exa](references/exa/README.md) - Neural web search, content extraction, similar pages, AI answers, research tasks
 - [fal.ai](references/fal-ai/README.md) - AI model inference (image generation, video, audio, upscaling)
 - [Facebook Page](references/facebook-page/README.md) - Pages, posts, comments, insights, photos, videos, product catalogs
+- [Fastmail](references/fastmail/README.md) - Mail, mailboxes, threads, drafts, sending, identities, contacts, masked email (JMAP)
 - [Fathom](references/fathom/README.md) - Meeting recordings, transcripts, summaries, webhooks
 - [Firecrawl](references/firecrawl/README.md) - Web scraping, crawling, site mapping, web search
 - [Firebase](references/firebase/README.md) - Projects, web apps, Android apps, iOS apps, configurations
@@ -1143,6 +1146,7 @@ See [references/](references/) for detailed routing guides per provider:
 - [Typeform](references/typeform/README.md) - Forms, responses, insights
 - [Unbounce](references/unbounce/README.md) - Landing pages, leads, accounts, sub-accounts, domains
 - [Vercel](references/vercel/README.md) - Projects, deployments, domains, environment variables
+- [Vercel AI Gateway](references/vercel-ai-gateway/README.md) - Model catalog, provider endpoints, credits, generation usage, OpenAI-compatible inference
 - [Vimeo](references/vimeo/README.md) - Videos, folders, albums, comments, likes
 - [WATI](references/wati/README.md) - WhatsApp messages, contacts, templates, interactive messages
 - [WhatsApp Business](references/whatsapp-business/README.md) - Messages, templates, media

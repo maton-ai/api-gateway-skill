@@ -890,6 +890,7 @@ After each event, the last processed event ID is checkpointed to a per-trigger s
 | Exa | `exa` | `api.exa.ai` |  |
 | Facebook Page | `facebook-page` | `graph.facebook.com` |  |
 | fal.ai | `fal-ai` | `queue.fal.run` |  |
+| Fastmail | `fastmail` | `api.fastmail.com` |  |
 | Fathom | `fathom` | `api.fathom.ai` |  |
 | Firecrawl | `firecrawl` | `api.firecrawl.dev` |  |
 | Firebase | `firebase` | `firebase.googleapis.com` |  |
@@ -987,6 +988,7 @@ After each event, the last processed event ID is checkpointed to a per-trigger s
 | Typeform | `typeform` | `api.typeform.com` |  |
 | Unbounce | `unbounce` | `api.unbounce.com` |  |
 | Vercel | `vercel` | `api.vercel.com` |  |
+| Vercel AI Gateway | `vercel-ai-gateway` | `ai-gateway.vercel.sh` |  |
 | Vimeo | `vimeo` | `api.vimeo.com` |  |
 | WATI | `wati` | `{tenant}.wati.io` |  |
 | WhatsApp Business | `whatsapp-business` | `graph.facebook.com` |  |
@@ -1046,6 +1048,7 @@ See [references/](https://github.com/maton-ai/api-gateway-skill/tree/main/refere
 - [Exa](https://github.com/maton-ai/api-gateway-skill/tree/main/references/exa/README.md) - Neural web search, content extraction, similar pages, AI answers, research tasks
 - [fal.ai](https://github.com/maton-ai/api-gateway-skill/tree/main/references/fal-ai/README.md) - AI model inference (image generation, video, audio, upscaling)
 - [Facebook Page](https://github.com/maton-ai/api-gateway-skill/tree/main/references/facebook-page/README.md) - Pages, posts, comments, insights, photos, videos, product catalogs
+- [Fastmail](https://github.com/maton-ai/api-gateway-skill/tree/main/references/fastmail/README.md) - Mail, mailboxes, threads, drafts, sending, identities, contacts, masked email (JMAP)
 - [Fathom](https://github.com/maton-ai/api-gateway-skill/tree/main/references/fathom/README.md) - Meeting recordings, transcripts, summaries, webhooks
 - [Firecrawl](https://github.com/maton-ai/api-gateway-skill/tree/main/references/firecrawl/README.md) - Web scraping, crawling, site mapping, web search
 - [Firebase](https://github.com/maton-ai/api-gateway-skill/tree/main/references/firebase/README.md) - Projects, web apps, Android apps, iOS apps, configurations
@@ -1143,6 +1146,7 @@ See [references/](https://github.com/maton-ai/api-gateway-skill/tree/main/refere
 - [Typeform](https://github.com/maton-ai/api-gateway-skill/tree/main/references/typeform/README.md) - Forms, responses, insights
 - [Unbounce](https://github.com/maton-ai/api-gateway-skill/tree/main/references/unbounce/README.md) - Landing pages, leads, accounts, sub-accounts, domains
 - [Vercel](https://github.com/maton-ai/api-gateway-skill/tree/main/references/vercel/README.md) - Projects, deployments, domains, environment variables
+- [Vercel AI Gateway](https://github.com/maton-ai/api-gateway-skill/tree/main/references/vercel-ai-gateway/README.md) - Model catalog, provider endpoints, credits, generation usage, OpenAI-compatible inference
 - [Vimeo](https://github.com/maton-ai/api-gateway-skill/tree/main/references/vimeo/README.md) - Videos, folders, albums, comments, likes
 - [WATI](https://github.com/maton-ai/api-gateway-skill/tree/main/references/wati/README.md) - WhatsApp messages, contacts, templates, interactive messages
 - [WhatsApp Business](https://github.com/maton-ai/api-gateway-skill/tree/main/references/whatsapp-business/README.md) - Messages, templates, media
