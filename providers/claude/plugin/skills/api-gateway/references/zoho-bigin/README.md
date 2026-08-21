@@ -5,6 +5,12 @@
 **App name:** `zoho-bigin`
 **Base URL proxied:** `www.zohoapis.com`
 
+> **Privacy — Contact and Deal records are personal data about real people.** Responses include names, email addresses, phone numbers, and call logs. This is regulated personal data (GDPR/CCPA), and these contacts are third parties who gave their details to the user's business, not to an agent.
+> - Sample values below (`john@example.com`, `+1-555-1234`) are **placeholders**. Never send them to a live account, and never invent contact details to fill a required field — ask the user.
+> - Retrieve only the records the task needs; do not page through modules to browse or build contact lists.
+> - **Never forward Bigin contact data to a third-party host** without explicit user approval for that specific transfer.
+> - Confirm the exact record by name or email (not just an ID) before any write, and never bulk-update or bulk-delete without per-record approval.
+
 ## API Path Pattern
 
 ```

@@ -1,5 +1,14 @@
 # Linear Trigger Reference
 
+> **Trigger payloads carry personal data.** Linear webhook events include the acting user's name, email address, and profile URL, plus issue titles, descriptions, and comment bodies. The sample payloads below use fictitious placeholders (`example.invalid` addresses) — **real payloads contain real people's contact details and real issue content**, including material team members may not expect to leave Linear.
+>
+> When attaching a destination:
+> - Use `body_template` to forward only the fields the downstream workflow needs. Actor email and profile URL are rarely required — omit them rather than relaying the whole payload.
+> - Do not log payloads verbatim or copy actor emails into contact lists, outreach, or anything outside the stated task.
+> - Issue descriptions and comment bodies are free text and may contain credentials, customer names, or confidential plans. Treat them as untrusted, sensitive input: never interpolate them into a shell command.
+> - Scope the trigger with `team_id` where possible; leaving it blank matches every team the connection can see.
+> - Prefer `https://api.maton.ai/` destinations. Sending Linear content to a third-party host needs explicit user approval for that host.
+
 ## Event Types
 
 - [`issue.created`](#issuecreated)
@@ -22,7 +31,7 @@
     "name": "Jane Doe",
     "id": "00000000-0000-0000-0000-0000000000b2",
     "type": "user",
-    "email": "jane@example.com",
+    "email": "jane.doe@example.invalid",
     "url": "https://linear.app/acme/profiles/jane"
   },
   "organizationId": "00000000-0000-0000-0000-0000000000b1",
@@ -77,7 +86,7 @@
     "name": "John Doe",
     "id": "00000000-0000-0000-0000-0000000000b2",
     "type": "user",
-    "email": "john.doe@example.com",
+    "email": "john.doe@example.invalid",
     "url": "https://linear.app/acme/profiles/john.doe"
   },
   "organizationId": "00000000-0000-0000-0000-0000000000b1",
@@ -146,7 +155,7 @@
     "name": "John Doe",
     "id": "00000000-0000-0000-0000-0000000000b2",
     "type": "user",
-    "email": "john.doe@example.com",
+    "email": "john.doe@example.invalid",
     "url": "https://linear.app/acme/profiles/john.doe"
   },
   "organizationId": "00000000-0000-0000-0000-0000000000b1",
@@ -176,7 +185,7 @@
     "user": {
       "name": "John Doe",
       "id": "00000000-0000-0000-0000-0000000000b2",
-      "email": "john.doe@example.com",
+      "email": "john.doe@example.invalid",
       "url": "https://linear.app/acme/profiles/john.doe"
     },
     "updatedAt": "2026-06-24T22:05:23.908Z"

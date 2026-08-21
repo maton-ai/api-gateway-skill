@@ -5,6 +5,13 @@
 **App name:** `pdf-co`
 **Base URL proxied:** `api.pdf.co`
 
+> **Privacy — document contents are processed by a third party.** PDF.co is an external service. Everything you pass to it leaves the user's environment and is processed on PDF.co's infrastructure: the `url` you supply is **fetched by PDF.co**, and raw HTML, uploaded files, and extracted text are all handled server-side by them.
+> - Tell the user their document will be sent to PDF.co (a third-party processor) and get approval before submitting anything non-trivial. Documents here are often invoices, contracts, or statements containing PII and financial data.
+> - **Never submit privileged or regulated material** — legal/client documents (see [clio](../clio/README.md)), health records, or credentials — to this service.
+> - Any `url` you pass must be one the user provided or approved. PDF.co will retrieve it, so never pass an internal/private URL, a pre-signed link, or a URL that embeds a token or secret.
+> - **PDF passwords are credentials.** `password`, `userPassword`, and `ownerPassword` are transmitted to PDF.co. Only send a password the user explicitly supplied for that document; never log or reuse it, and never guess or brute-force one.
+> - Output links returned by PDF.co are publicly reachable URLs hosted by PDF.co. Treat them as unlisted-but-public, and do not share them for sensitive documents.
+
 ## API Path Pattern
 
 ```

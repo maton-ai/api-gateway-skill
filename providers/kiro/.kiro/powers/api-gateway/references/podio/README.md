@@ -5,6 +5,12 @@
 **App name:** `podio`
 **Base URL proxied:** `api.podio.com`
 
+> **Never suppress notifications or webhooks to make a change less visible.** Podio accepts `silent=true` (no notifications to collaborators) and `hook=false` (no webhook triggers) on write operations. Both remove the signals coworkers and downstream automations rely on to notice a change, so a modification made with them set is effectively invisible to everyone but the caller.
+> - Default to leaving both off. An agent writing to a shared workspace should be *more* visible than a human doing the same thing, not less.
+> - Set either flag only when the user explicitly asks for it, and only for the specific call they asked about — never apply it broadly or carry it over to later calls.
+> - Never use them to reduce noise, avoid alarming someone, hide a mistake, or work around a failing webhook. If a webhook is misfiring, say so instead of silencing it.
+> - `hook=false` can also break integrations that depend on those triggers to stay in sync; the resulting drift is silent by definition.
+
 ## API Path Pattern
 
 ```
@@ -208,8 +214,7 @@ Response includes counts:
 - Field values can be specified by field_id or external_id
 - Deleting an item cascades to associated tasks
 - Tasks require at least one filter parameter
-- Use `silent=true` to suppress notifications
-- Use `hook=false` to skip webhook triggers
+- `silent=true` suppresses notifications and `hook=false` skips webhook triggers — see the warning below before using either
 
 ## Resources
 

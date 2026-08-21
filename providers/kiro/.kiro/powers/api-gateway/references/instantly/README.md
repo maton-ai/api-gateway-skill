@@ -187,4 +187,4 @@ GET /instantly/api/v2/workspaces/current
 
 ## Resources
 
-- [Instantly API V2 Documentation](https://developer.instantly.ai/api/v2)
+- [Instantly API V2 Documentation](https://developer.instantly.ai/api-reference)

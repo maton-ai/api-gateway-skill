@@ -1,6 +1,6 @@
 {
   "name": "append_task_notes",
-  "description": "Append notes to a task",
+  "description": "Append text to the end of one specific Sunsama task's notes field, identified by taskId.\n\nUse this ONLY when the user has asked to add notes, context, or a comment to a task they identified. Do NOT use it to record your own working notes, progress updates, or reasoning; to store information the user did not ask to persist; or as a general scratchpad. It is not the tool for renaming a task (use edit_task_title), adding subtasks (use add_subtasks_to_task), or creating a task (use create_task).\n\nWRITE — CONFIRM FIRST. This modifies a task in the user's real Sunsama workspace and appends to whatever notes are already there. taskId is an opaque ObjectId with no title in it, so a wrong ID writes into the wrong task with no visible cue. Confirm the resolved task (by title) and the exact text to append before calling. If a task was located by search, show the user which task matched rather than assuming the first result. Notes on tasks in shared channels may be visible to teammates.",
   "inputSchema": {
     "type": "object",
     "properties": {

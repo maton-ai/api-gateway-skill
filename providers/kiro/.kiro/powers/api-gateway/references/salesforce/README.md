@@ -7,6 +7,13 @@
 
 The router automatically determines the instance URL from your OAuth credentials (`instance_url` from the token response).
 
+> **Privacy — Contact, Lead, and Account records are personal data about real people.** Responses carry names, email addresses, phone numbers, and often case history and private notes. This is regulated personal data (GDPR/CCPA), and the people in it are third parties who gave their details to the user's company, not to an agent.
+> - Sample values below (`John Doe`, `john@example.com`, `+1234567890`) are **placeholders**. Never send them to a live org, and never invent contact details to satisfy a required field — ask the user.
+> - Retrieve only the records the task needs. Do not run broad SOQL queries or page through an object to browse, and do not bulk-export Contacts or Leads.
+> - Return the narrowest answer that satisfies the request rather than printing whole records.
+> - **Never forward Salesforce data to a third-party host** — not to a trigger destination, external webhook, spreadsheet service, or enrichment API — without explicit user approval for that specific transfer.
+> - Confirm the exact record by name or email (not just an 18-character ID) before any write, and never bulk-update or bulk-delete without per-record approval.
+
 ## API Path Pattern
 
 ```

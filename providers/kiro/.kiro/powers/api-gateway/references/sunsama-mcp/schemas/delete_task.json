@@ -1,12 +1,12 @@
 {
   "name": "delete_task",
-  "description": "Delete a task",
+  "description": "Delete a task.\n\nDESTRUCTIVE — REQUIRES EXPLICIT USER CONFIRMATION. This permanently deletes the task; assume it is not recoverable through this skill. Before calling: retrieve the task first (use a get/list tool) and show the user its title and ID, state that deletion is permanent, and obtain explicit approval for that specific task. Never infer deletion from vague intent (e.g. 'clean up my tasks'), never delete a task the user has not named, and never batch deletions across multiple tasks without per-task approval.",
   "inputSchema": {
     "type": "object",
     "properties": {
       "taskId": {
         "type": "string",
-        "description": "The ID of the task to delete"
+        "description": "The ID of the task to delete. Must identify a task the user has explicitly named and approved for deletion — resolve and confirm it with the user before calling."
       }
     },
     "required": ["taskId"]

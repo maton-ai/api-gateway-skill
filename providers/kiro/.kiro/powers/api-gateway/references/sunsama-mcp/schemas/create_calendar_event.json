@@ -1,16 +1,16 @@
 {
   "name": "create_calendar_event",
-  "description": "Create a calendar event",
+  "description": "Create a calendar event.\n\nWRITE OPERATION — REQUIRES EXPLICIT USER REQUEST AND CONFIRMATION. This creates a real event on the connected user's calendar and may notify or invite others. Invoke it only when the user has explicitly asked for an event to be created — never to 'be helpful' after a scheduling discussion, and never inferred from a request to look something up.\n\nBefore calling: confirm the connected account is the intended one (list/read first to verify), and confirm the exact title, start time, and time zone with the user. Echo back what will be created and wait for approval. If any detail is ambiguous — especially the date, time zone, or which account — ask rather than guessing; a wrong time zone silently books the wrong slot. Create one event per explicit request; never loop to create multiple events without per-event approval.",
   "inputSchema": {
     "type": "object",
     "properties": {
       "title": {
         "type": "string",
-        "description": "The title of the calendar event"
+        "description": "The title of the calendar event. Use the wording the user supplied; do not invent or embellish a title. This may be visible to other attendees, so avoid including private details the user did not ask to publish."
       },
       "startDate": {
         "type": "string",
-        "description": "The start date/time (ISO 8601 format)"
+        "description": "The start date/time (ISO 8601 format). Confirm the intended time zone with the user rather than assuming the host machine's — an incorrect offset books the event at the wrong time without any error."
       }
     },
     "required": ["title", "startDate"]

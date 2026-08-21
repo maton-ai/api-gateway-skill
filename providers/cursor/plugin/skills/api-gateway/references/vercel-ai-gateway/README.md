@@ -232,7 +232,7 @@ Free models make testing effectively free: a full sweep of every endpoint here c
 | Status | Meaning |
 |--------|---------|
 | 400 | Invalid request body or query — missing `messages`/`input`/`max_tokens`, malformed JSON, bad generation ID format |
-| 401 | Invalid or missing Maton API key |
+| 401 | Invalid, missing, or expired Maton credential |
 | 403 | `customer_verification_required` (inference needs a card on file, or the model ID does not resolve) or `forbidden` (`/v1/report` needs a paid **plan**) |
 | 404 | Unknown model (`model_not_found`), unknown path under `/v1` (`not_found_error`), missing `/v1` prefix (HTML body), unknown `Maton-Connection`, or a generation not yet ingested |
 | 405 | Wrong method for the route — empty body |

@@ -11,26 +11,18 @@ MCP requests use the `Mcp-Session-Id` header for session management. If not spec
 
 ## Connection Management
 
-Manage MCP connections at `https://api.maton.ai`.
+An MCP connection is created like any other, with `--method MCP`.
 
 ### List Connections
 
 ```bash
-GET https://api.maton.ai/connections?app=notion&method=MCP&status=ACTIVE
-Authorization: Bearer $MATON_API_KEY
+maton connection list notion --method MCP --status ACTIVE
 ```
 
 ### Create Connection
 
 ```bash
-POST https://api.maton.ai/connections
-Content-Type: application/json
-Authorization: Bearer $MATON_API_KEY
-
-{
-  "app": "notion",
-  "method": "MCP"
-}
+maton connection create notion --method MCP
 ```
 
 ## API Path Pattern

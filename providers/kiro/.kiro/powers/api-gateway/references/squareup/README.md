@@ -597,4 +597,4 @@ Content-Type: application/json
 - [Invoices API](https://developer.squareup.com/reference/square/invoices-api)
 - [Team Members API](https://developer.squareup.com/reference/square/team-api)
 - [Loyalty API](https://developer.squareup.com/reference/square/loyalty-api)
-- [Online Checkout API](https://developer.squareup.com/reference/square/online-checkout-api)
+- [Online Checkout API](https://developer.squareup.com/reference/square/checkout-api)

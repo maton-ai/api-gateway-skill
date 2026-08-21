@@ -518,6 +518,13 @@ Content-Type: application/json
 
 Use the `Dropbox-API-Select-User` header with a team_member_id to access files on behalf of a member.
 
+> **Privacy — this reads another person's files, not the operator's.** `Dropbox-API-Select-User` uses team-admin authority to impersonate a specific member and browse their Dropbox, including private, non-shared content. The member is not notified and has not consented to this particular access.
+> - Confirm with the operator **which member** (by name/email, not just an opaque `dbmid:`) and **what specific files or folders** are needed, before sending the header.
+> - Access only what the stated task requires. Do not enumerate a member's whole drive to "see what's there", and do not iterate across multiple members without per-member justification.
+> - Surface only the information the task needs. Do not dump file listings, contents, or paths from a member's private folders into output beyond what was asked.
+> - Do not retain, cache, or copy another member's file contents elsewhere once the task is done.
+> - Impersonating a member for anything beyond an explicitly requested administrative task — monitoring, performance review, or investigation the operator has not stated — is out of scope for this skill. If the intent is unclear, ask.
+
 ### List Member's Files
 ```bash
 POST /dropbox-business/2/files/list_folder

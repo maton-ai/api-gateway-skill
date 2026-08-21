@@ -5,6 +5,13 @@
 **App name:** `pipedrive`
 **Base URL proxied:** `api.pipedrive.com`
 
+> **Privacy — person and deal records are personal data about real people.** Persons carry names, email addresses, and phone numbers; activities and notes often add meeting context and private commentary. This is personal data under GDPR/CCPA, and the contacts themselves are third parties who gave their details to the user's company, not to an agent.
+> - The sample values below (`John Doe`, `john@example.com`, `+1234567890`) are **placeholders**. Never send them to a live account, and never invent contact details to fill a required field — ask the user.
+> - Retrieve only the records the task needs. Do not page through the full person or deal list to build a contact list, and do not enumerate a pipeline to browse.
+> - Return the narrowest answer that satisfies the request; don't print full person records into output when the user asked one question.
+> - **Never forward Pipedrive contact data to a third-party host** — not to a trigger destination, external webhook, spreadsheet service, or enrichment API — without explicit user approval for that specific transfer.
+> - Confirm the exact person by name or email (not just a numeric ID) before any write, and never bulk-update or bulk-delete records without per-record approval.
+
 ## API Path Pattern
 
 ```

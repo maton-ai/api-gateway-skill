@@ -370,6 +370,11 @@ maton notion block delete {blockId}
 
 ### Users
 
+> **Privacy — this is a workspace directory.** These endpoints enumerate every member and guest, returning names, email addresses, and avatars. The result is effectively an org roster: useful for resolving one person, but also a ready-made contact list.
+> - Query for the specific person the task needs (prefer Get User by ID, or filter the result) rather than listing everyone.
+> - Do not print the full member list into output, save it to a file, or forward it to any third-party host unless the user explicitly asked for a roster.
+> - Member email addresses are personal data — don't reuse them for outreach, enrichment, or any purpose outside the stated task.
+
 #### List Users
 ```bash
 GET /notion/v1/users

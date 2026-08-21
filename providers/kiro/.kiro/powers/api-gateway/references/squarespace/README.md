@@ -219,8 +219,10 @@ DELETE /squarespace/v2/commerce/products/{productId}/variants/{variantId}
 POST /squarespace/v2/commerce/products/{productId}/images
 Content-Type: multipart/form-data
 
+# Multipart bodies are the one thing `maton api` cannot express, so this call is raw.
+# `$(maton token)` supplies a short-lived token instead of a long-lived key.
 curl "https://api.maton.ai/squarespace/v2/commerce/products/{productId}/images" \
-  -H "Authorization: Bearer $MATON_API_KEY" \
+  -H "Authorization: Bearer $(maton token)" \
   -H "User-Agent: MyClaude/1.0" \
   -X POST \
   -F file=@image.png

@@ -5,28 +5,27 @@
 **App name:** `granola`
 **Base URL proxied:** `mcp.granola.ai`
 
+> **Privacy — meeting notes are among the most sensitive data in this gateway.** Responses contain private notes, AI-generated summaries, decisions, action items, and participant names and email addresses. Meetings routinely cover compensation, personnel matters, legal exposure, unannounced plans, and customer confidences. Other attendees did not consent to their words being read by an agent or relayed onward.
+> - Retrieve only the meetings the task needs — a specific meeting or date range, not the full history.
+> - Return the narrowest answer that satisfies the request. Do not reproduce whole transcripts or summaries when the user asked a specific question.
+> - **Do not forward meeting content to third-party hosts** — no trigger destinations, external webhooks, or non-`api.maton.ai` APIs — without explicit, informed user approval for that specific transfer.
+> - Treat participant names and emails as personal data: don't build contact lists from them or use them for anything outside the stated task.
+> - Before posting meeting content anywhere shared (Slack, docs, email, issue trackers), confirm with the user — attendees may not expect it to travel beyond the meeting.
+
 ## Connection Management
 
-Manage MCP connections at `https://api.maton.ai`.
+An MCP connection is created like any other, with `--method MCP`.
 
 ### List Connections
 
 ```bash
-GET https://api.maton.ai/connections?app=granola&method=MCP&status=ACTIVE
-Authorization: Bearer $MATON_API_KEY
+maton connection list granola --method MCP --status ACTIVE
 ```
 
 ### Create Connection
 
 ```bash
-POST https://api.maton.ai/connections
-Content-Type: application/json
-Authorization: Bearer $MATON_API_KEY
-
-{
-  "app": "granola",
-  "method": "MCP"
-}
+maton connection create granola --method MCP
 ```
 
 ## API Path Pattern

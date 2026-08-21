@@ -1,12 +1,12 @@
 {
   "name": "delete_all_incomplete_recurring_task_instances",
-  "description": "Delete all future instances of a recurring task",
+  "description": "Delete all future instances of a recurring task.\n\nBULK DESTRUCTIVE — REQUIRES EXPLICIT USER CONFIRMATION. This is not a single-task delete: it removes every future incomplete instance of the recurring series in one call, and the deletion is irreversible through this skill. Completed past instances are unaffected; all pending future ones are lost.\n\nBefore calling: list the affected instances and show the user the series title, the ID, and how many future instances will be removed. State plainly that the action is bulk and irreversible, then obtain explicit approval for that specific series. Prefer deleting individual instances with 'delete_task' when the user only wants some removed. Never invoke this to 'tidy up', never infer it from a request to delete one occurrence, and never call it on a series the user has not named.",
   "inputSchema": {
     "type": "object",
     "properties": {
       "taskId": {
         "type": "string",
-        "description": "The ID of the recurring task"
+        "description": "The ID of the recurring task series whose future incomplete instances will all be deleted. Must identify a series the user has explicitly named and approved for bulk deletion."
       }
     },
     "required": ["taskId"]

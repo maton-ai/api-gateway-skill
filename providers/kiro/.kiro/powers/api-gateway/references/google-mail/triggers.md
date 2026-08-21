@@ -1,5 +1,14 @@
 # Gmail Trigger Reference
 
+> **Email events forward private correspondence.** `email.received` payloads include sender and recipient addresses, subject lines, and message snippets — and the trigger fires on mail the user did not individually review. Correspondence routinely contains credentials, password resets, financial details, health information, and third-party confidences.
+>
+> Before attaching a destination:
+> - Scope the trigger as narrowly as the task allows (a specific label or query, not all of `INBOX`) so unrelated mail is not swept in.
+> - Understand that every matching message will be forwarded automatically and continuously to the destination URL. This is persistent disclosure of the user's mailbox, not a one-time read.
+> - **Strongly prefer `https://api.maton.ai/` destinations.** Sending mail contents to a third-party host requires explicit, informed user approval — state the exact host and what will be transmitted.
+> - Use `body_template` to forward the minimum needed (e.g. subject only, not the snippet) and never relay the full payload by default.
+> - Never place credentials in destination headers or body templates.
+
 ## Event Types
 
 - [`email.received`](#emailreceived)

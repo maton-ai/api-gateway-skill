@@ -1,6 +1,6 @@
 {
   "name": "update_calendar_preferences",
-  "description": "Update calendar preferences",
+  "description": "Update calendar preferences for a single calendar.\nSTATE-CHANGING — REQUIRES EXPLICIT USER CONFIRMATION. This overwrites the user's existing calendar settings, and the tool's own parameters do not enumerate which preference fields it changes or report the prior values, so an incorrect call can silently alter how a calendar behaves (for example its visibility or whether its events are pulled into planning) with no record of what it was before. Before calling: confirm with the user the exact calendar (by name, not just calendarId) and the exact preference change intended, and read the current preferences first so the previous state can be restored. Do not call this to explore what the tool does, and do not infer a preference change from a vague instruction — ask.",
   "inputSchema": {
     "type": "object",
     "properties": {
@@ -9,6 +9,8 @@
         "description": "The calendar ID to update preferences for"
       }
     },
-    "required": ["calendarId"]
+    "required": [
+      "calendarId"
+    ]
   }
 }

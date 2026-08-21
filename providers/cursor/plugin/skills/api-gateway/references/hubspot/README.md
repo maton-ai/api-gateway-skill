@@ -1,6 +1,14 @@
 # HubSpot Routing Reference
 
-> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../SKILL.md#security--permissions) for full security policy.
+> **⚠ Write operations require explicit per-call user confirmation.** Every POST, PUT, PATCH, and DELETE below mutates live CRM data — real contacts, companies, and deals that a sales team depends on. The examples in this file are **runnable templates, not sanctioned actions**: the presence of an example is never approval to execute it.
+>
+> Before any write call:
+> - **Read first.** Use the corresponding GET/list/search endpoint to confirm the record exists and is the right one. Object IDs are opaque and easily confused.
+> - **Show the user** the exact endpoint, the target record (by name/email, not just ID), and the full request body. Wait for approval of that specific call.
+> - **Never infer a write from a read request**, and never batch or loop writes without per-record approval.
+> - Deletes and batch archives are the highest-risk calls here — see the warnings on those sections.
+>
+> Sample values (`john@example.com`, `+1234567890`) are placeholders. Never send them to a real portal, and never reuse an ID from this document. See the main [SKILL.md](../SKILL.md#security--permissions) for full security policy.
 
 **App name:** `hubspot`
 **Base URL proxied:** `api.hubapi.com`
@@ -48,6 +56,9 @@ maton hubspot contact view <contactId> --properties email,firstname,lastname
 ```
 
 #### Create Contact
+
+> **Write — confirm first.** Creates a new CRM contact. Search by email first to avoid creating a duplicate of an existing person, and confirm the exact property values with the user before calling.
+
 ```bash
 POST /hubspot/crm/v3/objects/contacts
 Content-Type: application/json
@@ -69,6 +80,9 @@ maton hubspot contact create --set email=john@example.com --set firstname=John -
 ```
 
 #### Update Contact
+
+> **Write — confirm first.** Overwrites the named properties on an existing contact; previous values are not retained. GET the contact first, show the user the current and proposed values, and confirm the specific `contactId`.
+
 ```bash
 PATCH /hubspot/crm/v3/objects/contacts/{contactId}
 Content-Type: application/json
@@ -87,6 +101,9 @@ maton hubspot contact update <contactId> --set phone=+0987654321
 ```
 
 #### Delete Contact
+
+> **⚠ DESTRUCTIVE — confirm first.** Archives the contact and detaches it from associated deals and companies. GET the contact and show the user its name and email (not just the ID), state that the record will be archived, and obtain explicit approval for that one contact. Never delete based on a vague instruction such as 'clean up old contacts'.
+
 ```bash
 DELETE /hubspot/crm/v3/objects/contacts/{contactId}
 ```
@@ -145,6 +162,9 @@ maton hubspot company view <companyId> --properties name,domain,industry
 ```
 
 #### Create Company
+
+> **Write — confirm first.** Creates a new company record. Search by domain first to avoid duplicates, and confirm the property values with the user.
+
 ```bash
 POST /hubspot/crm/v3/objects/companies
 Content-Type: application/json
@@ -167,6 +187,9 @@ maton hubspot company create --set name='Acme Corp' --set domain=acme.com --set 
 **Note:** The `industry` property requires specific enum values (e.g., `COMPUTER_SOFTWARE`, `FINANCE`, `HEALTHCARE`), not free text like "Technology". Use the List Properties endpoint to get valid values.
 
 #### Update Company
+
+> **Write — confirm first.** Overwrites the named properties on an existing company. GET the record first, show current versus proposed values, and confirm the specific `companyId`.
+
 ```bash
 PATCH /hubspot/crm/v3/objects/companies/{companyId}
 Content-Type: application/json
@@ -186,6 +209,9 @@ maton hubspot company update <companyId> --set industry=COMPUTER_SOFTWARE --set 
 ```
 
 #### Delete Company
+
+> **⚠ DESTRUCTIVE — confirm first.** Archives the company and detaches its associated contacts and deals. GET the record, show the user its name and domain, and obtain explicit approval for that one company.
+
 ```bash
 DELETE /hubspot/crm/v3/objects/companies/{companyId}
 ```
@@ -245,6 +271,9 @@ maton hubspot deal view <dealId> --properties dealname,amount,dealstage
 ```
 
 #### Create Deal
+
+> **Write — confirm first.** Creates a new deal in a live pipeline, which affects forecasting and reporting. Confirm the pipeline, stage, amount, and owner with the user before calling.
+
 ```bash
 POST /hubspot/crm/v3/objects/deals
 Content-Type: application/json
@@ -265,6 +294,9 @@ maton hubspot deal create --set dealname='New Deal' --set amount=10000 --set dea
 ```
 
 #### Update Deal
+
+> **Write — confirm first.** Overwrites deal properties. Changing `dealstage` or `amount` alters revenue reporting and may fire workflows or notifications. GET the deal first, show current versus proposed values, and confirm the specific `dealId`.
+
 ```bash
 PATCH /hubspot/crm/v3/objects/deals/{dealId}
 Content-Type: application/json
@@ -284,6 +316,9 @@ maton hubspot deal update <dealId> --set amount=15000 --set dealstage=qualifiedt
 ```
 
 #### Delete Deal
+
+> **⚠ DESTRUCTIVE — confirm first.** Archives the deal and removes it from the pipeline and forecasts. GET the deal, show the user its name, stage, and amount, and obtain explicit approval for that one deal.
+
 ```bash
 DELETE /hubspot/crm/v3/objects/deals/{dealId}
 ```
@@ -315,6 +350,9 @@ Content-Type: application/json
 ### Associations (v4 API)
 
 #### Associate Objects
+
+> **Write — confirm first.** Creates a relationship between two records, which can cascade through workflows and reporting. Verify both object IDs by reading them first, and confirm the association type with the user.
+
 ```bash
 PUT /hubspot/crm/v4/objects/{fromObjectType}/{fromObjectId}/associations/{toObjectType}/{toObjectId}
 Content-Type: application/json
@@ -366,6 +404,9 @@ maton hubspot contact batch-read --id 123,456 --properties email,firstname
 ```
 
 #### Batch Create
+
+> **⚠ BULK WRITE — confirm the whole set first.** Creates every record in the `inputs` array in one call. Show the user the complete list of records to be created and the total count, and obtain approval for the batch. Search for existing records first — batch create is a common source of mass duplicates. Never assemble a batch from inferred data.
+
 ```bash
 POST /hubspot/crm/v3/objects/{objectType}/batch/create
 Content-Type: application/json
@@ -385,6 +426,9 @@ maton hubspot contact batch-create --data '[{"properties":{"email":"one@example.
 ```
 
 #### Batch Update
+
+> **⚠ BULK WRITE — confirm the whole set first.** Overwrites properties on every listed record; prior values are not retained. Show the user the full list of target IDs and the changes per record, and obtain approval for the batch. Read the current values first so the user can see what will be replaced.
+
 ```bash
 POST /hubspot/crm/v3/objects/{objectType}/batch/update
 Content-Type: application/json
@@ -404,6 +448,9 @@ maton hubspot contact batch-update --data '[{"id":"123","properties":{"firstname
 ```
 
 #### Batch Archive
+
+> **⚠ BULK DESTRUCTIVE — highest-risk call in this file.** Archives every record in the `inputs` array in a single call, detaching their associations. Read and list the affected records first, show the user each one by name plus the total count, state that the action is bulk and not reversible through this skill, and obtain explicit approval for the entire set. Never derive a batch archive from a vague cleanup request, and prefer archiving records one at a time when the user only named a few.
+
 ```bash
 POST /hubspot/crm/v3/objects/{objectType}/batch/archive
 Content-Type: application/json

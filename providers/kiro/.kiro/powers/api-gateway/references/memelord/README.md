@@ -5,6 +5,10 @@
 **App name:** `memelord`
 **Base URL proxied:** `www.memelord.com`
 
+> **Content warning — NSFW results are returned by default.** The upstream API includes not-safe-for-work memes unless filtered. **Always send `"include_nsfw": false`** on generation requests unless the user has explicitly asked to include NSFW content. Omitting the field is not a neutral default — it opts *in*.
+>
+> Generated memes are frequently posted to shared channels (Slack, social media). Show the user the result and get approval before publishing anywhere, and be aware that meme output can be unexpectedly offensive even with the filter on.
+
 ## API Path Pattern
 
 ```
@@ -76,7 +80,7 @@ GET /memelord/api/video/render/remote?jobId={job_id}
 - Video meme generation costs 5 credits per request (multiplied by count)
 - Video generation is asynchronous - use webhooks or polling
 - Download URLs expire (memes: check expiration field, videos: 7 days)
-- NSFW content is included by default; set `include_nsfw: false` to filter
+- **NSFW content is included by default** — always set `include_nsfw: false` unless the user explicitly requested otherwise (see the content warning above)
 
 ## Resources
 

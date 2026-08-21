@@ -1,5 +1,12 @@
 # Notion Trigger Reference
 
+> **Scope every trigger to the narrowest target.** All scoping parameters below are optional, and omitting one does not mean "no filter" — it means **match everything the connection can see**, i.e. the entire workspace. An unscoped Notion trigger continuously forwards page content and comments from every database and page the connected user has access to, including material unrelated to the task and potentially private to other workspace members.
+>
+> Before creating any trigger here:
+> - Ask the user which specific database or page to watch and set the scoping parameter to that ID. Do not leave it blank for convenience.
+> - Only create an unscoped (workspace-wide) trigger if the user explicitly asks to monitor the whole workspace — and say plainly that all pages/comments they can access will be forwarded to the destination.
+> - Remember the trigger's payloads flow to its destinations, so an over-broad scope is an ongoing disclosure, not a one-time read.
+
 ## Event Types
 
 - [`page.created`](#pagecreated)
@@ -12,7 +19,7 @@
 
 ### Parameters
 
-- `parent_id` (string, optional): Database or page ID to scope to pages created inside it. Leave blank to match any parent.
+- `parent_id` (string, optional): Database or page ID to scope to pages created inside it. **Set this.** Leaving it blank matches *every* parent, firing on every page created anywhere in the workspace the connection can access — confirm with the user before doing that.
 
 ### Sample Payload
 
@@ -62,7 +69,7 @@
 
 ### Parameters
 
-- `page_id` (string, optional): Page ID to match only that page for block changes. Leave blank to match all pages.
+- `page_id` (string, optional): Page ID to match only that page for block changes. **Set this.** Leaving it blank matches *all* pages, forwarding the content of every edit made anywhere in the accessible workspace — broad content monitoring that needs explicit user consent.
 
 ### Sample Payload
 
@@ -130,7 +137,7 @@
 
 ### Parameters
 
-- `parent_id` (string, optional): Page ID to receive comment events only from that page. Leave blank to match any page.
+- `parent_id` (string, optional): Page ID to receive comment events only from that page. **Set this.** Leaving it blank matches *any* page, delivering every comment in the accessible workspace — including discussions by other members that may be private. Confirm before leaving it unscoped.
 
 ### Sample Payload
 

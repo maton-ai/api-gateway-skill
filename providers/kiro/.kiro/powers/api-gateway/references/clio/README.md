@@ -5,6 +5,12 @@
 **App name:** `clio`
 **Base URL proxied:** `app.clio.com`
 
+> **Privacy — this is a legal practice management system.** Matters, contacts, notes, communications, and documents here are client data, commonly covered by attorney-client privilege, legal professional privilege, or equivalent confidentiality duties. Mishandling it can cause real legal harm to the firm and its clients.
+> - Retrieve only the specific records the task requires. Do not bulk-export matters, contacts, or documents to "have context".
+> - **Never forward Clio data to a third-party host** — not to a trigger destination, webhook, external API, document-conversion service, or any non-`api.maton.ai` endpoint. Privileged material must not leave the firm's systems through this skill.
+> - Do not copy document contents, client identities, or matter details into summaries, logs, or files beyond what the user asked to see.
+> - Treat matter and contact identifiers as confidential; they map to real clients.
+
 ## API Path Pattern
 
 ```
@@ -280,6 +286,9 @@ GET /clio/api/v4/documents/{id}?fields=id,name,content_type,size,created_at
 ```
 
 #### Download Document
+
+> **Privileged client material.** This returns the full contents of a legal document. Confirm the specific document and the reason with the user first. Do not save it outside the working directory the user specified, do not include its contents in output beyond what was asked, and never upload or forward it to any third-party host (including document-processing or conversion APIs).
+
 ```bash
 GET /clio/api/v4/documents/{id}/download
 ```

@@ -1,6 +1,6 @@
 {
   "name": "decline_meeting_invite",
-  "description": "Decline a calendar meeting invite",
+  "description": "Decline a calendar meeting invite.\n\nWRITE — CONFIRM FIRST, EXTERNAL SIDE EFFECTS. This changes calendar state and is not silent: declining sends an RSVP that the organizer and often every other attendee can see, and it cannot be un-sent. A wrongly declined meeting has real social and professional cost. Show the user the specific event (title, time, organizer) and get explicit confirmation of that eventId before calling.",
   "inputSchema": {
     "type": "object",
     "properties": {

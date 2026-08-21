@@ -83,4 +83,4 @@ GET /youtube-reporting/v1/jobs/{jobId}/reports/{reportId}
 
 - [YouTube Reporting API Reference](https://developers.google.com/youtube/reporting/v1/reference/rest)
 - [Bulk Reports Documentation](https://developers.google.com/youtube/reporting/v1/reports)
-- [Report Types](https://developers.google.com/youtube/reporting/v1/report_types)
+- [Report Types](https://developers.google.com/youtube/reporting/v1/reports/full_report_list)

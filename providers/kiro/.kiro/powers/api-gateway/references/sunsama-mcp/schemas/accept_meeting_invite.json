@@ -1,6 +1,6 @@
 {
   "name": "accept_meeting_invite",
-  "description": "Accept a calendar meeting invite",
+  "description": "Accept a calendar meeting invite.\n\nWRITE — CONFIRM FIRST, EXTERNAL SIDE EFFECTS. This changes calendar state and is not silent: accepting sends an RSVP that the organizer and often every other attendee can see, commits the user's time, and may pull them into downstream scheduling. It is visible to people outside the user's control and cannot be un-sent. Show the user the specific event (title, time, organizer) and get explicit confirmation of that eventId before calling. Never accept on the user's behalf when merely reading or summarizing a calendar.",
   "inputSchema": {
     "type": "object",
     "properties": {

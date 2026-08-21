@@ -1,5 +1,13 @@
 # Calendly Trigger Reference
 
+> **Invitee payloads contain third-party personal data.** These events carry the invitee's full name, email address, timezone, free-text question responses, cancellation reasons, and meeting join URLs. The invitee is a *third party* — they booked a meeting, they did not consent to their details being relayed to an arbitrary downstream system.
+>
+> Before attaching a destination:
+> - Recognize that every matching booking will be forwarded automatically and continuously, PII included.
+> - Forward only the fields the downstream workflow needs via `body_template` (e.g. name and start time) rather than the whole payload. Cancellation reasons and question responses are often personal — omit them unless required.
+> - Treat join URLs as secrets: anyone holding one may be able to enter the meeting. Do not relay them to public channels or third-party hosts.
+> - Prefer `https://api.maton.ai/` destinations; get explicit user approval before sending invitee data to any external host.
+
 ## Event Types
 
 - [`invitee.created`](#inviteecreated)

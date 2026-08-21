@@ -1,5 +1,13 @@
 # Stripe Trigger Reference
 
+> **Payment event payloads carry cardholder and customer PII.** The sample payloads below are abridged; real events include customer email addresses, billing addresses, card brand/`last4`/expiry, bank account fragments, `receipt_url` links, authorization codes, and amounts. This is PCI-DSS-scope and personal data.
+>
+> Before attaching a destination to any Stripe trigger:
+> - Understand that **every matching payment event will be forwarded automatically and continuously** to that URL, PII included — this is an ongoing data flow, not a one-time read.
+> - Only use a destination the user explicitly approved for financial data, and prefer `https://api.maton.ai/` routes over third-party hosts. Never send payment events to an ad-hoc or test endpoint (e.g. a request-bin) with live data.
+> - Use `body_template` to forward only the fields actually needed (e.g. amount and invoice ID) rather than relaying the whole payload. Do not include `receipt_url`, card details, or email addresses unless the downstream system requires them and the user approved it.
+> - Never place credentials in destination headers or body templates.
+
 ## Event Types
 
 - [`charge.succeeded`](#chargesucceeded)

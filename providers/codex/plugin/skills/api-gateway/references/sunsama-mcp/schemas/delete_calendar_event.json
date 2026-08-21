@@ -1,14 +1,16 @@
 {
   "name": "delete_calendar_event",
-  "description": "Delete a calendar event",
+  "description": "Delete a calendar event from the user's connected calendar.\n\nDESTRUCTIVE — REQUIRES EXPLICIT USER CONFIRMATION. This removes a real calendar event; assume it is not recoverable through this skill. If the event has other attendees, deleting it may also cancel the meeting for them and send them a cancellation notice — the effect reaches people who are not the user.\nScope and ownership are NOT implied by this tool: it does not check who owns the event, which connected calendar it belongs to, or whether the event is part of a recurring series. Before calling: fetch the event and show the user its title, date/time, calendar, and attendee count; state that deletion is permanent and that attendees may be notified; then obtain explicit approval for that specific event.\nNever delete an event the user has not named. Never infer deletion from a vague instruction such as 'clear my afternoon' or 'clean up my calendar'. Never delete events you did not create in order to resolve a scheduling conflict — propose the change and let the user decide. For a recurring series, confirm whether the user means this single occurrence or the whole series before acting.",
   "inputSchema": {
     "type": "object",
     "properties": {
       "eventId": {
         "type": "string",
-        "description": "The ID of the calendar event"
+        "description": "The ID of the calendar event to delete. Must identify an event the user has explicitly named and approved for deletion — resolve and confirm it with the user before calling."
       }
     },
-    "required": ["eventId"]
+    "required": [
+      "eventId"
+    ]
   }
 }

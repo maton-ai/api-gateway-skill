@@ -1,7 +1,7 @@
 {
   "name": "get_meetings",
   "title": "Get detailed meeting information for one or more Granola mee",
-  "description": "Get detailed meeting information for one or more Granola meetings by ID. Returns private notes, AI-generated summary, attendees, and metadata.\nUse this when you already have specific meeting IDs (e.g. from list_meetings results). For open-ended questions about meeting content, use query_granola_meetings instead.",
+  "description": "Get detailed meeting information for one or more Granola meetings by ID. Returns private notes, AI-generated summary, attendees, and metadata.\nUse this when you already have specific meeting IDs (e.g. from list_meetings results). For open-ended questions about meeting content, use query_granola_meetings instead.\n\nPRIVACY — SENSITIVE MEETING CONTENT. The response contains private notes, AI summaries, decisions, and attendee names and email addresses. Meetings routinely cover compensation, personnel matters, legal exposure, unannounced plans, and customer confidences, and other attendees did not consent to an agent reading or relaying their words. Request only the meeting IDs the task actually requires; do not fetch a range of meetings to browse. Return the narrowest answer that satisfies the request rather than reproducing whole notes or summaries. Confirm with the user before posting any of this content anywhere shared (Slack, docs, email, issue trackers) or sending it to any host other than api.maton.ai.",
   "inputSchema": {
     "type": "object",
     "properties": {

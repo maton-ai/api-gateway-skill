@@ -5,6 +5,16 @@
 **App name:** `stripe`
 **Base URL proxied:** `api.stripe.com`
 
+> **Elevated risk — this API moves real money and holds cardholder data.** Two distinct concerns:
+>
+> **1. Financial operations are irreversible or costly to reverse.** Creating charges, issuing refunds, canceling subscriptions, and deleting customers all have immediate financial effect on real people. Before any write: state the exact customer, amount, and currency, and get explicit user confirmation. Never infer an amount, retry a charge after an ambiguous failure (risk of double-charging — use idempotency keys), or cancel/refund based on vague intent. Confirm you are in the intended mode: check `livemode` and never assume a request is a harmless test.
+>
+> **2. Responses contain payment PII.** Customer records and events include email addresses, billing addresses, phone numbers, card `last4`/brand/expiry, bank account fragments, receipt URLs, and authorization codes. This is regulated data (PCI-DSS scope, and personal data under GDPR/CCPA).
+> - Retrieve only the records and fields the task needs; do not bulk-export the customer list.
+> - Do not print full customer records, card details, or receipt URLs into output beyond what the user asked for. Receipt URLs are publicly reachable — treat them as sensitive links.
+> - **Never forward Stripe data to a third-party host** — not to a trigger destination, external webhook, spreadsheet service, or analytics endpoint — without explicit user approval for that specific transfer.
+> - Never store card data, and never attempt to retrieve or reconstruct a full card number (Stripe does not expose it — do not try).
+
 ## API Path Pattern
 
 ```

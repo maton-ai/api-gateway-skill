@@ -109,8 +109,15 @@ GET /brave-search/res/v1/summarizer/entity_info?key={key}
 - `freshness`: Time filter - "pd", "pw", "pm", "py"
 
 ### Location Headers
-- `x-loc-lat`: Latitude
-- `x-loc-long`: Longitude
+
+> **Privacy — these headers transmit the user's physical location.** `x-loc-lat`/`x-loc-long` are precise coordinates and, with city/state/postal code, can identify a home or workplace. They are sent to Brave Search on every request that includes them.
+> - Only send location headers when the user's request is genuinely location-dependent (e.g. "restaurants near me") and the user has supplied or approved the location.
+> - Never infer coordinates from the host machine, IP, system settings, or a previous unrelated request, and never populate them silently.
+> - Prefer the coarsest value that satisfies the query — city or country rather than exact lat/long.
+> - Do not log these values or carry them over into later requests.
+
+- `x-loc-lat`: Latitude — precise coordinate, treat as personal data
+- `x-loc-long`: Longitude — precise coordinate, treat as personal data
 - `x-loc-city`: City name
 - `x-loc-state`: State/province
 - `x-loc-country`: Country code

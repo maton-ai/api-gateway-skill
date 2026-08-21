@@ -179,4 +179,4 @@ Note: Local inventories only work for products with LOCAL channel.
 - [Merchant API Overview](https://developers.google.com/merchant/api/overview)
 - [Merchant API Reference](https://developers.google.com/merchant/api/reference/rest)
 - [Products Guide](https://developers.google.com/merchant/api/guides/products/overview)
-- [Reports Guide](https://developers.google.com/merchant/api/guides/reports)
+- [Reports Guide](https://developers.google.com/merchant/api/guides/reports/overview)

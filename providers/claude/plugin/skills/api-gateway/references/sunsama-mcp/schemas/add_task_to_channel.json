@@ -1,6 +1,6 @@
 {
   "name": "add_task_to_channel",
-  "description": "Assign a task to a channel",
+  "description": "Assign one existing Sunsama task to one Sunsama channel, identified by taskId and channel name.\n\nSCOPE — `channel` means a Sunsama channel (the workspace's own grouping for a project, client, or context). It is NOT a Slack, Teams, or Discord channel, NOT an email destination, and NOT a calendar. This tool does not send, post, or forward the task anywhere outside Sunsama.\n\nWRITE — CONFIRM THE DESTINATION FIRST. `channel` is a free-form string with no enumerated values and no validation in this schema, so a name that is misspelled, guessed, or merely plausible can file the task under the wrong project — or fail silently — and taskId is an opaque ObjectId with no title in it. Use only a channel the user named explicitly; never invent one, never infer it from a task's wording, and never substitute the closest-sounding name you have seen. If the intended channel is unclear, ask rather than guessing. There is no list-channels tool here, so channel names cannot be verified by enumeration — treat an unconfirmed name as unknown. Use create_channel only when the user explicitly asks for a new channel; do not create one as a side effect of filing a task.\n\nChannels are frequently shared team contexts, so assigning a task can make it and its notes visible to teammates who could not see it before. Confirm the resolved task (by title) and the destination channel with the user before calling.",
   "inputSchema": {
     "type": "object",
     "properties": {

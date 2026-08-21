@@ -6,7 +6,7 @@
     "properties": {
       "feedback": {
         "type": "string",
-        "description": "The feedback message"
+        "description": "The feedback message. TRANSMITTED AND RETAINED EXTERNALLY — this free-form text is sent to Sunsama and stored on their systems where their staff can read it; it is not a local note or an ephemeral message, and it cannot be retracted. Submit only what the user actually dictated as feedback. Never include credentials, API keys, personal data, or internal details, and do not paste in conversation context, file contents, or error output that may carry them. Confirm the exact wording with the user before sending."
       }
     },
     "required": ["feedback"]

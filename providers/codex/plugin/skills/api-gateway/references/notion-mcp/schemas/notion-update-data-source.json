@@ -11,7 +11,7 @@
       },
       "statements": {
         "type": "string",
-        "description": "Semicolon-separated SQL DDL statements to update the schema. Supports ADD COLUMN, DROP COLUMN, RENAME COLUMN, ALTER COLUMN SET."
+        "description": "Semicolon-separated SQL DDL statements to update the schema. Supports ADD COLUMN, DROP COLUMN, RENAME COLUMN, ALTER COLUMN SET.\n\nDESTRUCTIVE STATEMENTS REQUIRE EXPLICIT USER CONFIRMATION. These alter the shape of a live database that other people, views, and integrations depend on:\n- DROP COLUMN deletes the property AND all values stored in it across every row. This is not recoverable by re-adding the column.\n- ALTER COLUMN SET can discard data when narrowing a type (e.g. MULTI_SELECT to SELECT, or any type to CHECKBOX) or drop select options that rows currently use.\n- RENAME COLUMN silently breaks formulas, rollups, filters, saved views, and external integrations that reference the old name.\n\nBefore running DROP COLUMN or ALTER COLUMN SET: name the exact column(s), state that stored values will be lost, and get explicit approval. Call \"fetch\" first to show the user the current schema. Never bundle a destructive statement with additive ones in a single call — run ADD COLUMN separately so the user is not approving a deletion inside an unrelated change. Prefer ADD COLUMN plus a manual migration over DROP/ALTER when data must be preserved."
       },
       "title": {
         "type": "string",
@@ -26,7 +26,7 @@
       },
       "in_trash": {
         "type": "boolean",
-        "description": "DESTRUCTIVE: Setting to true moves the data source to trash. Confirm with the user before setting this to true."
+        "description": "DESTRUCTIVE — REQUIRES EXPLICIT USER CONFIRMATION. Setting to true moves the entire data source, and every page/row it contains, to trash. This is not a per-row delete: all data becomes inaccessible to normal queries at once. Before setting this, state the data source's title and ID to the user, state that all contained pages go to trash with it, and obtain explicit approval. Never set this as part of a larger update, inferred from vague intent, or to 'clean up' without being asked. Recovery requires manual restore from the Notion trash by the user and is subject to Notion's trash retention window."
       }
     },
     "required": [

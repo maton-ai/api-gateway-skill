@@ -13,17 +13,51 @@
 
 ## Page Access Token
 
-Most page-specific endpoints require a **Page Access Token** passed as the `access_token` query parameter. The gateway injects a User Access Token, but endpoints like feed, insights, and comments need a Page Access Token.
+Facebook's Graph API requires a **Page Access Token** for page-scoped endpoints (feed, insights, comments). The gateway injects the connection's User Access Token, which authorizes `me/accounts` and page metadata but not page-scoped operations. This is a Facebook API constraint, not a gateway feature — the token is issued by Facebook, scoped to pages the connected user already administers, and grants no access beyond what that user's existing connection already permits.
 
-**Two-step flow:**
-1. Retrieve available pages: `GET /facebook-page/v25.0/me/accounts?fields=id,name,access_token`
-2. Pass the page's `access_token` value in subsequent calls as a query parameter
+> **Handling rules — the page token is a credential.** It is obtained from and used against `api.maton.ai` only.
+> - **Never** write it to disk, logs, environment files, shell history, or scrollback.
+> - **Never** print, echo, or include it in any output shown to the user or returned to a caller.
+> - **Never** send it to any host other than `api.maton.ai` — not in a webhook destination, trigger header, body template, or third-party request.
+> - Hold it in an in-memory variable for the duration of the current request sequence only; discard it afterward. Do not cache or reuse it across sessions.
+> - Request it only when a page-scoped call actually requires it. Prefer the User-Access-Token endpoints below when they satisfy the task.
 
-> **Credential safety:** The page access token is a privileged credential. Never log it, print it, or expose it in output visible to users or external systems. Store it only in a variable for immediate use within the same session, and do not persist it.
-
-Endpoints that work with User Access Token only (no `access_token` param needed):
+**Start here — do not retrieve a token you don't need.** These endpoints work with the gateway-injected User Access Token alone, with no `access_token` parameter and no token retrieval step:
 - `GET /facebook-page/v25.0/me/accounts`
 - `GET /facebook-page/v25.0/{page_id}`
+
+If one of these satisfies the task, stop — there is no reason to read a page token.
+
+**Obtaining a page token** — only when a specific page-scoped endpoint below actually requires one, and only for the page the user named:
+1. `GET /facebook-page/v25.0/me/accounts?fields=id,name,access_token` — read the `access_token` field for that one page
+2. Pass it as the `access_token` query parameter on that page-scoped call, then discard it
+
+Retrieve and consume it inside a single script so the value never crosses a process boundary and never lands in shell history or scrollback:
+
+```bash
+python <<'EOF'
+import json, os, subprocess, urllib.request
+
+# Short-lived token from the CLI; no long-lived key in the environment.
+TOKEN = subprocess.run(
+    ["maton", "token"], capture_output=True, text=True, check=True
+).stdout.strip()
+
+def call(path):
+    req = urllib.request.Request(f'https://api.maton.ai/facebook-page/v25.0/{path}')
+    req.add_header('Authorization', f'Bearer {TOKEN}')
+    return json.load(urllib.request.urlopen(req))
+
+pages = call('me/accounts?fields=id,name,access_token')     # token is never printed
+page_id, page_token = pages['data'][0]['id'], pages['data'][0]['access_token']
+
+feed = call(f'{page_id}/feed?fields=id,message,created_time&limit=10&access_token={page_token}')
+del page_token                                              # discard immediately after use
+print(json.dumps(feed, indent=2))                           # response only
+EOF
+```
+
+In the endpoint examples below, `{page_access_token}` marks **where the runtime value goes, not something to fill in ahead of time.** Substitute the in-memory variable at call time. Never paste a literal token into a command, a file, or a saved example, and never build a reusable snippet with a real token embedded in the URL — a token in a query string is a credential in plain text.
 
 ## Common Endpoints
 

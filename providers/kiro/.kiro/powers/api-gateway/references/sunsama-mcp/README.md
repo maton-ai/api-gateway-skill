@@ -7,26 +7,18 @@
 
 ## Connection Management
 
-Manage MCP connections at `https://api.maton.ai`.
+An MCP connection is created like any other, with `--method MCP`.
 
 ### List Connections
 
 ```bash
-GET https://api.maton.ai/connections?app=sunsama&method=MCP&status=ACTIVE
-Authorization: Bearer $MATON_API_KEY
+maton connection list sunsama --method MCP --status ACTIVE
 ```
 
 ### Create Connection
 
 ```bash
-POST https://api.maton.ai/connections
-Content-Type: application/json
-Authorization: Bearer $MATON_API_KEY
-
-{
-  "app": "sunsama",
-  "method": "MCP"
-}
+maton connection create sunsama --method MCP
 ```
 
 ## API Path Pattern
@@ -61,6 +53,9 @@ All MCP tools use `POST` method:
 | `create_weekly_objective` | Create weekly goal | [schema](schemas/create_weekly_objective.json) |
 | `create_braindump_task` | Create backlog task | [schema](schemas/create_braindump_task.json) |
 | `create_channel` | Create channel/context | [schema](schemas/create_channel.json) |
+| `accept_meeting_invite` | RSVP yes to a meeting — **visible to organizer and attendees, confirm first** | [schema](schemas/accept_meeting_invite.json) |
+| `decline_meeting_invite` | RSVP no to a meeting — **visible to organizer and attendees, confirm first** | [schema](schemas/decline_meeting_invite.json) |
+| `log_user_feedback` | Send feedback to Sunsama — **retained externally, confirm wording** | [schema](schemas/log_user_feedback.json) |
 
 ## Common Endpoints
 

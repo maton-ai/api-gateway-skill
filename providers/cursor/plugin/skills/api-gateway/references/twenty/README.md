@@ -189,5 +189,5 @@ Directions: `AscNullsFirst`, `AscNullsLast`, `DescNullsFirst`, `DescNullsLast`
 
 ## Resources
 
-- [Twenty API Documentation](https://twenty.com/developers/rest-api)
+- [Twenty API Documentation](https://docs.twenty.com/developers/extend/api)
 - [Twenty GitHub](https://github.com/twentyhq/twenty)

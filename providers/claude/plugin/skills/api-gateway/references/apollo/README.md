@@ -198,7 +198,7 @@ Common search parameters:
 
 ## Resources
 
-- [API Overview](https://docs.apollo.io/reference/introduction)
+- [API Overview](https://docs.apollo.io/reference)
 - [Search People](https://docs.apollo.io/reference/people-api-search.md)
 - [Enrich Person](https://docs.apollo.io/reference/people-enrichment.md)
 - [Search Organizations](https://docs.apollo.io/reference/organization-search.md)

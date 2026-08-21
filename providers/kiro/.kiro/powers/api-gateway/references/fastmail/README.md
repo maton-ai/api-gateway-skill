@@ -559,7 +559,7 @@ POST /fastmail/jmap/api/
 | Status | Meaning |
 |--------|---------|
 | 400 | Missing Fastmail connection, invalid app name in path, or an unrecognized capability URI in `using` |
-| 401 | Invalid or missing Maton API key |
+| 401 | Invalid, missing, or expired Maton credential |
 | 403 | Capability in `using` blocked by the gateway or not granted by the connection's API token |
 | 405 | Wrong HTTP method (`GET` on `/jmap/api/`, which requires `POST`) |
 | 429 | Rate limited |
