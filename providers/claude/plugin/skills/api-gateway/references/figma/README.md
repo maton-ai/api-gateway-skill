@@ -19,22 +19,13 @@
 /figma/v1/{resource}
 ```
 
-Figma's version segment is part of the native path, so it follows the `figma` prefix. Figma serves folders and webhooks on `v2` and everything else on `v1`, but **only the `v1` endpoints are reachable through the gateway** — see [Unavailable Endpoints](#unavailable-endpoints).
+Figma's version segment is part of the native path, so it follows the `figma` prefix. Figma serves folders and webhooks on `v2` and everything else on `v1`, but **only the `v1` endpoints are reachable through the gateway** — see [Not Supported](#not-supported).
 
-## Unavailable Endpoints
+## Not Supported
 
-These groups do not work through the gateway:
+Listing a team's projects, folders, or files; webhooks; and variables are all unavailable through the gateway. Do not offer Figma event automation.
 
-| Group | Paths | Result |
-|-------|-------|--------|
-| Projects | `/figma/v1/teams/{team_id}/projects`, `/figma/v1/projects/{project_id}/files` | `404` — deprecated upstream |
-| Project metadata | `/figma/v1/projects/{project_id}/meta` | `403 Invalid scope` |
-| Folders (v2) | `/figma/v2/teams/{team_id}/folders`, `/figma/v2/folders/{folder_id}/...` | `403 Invalid scope` |
-| Webhooks (v2) | `/figma/v2/webhooks...` | `403 Invalid scope` — do not offer Figma event automation |
-| Variables | `/figma/v1/files/{file_key}/variables/...` | `403` (also Enterprise-only) |
-| Dev resources | `/figma/v1/files/{file_key}/dev_resources`, `/figma/v1/dev_resources` | `404` on read, silent no-op on write |
-
-**There is no way to browse from a team to its files.** Both the deprecated v1 project endpoints and the current v2 folder endpoints are unavailable, and Figma has no "list my files" endpoint — so always ask the user for a file URL. Team-scoped *library* endpoints are unaffected and do work.
+**There is no way to browse from a team to its files**, and Figma has no "list my files" endpoint — so always ask the user for a file URL. Team-scoped *library* endpoints are unaffected and do work.
 
 Distinguish the `403` bodies: `{"message":"Invalid scope"}` means the endpoint is not available here and no retry helps, while `{"message":"You don't have permission to view this team."}` means the endpoint works but the account lacks access to that resource.
 
