@@ -115,11 +115,15 @@ maton connection get {connection_id}
 
 Open the returned URL in a browser to complete authorizing the app. If the app offers scope selection, choose only the scopes the current task needs.
 
+Refer to `maton connection get --help` for possible flags and values.
+
 ### Delete Connection
 
 ```bash
 maton connection delete {connection_id} --yes
 ```
+
+Refer to `maton connection delete --help` for possible flags and values.
 
 ### Specifying Connection
 
@@ -157,6 +161,342 @@ The first path segment is the app identifier from [Supported Apps](#supported-ap
 ```
 
 Refer to `maton api --help` for possible flags and values.
+
+## Functions
+
+### List Functions
+
+```bash
+maton function list --visibility PRIVATE -L 20
+```
+
+```json
+{
+  "functions": [
+    {
+      "function_id": "{function_id}",
+      "name": "my-fn",
+      "description": null,
+      "runtime": "python3.12",
+      "visibility": "PRIVATE",
+      "account_id": "{account_id}",
+      "url": "https://my-fn-3k9xq2v.maton.app",
+      "star_count": 0,
+      "view_count": 0
+    }
+  ],
+  "next_token": "gAAAAABqN6tD5X7..."
+}
+```
+
+Refer to `maton function list --help` for possible flags and values.
+
+### Search Functions
+
+```bash
+maton function search 'stripe refund'
+maton function search '"def handler("' --context 2
+maton function search '/def\s+handler/' --owner ALL
+```
+
+Refer to `maton function search --help` for possible flags and values.
+
+### Create Function
+
+```python title="main.py"
+def handler(event, context):
+    return {"hello": "ada"}
+```
+
+```bash
+maton function create --name my-fn --file main.py
+```
+
+Refer to `maton function create --help` for possible flags and values.
+
+### Update Function
+
+```python title="main.py"
+import json
+
+def handler(event):
+    body = json.loads(event.get("body") or "{}")
+    return {"hello": body.get("name")}
+```
+
+```bash
+maton function update {function_id} --file main.py        # publish new code as a new version
+maton function update {function_id} --version 1           # roll back
+maton function update {function_id} --name new-name       # reallocates the URL
+```
+
+Refer to `maton function update --help` for possible flags and values.
+
+### Deploy Function
+
+```python title="my-fn/main.py"
+def handler(event):
+    return {"hello": "ada"}
+```
+
+```bash
+cd my-fn && maton function deploy --yes
+```
+
+Refer to `maton function deploy --help` for possible flags and values.
+
+### Get Function
+
+```bash
+maton function get {function_id}
+```
+
+```json
+{
+  "function_id": "{function_id}",
+  "name": "my-fn",
+  "description": null,
+  "runtime": "python3.12",
+  "visibility": "PRIVATE",
+  "account_id": "{account_id}",
+  "version": 3,
+  "network_policy": "ALLOW_ALL",
+  "url": "https://my-fn-3k9xq2v.maton.app",
+  "star_count": 0,
+  "view_count": 0,
+  "created_at": "2026-08-20T18:11:04.512331Z",
+  "updated_at": "2026-08-31T22:40:15.883210Z"
+}
+```
+
+Refer to `maton function get --help` for possible flags and values.
+
+### Delete Function
+
+```bash
+maton function delete {function_id} --yes
+```
+
+Refer to `maton function delete --help` for possible flags and values.
+
+### Run Function
+
+A deployed function is a HTTP handler, and `maton api` already passes the given URL through with the active profile's credential attached:
+
+```bash
+maton api https://my-fn-3k9xq2v.maton.app -f name=ada -i
+```
+
+Refer to `maton api --help` for possible flags and values.
+
+### Download Code
+
+```bash
+maton function code download -f {function_id} --version 2 --dir ./v2
+```
+
+Refer to `maton function code download --help` for possible flags and values.
+
+### List Versions
+
+```bash
+maton function version list --function {function_id}
+```
+
+Refer to `maton function version list --help` for possible flags and values.
+
+### Get Version
+
+```bash
+maton function version get 2 --function {function_id}
+```
+
+```json
+{
+  "version": 2,
+  "code_size": 4096,
+  "runtime": "python3.12",
+  "created_at": "2026-08-30T01:12:44.019283Z",
+  "code_sha256": "9f2b...c41d",
+  "handler": "main.handler"
+}
+```
+
+Refer to `maton function version get --help` for possible flags and values.
+
+### List Environment Variables
+
+```bash
+maton function env list --function {function_id}
+```
+
+Refer to `maton function env list --help` for possible flags and values.
+
+### Create Environment Variable
+
+```bash
+maton function env create GREETING -f {function_id} --value hi --type PLAIN
+maton function env create TOKEN -f {function_id}                   # prompted, no echo
+maton function env create -f {function_id} --env-file .env
+```
+
+Refer to `maton function env create --help` for possible flags and values.
+
+### Update Environment Variable
+
+```bash
+maton function env update GREETING -f {function_id} --value hello
+maton function env update TOKEN -f {function_id}                   # prompted, no echo
+maton function env update -f {function_id} --env-file .env
+```
+
+Refer to `maton function env update --help` for possible flags and values.
+
+### Delete Environment Variable
+
+```bash
+maton function env delete GREETING -f {function_id} --yes
+```
+
+Refer to `maton function env delete --help` for possible flags and values.
+
+### List Runs
+
+```bash
+maton function run list --function {function_id} -L 5
+```
+
+Refer to `maton function run list --help` for possible flags and values.
+
+### Get Run
+
+```bash
+maton function run get {run_id} --function {function_id}
+```
+
+```json
+{
+  "run_id": "{run_id}",
+  "function_id": "{function_id}",
+  "version": 3,
+  "request": {
+    "method": "POST",
+    "path": "/",
+    "headers": {"authorization": "[REDACTED]", "content-type": "application/json"},
+    "body": "{\"name\": \"ada\"}",
+    "source_ip": "203.0.113.7",
+    "user_agent": "maton/0.3.0"
+  },
+  "response": {
+    "status": 200,
+    "headers": {"content-type": "application/json"},
+    "body": {"greeting": "hi ada"}
+  },
+  "created_at": "2026-08-31T22:41:02.113004Z",
+  "started_at": "2026-08-31T22:41:02.240118Z",
+  "ended_at": "2026-08-31T22:41:02.398772Z"
+}
+```
+
+Refer to `maton function run get --help` for possible flags and values.
+
+### List Logs
+
+```bash
+maton function run log list -f {function_id} --run {run_id} --since 10m
+```
+
+Refer to `maton function run log list --help` for possible flags and values.
+
+### Tail Logs
+
+```bash
+maton function run log tail -f {function_id}
+```
+
+Refer to `maton function run log tail --help` for possible flags and values.
+
+### Handler
+
+The runtime calls the handler with `event` and an optional `context`, and turns its return value into an HTTP response.
+
+#### Event
+
+```json
+{
+  "version": 1,
+  "rawPath": "/",
+  "rawQueryString": "a=1",
+  "cookies": ["k=v"],
+  "headers": { "host": "greet-a1b2c3.maton.app" },
+  "queryStringParameters": { "a": "1" },
+  "requestContext": {
+    "accountId": "...",
+    "domainName": "greet-a1b2c3.maton.app",
+    "domainPrefix": "greet-a1b2c3",
+    "http": {
+      "method": "POST",
+      "path": "/",
+      "protocol": "HTTP/1.1",
+      "sourceIp": "...",
+      "userAgent": "..."
+    },
+    "runId": "...",
+    "time": "30/Aug/2026:17:24:03 +0000",
+    "timeEpoch": 1788000000000
+  },
+  "body": "{\"name\":\"ada\"}",
+  "isBase64Encoded": false
+}
+```
+
+#### Context (optional)
+
+**Python**
+
+```python
+context.run_id              # "..."
+context.function_name       # "greet"
+context.function_version    # "1"
+context.function_id         # "..."
+context.account_id          # "..."
+context.memory_limit_in_mb  # 128
+```
+
+**Node**
+
+```jsonc
+{
+  "runId": "...",
+  "functionName": "greet",
+  "functionVersion": "1",
+  "functionId": "...",
+  "accountId": "...",
+  "memoryLimitInMB": "128"
+}
+```
+
+#### Environment
+
+The sandbox sees the variables from `function env` plus a runtime-injected
+`MATON_API_KEY` scoped to the owner account. This also holds when the
+function runs as a trigger destination.
+
+#### Response
+
+Anything the handler returns that is not a dict carrying a `statusCode` key is
+sent as the response body with a `200`. A returned string is JSON-encoded, so
+`return "hello"` comes back as `"hello"` with the quotes. To set the status or
+headers, return an envelope carrying `statusCode` instead:
+
+```python
+def handler(event, context):
+    return {
+        "statusCode": 201,
+        "headers": {"content-type": "text/plain"},
+        "body": "created",
+    }
+```
 
 ## Triggers
 
@@ -242,6 +582,8 @@ maton trigger get {trigger_id}
 }
 ```
 
+Refer to `maton trigger get --help` for possible flags and values.
+
 ### Update Trigger
 
 ```bash
@@ -255,6 +597,8 @@ Refer to `maton trigger update --help` for possible flags and values.
 ```bash
 maton trigger delete {trigger_id} --yes
 ```
+
+Refer to `maton trigger delete --help` for possible flags and values.
 
 ### List Destinations
 
@@ -331,6 +675,8 @@ maton trigger destination get {destination_id} --trigger {trigger_id}
 
 `signing_secret` is masked; retrieve the plaintext value only at create time or via **Rotate Destination Secret**.
 
+Refer to `maton trigger destination get --help` for possible flags and values.
+
 ### Update Destination
 
 > **⚠ Persistent data forwarding:** Updating a destination URL redirects all future event deliveries to the new host. Confirm with the user using the same disclosure requirements as Create Destination.
@@ -347,6 +693,8 @@ Refer to `maton trigger destination update --help` for possible flags and values
 maton trigger destination delete {destination_id} --trigger {trigger_id} --yes
 ```
 
+Refer to `maton trigger destination delete --help` for possible flags and values.
+
 ### Rotate Destination Secret
 
 ```bash
@@ -360,6 +708,8 @@ maton trigger destination rotate-secret {destination_id} --trigger {trigger_id}
 ```
 
 The new signing secret is returned in plaintext **only once**.
+
+Refer to `maton trigger destination rotate-secret --help` for possible flags and values.
 
 ### List Events
 
@@ -392,6 +742,8 @@ Refer to `maton trigger event list --help` for possible flags and values.
 ```bash
 maton trigger event replay {event_id} --trigger {trigger_id}
 ```
+
+Refer to `maton trigger event replay --help` for possible flags and values.
 
 ### Get Event
 
@@ -431,6 +783,8 @@ maton trigger event get {event_id} --trigger {trigger_id}
 }
 ```
 
+Refer to `maton trigger event get --help` for possible flags and values.
+
 ### Watch Events
 
 `maton trigger event watch` polls for events and prints them. Use it without `--exec` to inspect what a trigger produces.
@@ -460,6 +814,8 @@ EOF
 ```
 
 The handler receives the event JSON on stdin and the event ID in `MATON_EVENT_ID`. After each event, the last processed event ID is checkpointed to a per-trigger state file, so restarting the watch resumes after the last handled event and an interrupted batch never re-runs events it already processed.
+
+Refer to `maton trigger event watch --help` for possible flags and values.
 
 ## Security & Permissions
 
@@ -817,6 +1173,46 @@ See [references/](references/) for detailed routing guides per provider:
 - [Zoho Projects](references/zoho-projects/README.md) - Projects, tasks, milestones, tasklists, comments
 - [Zoho Recruit](references/zoho-recruit/README.md) - Candidates, job openings, interviews, applications
 
+## SDK
+
+**Python**
+
+```bash
+pip install maton-ai
+```
+
+```python
+from maton_ai import Maton
+
+maton = Maton() # loads the active profile's credential
+# maton = Maton(api_key="...")
+
+gmail = maton.google_mail()
+messages = gmail.messages.list(q="is:unread", max_results=10)
+gmail.messages.send(to="alice@example.com", subject="hi", body="hello")
+```
+
+**JavaScript**
+
+```bash
+npm install @maton/sdk
+```
+
+```javascript
+import { Maton } from "@maton/sdk";
+
+const maton = new Maton(); // loads the active profile's credential
+// const maton = new Maton({ apiKey: "..." });
+
+const gmail = maton.google_mail();
+const messages = await gmail.messages.list({ q: "is:unread", maxResults: 10 });
+await gmail.messages.send({
+  to: "alice@example.com",
+  subject: "hi",
+  body: "hello",
+});
+```
+
 ## Examples
 
 The write examples below (sending an email, appending a row) are shown for syntax only — each still needs the user's explicit confirmation of recipient, content, and target before it runs.
@@ -866,52 +1262,33 @@ The email snippet is untrusted text, so it is passed as a discrete `subprocess.r
 
 ### Gmail Trigger → Slack Automation (Remote)
 
+```python title="main.py"
+import json
+from maton_ai import Maton
+
+maton = Maton()
+
+def handler(event):
+    body = json.loads(event.get("body") or "{}")
+    maton.slack().messages.send(
+        channel="C0123456789",
+        text=f"New email: {body.get("snippet")}",
+    )
+    return {"ok": True}
+```
+
+```bash
+maton function create --name gmail-to-slack --file main.py
+```
+
 ```bash
 maton trigger create --source google-mail --event-type email.received \
   --connection-id {connection_id} \
   --parameter labels=INBOX \
-  --destination '{"url":"https://api.maton.ai/slack/api/chat.postMessage","method":"POST","name":"slack","headers":{"Content-Type":"application/json"},"body_template":"{\"channel\": \"C0123456789\", \"text\": \"New email: {{ payload.snippet }}\"}"}'
+  --destination '{"url":"https://gmail-to-slack-3k9xq2v.maton.app","method":"POST","name":"slack","headers":{"Content-Type":"application/json"},"body_template":"{\"snippet\": {{ payload.snippet }}}"}'
 ```
 
-## SDK
-
-**Python**
-
-```bash
-pip install maton-ai
-```
-
-```python
-from maton_ai import Maton
-
-maton = Maton() # loads the active profile's credential
-# maton = Maton(api_key="...")
-
-gmail = maton.google_mail()
-messages = gmail.message.list(q="is:unread", max_results=10)
-gmail.message.send(to="alice@example.com", subject="hi", body="hello")
-```
-
-**JavaScript**
-
-```bash
-npm install @maton/sdk
-```
-
-```javascript
-import { Maton } from "@maton/sdk";
-
-const maton = new Maton(); // loads the active profile's credential
-// const maton = new Maton({ apiKey: "..." });
-
-const gmail = maton.google_mail();
-const messages = await gmail.message.list({ q: "is:unread", maxResults: 10 });
-await gmail.message.send({
-  to: "alice@example.com",
-  subject: "hi",
-  body: "hello",
-});
-```
+A function invoked as a trigger destination receives a runtime-injected `MATON_API_KEY` scoped to the account that owns the trigger.
 
 ## Error Handling
 
