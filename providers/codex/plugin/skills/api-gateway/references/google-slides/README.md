@@ -15,44 +15,46 @@
 
 ### Create Presentation
 ```bash
-POST /google-slides/v1/presentations
-Content-Type: application/json
-
+maton api -X POST '/google-slides/v1/presentations' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "title": "My Presentation"
 }
+EOF
 ```
 
 ### Get Presentation
 ```bash
-GET /google-slides/v1/presentations/{presentationId}
+maton api '/google-slides/v1/presentations/{presentationId}'
 ```
 
 ### Get Page (Slide)
 ```bash
-GET /google-slides/v1/presentations/{presentationId}/pages/{pageId}
+maton api '/google-slides/v1/presentations/{presentationId}/pages/{pageId}'
 ```
 
 ### Get Page Thumbnail
 ```bash
-GET /google-slides/v1/presentations/{presentationId}/pages/{pageId}/thumbnail
+maton api '/google-slides/v1/presentations/{presentationId}/pages/{pageId}/thumbnail'
 ```
 
 ### Batch Update (All Modifications)
 ```bash
-POST /google-slides/v1/presentations/{presentationId}:batchUpdate
-Content-Type: application/json
-
+maton api -X POST '/google-slides/v1/presentations/{presentationId}:batchUpdate' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "requests": [...]
 }
+EOF
 ```
 
 ### Create Slide
 ```bash
-POST /google-slides/v1/presentations/{presentationId}:batchUpdate
-Content-Type: application/json
-
+maton api -X POST '/google-slides/v1/presentations/{presentationId}:batchUpdate' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "requests": [
     {
@@ -65,15 +67,16 @@ Content-Type: application/json
     }
   ]
 }
+EOF
 ```
 
 Predefined layouts: `BLANK`, `TITLE`, `TITLE_AND_BODY`, `TITLE_AND_TWO_COLUMNS`, `TITLE_ONLY`, `SECTION_HEADER`, `ONE_COLUMN_TEXT`, `MAIN_POINT`, `BIG_NUMBER`
 
 ### Insert Text
 ```bash
-POST /google-slides/v1/presentations/{presentationId}:batchUpdate
-Content-Type: application/json
-
+maton api -X POST '/google-slides/v1/presentations/{presentationId}:batchUpdate' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "requests": [
     {
@@ -85,13 +88,14 @@ Content-Type: application/json
     }
   ]
 }
+EOF
 ```
 
 ### Create Shape (Text Box)
 ```bash
-POST /google-slides/v1/presentations/{presentationId}:batchUpdate
-Content-Type: application/json
-
+maton api -X POST '/google-slides/v1/presentations/{presentationId}:batchUpdate' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "requests": [
     {
@@ -116,13 +120,14 @@ Content-Type: application/json
     }
   ]
 }
+EOF
 ```
 
 ### Create Image
 ```bash
-POST /google-slides/v1/presentations/{presentationId}:batchUpdate
-Content-Type: application/json
-
+maton api -X POST '/google-slides/v1/presentations/{presentationId}:batchUpdate' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "requests": [
     {
@@ -140,13 +145,14 @@ Content-Type: application/json
     }
   ]
 }
+EOF
 ```
 
 ### Delete Object
 ```bash
-POST /google-slides/v1/presentations/{presentationId}:batchUpdate
-Content-Type: application/json
-
+maton api -X POST '/google-slides/v1/presentations/{presentationId}:batchUpdate' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "requests": [
     {
@@ -156,13 +162,14 @@ Content-Type: application/json
     }
   ]
 }
+EOF
 ```
 
 ### Replace All Text (Template Substitution)
 ```bash
-POST /google-slides/v1/presentations/{presentationId}:batchUpdate
-Content-Type: application/json
-
+maton api -X POST '/google-slides/v1/presentations/{presentationId}:batchUpdate' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "requests": [
     {
@@ -176,13 +183,14 @@ Content-Type: application/json
     }
   ]
 }
+EOF
 ```
 
 ### Update Text Style
 ```bash
-POST /google-slides/v1/presentations/{presentationId}:batchUpdate
-Content-Type: application/json
-
+maton api -X POST '/google-slides/v1/presentations/{presentationId}:batchUpdate' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "requests": [
     {
@@ -198,6 +206,7 @@ Content-Type: application/json
     }
   ]
 }
+EOF
 ```
 
 ## Notes

@@ -15,153 +15,160 @@
 
 ### List Projects
 ```bash
-GET /todoist/api/v1/projects
+maton api '/todoist/api/v1/projects'
 ```
 
 ### Get Project
 ```bash
-GET /todoist/api/v1/projects/{id}
+maton api '/todoist/api/v1/projects/{id}'
 ```
 
 ### Create Project
 ```bash
-POST /todoist/api/v1/projects
-Content-Type: application/json
-
+maton api -X POST '/todoist/api/v1/projects' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "My Project",
   "color": "blue"
 }
+EOF
 ```
 
 ### Update Project
 ```bash
-POST /todoist/api/v1/projects/{id}
-Content-Type: application/json
-
+maton api -X POST '/todoist/api/v1/projects/{id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Updated Name"
 }
+EOF
 ```
 
 ### Delete Project
 ```bash
-DELETE /todoist/api/v1/projects/{id}
+maton api -X DELETE '/todoist/api/v1/projects/{id}'
 ```
 
 ### List Tasks
 ```bash
-GET /todoist/api/v1/tasks
-GET /todoist/api/v1/tasks?project_id={project_id}
-GET /todoist/api/v1/tasks?filter={filter}
+maton api '/todoist/api/v1/tasks'
+maton api '/todoist/api/v1/tasks?project_id={project_id}'
+maton api '/todoist/api/v1/tasks?filter={filter}'
 ```
 
 ### Get Task
 ```bash
-GET /todoist/api/v1/tasks/{id}
+maton api '/todoist/api/v1/tasks/{id}'
 ```
 
 ### Create Task
 ```bash
-POST /todoist/api/v1/tasks
-Content-Type: application/json
-
+maton api -X POST '/todoist/api/v1/tasks' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "content": "Buy groceries",
   "priority": 2,
   "due_string": "tomorrow"
 }
+EOF
 ```
 
 ### Update Task
 ```bash
-POST /todoist/api/v1/tasks/{id}
-Content-Type: application/json
-
+maton api -X POST '/todoist/api/v1/tasks/{id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "content": "Updated content",
   "priority": 4
 }
+EOF
 ```
 
 ### Close Task (Complete)
 ```bash
-POST /todoist/api/v1/tasks/{id}/close
+maton api -X POST '/todoist/api/v1/tasks/{id}/close'
 ```
 
 ### Reopen Task
 ```bash
-POST /todoist/api/v1/tasks/{id}/reopen
+maton api -X POST '/todoist/api/v1/tasks/{id}/reopen'
 ```
 
 ### Delete Task
 ```bash
-DELETE /todoist/api/v1/tasks/{id}
+maton api -X DELETE '/todoist/api/v1/tasks/{id}'
 ```
 
 ### List Sections
 ```bash
-GET /todoist/api/v1/sections
-GET /todoist/api/v1/sections?project_id={project_id}
+maton api '/todoist/api/v1/sections'
+maton api '/todoist/api/v1/sections?project_id={project_id}'
 ```
 
 ### Create Section
 ```bash
-POST /todoist/api/v1/sections
-Content-Type: application/json
-
+maton api -X POST '/todoist/api/v1/sections' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "In Progress",
   "project_id": "123456"
 }
+EOF
 ```
 
 ### Delete Section
 ```bash
-DELETE /todoist/api/v1/sections/{id}
+maton api -X DELETE '/todoist/api/v1/sections/{id}'
 ```
 
 ### List Labels
 ```bash
-GET /todoist/api/v1/labels
+maton api '/todoist/api/v1/labels'
 ```
 
 ### Create Label
 ```bash
-POST /todoist/api/v1/labels
-Content-Type: application/json
-
+maton api -X POST '/todoist/api/v1/labels' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "urgent",
   "color": "red"
 }
+EOF
 ```
 
 ### Delete Label
 ```bash
-DELETE /todoist/api/v1/labels/{id}
+maton api -X DELETE '/todoist/api/v1/labels/{id}'
 ```
 
 ### List Comments
 ```bash
-GET /todoist/api/v1/comments?task_id={task_id}
-GET /todoist/api/v1/comments?project_id={project_id}
+maton api '/todoist/api/v1/comments?task_id={task_id}'
+maton api '/todoist/api/v1/comments?project_id={project_id}'
 ```
 
 ### Create Comment
 ```bash
-POST /todoist/api/v1/comments
-Content-Type: application/json
-
+maton api -X POST '/todoist/api/v1/comments' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "task_id": "123456",
   "content": "This is a comment"
 }
+EOF
 ```
 
 ### Delete Comment
 ```bash
-DELETE /todoist/api/v1/comments/{id}
+maton api -X DELETE '/todoist/api/v1/comments/{id}'
 ```
 
 ## Notes

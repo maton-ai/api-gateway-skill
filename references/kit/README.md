@@ -15,7 +15,7 @@
 
 ### List Subscribers
 ```bash
-GET /kit/v4/subscribers
+maton api '/kit/v4/subscribers'
 ```
 
 Query parameters:
@@ -27,184 +27,194 @@ Query parameters:
 
 ### Get Subscriber
 ```bash
-GET /kit/v4/subscribers/{id}
+maton api '/kit/v4/subscribers/{id}'
 ```
 
 ### Create Subscriber
 ```bash
-POST /kit/v4/subscribers
-Content-Type: application/json
-
+maton api -X POST '/kit/v4/subscribers' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "email_address": "user@example.com",
   "first_name": "John"
 }
+EOF
 ```
 
 ### Update Subscriber
 ```bash
-PUT /kit/v4/subscribers/{id}
-Content-Type: application/json
-
+maton api -X PUT '/kit/v4/subscribers/{id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "first_name": "Updated Name"
 }
+EOF
 ```
 
 ### List Tags
 ```bash
-GET /kit/v4/tags
+maton api '/kit/v4/tags'
 ```
 
 ### Create Tag
 ```bash
-POST /kit/v4/tags
-Content-Type: application/json
-
+maton api -X POST '/kit/v4/tags' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "new-tag"
 }
+EOF
 ```
 
 ### Update Tag
 ```bash
-PUT /kit/v4/tags/{id}
-Content-Type: application/json
-
+maton api -X PUT '/kit/v4/tags/{id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "updated-tag-name"
 }
+EOF
 ```
 
 ### Delete Tag
 ```bash
-DELETE /kit/v4/tags/{id}
+maton api -X DELETE '/kit/v4/tags/{id}'
 ```
 
 ### Tag a Subscriber
 ```bash
-POST /kit/v4/tags/{tag_id}/subscribers
-Content-Type: application/json
-
+maton api -X POST '/kit/v4/tags/{tag_id}/subscribers' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "email_address": "user@example.com"
 }
+EOF
 ```
 
 ### Remove Tag from Subscriber
 ```bash
-DELETE /kit/v4/tags/{tag_id}/subscribers/{subscriber_id}
+maton api -X DELETE '/kit/v4/tags/{tag_id}/subscribers/{subscriber_id}'
 ```
 
 ### List Subscribers with Tag
 ```bash
-GET /kit/v4/tags/{tag_id}/subscribers
+maton api '/kit/v4/tags/{tag_id}/subscribers'
 ```
 
 ### List Forms
 ```bash
-GET /kit/v4/forms
+maton api '/kit/v4/forms'
 ```
 
 ### Add Subscriber to Form
 ```bash
-POST /kit/v4/forms/{form_id}/subscribers
-Content-Type: application/json
-
+maton api -X POST '/kit/v4/forms/{form_id}/subscribers' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "email_address": "user@example.com"
 }
+EOF
 ```
 
 ### List Form Subscribers
 ```bash
-GET /kit/v4/forms/{form_id}/subscribers
+maton api '/kit/v4/forms/{form_id}/subscribers'
 ```
 
 ### List Sequences
 ```bash
-GET /kit/v4/sequences
+maton api '/kit/v4/sequences'
 ```
 
 ### Add Subscriber to Sequence
 ```bash
-POST /kit/v4/sequences/{sequence_id}/subscribers
-Content-Type: application/json
-
+maton api -X POST '/kit/v4/sequences/{sequence_id}/subscribers' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "email_address": "user@example.com"
 }
+EOF
 ```
 
 ### List Broadcasts
 ```bash
-GET /kit/v4/broadcasts
+maton api '/kit/v4/broadcasts'
 ```
 
 ### List Segments
 ```bash
-GET /kit/v4/segments
+maton api '/kit/v4/segments'
 ```
 
 ### List Custom Fields
 ```bash
-GET /kit/v4/custom_fields
+maton api '/kit/v4/custom_fields'
 ```
 
 ### Create Custom Field
 ```bash
-POST /kit/v4/custom_fields
-Content-Type: application/json
-
+maton api -X POST '/kit/v4/custom_fields' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "label": "Company"
 }
+EOF
 ```
 
 ### Update Custom Field
 ```bash
-PUT /kit/v4/custom_fields/{id}
-Content-Type: application/json
-
+maton api -X PUT '/kit/v4/custom_fields/{id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "label": "Company Name"
 }
+EOF
 ```
 
 ### Delete Custom Field
 ```bash
-DELETE /kit/v4/custom_fields/{id}
+maton api -X DELETE '/kit/v4/custom_fields/{id}'
 ```
 
 ### List Email Templates
 ```bash
-GET /kit/v4/email_templates
+maton api '/kit/v4/email_templates'
 ```
 
 ### List Purchases
 ```bash
-GET /kit/v4/purchases
+maton api '/kit/v4/purchases'
 ```
 
 ### List Webhooks
 ```bash
-GET /kit/v4/webhooks
+maton api '/kit/v4/webhooks'
 ```
 
 ### Create Webhook
 ```bash
-POST /kit/v4/webhooks
-Content-Type: application/json
-
+maton api -X POST '/kit/v4/webhooks' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "target_url": "https://example.com/webhook",
   "event": {"name": "subscriber.subscriber_activate"}
 }
+EOF
 ```
 
 ### Delete Webhook
 ```bash
-DELETE /kit/v4/webhooks/{id}
+maton api -X DELETE '/kit/v4/webhooks/{id}'
 ```
 
 ## Notes

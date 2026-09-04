@@ -20,91 +20,94 @@ accounts/{accountId}/containers/{containerId}/workspaces/{workspaceId}/{resource
 
 ### List Accounts
 ```bash
-GET /google-tag-manager/tagmanager/v2/accounts
+maton api '/google-tag-manager/tagmanager/v2/accounts'
 ```
 
 ### Get Account
 ```bash
-GET /google-tag-manager/tagmanager/v2/accounts/{accountId}
+maton api '/google-tag-manager/tagmanager/v2/accounts/{accountId}'
 ```
 
 ### List Containers
 ```bash
-GET /google-tag-manager/tagmanager/v2/accounts/{accountId}/containers
+maton api '/google-tag-manager/tagmanager/v2/accounts/{accountId}/containers'
 ```
 
 ### List Workspaces
 ```bash
-GET /google-tag-manager/tagmanager/v2/accounts/{accountId}/containers/{containerId}/workspaces
+maton api '/google-tag-manager/tagmanager/v2/accounts/{accountId}/containers/{containerId}/workspaces'
 ```
 
 ### List Tags
 ```bash
-GET /google-tag-manager/tagmanager/v2/accounts/{accountId}/containers/{containerId}/workspaces/{workspaceId}/tags
+maton api '/google-tag-manager/tagmanager/v2/accounts/{accountId}/containers/{containerId}/workspaces/{workspaceId}/tags'
 ```
 
 ### Create Tag
 ```bash
-POST /google-tag-manager/tagmanager/v2/accounts/{accountId}/containers/{containerId}/workspaces/{workspaceId}/tags
-Content-Type: application/json
-
+maton api -X POST '/google-tag-manager/tagmanager/v2/accounts/{accountId}/containers/{containerId}/workspaces/{workspaceId}/tags' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "My Tag",
   "type": "html",
   "parameter": [{"type": "template", "key": "html", "value": "<script>...</script>"}],
   "firingTriggerId": ["{triggerId}"]
 }
+EOF
 ```
 
 ### Update Tag
 ```bash
-PUT /google-tag-manager/tagmanager/v2/accounts/{accountId}/containers/{containerId}/workspaces/{workspaceId}/tags/{tagId}
-Content-Type: application/json
-
+maton api -X PUT '/google-tag-manager/tagmanager/v2/accounts/{accountId}/containers/{containerId}/workspaces/{workspaceId}/tags/{tagId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {...full resource body with fingerprint...}
+EOF
 ```
 
 ### Delete Tag
 ```bash
-DELETE /google-tag-manager/tagmanager/v2/accounts/{accountId}/containers/{containerId}/workspaces/{workspaceId}/tags/{tagId}
+maton api -X DELETE '/google-tag-manager/tagmanager/v2/accounts/{accountId}/containers/{containerId}/workspaces/{workspaceId}/tags/{tagId}'
 ```
 
 ### List Triggers
 ```bash
-GET /google-tag-manager/tagmanager/v2/accounts/{accountId}/containers/{containerId}/workspaces/{workspaceId}/triggers
+maton api '/google-tag-manager/tagmanager/v2/accounts/{accountId}/containers/{containerId}/workspaces/{workspaceId}/triggers'
 ```
 
 ### Create Trigger
 ```bash
-POST /google-tag-manager/tagmanager/v2/accounts/{accountId}/containers/{containerId}/workspaces/{workspaceId}/triggers
-Content-Type: application/json
-
+maton api -X POST '/google-tag-manager/tagmanager/v2/accounts/{accountId}/containers/{containerId}/workspaces/{workspaceId}/triggers' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"name": "Page View", "type": "pageview"}
+EOF
 ```
 
 ### List Variables
 ```bash
-GET /google-tag-manager/tagmanager/v2/accounts/{accountId}/containers/{containerId}/workspaces/{workspaceId}/variables
+maton api '/google-tag-manager/tagmanager/v2/accounts/{accountId}/containers/{containerId}/workspaces/{workspaceId}/variables'
 ```
 
 ### List Environments
 ```bash
-GET /google-tag-manager/tagmanager/v2/accounts/{accountId}/containers/{containerId}/environments
+maton api '/google-tag-manager/tagmanager/v2/accounts/{accountId}/containers/{containerId}/environments'
 ```
 
 ### List Version Headers
 ```bash
-GET /google-tag-manager/tagmanager/v2/accounts/{accountId}/containers/{containerId}/version_headers
+maton api '/google-tag-manager/tagmanager/v2/accounts/{accountId}/containers/{containerId}/version_headers'
 ```
 
 ### Publish Version
 ```bash
-POST /google-tag-manager/tagmanager/v2/accounts/{accountId}/containers/{containerId}/versions/{versionId}:publish
+maton api -X POST '/google-tag-manager/tagmanager/v2/accounts/{accountId}/containers/{containerId}/versions/{versionId}:publish'
 ```
 
 ### List User Permissions
 ```bash
-GET /google-tag-manager/tagmanager/v2/accounts/{accountId}/user_permissions
+maton api '/google-tag-manager/tagmanager/v2/accounts/{accountId}/user_permissions'
 ```
 
 ## Notes

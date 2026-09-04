@@ -17,26 +17,26 @@
 
 #### Get Current User
 ```bash
-GET /typeform/me
+maton api '/typeform/me'
 ```
 
 ### Forms
 
 #### List Forms
 ```bash
-GET /typeform/forms?page_size=10
+maton api '/typeform/forms?page_size=10'
 ```
 
 #### Get Form
 ```bash
-GET /typeform/forms/{formId}
+maton api '/typeform/forms/{formId}'
 ```
 
 #### Create Form
 ```bash
-POST /typeform/forms
-Content-Type: application/json
-
+maton api -X POST '/typeform/forms' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "title": "Customer Survey",
   "fields": [
@@ -50,87 +50,90 @@ Content-Type: application/json
     }
   ]
 }
+EOF
 ```
 
 #### Update Form (Full Replace)
 ```bash
-PUT /typeform/forms/{formId}
-Content-Type: application/json
-
+maton api -X PUT '/typeform/forms/{formId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "title": "Updated Survey Title",
   "fields": [...]
 }
+EOF
 ```
 
 #### Update Form (Partial - PATCH)
 ```bash
-PATCH /typeform/forms/{formId}
-Content-Type: application/json
-
+maton api -X PATCH '/typeform/forms/{formId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 [
   {"op": "replace", "path": "/title", "value": "New Title"}
 ]
+EOF
 ```
 
 #### Delete Form
 ```bash
-DELETE /typeform/forms/{formId}
+maton api -X DELETE '/typeform/forms/{formId}'
 ```
 
 ### Responses
 
 #### List Responses
 ```bash
-GET /typeform/forms/{formId}/responses?page_size=25
+maton api '/typeform/forms/{formId}/responses?page_size=25'
 ```
 
 With filters:
 ```bash
-GET /typeform/forms/{formId}/responses?since=2024-01-01T00:00:00Z&until=2024-12-31T23:59:59Z
+maton api '/typeform/forms/{formId}/responses?since=2024-01-01T00:00:00Z&until=2024-12-31T23:59:59Z'
 ```
 
 Completed only:
 ```bash
-GET /typeform/forms/{formId}/responses?completed=true
+maton api '/typeform/forms/{formId}/responses?completed=true'
 ```
 
 #### Delete Response
 ```bash
-DELETE /typeform/forms/{formId}/responses?included_response_ids={responseId}
+maton api -X DELETE '/typeform/forms/{formId}/responses?included_response_ids={responseId}'
 ```
 
 ### Insights
 
 #### Get Form Insights
 ```bash
-GET /typeform/insights/{formId}/summary
+maton api '/typeform/insights/{formId}/summary'
 ```
 
 ### Workspaces
 
 #### List Workspaces
 ```bash
-GET /typeform/workspaces
+maton api '/typeform/workspaces'
 ```
 
 #### Get Workspace
 ```bash
-GET /typeform/workspaces/{workspaceId}
+maton api '/typeform/workspaces/{workspaceId}'
 ```
 
 ### Themes
 
 #### List Themes
 ```bash
-GET /typeform/themes
+maton api '/typeform/themes'
 ```
 
 ### Images
 
 #### List Images
 ```bash
-GET /typeform/images
+maton api '/typeform/images'
 ```
 
 ## Field Types

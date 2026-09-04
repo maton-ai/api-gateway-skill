@@ -21,19 +21,19 @@
 
 ### List Contacts
 ```bash
-GET /zoho-bigin/bigin/v2/Contacts?fields=First_Name,Last_Name,Email
+maton api '/zoho-bigin/bigin/v2/Contacts?fields=First_Name,Last_Name,Email'
 ```
 
 ### Get Contact
 ```bash
-GET /zoho-bigin/bigin/v2/Contacts/{id}
+maton api '/zoho-bigin/bigin/v2/Contacts/{id}'
 ```
 
 ### Create Contact
 ```bash
-POST /zoho-bigin/bigin/v2/Contacts
-Content-Type: application/json
-
+maton api -X POST '/zoho-bigin/bigin/v2/Contacts' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": [{
     "Last_Name": "Smith",
@@ -41,45 +41,47 @@ Content-Type: application/json
     "Email": "john@example.com"
   }]
 }
+EOF
 ```
 
 ### Update Contact
 ```bash
-PUT /zoho-bigin/bigin/v2/Contacts
-Content-Type: application/json
-
+maton api -X PUT '/zoho-bigin/bigin/v2/Contacts' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": [{
     "id": "{record_id}",
     "Phone": "+1-555-1234"
   }]
 }
+EOF
 ```
 
 ### Delete Contact
 ```bash
-DELETE /zoho-bigin/bigin/v2/Contacts?ids={id1},{id2}
+maton api -X DELETE '/zoho-bigin/bigin/v2/Contacts?ids={id1},{id2}'
 ```
 
 ### Search Contacts
 ```bash
-GET /zoho-bigin/bigin/v2/Contacts/search?email=john@example.com
-GET /zoho-bigin/bigin/v2/Contacts/search?criteria=(Last_Name:equals:Smith)
+maton api '/zoho-bigin/bigin/v2/Contacts/search?email=john@example.com'
+maton api '/zoho-bigin/bigin/v2/Contacts/search?criteria=(Last_Name:equals:Smith)'
 ```
 
 ### List Companies (Accounts)
 ```bash
-GET /zoho-bigin/bigin/v2/Accounts?fields=Account_Name,Website
+maton api '/zoho-bigin/bigin/v2/Accounts?fields=Account_Name,Website'
 ```
 
 ### Get Users
 ```bash
-GET /zoho-bigin/bigin/v2/users?type=ActiveUsers
+maton api '/zoho-bigin/bigin/v2/users?type=ActiveUsers'
 ```
 
 ### Get Modules
 ```bash
-GET /zoho-bigin/bigin/v2/settings/modules
+maton api '/zoho-bigin/bigin/v2/settings/modules'
 ```
 
 ## Available Modules

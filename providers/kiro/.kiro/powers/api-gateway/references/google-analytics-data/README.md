@@ -15,32 +15,34 @@
 
 ### Run Report
 ```bash
-POST /google-analytics-data/v1beta/properties/{propertyId}:runReport
-Content-Type: application/json
-
+maton api -X POST '/google-analytics-data/v1beta/properties/{propertyId}:runReport' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "dateRanges": [{"startDate": "30daysAgo", "endDate": "today"}],
   "dimensions": [{"name": "city"}],
   "metrics": [{"name": "activeUsers"}]
 }
+EOF
 ```
 
 ### Run Realtime Report
 ```bash
-POST /google-analytics-data/v1beta/properties/{propertyId}:runRealtimeReport
-Content-Type: application/json
-
+maton api -X POST '/google-analytics-data/v1beta/properties/{propertyId}:runRealtimeReport' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "dimensions": [{"name": "country"}],
   "metrics": [{"name": "activeUsers"}]
 }
+EOF
 ```
 
 ### Batch Run Reports
 ```bash
-POST /google-analytics-data/v1beta/properties/{propertyId}:batchRunReports
-Content-Type: application/json
-
+maton api -X POST '/google-analytics-data/v1beta/properties/{propertyId}:batchRunReports' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "requests": [
     {
@@ -55,11 +57,12 @@ Content-Type: application/json
     }
   ]
 }
+EOF
 ```
 
 ### Get Metadata (available dimensions/metrics)
 ```bash
-GET /google-analytics-data/v1beta/properties/{propertyId}/metadata
+maton api '/google-analytics-data/v1beta/properties/{propertyId}/metadata'
 ```
 
 ## Common Report Examples

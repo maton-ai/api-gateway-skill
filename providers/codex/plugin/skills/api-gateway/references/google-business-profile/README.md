@@ -26,64 +26,66 @@ Google splits Business Profile across several APIs and the version segment is pa
 
 ### List Accounts
 ```bash
-GET /google-business-profile/v1/accounts
+maton api '/google-business-profile/v1/accounts'
 ```
 
 Start here — `name` comes back as `accounts/{id}` and is required for every `v4` path.
 
 ### Account Admins, Invitations, Notifications
 ```bash
-GET /google-business-profile/v1/accounts/{account_id}/admins
-GET /google-business-profile/v1/accounts/{account_id}/invitations
-GET /google-business-profile/v1/accounts/{account_id}/notificationSetting
+maton api '/google-business-profile/v1/accounts/{account_id}/admins'
+maton api '/google-business-profile/v1/accounts/{account_id}/invitations'
+maton api '/google-business-profile/v1/accounts/{account_id}/notificationSetting'
 ```
 
 `admins` returns `400 INVALID_ARGUMENT` (`"A PERSON_ACCOUNT cannot have admins"`) for personal accounts — Google's behaviour, not a bad request.
 
 ### List Locations
 ```bash
-GET /google-business-profile/v1/accounts/{account_id}/locations?readMask=name,title
+maton api '/google-business-profile/v1/accounts/{account_id}/locations?readMask=name,title'
 ```
 
 ### Get Location
 ```bash
-GET /google-business-profile/v1/locations/{location_id}?readMask=name,title,storefrontAddress,phoneNumbers,websiteUri,categories,regularHours,metadata
+maton api '/google-business-profile/v1/locations/{location_id}?readMask=name,title,storefrontAddress,phoneNumbers,websiteUri,categories,regularHours,metadata'
 ```
 
 **`readMask` is required on location reads** — omitting it returns `400 INVALID_ARGUMENT`.
 
 ### Update Location
 ```bash
-PATCH /google-business-profile/v1/locations/{location_id}?updateMask=profile.description
-Content-Type: application/json
-
+maton api -X PATCH '/google-business-profile/v1/locations/{location_id}?updateMask=profile.description' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "profile": { "description": "New description" }
 }
+EOF
 ```
 
 `updateMask` is required. A field named in the mask but omitted from the body is **cleared**.
 
 ### Location Admins
 ```bash
-GET /google-business-profile/v1/locations/{location_id}/admins
+maton api '/google-business-profile/v1/locations/{location_id}/admins'
 ```
 
 ### Categories, Chains, Attributes
 ```bash
-GET /google-business-profile/v1/categories?regionCode=US&languageCode=en&view=BASIC
-GET /google-business-profile/v1/chains:search?chainName=starbucks
-GET /google-business-profile/v1/attributes?regionCode=US&languageCode=en&categoryName=categories/gcid:restaurant
+maton api '/google-business-profile/v1/categories?regionCode=US&languageCode=en&view=BASIC'
+maton api '/google-business-profile/v1/chains:search?chainName=starbucks'
+maton api '/google-business-profile/v1/attributes?regionCode=US&languageCode=en&categoryName=categories/gcid:restaurant'
 ```
 
 Valid attributes differ per category — query `attributes` before writing them to a location.
 
 ### Search Google Locations
 ```bash
-POST /google-business-profile/v1/googleLocations:search
-Content-Type: application/json
-
+maton api -X POST '/google-business-profile/v1/googleLocations:search' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 { "query": "starbucks seattle", "pageSize": 3 }
+EOF
 ```
 
 Searches all locations Google knows about, not just managed ones — use it to avoid creating a duplicate listing, or to find one to claim. Send **either** `query` or a partial `location` object, not both. Responses carry `requestAdminRightsUri`, the link for claiming a listing someone else owns.
@@ -92,55 +94,55 @@ Searches all locations Google knows about, not just managed ones — use it to a
 
 ### Verifications
 ```bash
-GET /google-business-profile/v1/locations/{location_id}/verifications
+maton api '/google-business-profile/v1/locations/{location_id}/verifications'
 ```
 
 Check this before diagnosing why a listing returns little data; unverified listings are sharply limited.
 
 ### Place Action Links
 ```bash
-GET /google-business-profile/v1/locations/{location_id}/placeActionLinks
+maton api '/google-business-profile/v1/locations/{location_id}/placeActionLinks'
 ```
 
 ### Lodging
 ```bash
-GET /google-business-profile/v1/locations/{location_id}/lodging?readMask=name
+maton api '/google-business-profile/v1/locations/{location_id}/lodging?readMask=name'
 ```
 
 Returns `400 FAILED_PRECONDITION` for any listing that is not a hotel.
 
 ### Performance Metrics
 ```bash
-GET /google-business-profile/v1/locations/{location_id}:getDailyMetricsTimeSeries?dailyMetric=WEBSITE_CLICKS&dailyRange.start_date.year=2026&dailyRange.start_date.month=7&dailyRange.start_date.day=1&dailyRange.end_date.year=2026&dailyRange.end_date.month=7&dailyRange.end_date.day=28
-GET /google-business-profile/v1/locations/{location_id}:fetchMultiDailyMetricsTimeSeries?dailyMetrics=WEBSITE_CLICKS&dailyMetrics=CALL_CLICKS&dailyRange.start_date.year=2026&...
-GET /google-business-profile/v1/locations/{location_id}/searchkeywords/impressions/monthly?monthlyRange.start_month.year=2026&monthlyRange.start_month.month=6&monthlyRange.end_month.year=2026&monthlyRange.end_month.month=7
+maton api '/google-business-profile/v1/locations/{location_id}:getDailyMetricsTimeSeries?dailyMetric=WEBSITE_CLICKS&dailyRange.start_date.year=2026&dailyRange.start_date.month=7&dailyRange.start_date.day=1&dailyRange.end_date.year=2026&dailyRange.end_date.month=7&dailyRange.end_date.day=28'
+maton api '/google-business-profile/v1/locations/{location_id}:fetchMultiDailyMetricsTimeSeries?dailyMetrics=WEBSITE_CLICKS&dailyMetrics=CALL_CLICKS&dailyRange.start_date.year=2026&...'
+maton api '/google-business-profile/v1/locations/{location_id}/searchkeywords/impressions/monthly?monthlyRange.start_month.year=2026&monthlyRange.start_month.month=6&monthlyRange.end_month.year=2026&monthlyRange.end_month.month=7'
 ```
 
 Date ranges are **separate scalar query parameters**, not ISO strings. Metrics include `BUSINESS_IMPRESSIONS_{DESKTOP,MOBILE}_{SEARCH,MAPS}`, `WEBSITE_CLICKS`, `CALL_CLICKS`, `BUSINESS_DIRECTION_REQUESTS`, `BUSINESS_CONVERSATIONS`, `BUSINESS_BOOKINGS`.
 
 ### Reviews (v4)
 ```bash
-GET    /google-business-profile/v4/accounts/{account_id}/locations/{location_id}/reviews?pageSize=50&orderBy=updateTime%20desc
-PUT    /google-business-profile/v4/accounts/{account_id}/locations/{location_id}/reviews/{review_id}/reply
-DELETE /google-business-profile/v4/accounts/{account_id}/locations/{location_id}/reviews/{review_id}/reply
+maton api '/google-business-profile/v4/accounts/{account_id}/locations/{location_id}/reviews?pageSize=50&orderBy=updateTime%20desc'
+maton api -X PUT '/google-business-profile/v4/accounts/{account_id}/locations/{location_id}/reviews/{review_id}/reply'
+maton api -X DELETE '/google-business-profile/v4/accounts/{account_id}/locations/{location_id}/reviews/{review_id}/reply'
 ```
 
 Reply body is `{"comment": "..."}`. URL-encode the space in `orderBy`.
 
 ### Media (v4)
 ```bash
-GET    /google-business-profile/v4/accounts/{account_id}/locations/{location_id}/media
-POST   /google-business-profile/v4/accounts/{account_id}/locations/{location_id}/media
-DELETE /google-business-profile/v4/accounts/{account_id}/locations/{location_id}/media/{media_id}
+maton api '/google-business-profile/v4/accounts/{account_id}/locations/{location_id}/media'
+maton api -X POST '/google-business-profile/v4/accounts/{account_id}/locations/{location_id}/media'
+maton api -X DELETE '/google-business-profile/v4/accounts/{account_id}/locations/{location_id}/media/{media_id}'
 ```
 
 Create body takes `mediaFormat`, `locationAssociation.category`, and `sourceUrl`.
 
 ### Local Posts (v4)
 ```bash
-GET    /google-business-profile/v4/accounts/{account_id}/locations/{location_id}/localPosts
-POST   /google-business-profile/v4/accounts/{account_id}/locations/{location_id}/localPosts
-DELETE /google-business-profile/v4/accounts/{account_id}/locations/{location_id}/localPosts/{post_id}
+maton api '/google-business-profile/v4/accounts/{account_id}/locations/{location_id}/localPosts'
+maton api -X POST '/google-business-profile/v4/accounts/{account_id}/locations/{location_id}/localPosts'
+maton api -X DELETE '/google-business-profile/v4/accounts/{account_id}/locations/{location_id}/localPosts/{post_id}'
 ```
 
 Create body takes `languageCode`, `summary`, `topicType`, and optional `callToAction`.
@@ -154,7 +156,7 @@ Q&A (questions and answers) and `:getVoiceOfMerchantState` are unavailable throu
 Standard Google `pageSize` / `pageToken`. A response carrying `nextPageToken` has more results; pass it back as `pageToken`. Performance endpoints are not paginated — the date range bounds them.
 
 ```bash
-GET /google-business-profile/v1/categories?regionCode=US&languageCode=en&view=BASIC&pageSize=100&pageToken={nextPageToken}
+maton api '/google-business-profile/v1/categories?regionCode=US&languageCode=en&view=BASIC&pageSize=100&pageToken={nextPageToken}'
 ```
 
 ## Notes

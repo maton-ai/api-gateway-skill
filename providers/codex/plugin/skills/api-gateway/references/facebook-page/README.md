@@ -36,16 +36,15 @@ Retrieve and consume it inside a single script so the value never crosses a proc
 
 ```bash
 python <<'EOF'
-import json, os, subprocess, urllib.request
+import json, os, urllib.request
 
-# Short-lived token from the CLI; no long-lived key in the environment.
-TOKEN = subprocess.run(
-    ["maton", "token"], capture_output=True, text=True, check=True
-).stdout.strip()
+# Maton API key from the environment; never print, log, or persist it.
+TOKEN = os.environ["MATON_API_KEY"]
 
 def call(path):
     req = urllib.request.Request(f'https://api.maton.ai/facebook-page/v25.0/{path}')
     req.add_header('Authorization', f'Bearer {TOKEN}')
+    req.add_header('User-Agent', 'maton-gateway-skill/1.2')
     return json.load(urllib.request.urlopen(req))
 
 pages = call('me/accounts?fields=id,name,access_token')     # token is never printed
@@ -63,92 +62,95 @@ In the endpoint examples below, `{page_access_token}` marks **where the runtime 
 
 ### List Pages
 ```bash
-GET /facebook-page/v25.0/me/accounts?fields=id,name,category,fan_count,followers_count
+maton api '/facebook-page/v25.0/me/accounts?fields=id,name,category,fan_count,followers_count'
 ```
 
 ### Get Page Details
 ```bash
-GET /facebook-page/v25.0/{page_id}?fields=id,name,about,category,fan_count,followers_count,website,link
+maton api '/facebook-page/v25.0/{page_id}?fields=id,name,about,category,fan_count,followers_count,website,link'
 ```
 
 ### Get Page Feed
 ```bash
-GET /facebook-page/v25.0/{page_id}/feed?fields=id,message,created_time&limit=10&access_token={page_access_token}
+maton api '/facebook-page/v25.0/{page_id}/feed?fields=id,message,created_time&limit=10&access_token={page_access_token}'
 ```
 
 ### Get Published Posts
 ```bash
-GET /facebook-page/v25.0/{page_id}/published_posts?fields=id,message,created_time&limit=10&access_token={page_access_token}
+maton api '/facebook-page/v25.0/{page_id}/published_posts?fields=id,message,created_time&limit=10&access_token={page_access_token}'
 ```
 
 ### Publish a Post
 ```bash
-POST /facebook-page/v25.0/{page_id}/feed?access_token={page_access_token}
-Content-Type: application/json
-
+maton api -X POST '/facebook-page/v25.0/{page_id}/feed?access_token={page_access_token}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "message": "Hello from my page!"
 }
+EOF
 ```
 
 ### Update a Post
 ```bash
-POST /facebook-page/v25.0/{post_id}?access_token={page_access_token}
-Content-Type: application/json
-
+maton api -X POST '/facebook-page/v25.0/{post_id}?access_token={page_access_token}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "message": "Updated post content"
 }
+EOF
 ```
 
 ### Delete a Post
 ```bash
-DELETE /facebook-page/v25.0/{post_id}?access_token={page_access_token}
+maton api -X DELETE '/facebook-page/v25.0/{post_id}?access_token={page_access_token}'
 ```
 
 ### Get Comments on a Post
 ```bash
-GET /facebook-page/v25.0/{post_id}/comments?fields=id,message,from,created_time&access_token={page_access_token}
+maton api '/facebook-page/v25.0/{post_id}/comments?fields=id,message,from,created_time&access_token={page_access_token}'
 ```
 
 ### Post a Comment
 ```bash
-POST /facebook-page/v25.0/{post_id}/comments?access_token={page_access_token}
-Content-Type: application/json
-
+maton api -X POST '/facebook-page/v25.0/{post_id}/comments?access_token={page_access_token}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "message": "Thanks for your feedback!"
 }
+EOF
 ```
 
 ### Get Page Insights
 ```bash
-GET /facebook-page/v25.0/{page_id}/insights?metric=page_views_total,page_posts_impressions,page_video_views&period=day&access_token={page_access_token}
+maton api '/facebook-page/v25.0/{page_id}/insights?metric=page_views_total,page_posts_impressions,page_video_views&period=day&access_token={page_access_token}'
 ```
 
 ### Get Page Insights with Date Range
 ```bash
-GET /facebook-page/v25.0/{page_id}/insights?metric=page_views_total&period=day&since=2026-01-01&until=2026-01-31&access_token={page_access_token}
+maton api '/facebook-page/v25.0/{page_id}/insights?metric=page_views_total&period=day&since=2026-01-01&until=2026-01-31&access_token={page_access_token}'
 ```
 
 ### Get Page Photos
 ```bash
-GET /facebook-page/v25.0/{page_id}/photos?fields=id,name,created_time,images&limit=10&access_token={page_access_token}
+maton api '/facebook-page/v25.0/{page_id}/photos?fields=id,name,created_time,images&limit=10&access_token={page_access_token}'
 ```
 
 ### Get Page Videos
 ```bash
-GET /facebook-page/v25.0/{page_id}/videos?fields=id,title,description,created_time&limit=10&access_token={page_access_token}
+maton api '/facebook-page/v25.0/{page_id}/videos?fields=id,title,description,created_time&limit=10&access_token={page_access_token}'
 ```
 
 ### Get Product Catalogs
 ```bash
-GET /facebook-page/v25.0/{page_id}/product_catalogs?access_token={page_access_token}
+maton api '/facebook-page/v25.0/{page_id}/product_catalogs?access_token={page_access_token}'
 ```
 
 #### Get Products in a Catalog
 ```bash
-GET /facebook-page/v25.0/{catalog_id}/products?fields=id,name,price,image_url&access_token={page_access_token}
+maton api '/facebook-page/v25.0/{catalog_id}/products?fields=id,name,price,image_url&access_token={page_access_token}'
 ```
 
 ## Notes

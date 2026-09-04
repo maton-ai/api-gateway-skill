@@ -15,7 +15,7 @@
 
 ### List Contacts
 ```bash
-GET /systeme/api/contacts
+maton api '/systeme/api/contacts'
 ```
 
 Query parameters:
@@ -25,179 +25,188 @@ Query parameters:
 
 ### Get Contact
 ```bash
-GET /systeme/api/contacts/{id}
+maton api '/systeme/api/contacts/{id}'
 ```
 
 ### Create Contact
 ```bash
-POST /systeme/api/contacts
-Content-Type: application/json
-
+maton api -X POST '/systeme/api/contacts' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "email": "user@example.com",
   "firstName": "John",
   "lastName": "Doe"
 }
+EOF
 ```
 
 ### Update Contact
 ```bash
-PATCH /systeme/api/contacts/{id}
-Content-Type: application/merge-patch+json
-
+maton api -X PATCH '/systeme/api/contacts/{id}' \
+  -H 'Content-Type: application/merge-patch+json' \
+  --input - <<'EOF'
 {
   "firstName": "Jane"
 }
+EOF
 ```
 
 ### Delete Contact
 ```bash
-DELETE /systeme/api/contacts/{id}
+maton api -X DELETE '/systeme/api/contacts/{id}'
 ```
 
 ### List Tags
 ```bash
-GET /systeme/api/tags
+maton api '/systeme/api/tags'
 ```
 
 ### Create Tag
 ```bash
-POST /systeme/api/tags
-Content-Type: application/json
-
+maton api -X POST '/systeme/api/tags' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "VIP Customer"
 }
+EOF
 ```
 
 ### Update Tag
 ```bash
-PUT /systeme/api/tags/{id}
-Content-Type: application/json
-
+maton api -X PUT '/systeme/api/tags/{id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Premium Customer"
 }
+EOF
 ```
 
 ### Delete Tag
 ```bash
-DELETE /systeme/api/tags/{id}
+maton api -X DELETE '/systeme/api/tags/{id}'
 ```
 
 ### Assign Tag to Contact
 ```bash
-POST /systeme/api/contacts/{id}/tags
-Content-Type: application/json
-
+maton api -X POST '/systeme/api/contacts/{id}/tags' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "tagId": 12345
 }
+EOF
 ```
 
 ### Remove Tag from Contact
 ```bash
-DELETE /systeme/api/contacts/{id}/tags/{tagId}
+maton api -X DELETE '/systeme/api/contacts/{id}/tags/{tagId}'
 ```
 
 ### List Contact Fields
 ```bash
-GET /systeme/api/contact_fields
+maton api '/systeme/api/contact_fields'
 ```
 
 ### List Courses
 ```bash
-GET /systeme/api/school/courses
+maton api '/systeme/api/school/courses'
 ```
 
 ### Create Enrollment
 ```bash
-POST /systeme/api/school/courses/{courseId}/enrollments
-Content-Type: application/json
-
+maton api -X POST '/systeme/api/school/courses/{courseId}/enrollments' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "contactId": 12345
 }
+EOF
 ```
 
 ### List Enrollments
 ```bash
-GET /systeme/api/school/enrollments
+maton api '/systeme/api/school/enrollments'
 ```
 
 ### Delete Enrollment
 ```bash
-DELETE /systeme/api/school/enrollments/{id}
+maton api -X DELETE '/systeme/api/school/enrollments/{id}'
 ```
 
 ### List Communities
 ```bash
-GET /systeme/api/community/communities
+maton api '/systeme/api/community/communities'
 ```
 
 ### Create Membership
 ```bash
-POST /systeme/api/community/communities/{communityId}/memberships
-Content-Type: application/json
-
+maton api -X POST '/systeme/api/community/communities/{communityId}/memberships' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "contactId": 12345
 }
+EOF
 ```
 
 ### List Memberships
 ```bash
-GET /systeme/api/community/memberships
+maton api '/systeme/api/community/memberships'
 ```
 
 ### Delete Membership
 ```bash
-DELETE /systeme/api/community/memberships/{id}
+maton api -X DELETE '/systeme/api/community/memberships/{id}'
 ```
 
 ### List Subscriptions
 ```bash
-GET /systeme/api/payment/subscriptions
+maton api '/systeme/api/payment/subscriptions'
 ```
 
 ### Cancel Subscription
 ```bash
-POST /systeme/api/payment/subscriptions/{id}/cancel
+maton api -X POST '/systeme/api/payment/subscriptions/{id}/cancel'
 ```
 
 ### List Webhooks
 ```bash
-GET /systeme/api/webhooks
+maton api '/systeme/api/webhooks'
 ```
 
 ### Create Webhook
 ```bash
-POST /systeme/api/webhooks
-Content-Type: application/json
-
+maton api -X POST '/systeme/api/webhooks' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "My Webhook",
   "url": "https://example.com/webhook",
   "secret": "my-secret-key",
   "subscriptions": ["CONTACT_CREATED"]
 }
+EOF
 ```
 
 Available events: `CONTACT_CREATED`, `CONTACT_TAG_ADDED`, `CONTACT_TAG_REMOVED`, `CONTACT_OPT_IN`, `SALE_NEW`, `SALE_CANCELED`
 
 ### Update Webhook
 ```bash
-PATCH /systeme/api/webhooks/{id}
-Content-Type: application/merge-patch+json
-
+maton api -X PATCH '/systeme/api/webhooks/{id}' \
+  -H 'Content-Type: application/merge-patch+json' \
+  --input - <<'EOF'
 {
   "name": "Updated Webhook Name"
 }
+EOF
 ```
 
 ### Delete Webhook
 ```bash
-DELETE /systeme/api/webhooks/{id}
+maton api -X DELETE '/systeme/api/webhooks/{id}'
 ```
 
 ## Notes

@@ -15,40 +15,41 @@
 
 ### List Objects
 ```bash
-GET /attio/v2/objects
+maton api '/attio/v2/objects'
 ```
 
 ### Get Object
 ```bash
-GET /attio/v2/objects/{object}
+maton api '/attio/v2/objects/{object}'
 ```
 
 ### List Attributes
 ```bash
-GET /attio/v2/objects/{object}/attributes
+maton api '/attio/v2/objects/{object}/attributes'
 ```
 
 ### Query Records
 ```bash
-POST /attio/v2/objects/{object}/records/query
-Content-Type: application/json
-
+maton api -X POST '/attio/v2/objects/{object}/records/query' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "limit": 50,
   "offset": 0
 }
+EOF
 ```
 
 ### Get Record
 ```bash
-GET /attio/v2/objects/{object}/records/{record_id}
+maton api '/attio/v2/objects/{object}/records/{record_id}'
 ```
 
 ### Create Record
 ```bash
-POST /attio/v2/objects/{object}/records
-Content-Type: application/json
-
+maton api -X POST '/attio/v2/objects/{object}/records' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": {
     "values": {
@@ -57,13 +58,14 @@ Content-Type: application/json
     }
   }
 }
+EOF
 ```
 
 ### Update Record
 ```bash
-PATCH /attio/v2/objects/{object}/records/{record_id}
-Content-Type: application/json
-
+maton api -X PATCH '/attio/v2/objects/{object}/records/{record_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": {
     "values": {
@@ -71,23 +73,24 @@ Content-Type: application/json
     }
   }
 }
+EOF
 ```
 
 ### Delete Record
 ```bash
-DELETE /attio/v2/objects/{object}/records/{record_id}
+maton api -X DELETE '/attio/v2/objects/{object}/records/{record_id}'
 ```
 
 ### List Tasks
 ```bash
-GET /attio/v2/tasks?limit=50
+maton api '/attio/v2/tasks?limit=50'
 ```
 
 ### Create Task
 ```bash
-POST /attio/v2/tasks
-Content-Type: application/json
-
+maton api -X POST '/attio/v2/tasks' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": {
     "content": "Task description",
@@ -97,35 +100,36 @@ Content-Type: application/json
     "linked_records": []
   }
 }
+EOF
 ```
 
 ### List Workspace Members
 ```bash
-GET /attio/v2/workspace_members
+maton api '/attio/v2/workspace_members'
 ```
 
 ### Identify Self
 ```bash
-GET /attio/v2/self
+maton api '/attio/v2/self'
 ```
 
 ### Notes
 
 #### List Notes
 ```bash
-GET /attio/v2/notes?limit=50&parent_object={object}&parent_record_id={record_id}
+maton api '/attio/v2/notes?limit=50&parent_object={object}&parent_record_id={record_id}'
 ```
 
 #### Get Note
 ```bash
-GET /attio/v2/notes/{note_id}
+maton api '/attio/v2/notes/{note_id}'
 ```
 
 #### Create Note
 ```bash
-POST /attio/v2/notes
-Content-Type: application/json
-
+maton api -X POST '/attio/v2/notes' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": {
     "format": "plaintext",
@@ -139,20 +143,21 @@ Content-Type: application/json
     }
   }
 }
+EOF
 ```
 
 #### Delete Note
 ```bash
-DELETE /attio/v2/notes/{note_id}
+maton api -X DELETE '/attio/v2/notes/{note_id}'
 ```
 
 ### Comments
 
 #### Create Comment on Record
 ```bash
-POST /attio/v2/comments
-Content-Type: application/json
-
+maton api -X POST '/attio/v2/comments' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": {
     "format": "plaintext",
@@ -167,13 +172,14 @@ Content-Type: application/json
     }
   }
 }
+EOF
 ```
 
 #### Reply to Comment Thread
 ```bash
-POST /attio/v2/comments
-Content-Type: application/json
-
+maton api -X POST '/attio/v2/comments' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": {
     "format": "plaintext",
@@ -185,38 +191,40 @@ Content-Type: application/json
     "thread_id": "{thread_id}"
   }
 }
+EOF
 ```
 
 ### Lists
 
 #### List All Lists
 ```bash
-GET /attio/v2/lists
+maton api '/attio/v2/lists'
 ```
 
 #### Get List
 ```bash
-GET /attio/v2/lists/{list_id}
+maton api '/attio/v2/lists/{list_id}'
 ```
 
 ### List Entries
 
 #### Query List Entries
 ```bash
-POST /attio/v2/lists/{list}/entries/query
-Content-Type: application/json
-
+maton api -X POST '/attio/v2/lists/{list}/entries/query' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "limit": 50,
   "offset": 0
 }
+EOF
 ```
 
 #### Create List Entry
 ```bash
-POST /attio/v2/lists/{list}/entries
-Content-Type: application/json
-
+maton api -X POST '/attio/v2/lists/{list}/entries' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": {
     "parent_record_id": "{record_id}",
@@ -224,18 +232,19 @@ Content-Type: application/json
     "entry_values": {}
   }
 }
+EOF
 ```
 
 #### Get List Entry
 ```bash
-GET /attio/v2/lists/{list}/entries/{entry_id}
+maton api '/attio/v2/lists/{list}/entries/{entry_id}'
 ```
 
 #### Update List Entry
 ```bash
-PATCH /attio/v2/lists/{list}/entries/{entry_id}
-Content-Type: application/json
-
+maton api -X PATCH '/attio/v2/lists/{list}/entries/{entry_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": {
     "entry_values": {
@@ -243,35 +252,36 @@ Content-Type: application/json
     }
   }
 }
+EOF
 ```
 
 #### Delete List Entry
 ```bash
-DELETE /attio/v2/lists/{list}/entries/{entry_id}
+maton api -X DELETE '/attio/v2/lists/{list}/entries/{entry_id}'
 ```
 
 ### Meetings
 
 #### List Meetings
 ```bash
-GET /attio/v2/meetings?limit=50
+maton api '/attio/v2/meetings?limit=50'
 ```
 
 #### Get Meeting
 ```bash
-GET /attio/v2/meetings/{meeting_id}
+maton api '/attio/v2/meetings/{meeting_id}'
 ```
 
 ### Call Recordings
 
 #### List Call Recordings for Meeting
 ```bash
-GET /attio/v2/meetings/{meeting_id}/call_recordings?limit=50
+maton api '/attio/v2/meetings/{meeting_id}/call_recordings?limit=50'
 ```
 
 #### Get Call Recording
 ```bash
-GET /attio/v2/meetings/{meeting_id}/call_recordings/{call_recording_id}
+maton api '/attio/v2/meetings/{meeting_id}/call_recordings/{call_recording_id}'
 ```
 
 ## Usage Notes

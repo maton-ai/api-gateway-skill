@@ -22,19 +22,19 @@
 
 ### List Deals
 ```bash
-GET /pipedrive/api/v1/deals?status=open&limit=50
+maton api '/pipedrive/api/v1/deals?status=open&limit=50'
 ```
 
 ### Get Deal
 ```bash
-GET /pipedrive/api/v1/deals/{id}
+maton api '/pipedrive/api/v1/deals/{id}'
 ```
 
 ### Create Deal
 ```bash
-POST /pipedrive/api/v1/deals
-Content-Type: application/json
-
+maton api -X POST '/pipedrive/api/v1/deals' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "title": "New Enterprise Deal",
   "value": 50000,
@@ -44,74 +44,78 @@ Content-Type: application/json
   "stage_id": 1,
   "expected_close_date": "2025-06-30"
 }
+EOF
 ```
 
 ### Update Deal
 ```bash
-PUT /pipedrive/api/v1/deals/{id}
-Content-Type: application/json
-
+maton api -X PUT '/pipedrive/api/v1/deals/{id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "title": "Updated Deal Title",
   "value": 75000,
   "status": "won"
 }
+EOF
 ```
 
 ### Delete Deal
 ```bash
-DELETE /pipedrive/api/v1/deals/{id}
+maton api -X DELETE '/pipedrive/api/v1/deals/{id}'
 ```
 
 ### Search Deals
 ```bash
-GET /pipedrive/api/v1/deals/search?term=enterprise
+maton api '/pipedrive/api/v1/deals/search?term=enterprise'
 ```
 
 ### List Persons
 ```bash
-GET /pipedrive/api/v1/persons
+maton api '/pipedrive/api/v1/persons'
 ```
 
 ### Create Person
 ```bash
-POST /pipedrive/api/v1/persons
-Content-Type: application/json
-
+maton api -X POST '/pipedrive/api/v1/persons' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "John Doe",
   "email": ["john@example.com"],
   "phone": ["+1234567890"],
   "org_id": 456
 }
+EOF
 ```
 
 ### List Organizations
 ```bash
-GET /pipedrive/api/v1/organizations
+maton api '/pipedrive/api/v1/organizations'
 ```
 
 ### Create Organization
 ```bash
-POST /pipedrive/api/v1/organizations
-Content-Type: application/json
-
+maton api -X POST '/pipedrive/api/v1/organizations' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Acme Corporation",
   "address": "123 Main St, City, Country"
 }
+EOF
 ```
 
 ### List Activities
 ```bash
-GET /pipedrive/api/v1/activities?type=call&done=0
+maton api '/pipedrive/api/v1/activities?type=call&done=0'
 ```
 
 ### Create Activity
 ```bash
-POST /pipedrive/api/v1/activities
-Content-Type: application/json
-
+maton api -X POST '/pipedrive/api/v1/activities' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "subject": "Follow-up call",
   "type": "call",
@@ -120,33 +124,35 @@ Content-Type: application/json
   "deal_id": 789,
   "person_id": 123
 }
+EOF
 ```
 
 ### List Pipelines
 ```bash
-GET /pipedrive/api/v1/pipelines
+maton api '/pipedrive/api/v1/pipelines'
 ```
 
 ### List Stages
 ```bash
-GET /pipedrive/api/v1/stages?pipeline_id=1
+maton api '/pipedrive/api/v1/stages?pipeline_id=1'
 ```
 
 ### Create Note
 ```bash
-POST /pipedrive/api/v1/notes
-Content-Type: application/json
-
+maton api -X POST '/pipedrive/api/v1/notes' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "content": "Meeting notes: Discussed pricing and timeline",
   "deal_id": 789,
   "pinned_to_deal_flag": 1
 }
+EOF
 ```
 
 ### Get Current User
 ```bash
-GET /pipedrive/api/v1/users/me
+maton api '/pipedrive/api/v1/users/me'
 ```
 
 ## Notes

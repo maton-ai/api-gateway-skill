@@ -46,7 +46,7 @@ maton salesforce query "SELECT Id,Name,Email FROM Contact WHERE Email LIKE '%exa
 
 ### Get Object
 ```bash
-GET /salesforce/services/data/v59.0/sobjects/{objectType}/{recordId}
+maton api '/salesforce/services/data/v59.0/sobjects/{objectType}/{recordId}'
 ```
 
 Example:
@@ -57,14 +57,15 @@ maton salesforce record view {recordId} --type {objectType}
 
 ### Create Object
 ```bash
-POST /salesforce/services/data/v59.0/sobjects/{objectType}
-Content-Type: application/json
-
+maton api -X POST '/salesforce/services/data/v59.0/sobjects/{objectType}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "FirstName": "John",
   "LastName": "Doe",
   "Email": "john@example.com"
 }
+EOF
 ```
 
 Example:
@@ -75,12 +76,13 @@ maton salesforce record create --type Contact --data '{"FirstName":"John","LastN
 
 ### Update Object
 ```bash
-PATCH /salesforce/services/data/v59.0/sobjects/{objectType}/{recordId}
-Content-Type: application/json
-
+maton api -X PATCH '/salesforce/services/data/v59.0/sobjects/{objectType}/{recordId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "Phone": "+1234567890"
 }
+EOF
 ```
 
 Example:
@@ -91,7 +93,7 @@ maton salesforce record update {recordId} --type Contact --data '{"Phone":"+1234
 
 ### Delete Object
 ```bash
-DELETE /salesforce/services/data/v59.0/sobjects/{objectType}/{recordId}
+maton api -X DELETE '/salesforce/services/data/v59.0/sobjects/{objectType}/{recordId}'
 ```
 
 Example:
@@ -102,7 +104,7 @@ maton salesforce record delete {recordId} --type Contact
 
 ### Describe Object (get schema)
 ```bash
-GET /salesforce/services/data/v59.0/sobjects/{objectType}/describe
+maton api '/salesforce/services/data/v59.0/sobjects/{objectType}/describe'
 ```
 
 Example:
@@ -113,7 +115,7 @@ maton salesforce object describe {objectType}
 
 ### List Objects
 ```bash
-GET /salesforce/services/data/v59.0/sobjects
+maton api '/salesforce/services/data/v59.0/sobjects'
 ```
 
 Example:
@@ -124,7 +126,7 @@ maton salesforce object list
 
 ### Search (SOSL)
 ```bash
-GET /salesforce/services/data/v59.0/search?q=FIND+{searchTerm}+IN+ALL+FIELDS+RETURNING+Contact(Id,Name)
+maton api '/salesforce/services/data/v59.0/search?q=FIND+{searchTerm}+IN+ALL+FIELDS+RETURNING+Contact(Id,Name)'
 ```
 
 Example:
@@ -135,9 +137,9 @@ maton salesforce search 'FIND {John} IN ALL FIELDS RETURNING Contact(Id,Name)'
 
 ### Composite Request (batch multiple operations)
 ```bash
-POST /salesforce/services/data/v59.0/composite
-Content-Type: application/json
-
+maton api -X POST '/salesforce/services/data/v59.0/composite' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "compositeRequest": [
     {
@@ -152,6 +154,7 @@ Content-Type: application/json
     }
   ]
 }
+EOF
 ```
 
 Example:
@@ -163,15 +166,16 @@ echo '{"compositeRequest":[{"method":"GET","url":"/services/data/v59.0/sobjects/
 
 ### Composite Batch Request
 ```bash
-POST /salesforce/services/data/v59.0/composite/batch
-Content-Type: application/json
-
+maton api -X POST '/salesforce/services/data/v59.0/composite/batch' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "batchRequests": [
     {"method": "GET", "url": "v59.0/sobjects/Contact/003XXXXXXX"},
     {"method": "GET", "url": "v59.0/sobjects/Account/001XXXXXXX"}
   ]
 }
+EOF
 ```
 
 Example:
@@ -183,9 +187,9 @@ echo '{"batchRequests":[{"method":"GET","url":"v59.0/sobjects/Contact/003XXXXXXX
 
 ### sObject Collections Create (batch create)
 ```bash
-POST /salesforce/services/data/v59.0/composite/sobjects
-Content-Type: application/json
-
+maton api -X POST '/salesforce/services/data/v59.0/composite/sobjects' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "allOrNone": true,
   "records": [
@@ -193,6 +197,7 @@ Content-Type: application/json
     {"attributes": {"type": "Contact"}, "FirstName": "Jane", "LastName": "Smith"}
   ]
 }
+EOF
 ```
 
 Example:
@@ -203,7 +208,7 @@ maton salesforce record create --all-or-none --data '[{"attributes":{"type":"Con
 
 ### sObject Collections Delete (batch delete)
 ```bash
-DELETE /salesforce/services/data/v59.0/composite/sobjects?ids=003XXXXX,003YYYYY&allOrNone=true
+maton api -X DELETE '/salesforce/services/data/v59.0/composite/sobjects?ids=003XXXXX,003YYYYY&allOrNone=true'
 ```
 
 Example:
@@ -214,7 +219,7 @@ maton salesforce record delete 003XXXXX 003YYYYY --all-or-none
 
 ### Get Updated Records
 ```bash
-GET /salesforce/services/data/v59.0/sobjects/{objectType}/updated/?start=2026-01-30T00:00:00Z&end=2026-02-01T00:00:00Z
+maton api '/salesforce/services/data/v59.0/sobjects/{objectType}/updated/?start=2026-01-30T00:00:00Z&end=2026-02-01T00:00:00Z'
 ```
 
 Example:
@@ -225,7 +230,7 @@ maton salesforce record list --type {objectType} --start 2026-01-30T00:00:00Z --
 
 ### Get Deleted Records
 ```bash
-GET /salesforce/services/data/v59.0/sobjects/{objectType}/deleted/?start=2026-01-30T00:00:00Z&end=2026-02-01T00:00:00Z
+maton api '/salesforce/services/data/v59.0/sobjects/{objectType}/deleted/?start=2026-01-30T00:00:00Z&end=2026-02-01T00:00:00Z'
 ```
 
 Example:
@@ -236,7 +241,7 @@ maton salesforce record list --type {objectType} --start 2026-01-30T00:00:00Z --
 
 ### Get API Limits
 ```bash
-GET /salesforce/services/data/v59.0/limits
+maton api '/salesforce/services/data/v59.0/limits'
 ```
 
 Example:
@@ -247,7 +252,7 @@ maton salesforce limit view
 
 ### List API Versions
 ```bash
-GET /salesforce/services/data/
+maton api '/salesforce/services/data/'
 ```
 
 Example:

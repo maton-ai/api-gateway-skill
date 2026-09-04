@@ -17,50 +17,50 @@
 
 #### Get Current User
 ```bash
-GET /snapchat/v1/me
+maton api '/snapchat/v1/me'
 ```
 
 #### List Organizations
 ```bash
-GET /snapchat/v1/me/organizations
+maton api '/snapchat/v1/me/organizations'
 ```
 
 ### Organizations
 
 #### Get Organization
 ```bash
-GET /snapchat/v1/organizations/{organizationId}
+maton api '/snapchat/v1/organizations/{organizationId}'
 ```
 
 #### List Ad Accounts
 ```bash
-GET /snapchat/v1/organizations/{organizationId}/adaccounts
+maton api '/snapchat/v1/organizations/{organizationId}/adaccounts'
 ```
 
 #### List Funding Sources
 ```bash
-GET /snapchat/v1/organizations/{organizationId}/fundingsources
+maton api '/snapchat/v1/organizations/{organizationId}/fundingsources'
 ```
 
 ### Ad Accounts
 
 #### Get Ad Account
 ```bash
-GET /snapchat/v1/adaccounts/{adAccountId}
+maton api '/snapchat/v1/adaccounts/{adAccountId}'
 ```
 
 ### Campaigns
 
 #### List Campaigns
 ```bash
-GET /snapchat/v1/adaccounts/{adAccountId}/campaigns
+maton api '/snapchat/v1/adaccounts/{adAccountId}/campaigns'
 ```
 
 #### Create Campaign
 ```bash
-POST /snapchat/v1/adaccounts/{adAccountId}/campaigns
-Content-Type: application/json
-
+maton api -X POST '/snapchat/v1/adaccounts/{adAccountId}/campaigns' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "campaigns": [{
     "name": "Campaign Name",
@@ -69,72 +69,74 @@ Content-Type: application/json
     "start_time": "2026-02-15T00:00:00.000-08:00"
   }]
 }
+EOF
 ```
 
 ### Ad Squads
 
 #### List Ad Squads
 ```bash
-GET /snapchat/v1/adaccounts/{adAccountId}/adsquads
+maton api '/snapchat/v1/adaccounts/{adAccountId}/adsquads'
 ```
 
 ### Ads
 
 #### List Ads
 ```bash
-GET /snapchat/v1/adaccounts/{adAccountId}/ads
+maton api '/snapchat/v1/adaccounts/{adAccountId}/ads'
 ```
 
 ### Creatives
 
 #### List Creatives
 ```bash
-GET /snapchat/v1/adaccounts/{adAccountId}/creatives
+maton api '/snapchat/v1/adaccounts/{adAccountId}/creatives'
 ```
 
 ### Media
 
 #### List Media
 ```bash
-GET /snapchat/v1/adaccounts/{adAccountId}/media
+maton api '/snapchat/v1/adaccounts/{adAccountId}/media'
 ```
 
 ### Stats
 
 #### Get Ad Account Stats
 ```bash
-GET /snapchat/v1/adaccounts/{adAccountId}/stats?granularity=DAY&start_time=2026-02-01&end_time=2026-02-14
+maton api '/snapchat/v1/adaccounts/{adAccountId}/stats?granularity=DAY&start_time=2026-02-01&end_time=2026-02-14'
 ```
 
 ### Targeting
 
 #### Get Countries
 ```bash
-GET /snapchat/v1/targeting/geo/country
+maton api '/snapchat/v1/targeting/geo/country'
 ```
 
 #### Get Regions
 ```bash
-GET /snapchat/v1/targeting/geo/{countryCode}/region
+maton api '/snapchat/v1/targeting/geo/{countryCode}/region'
 ```
 
 ### Ads Gallery (Public Ads Library)
 
 #### List Sponsored Content
 ```bash
-GET /snapchat/v1/ads_library/sponsored_content
+maton api '/snapchat/v1/ads_library/sponsored_content'
 ```
 
 #### Search Ads
 ```bash
-POST /snapchat/v1/ads_library/ads/search
-Content-Type: application/json
-
+maton api -X POST '/snapchat/v1/ads_library/ads/search' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "paying_advertiser_name": "Nike",
   "countries": ["fr", "de"],
   "limit": 50
 }
+EOF
 ```
 
 ## Notes

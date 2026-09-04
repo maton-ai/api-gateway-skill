@@ -25,28 +25,28 @@ Sites can be identified by:
 
 #### Get Site Information
 ```bash
-GET /wordpress/rest/v1.1/sites/{site}
+maton api '/wordpress/rest/v1.1/sites/{site}'
 ```
 
 ### Posts
 
 #### List Posts
 ```bash
-GET /wordpress/rest/v1.1/sites/{site}/posts
+maton api '/wordpress/rest/v1.1/sites/{site}/posts'
 ```
 
 Query parameters: `number`, `offset`, `page_handle`, `status`, `search`, `category`, `tag`, `author`
 
 #### Get Post
 ```bash
-GET /wordpress/rest/v1.1/sites/{site}/posts/{post_id}
+maton api '/wordpress/rest/v1.1/sites/{site}/posts/{post_id}'
 ```
 
 #### Create Post
 ```bash
-POST /wordpress/rest/v1.1/sites/{site}/posts/new
-Content-Type: application/json
-
+maton api -X POST '/wordpress/rest/v1.1/sites/{site}/posts/new' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "title": "Post Title",
   "content": "<p>Post content...</p>",
@@ -54,91 +54,95 @@ Content-Type: application/json
   "categories": "news",
   "tags": "featured"
 }
+EOF
 ```
 
 #### Update Post
 ```bash
-POST /wordpress/rest/v1.1/sites/{site}/posts/{post_id}
-Content-Type: application/json
-
+maton api -X POST '/wordpress/rest/v1.1/sites/{site}/posts/{post_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "title": "Updated Title",
   "content": "<p>Updated content...</p>"
 }
+EOF
 ```
 
 #### Delete Post
 ```bash
-POST /wordpress/rest/v1.1/sites/{site}/posts/{post_id}/delete
+maton api -X POST '/wordpress/rest/v1.1/sites/{site}/posts/{post_id}/delete'
 ```
 
 ### Pages
 
 #### List Pages
 ```bash
-GET /wordpress/rest/v1.1/sites/{site}/posts?type=page
+maton api '/wordpress/rest/v1.1/sites/{site}/posts?type=page'
 ```
 
 #### Create Page
 ```bash
-POST /wordpress/rest/v1.1/sites/{site}/posts/new?type=page
-Content-Type: application/json
-
+maton api -X POST '/wordpress/rest/v1.1/sites/{site}/posts/new?type=page' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "title": "Page Title",
   "content": "<p>Page content...</p>",
   "status": "publish"
 }
+EOF
 ```
 
 ### Post Likes
 
 #### Get Post Likes
 ```bash
-GET /wordpress/rest/v1.1/sites/{site}/posts/{post_id}/likes
+maton api '/wordpress/rest/v1.1/sites/{site}/posts/{post_id}/likes'
 ```
 
 #### Like Post
 ```bash
-POST /wordpress/rest/v1.1/sites/{site}/posts/{post_id}/likes/new
+maton api -X POST '/wordpress/rest/v1.1/sites/{site}/posts/{post_id}/likes/new'
 ```
 
 ### Users
 
 #### List Site Users
 ```bash
-GET /wordpress/rest/v1.1/sites/{site}/users
+maton api '/wordpress/rest/v1.1/sites/{site}/users'
 ```
 
 ### User Settings
 
 #### Get My Settings
 ```bash
-GET /wordpress/rest/v1.1/me/settings
+maton api '/wordpress/rest/v1.1/me/settings'
 ```
 
 #### Update My Settings
 ```bash
-POST /wordpress/rest/v1.1/me/settings/
-Content-Type: application/json
-
+maton api -X POST '/wordpress/rest/v1.1/me/settings/' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "enable_translator": false
 }
+EOF
 ```
 
 ### Post Types
 
 #### List Post Types
 ```bash
-GET /wordpress/rest/v1.1/sites/{site}/post-types
+maton api '/wordpress/rest/v1.1/sites/{site}/post-types'
 ```
 
 ### Post Counts
 
 #### Get Post Counts
 ```bash
-GET /wordpress/rest/v1.1/sites/{site}/post-counts/{post_type}
+maton api '/wordpress/rest/v1.1/sites/{site}/post-counts/{post_type}'
 ```
 
 ## Pagination
@@ -146,10 +150,10 @@ GET /wordpress/rest/v1.1/sites/{site}/post-counts/{post_type}
 WordPress.com uses cursor-based pagination with `page_handle`:
 
 ```bash
-GET /wordpress/rest/v1.1/sites/{site}/posts?number=20
+maton api '/wordpress/rest/v1.1/sites/{site}/posts?number=20'
 # Response includes "meta": {"next_page": "..."}
 
-GET /wordpress/rest/v1.1/sites/{site}/posts?number=20&page_handle={next_page}
+maton api '/wordpress/rest/v1.1/sites/{site}/posts?number=20&page_handle={next_page}'
 ```
 
 Alternatively, use `offset` for simple pagination.

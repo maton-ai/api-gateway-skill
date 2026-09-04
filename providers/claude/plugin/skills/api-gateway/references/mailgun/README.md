@@ -17,269 +17,269 @@
 
 #### List Domains
 ```bash
-GET /mailgun/v3/domains
+maton api '/mailgun/v3/domains'
 ```
 
 #### Get Domain
 ```bash
-GET /mailgun/v3/domains/{domain_name}
+maton api '/mailgun/v3/domains/{domain_name}'
 ```
 
 #### Create Domain
 ```bash
-POST /mailgun/v3/domains
+maton api -X POST '/mailgun/v3/domains'
 ```
 
 #### Delete Domain
 ```bash
-DELETE /mailgun/v3/domains/{domain_name}
+maton api -X DELETE '/mailgun/v3/domains/{domain_name}'
 ```
 
 ### Messages
 
 #### Send Message
 ```bash
-POST /mailgun/v3/{domain_name}/messages
+maton api -X POST '/mailgun/v3/{domain_name}/messages'
 ```
 
 #### Send MIME Message
 ```bash
-POST /mailgun/v3/{domain_name}/messages.mime
+maton api -X POST '/mailgun/v3/{domain_name}/messages.mime'
 ```
 
 ### Events
 
 #### List Events
 ```bash
-GET /mailgun/v3/{domain_name}/events
+maton api '/mailgun/v3/{domain_name}/events'
 ```
 
 ### Routes
 
 #### List Routes
 ```bash
-GET /mailgun/v3/routes
+maton api '/mailgun/v3/routes'
 ```
 
 #### Create Route
 ```bash
-POST /mailgun/v3/routes
+maton api -X POST '/mailgun/v3/routes'
 ```
 
 #### Get Route
 ```bash
-GET /mailgun/v3/routes/{route_id}
+maton api '/mailgun/v3/routes/{route_id}'
 ```
 
 #### Update Route
 ```bash
-PUT /mailgun/v3/routes/{route_id}
+maton api -X PUT '/mailgun/v3/routes/{route_id}'
 ```
 
 #### Delete Route
 ```bash
-DELETE /mailgun/v3/routes/{route_id}
+maton api -X DELETE '/mailgun/v3/routes/{route_id}'
 ```
 
 ### Webhooks
 
 #### List Webhooks
 ```bash
-GET /mailgun/v3/domains/{domain_name}/webhooks
+maton api '/mailgun/v3/domains/{domain_name}/webhooks'
 ```
 
 #### Create Webhook
 ```bash
-POST /mailgun/v3/domains/{domain_name}/webhooks
+maton api -X POST '/mailgun/v3/domains/{domain_name}/webhooks'
 ```
 
 #### Get Webhook
 ```bash
-GET /mailgun/v3/domains/{domain_name}/webhooks/{webhook_type}
+maton api '/mailgun/v3/domains/{domain_name}/webhooks/{webhook_type}'
 ```
 
 #### Update Webhook
 ```bash
-PUT /mailgun/v3/domains/{domain_name}/webhooks/{webhook_type}
+maton api -X PUT '/mailgun/v3/domains/{domain_name}/webhooks/{webhook_type}'
 ```
 
 #### Delete Webhook
 ```bash
-DELETE /mailgun/v3/domains/{domain_name}/webhooks/{webhook_type}
+maton api -X DELETE '/mailgun/v3/domains/{domain_name}/webhooks/{webhook_type}'
 ```
 
 ### Templates
 
 #### List Templates
 ```bash
-GET /mailgun/v3/{domain_name}/templates
+maton api '/mailgun/v3/{domain_name}/templates'
 ```
 
 #### Create Template
 ```bash
-POST /mailgun/v3/{domain_name}/templates
+maton api -X POST '/mailgun/v3/{domain_name}/templates'
 ```
 
 #### Get Template
 ```bash
-GET /mailgun/v3/{domain_name}/templates/{template_name}
+maton api '/mailgun/v3/{domain_name}/templates/{template_name}'
 ```
 
 #### Delete Template
 ```bash
-DELETE /mailgun/v3/{domain_name}/templates/{template_name}
+maton api -X DELETE '/mailgun/v3/{domain_name}/templates/{template_name}'
 ```
 
 ### Mailing Lists
 
 #### List Mailing Lists
 ```bash
-GET /mailgun/v3/lists/pages
+maton api '/mailgun/v3/lists/pages'
 ```
 
 #### Create Mailing List
 ```bash
-POST /mailgun/v3/lists
+maton api -X POST '/mailgun/v3/lists'
 ```
 
 #### Get Mailing List
 ```bash
-GET /mailgun/v3/lists/{list_address}
+maton api '/mailgun/v3/lists/{list_address}'
 ```
 
 #### Update Mailing List
 ```bash
-PUT /mailgun/v3/lists/{list_address}
+maton api -X PUT '/mailgun/v3/lists/{list_address}'
 ```
 
 #### Delete Mailing List
 ```bash
-DELETE /mailgun/v3/lists/{list_address}
+maton api -X DELETE '/mailgun/v3/lists/{list_address}'
 ```
 
 ### Mailing List Members
 
 #### List Members
 ```bash
-GET /mailgun/v3/lists/{list_address}/members/pages
+maton api '/mailgun/v3/lists/{list_address}/members/pages'
 ```
 
 #### Add Member
 ```bash
-POST /mailgun/v3/lists/{list_address}/members
+maton api -X POST '/mailgun/v3/lists/{list_address}/members'
 ```
 
 #### Get Member
 ```bash
-GET /mailgun/v3/lists/{list_address}/members/{member_address}
+maton api '/mailgun/v3/lists/{list_address}/members/{member_address}'
 ```
 
 #### Update Member
 ```bash
-PUT /mailgun/v3/lists/{list_address}/members/{member_address}
+maton api -X PUT '/mailgun/v3/lists/{list_address}/members/{member_address}'
 ```
 
 #### Delete Member
 ```bash
-DELETE /mailgun/v3/lists/{list_address}/members/{member_address}
+maton api -X DELETE '/mailgun/v3/lists/{list_address}/members/{member_address}'
 ```
 
 ### Suppressions
 
 #### Bounces
 ```bash
-GET /mailgun/v3/{domain_name}/bounces
-POST /mailgun/v3/{domain_name}/bounces
-GET /mailgun/v3/{domain_name}/bounces/{address}
-DELETE /mailgun/v3/{domain_name}/bounces/{address}
+maton api '/mailgun/v3/{domain_name}/bounces'
+maton api -X POST '/mailgun/v3/{domain_name}/bounces'
+maton api '/mailgun/v3/{domain_name}/bounces/{address}'
+maton api -X DELETE '/mailgun/v3/{domain_name}/bounces/{address}'
 ```
 
 #### Unsubscribes
 ```bash
-GET /mailgun/v3/{domain_name}/unsubscribes
-POST /mailgun/v3/{domain_name}/unsubscribes
-DELETE /mailgun/v3/{domain_name}/unsubscribes/{address}
+maton api '/mailgun/v3/{domain_name}/unsubscribes'
+maton api -X POST '/mailgun/v3/{domain_name}/unsubscribes'
+maton api -X DELETE '/mailgun/v3/{domain_name}/unsubscribes/{address}'
 ```
 
 #### Complaints
 ```bash
-GET /mailgun/v3/{domain_name}/complaints
-POST /mailgun/v3/{domain_name}/complaints
-DELETE /mailgun/v3/{domain_name}/complaints/{address}
+maton api '/mailgun/v3/{domain_name}/complaints'
+maton api -X POST '/mailgun/v3/{domain_name}/complaints'
+maton api -X DELETE '/mailgun/v3/{domain_name}/complaints/{address}'
 ```
 
 #### Whitelists
 ```bash
-GET /mailgun/v3/{domain_name}/whitelists
-POST /mailgun/v3/{domain_name}/whitelists
-DELETE /mailgun/v3/{domain_name}/whitelists/{address}
+maton api '/mailgun/v3/{domain_name}/whitelists'
+maton api -X POST '/mailgun/v3/{domain_name}/whitelists'
+maton api -X DELETE '/mailgun/v3/{domain_name}/whitelists/{address}'
 ```
 
 ### Statistics
 
 #### Get Stats
 ```bash
-GET /mailgun/v3/{domain_name}/stats/total?event=delivered
+maton api '/mailgun/v3/{domain_name}/stats/total?event=delivered'
 ```
 
 ### Tags
 
 #### List Tags
 ```bash
-GET /mailgun/v3/{domain_name}/tags
+maton api '/mailgun/v3/{domain_name}/tags'
 ```
 
 #### Get Tag
 ```bash
-GET /mailgun/v3/{domain_name}/tags/{tag_name}
+maton api '/mailgun/v3/{domain_name}/tags/{tag_name}'
 ```
 
 #### Delete Tag
 ```bash
-DELETE /mailgun/v3/{domain_name}/tags/{tag_name}
+maton api -X DELETE '/mailgun/v3/{domain_name}/tags/{tag_name}'
 ```
 
 ### IPs
 
 #### List IPs
 ```bash
-GET /mailgun/v3/ips
+maton api '/mailgun/v3/ips'
 ```
 
 #### Get IP
 ```bash
-GET /mailgun/v3/ips/{ip_address}
+maton api '/mailgun/v3/ips/{ip_address}'
 ```
 
 ### Domain Tracking
 
 #### Get Tracking Settings
 ```bash
-GET /mailgun/v3/domains/{domain_name}/tracking
+maton api '/mailgun/v3/domains/{domain_name}/tracking'
 ```
 
 #### Update Tracking
 ```bash
-PUT /mailgun/v3/domains/{domain_name}/tracking/open
-PUT /mailgun/v3/domains/{domain_name}/tracking/click
-PUT /mailgun/v3/domains/{domain_name}/tracking/unsubscribe
+maton api -X PUT '/mailgun/v3/domains/{domain_name}/tracking/open'
+maton api -X PUT '/mailgun/v3/domains/{domain_name}/tracking/click'
+maton api -X PUT '/mailgun/v3/domains/{domain_name}/tracking/unsubscribe'
 ```
 
 ### Credentials
 
 #### List Credentials
 ```bash
-GET /mailgun/v3/domains/{domain_name}/credentials
+maton api '/mailgun/v3/domains/{domain_name}/credentials'
 ```
 
 #### Create Credential
 ```bash
-POST /mailgun/v3/domains/{domain_name}/credentials
+maton api -X POST '/mailgun/v3/domains/{domain_name}/credentials'
 ```
 
 #### Delete Credential
 ```bash
-DELETE /mailgun/v3/domains/{domain_name}/credentials/{login}
+maton api -X DELETE '/mailgun/v3/domains/{domain_name}/credentials/{login}'
 ```
 
 ## Notes

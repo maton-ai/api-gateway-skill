@@ -17,93 +17,93 @@
 
 #### Convert Text to Speech
 ```bash
-POST /elevenlabs/v1/text-to-speech/{voice_id}
+maton api -X POST '/elevenlabs/v1/text-to-speech/{voice_id}'
 ```
 
 #### Stream Text to Speech
 ```bash
-POST /elevenlabs/v1/text-to-speech/{voice_id}/stream
+maton api -X POST '/elevenlabs/v1/text-to-speech/{voice_id}/stream'
 ```
 
 ### Voices
 
 #### List Voices
 ```bash
-GET /elevenlabs/v1/voices
+maton api '/elevenlabs/v1/voices'
 ```
 
 #### Get Voice
 ```bash
-GET /elevenlabs/v1/voices/{voice_id}
+maton api '/elevenlabs/v1/voices/{voice_id}'
 ```
 
 #### Create Voice Clone
 ```bash
-POST /elevenlabs/v1/voices/add
+maton api -X POST '/elevenlabs/v1/voices/add'
 ```
 
 #### Delete Voice
 ```bash
-DELETE /elevenlabs/v1/voices/{voice_id}
+maton api -X DELETE '/elevenlabs/v1/voices/{voice_id}'
 ```
 
 ### Models
 
 #### List Models
 ```bash
-GET /elevenlabs/v1/models
+maton api '/elevenlabs/v1/models'
 ```
 
 ### User
 
 #### Get User Info
 ```bash
-GET /elevenlabs/v1/user
+maton api '/elevenlabs/v1/user'
 ```
 
 #### Get Subscription Info
 ```bash
-GET /elevenlabs/v1/user/subscription
+maton api '/elevenlabs/v1/user/subscription'
 ```
 
 ### History
 
 #### List History
 ```bash
-GET /elevenlabs/v1/history?page_size=100
+maton api '/elevenlabs/v1/history?page_size=100'
 ```
 
 #### Get Audio from History
 ```bash
-GET /elevenlabs/v1/history/{history_item_id}/audio
+maton api '/elevenlabs/v1/history/{history_item_id}/audio'
 ```
 
 ### Sound Effects
 
 #### Generate Sound Effect
 ```bash
-POST /elevenlabs/v1/sound-generation
+maton api -X POST '/elevenlabs/v1/sound-generation'
 ```
 
 ### Audio Isolation
 
 #### Remove Background Noise
 ```bash
-POST /elevenlabs/v1/audio-isolation
+maton api -X POST '/elevenlabs/v1/audio-isolation'
 ```
 
 ### Speech-to-Text
 
 #### Transcribe Audio
 ```bash
-POST /elevenlabs/v1/speech-to-text
+maton api -X POST '/elevenlabs/v1/speech-to-text'
 ```
 
 ### Speech-to-Speech
 
 #### Convert Voice
 ```bash
-POST /elevenlabs/v1/speech-to-speech/{voice_id}
+maton api -X POST '/elevenlabs/v1/speech-to-speech/{voice_id}'
 ```
 
 ## Notes

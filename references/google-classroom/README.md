@@ -17,118 +17,122 @@
 
 #### List Courses
 ```bash
-GET /google-classroom/v1/courses
-GET /google-classroom/v1/courses?courseStates=ACTIVE
-GET /google-classroom/v1/courses?teacherId=me
+maton api '/google-classroom/v1/courses'
+maton api '/google-classroom/v1/courses?courseStates=ACTIVE'
+maton api '/google-classroom/v1/courses?teacherId=me'
 ```
 
 #### Get Course
 ```bash
-GET /google-classroom/v1/courses/{courseId}
+maton api '/google-classroom/v1/courses/{courseId}'
 ```
 
 #### Create Course
 ```bash
-POST /google-classroom/v1/courses
-Content-Type: application/json
-
+maton api -X POST '/google-classroom/v1/courses' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Course Name",
   "ownerId": "me"
 }
+EOF
 ```
 
 #### Update Course
 ```bash
-PATCH /google-classroom/v1/courses/{courseId}?updateMask=name
-Content-Type: application/json
-
+maton api -X PATCH '/google-classroom/v1/courses/{courseId}?updateMask=name' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Updated Name"
 }
+EOF
 ```
 
 #### Delete Course
 ```bash
-DELETE /google-classroom/v1/courses/{courseId}
+maton api -X DELETE '/google-classroom/v1/courses/{courseId}'
 ```
 
 ### Course Work
 
 #### List Course Work
 ```bash
-GET /google-classroom/v1/courses/{courseId}/courseWork
+maton api '/google-classroom/v1/courses/{courseId}/courseWork'
 ```
 
 #### Create Course Work
 ```bash
-POST /google-classroom/v1/courses/{courseId}/courseWork
-Content-Type: application/json
-
+maton api -X POST '/google-classroom/v1/courses/{courseId}/courseWork' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "title": "Assignment Title",
   "workType": "ASSIGNMENT",
   "state": "PUBLISHED",
   "maxPoints": 100
 }
+EOF
 ```
 
 ### Student Submissions
 
 #### List Submissions
 ```bash
-GET /google-classroom/v1/courses/{courseId}/courseWork/{courseWorkId}/studentSubmissions
+maton api '/google-classroom/v1/courses/{courseId}/courseWork/{courseWorkId}/studentSubmissions'
 ```
 
 ### Teachers & Students
 
 #### List Teachers
 ```bash
-GET /google-classroom/v1/courses/{courseId}/teachers
+maton api '/google-classroom/v1/courses/{courseId}/teachers'
 ```
 
 #### List Students
 ```bash
-GET /google-classroom/v1/courses/{courseId}/students
+maton api '/google-classroom/v1/courses/{courseId}/students'
 ```
 
 ### Announcements
 
 #### List Announcements
 ```bash
-GET /google-classroom/v1/courses/{courseId}/announcements
+maton api '/google-classroom/v1/courses/{courseId}/announcements'
 ```
 
 #### Create Announcement
 ```bash
-POST /google-classroom/v1/courses/{courseId}/announcements
-Content-Type: application/json
-
+maton api -X POST '/google-classroom/v1/courses/{courseId}/announcements' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "text": "Announcement text",
   "state": "PUBLISHED"
 }
+EOF
 ```
 
 ### Topics
 
 #### List Topics
 ```bash
-GET /google-classroom/v1/courses/{courseId}/topics
+maton api '/google-classroom/v1/courses/{courseId}/topics'
 ```
 
 ### User Profiles
 
 #### Get Current User
 ```bash
-GET /google-classroom/v1/userProfiles/me
+maton api '/google-classroom/v1/userProfiles/me'
 ```
 
 ### Invitations
 
 #### List Invitations
 ```bash
-GET /google-classroom/v1/invitations?courseId={courseId}
+maton api '/google-classroom/v1/invitations?courseId={courseId}'
 ```
 
 ## Notes

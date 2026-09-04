@@ -15,26 +15,27 @@
 
 ### Get Form
 ```bash
-GET /google-forms/v1/forms/{formId}
+maton api '/google-forms/v1/forms/{formId}'
 ```
 
 ### Create Form
 ```bash
-POST /google-forms/v1/forms
-Content-Type: application/json
-
+maton api -X POST '/google-forms/v1/forms' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "info": {
     "title": "Customer Feedback Survey"
   }
 }
+EOF
 ```
 
 ### Batch Update Form
 ```bash
-POST /google-forms/v1/forms/{formId}:batchUpdate
-Content-Type: application/json
-
+maton api -X POST '/google-forms/v1/forms/{formId}:batchUpdate' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "requests": [
     {
@@ -55,16 +56,17 @@ Content-Type: application/json
     }
   ]
 }
+EOF
 ```
 
 ### List Responses
 ```bash
-GET /google-forms/v1/forms/{formId}/responses
+maton api '/google-forms/v1/forms/{formId}/responses'
 ```
 
 ### Get Response
 ```bash
-GET /google-forms/v1/forms/{formId}/responses/{responseId}
+maton api '/google-forms/v1/forms/{formId}/responses/{responseId}'
 ```
 
 ## Common Requests for batchUpdate

@@ -22,42 +22,42 @@
 
 ### List Meetings
 ```bash
-GET /fathom/external/v1/meetings
+maton api '/fathom/external/v1/meetings'
 ```
 
 With filters:
 ```bash
-GET /fathom/external/v1/meetings?created_after=2025-01-01T00:00:00Z&teams[]=Sales
+maton api '/fathom/external/v1/meetings?created_after=2025-01-01T00:00:00Z&teams[]=Sales'
 ```
 
 ### Get Summary
 ```bash
-GET /fathom/external/v1/recordings/{recording_id}/summary
+maton api '/fathom/external/v1/recordings/{recording_id}/summary'
 ```
 
 Async callback — **sends the summary to the host you name; confirm it first:**
 ```bash
-GET /fathom/external/v1/recordings/{recording_id}/summary?destination_url=https://example.com/webhook
+maton api '/fathom/external/v1/recordings/{recording_id}/summary?destination_url=https://example.com/webhook'
 ```
 
 ### Get Transcript
 ```bash
-GET /fathom/external/v1/recordings/{recording_id}/transcript
+maton api '/fathom/external/v1/recordings/{recording_id}/transcript'
 ```
 
 Async callback — **sends the full verbatim transcript to the host you name; confirm it first:**
 ```bash
-GET /fathom/external/v1/recordings/{recording_id}/transcript?destination_url=https://example.com/webhook
+maton api '/fathom/external/v1/recordings/{recording_id}/transcript?destination_url=https://example.com/webhook'
 ```
 
 ### List Teams
 ```bash
-GET /fathom/external/v1/teams
+maton api '/fathom/external/v1/teams'
 ```
 
 ### List Team Members
 ```bash
-GET /fathom/external/v1/team_members?team=Sales
+maton api '/fathom/external/v1/team_members?team=Sales'
 ```
 
 ### Create Webhook
@@ -65,9 +65,9 @@ GET /fathom/external/v1/team_members?team=Sales
 > **⚠ Persistent data forwarding — confirm before creating.** The flags below are shown all-on to document the shape, **not as a recommended default.** With `include_transcript` set, every future recording matching `triggered_for` has its verbatim transcript pushed to `destination_url` automatically and indefinitely. Turn on only the flags the downstream workflow needs, scope `triggered_for` as narrowly as possible, and confirm the destination host with the user first.
 
 ```bash
-POST /fathom/external/v1/webhooks
-Content-Type: application/json
-
+maton api -X POST '/fathom/external/v1/webhooks' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "destination_url": "https://example.com/webhook",
   "triggered_for": ["my_recordings", "my_shared_with_team_recordings"],
@@ -75,11 +75,12 @@ Content-Type: application/json
   "include_summary": true,
   "include_action_items": true
 }
+EOF
 ```
 
 ### Delete Webhook
 ```bash
-DELETE /fathom/external/v1/webhooks/{id}
+maton api -X DELETE '/fathom/external/v1/webhooks/{id}'
 ```
 
 ## Notes

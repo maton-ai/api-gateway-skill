@@ -15,7 +15,7 @@
 
 ### Get Spreadsheet Metadata
 ```bash
-GET /google-sheets/v4/spreadsheets/{spreadsheetId}
+maton api '/google-sheets/v4/spreadsheets/{spreadsheetId}'
 ```
 
 Example:
@@ -26,7 +26,7 @@ maton google-sheets spreadsheet view <spreadsheetId>
 
 ### Get Values
 ```bash
-GET /google-sheets/v4/spreadsheets/{spreadsheetId}/values/{range}
+maton api '/google-sheets/v4/spreadsheets/{spreadsheetId}/values/{range}'
 ```
 
 Example:
@@ -37,7 +37,7 @@ maton google-sheets values get <spreadsheetId> --range 'Sheet1!A1:D10'
 
 ### Get Multiple Ranges
 ```bash
-GET /google-sheets/v4/spreadsheets/{spreadsheetId}/values:batchGet?ranges=Sheet1!A1:B10&ranges=Sheet2!A1:C5
+maton api '/google-sheets/v4/spreadsheets/{spreadsheetId}/values:batchGet?ranges=Sheet1!A1:B10&ranges=Sheet2!A1:C5'
 ```
 
 Example:
@@ -48,15 +48,16 @@ maton google-sheets values batch-get <spreadsheetId> --range 'Sheet1!A1:B10,Shee
 
 ### Update Values
 ```bash
-PUT /google-sheets/v4/spreadsheets/{spreadsheetId}/values/{range}?valueInputOption=USER_ENTERED
-Content-Type: application/json
-
+maton api -X PUT '/google-sheets/v4/spreadsheets/{spreadsheetId}/values/{range}?valueInputOption=USER_ENTERED' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "values": [
     ["A1", "B1", "C1"],
     ["A2", "B2", "C2"]
   ]
 }
+EOF
 ```
 
 Example:
@@ -67,15 +68,16 @@ maton google-sheets values update <spreadsheetId> --range 'Sheet1!A1:C2' --json-
 
 ### Append Values
 ```bash
-POST /google-sheets/v4/spreadsheets/{spreadsheetId}/values/{range}:append?valueInputOption=USER_ENTERED
-Content-Type: application/json
-
+maton api -X POST '/google-sheets/v4/spreadsheets/{spreadsheetId}/values/{range}:append?valueInputOption=USER_ENTERED' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "values": [
     ["New Row 1", "Data", "More Data"],
     ["New Row 2", "Data", "More Data"]
   ]
 }
+EOF
 ```
 
 Example:
@@ -86,9 +88,9 @@ maton google-sheets values append <spreadsheetId> --range 'Sheet1!A1' --json-val
 
 ### Batch Update Values
 ```bash
-POST /google-sheets/v4/spreadsheets/{spreadsheetId}/values:batchUpdate
-Content-Type: application/json
-
+maton api -X POST '/google-sheets/v4/spreadsheets/{spreadsheetId}/values:batchUpdate' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "valueInputOption": "USER_ENTERED",
   "data": [
@@ -96,6 +98,7 @@ Content-Type: application/json
     {"range": "Sheet1!D1:E2", "values": [["D1", "E1"], ["D2", "E2"]]}
   ]
 }
+EOF
 ```
 
 Example:
@@ -106,7 +109,7 @@ maton google-sheets values batch-update <spreadsheetId> --data '[{"range":"Sheet
 
 ### Clear Values
 ```bash
-POST /google-sheets/v4/spreadsheets/{spreadsheetId}/values/{range}:clear
+maton api -X POST '/google-sheets/v4/spreadsheets/{spreadsheetId}/values/{range}:clear'
 ```
 
 Example:
@@ -117,13 +120,14 @@ maton google-sheets values clear <spreadsheetId> --range 'Sheet1!A1:D10'
 
 ### Create Spreadsheet
 ```bash
-POST /google-sheets/v4/spreadsheets
-Content-Type: application/json
-
+maton api -X POST '/google-sheets/v4/spreadsheets' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "properties": {"title": "New Spreadsheet"},
   "sheets": [{"properties": {"title": "Sheet1"}}]
 }
+EOF
 ```
 
 Example:
@@ -134,14 +138,15 @@ maton google-sheets spreadsheet create --title 'New Spreadsheet' --sheet-title '
 
 ### Batch Update (formatting, add sheets, etc.)
 ```bash
-POST /google-sheets/v4/spreadsheets/{spreadsheetId}:batchUpdate
-Content-Type: application/json
-
+maton api -X POST '/google-sheets/v4/spreadsheets/{spreadsheetId}:batchUpdate' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "requests": [
     {"addSheet": {"properties": {"title": "New Sheet"}}}
   ]
 }
+EOF
 ```
 
 Example:

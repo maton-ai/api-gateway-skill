@@ -17,144 +17,151 @@
 
 #### List Companies
 ```bash
-GET /twenty/rest/companies?limit=20
+maton api '/twenty/rest/companies?limit=20'
 ```
 
 #### Get Company
 ```bash
-GET /twenty/rest/companies/{id}
+maton api '/twenty/rest/companies/{id}'
 ```
 
 #### Create Company
 ```bash
-POST /twenty/rest/companies
-Content-Type: application/json
-
+maton api -X POST '/twenty/rest/companies' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Company Name",
   "domainName": {"primaryLinkUrl": "https://company.com"},
   "employees": 100
 }
+EOF
 ```
 
 #### Update Company
 ```bash
-PATCH /twenty/rest/companies/{id}
-Content-Type: application/json
-
+maton api -X PATCH '/twenty/rest/companies/{id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Updated Name"
 }
+EOF
 ```
 
 #### Delete Company
 ```bash
-DELETE /twenty/rest/companies/{id}
+maton api -X DELETE '/twenty/rest/companies/{id}'
 ```
 
 ### People
 
 #### List People
 ```bash
-GET /twenty/rest/people?limit=20
+maton api '/twenty/rest/people?limit=20'
 ```
 
 #### Get Person
 ```bash
-GET /twenty/rest/people/{id}
+maton api '/twenty/rest/people/{id}'
 ```
 
 #### Create Person
 ```bash
-POST /twenty/rest/people
-Content-Type: application/json
-
+maton api -X POST '/twenty/rest/people' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": {"firstName": "John", "lastName": "Doe"},
   "emails": {"primaryEmail": "john@company.com"},
   "companyId": "{companyId}"
 }
+EOF
 ```
 
 #### Update Person
 ```bash
-PATCH /twenty/rest/people/{id}
-Content-Type: application/json
-
+maton api -X PATCH '/twenty/rest/people/{id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "jobTitle": "CEO"
 }
+EOF
 ```
 
 ### Opportunities
 
 #### List Opportunities
 ```bash
-GET /twenty/rest/opportunities?limit=20
+maton api '/twenty/rest/opportunities?limit=20'
 ```
 
 #### Create Opportunity
 ```bash
-POST /twenty/rest/opportunities
-Content-Type: application/json
-
+maton api -X POST '/twenty/rest/opportunities' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Deal Name",
   "amount": {"amountMicros": 50000000000, "currencyCode": "USD"},
   "stage": "SCREENING",
   "companyId": "{companyId}"
 }
+EOF
 ```
 
 ### Notes
 
 #### List Notes
 ```bash
-GET /twenty/rest/notes?limit=20
+maton api '/twenty/rest/notes?limit=20'
 ```
 
 #### Create Note
 ```bash
-POST /twenty/rest/notes
-Content-Type: application/json
-
+maton api -X POST '/twenty/rest/notes' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "title": "Note Title",
   "body": "Note content"
 }
+EOF
 ```
 
 ### Tasks
 
 #### List Tasks
 ```bash
-GET /twenty/rest/tasks?limit=20
+maton api '/twenty/rest/tasks?limit=20'
 ```
 
 #### Create Task
 ```bash
-POST /twenty/rest/tasks
-Content-Type: application/json
-
+maton api -X POST '/twenty/rest/tasks' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "title": "Task Title",
   "status": "TODO",
   "dueAt": "2026-04-01T00:00:00.000Z"
 }
+EOF
 ```
 
 ### Workspace Members
 
 #### List Workspace Members
 ```bash
-GET /twenty/rest/workspaceMembers?limit=20
+maton api '/twenty/rest/workspaceMembers?limit=20'
 ```
 
 ## Filtering
 
 ```bash
-GET /twenty/rest/companies?filter=employees[gte]:100
-GET /twenty/rest/opportunities?filter=stage[eq]:"MEETING"
+maton api '/twenty/rest/companies?filter=employees[gte]:100'
+maton api '/twenty/rest/opportunities?filter=stage[eq]:"MEETING"'
 ```
 
 Comparators: `eq`, `neq`, `gt`, `gte`, `lt`, `lte`, `in`, `is`, `like`, `ilike`, `startsWith`
@@ -164,7 +171,7 @@ Comparators: `eq`, `neq`, `gt`, `gte`, `lt`, `lte`, `in`, `is`, `like`, `ilike`,
 Cursor-based pagination:
 
 ```bash
-GET /twenty/rest/companies?limit=20&starting_after={endCursor}
+maton api '/twenty/rest/companies?limit=20&starting_after={endCursor}'
 ```
 
 Parameters:
@@ -175,7 +182,7 @@ Parameters:
 ## Ordering
 
 ```bash
-GET /twenty/rest/companies?order_by=createdAt[DescNullsLast]
+maton api '/twenty/rest/companies?order_by=createdAt[DescNullsLast]'
 ```
 
 Directions: `AscNullsFirst`, `AscNullsLast`, `DescNullsFirst`, `DescNullsLast`

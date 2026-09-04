@@ -21,152 +21,167 @@ All operations use POST with a JSON body containing the `query` field.
 
 ### Get Current User
 ```bash
-POST /monday/v2
-Content-Type: application/json
-
+maton api -X POST '/monday/v2' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "{ me { id name email } }"
 }
+EOF
 ```
 
 ### List Workspaces
 ```bash
-POST /monday/v2
-Content-Type: application/json
-
+maton api -X POST '/monday/v2' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "{ workspaces(limit: 20) { id name kind } }"
 }
+EOF
 ```
 
 ### List Boards
 ```bash
-POST /monday/v2
-Content-Type: application/json
-
+maton api -X POST '/monday/v2' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "{ boards(limit: 20) { id name state board_kind workspace { id name } } }"
 }
+EOF
 ```
 
 ### Get Board with Items
 ```bash
-POST /monday/v2
-Content-Type: application/json
-
+maton api -X POST '/monday/v2' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "{ boards(ids: [BOARD_ID]) { id name columns { id title type } groups { id title } items_page(limit: 50) { cursor items { id name state column_values { id text } } } } }"
 }
+EOF
 ```
 
 ### Create Board
 ```bash
-POST /monday/v2
-Content-Type: application/json
-
+maton api -X POST '/monday/v2' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "mutation { create_board(board_name: \"New Board\", board_kind: public) { id name } }"
 }
+EOF
 ```
 
 ### Update Board
 ```bash
-POST /monday/v2
-Content-Type: application/json
-
+maton api -X POST '/monday/v2' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "mutation { update_board(board_id: BOARD_ID, board_attribute: description, new_value: \"Description\") }"
 }
+EOF
 ```
 
 ### Delete Board
 ```bash
-POST /monday/v2
-Content-Type: application/json
-
+maton api -X POST '/monday/v2' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "mutation { delete_board(board_id: BOARD_ID) { id } }"
 }
+EOF
 ```
 
 ### Get Items by ID
 ```bash
-POST /monday/v2
-Content-Type: application/json
-
+maton api -X POST '/monday/v2' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "{ items(ids: [ITEM_ID]) { id name created_at state board { id name } group { id title } column_values { id text value } } }"
 }
+EOF
 ```
 
 ### Create Item
 ```bash
-POST /monday/v2
-Content-Type: application/json
-
+maton api -X POST '/monday/v2' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "mutation { create_item(board_id: BOARD_ID, group_id: \"GROUP_ID\", item_name: \"New item\") { id name } }"
 }
+EOF
 ```
 
 ### Create Item with Column Values
 ```bash
-POST /monday/v2
-Content-Type: application/json
-
+maton api -X POST '/monday/v2' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "mutation { create_item(board_id: BOARD_ID, group_id: \"GROUP_ID\", item_name: \"Task\", column_values: \"{\\\"status\\\": {\\\"label\\\": \\\"Working on it\\\"}}\") { id name } }"
 }
+EOF
 ```
 
 ### Update Item
 ```bash
-POST /monday/v2
-Content-Type: application/json
-
+maton api -X POST '/monday/v2' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "mutation { change_simple_column_value(board_id: BOARD_ID, item_id: ITEM_ID, column_id: \"name\", value: \"Updated name\") { id name } }"
 }
+EOF
 ```
 
 ### Delete Item
 ```bash
-POST /monday/v2
-Content-Type: application/json
-
+maton api -X POST '/monday/v2' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "mutation { delete_item(item_id: ITEM_ID) { id } }"
 }
+EOF
 ```
 
 ### Create Column
 ```bash
-POST /monday/v2
-Content-Type: application/json
-
+maton api -X POST '/monday/v2' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "mutation { create_column(board_id: BOARD_ID, title: \"Status\", column_type: status) { id title type } }"
 }
+EOF
 ```
 
 ### Create Group
 ```bash
-POST /monday/v2
-Content-Type: application/json
-
+maton api -X POST '/monday/v2' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "mutation { create_group(board_id: BOARD_ID, group_name: \"New Group\") { id title } }"
 }
+EOF
 ```
 
 ### List Users
 ```bash
-POST /monday/v2
-Content-Type: application/json
-
+maton api -X POST '/monday/v2' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "{ users(limit: 50) { id name email } }"
 }
+EOF
 ```
 
 ## Pagination
@@ -175,16 +190,20 @@ Monday.com uses cursor-based pagination for items:
 
 ```bash
 # First page
-POST /monday/v2
+maton api -X POST '/monday/v2' \
+  --input - <<'EOF'
 {
   "query": "{ boards(ids: [BOARD_ID]) { items_page(limit: 50) { cursor items { id name } } } }"
 }
+EOF
 
 # Next page
-POST /monday/v2
+maton api -X POST '/monday/v2' \
+  --input - <<'EOF'
 {
   "query": "{ next_items_page(cursor: \"CURSOR_VALUE\", limit: 50) { cursor items { id name } } }"
 }
+EOF
 ```
 
 ## Notes

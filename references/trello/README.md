@@ -15,7 +15,7 @@
 
 ### Get Current Member
 ```bash
-GET /trello/1/members/me
+maton api '/trello/1/members/me'
 ```
 
 Example:
@@ -26,7 +26,7 @@ maton trello whoami
 
 ### Get Member's Boards
 ```bash
-GET /trello/1/members/me/boards?filter=open
+maton api '/trello/1/members/me/boards?filter=open'
 ```
 
 Example:
@@ -37,7 +37,7 @@ maton trello board list --filter open
 
 ### Get Board
 ```bash
-GET /trello/1/boards/{id}?lists=open&cards=open
+maton api '/trello/1/boards/{id}?lists=open&cards=open'
 ```
 
 Example:
@@ -48,15 +48,16 @@ maton trello board view {id} --lists open --cards open
 
 ### Create Board
 ```bash
-POST /trello/1/boards
-Content-Type: application/json
-
+maton api -X POST '/trello/1/boards' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Project Alpha",
   "desc": "Main project board",
   "defaultLists": false,
   "prefs_permissionLevel": "private"
 }
+EOF
 ```
 
 Example:
@@ -67,7 +68,7 @@ maton trello board create --name 'Project Alpha' --desc 'Main project board' --p
 
 ### Get Board Lists
 ```bash
-GET /trello/1/boards/{id}/lists?filter=open
+maton api '/trello/1/boards/{id}/lists?filter=open'
 ```
 
 Example:
@@ -78,7 +79,7 @@ maton trello list list --board {id} --filter open
 
 ### Get Board Cards
 ```bash
-GET /trello/1/boards/{id}/cards
+maton api '/trello/1/boards/{id}/cards'
 ```
 
 Example:
@@ -89,14 +90,15 @@ maton trello card list --board {id}
 
 ### Create List
 ```bash
-POST /trello/1/lists
-Content-Type: application/json
-
+maton api -X POST '/trello/1/lists' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "To Do",
   "idBoard": "BOARD_ID",
   "pos": "top"
 }
+EOF
 ```
 
 Example:
@@ -107,7 +109,7 @@ maton trello list create --board BOARD_ID --name 'To Do' --pos top
 
 ### Get Cards in List
 ```bash
-GET /trello/1/lists/{id}/cards
+maton api '/trello/1/lists/{id}/cards'
 ```
 
 Example:
@@ -118,7 +120,7 @@ maton trello card list --list {id}
 
 ### Get Card
 ```bash
-GET /trello/1/cards/{id}?members=true&checklists=all
+maton api '/trello/1/cards/{id}?members=true&checklists=all'
 ```
 
 Example:
@@ -129,9 +131,9 @@ maton trello card view {id} --members --checklists all
 
 ### Create Card
 ```bash
-POST /trello/1/cards
-Content-Type: application/json
-
+maton api -X POST '/trello/1/cards' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Implement feature X",
   "desc": "Description of the task",
@@ -141,6 +143,7 @@ Content-Type: application/json
   "idMembers": ["MEMBER_ID"],
   "idLabels": ["LABEL_ID"]
 }
+EOF
 ```
 
 Example:
@@ -151,14 +154,15 @@ maton trello card create --list LIST_ID --name 'Implement feature X' --desc 'Des
 
 ### Update Card
 ```bash
-PUT /trello/1/cards/{id}
-Content-Type: application/json
-
+maton api -X PUT '/trello/1/cards/{id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Updated card name",
   "desc": "Updated description",
   "due": "2025-04-15T12:00:00.000Z"
 }
+EOF
 ```
 
 Example:
@@ -169,13 +173,14 @@ maton trello card update {id} --name 'Updated card name' --desc 'Updated descrip
 
 ### Move Card to List
 ```bash
-PUT /trello/1/cards/{id}
-Content-Type: application/json
-
+maton api -X PUT '/trello/1/cards/{id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "idList": "NEW_LIST_ID",
   "pos": "top"
 }
+EOF
 ```
 
 Example:
@@ -186,7 +191,7 @@ maton trello card update {id} --list NEW_LIST_ID
 
 ### Delete Card
 ```bash
-DELETE /trello/1/cards/{id}
+maton api -X DELETE '/trello/1/cards/{id}'
 ```
 
 Example:
@@ -197,12 +202,13 @@ maton trello card delete {id}
 
 ### Add Comment to Card
 ```bash
-POST /trello/1/cards/{id}/actions/comments
-Content-Type: application/json
-
+maton api -X POST '/trello/1/cards/{id}/actions/comments' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "text": "This is a comment"
 }
+EOF
 ```
 
 Example:
@@ -213,13 +219,14 @@ maton trello card comment {id} --text 'This is a comment'
 
 ### Create Checklist
 ```bash
-POST /trello/1/checklists
-Content-Type: application/json
-
+maton api -X POST '/trello/1/checklists' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "idCard": "CARD_ID",
   "name": "Task Checklist"
 }
+EOF
 ```
 
 Example:
@@ -230,14 +237,15 @@ maton trello checklist create --card CARD_ID --name 'Task Checklist'
 
 ### Create Checklist Item
 ```bash
-POST /trello/1/checklists/{id}/checkItems
-Content-Type: application/json
-
+maton api -X POST '/trello/1/checklists/{id}/checkItems' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Subtask 1",
   "pos": "bottom",
   "checked": false
 }
+EOF
 ```
 
 Example:
@@ -248,7 +256,7 @@ maton trello checkitem create --checklist {id} --name 'Subtask 1' --pos bottom
 
 ### Get Board Labels
 ```bash
-GET /trello/1/boards/{id}/labels
+maton api '/trello/1/boards/{id}/labels'
 ```
 
 Example:
@@ -259,14 +267,15 @@ maton trello label list --board {id}
 
 ### Create Label
 ```bash
-POST /trello/1/labels
-Content-Type: application/json
-
+maton api -X POST '/trello/1/labels' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "High Priority",
   "color": "red",
   "idBoard": "BOARD_ID"
 }
+EOF
 ```
 
 Example:
@@ -277,7 +286,7 @@ maton trello label create --board BOARD_ID --name 'High Priority' --color red
 
 ### Search
 ```bash
-GET /trello/1/search?query=keyword&modelTypes=cards,boards
+maton api '/trello/1/search?query=keyword&modelTypes=cards,boards'
 ```
 
 Example:

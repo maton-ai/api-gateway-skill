@@ -25,20 +25,21 @@
 Perform neural web search with optional content extraction.
 
 ```bash
-POST /exa/search
-Content-Type: application/json
-
+maton api -X POST '/exa/search' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "latest AI research papers",
   "numResults": 10
 }
+EOF
 ```
 
 With content extraction:
 ```bash
-POST /exa/search
-Content-Type: application/json
-
+maton api -X POST '/exa/search' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "machine learning tutorials",
   "numResults": 5,
@@ -47,13 +48,14 @@ Content-Type: application/json
     "highlights": true
   }
 }
+EOF
 ```
 
 With filters:
 ```bash
-POST /exa/search
-Content-Type: application/json
-
+maton api -X POST '/exa/search' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "startup funding news",
   "numResults": 10,
@@ -61,6 +63,7 @@ Content-Type: application/json
   "startPublishedDate": "2024-01-01T00:00:00.000Z",
   "includeDomains": ["techcrunch.com", "venturebeat.com"]
 }
+EOF
 ```
 
 ### Get Contents
@@ -68,26 +71,28 @@ Content-Type: application/json
 Retrieve full page contents for specific URLs.
 
 ```bash
-POST /exa/contents
-Content-Type: application/json
-
+maton api -X POST '/exa/contents' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "ids": ["https://example.com/article1", "https://example.com/article2"],
   "text": true
 }
+EOF
 ```
 
 With highlights and summary:
 ```bash
-POST /exa/contents
-Content-Type: application/json
-
+maton api -X POST '/exa/contents' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "ids": ["https://example.com/article"],
   "text": true,
   "highlights": true,
   "summary": true
 }
+EOF
 ```
 
 ### Find Similar
@@ -95,25 +100,27 @@ Content-Type: application/json
 Find pages similar to a given URL.
 
 ```bash
-POST /exa/findSimilar
-Content-Type: application/json
-
+maton api -X POST '/exa/findSimilar' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "url": "https://anthropic.com",
   "numResults": 10
 }
+EOF
 ```
 
 With domain filters:
 ```bash
-POST /exa/findSimilar
-Content-Type: application/json
-
+maton api -X POST '/exa/findSimilar' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "url": "https://openai.com",
   "numResults": 5,
   "excludeDomains": ["openai.com"]
 }
+EOF
 ```
 
 ### Answer
@@ -121,13 +128,14 @@ Content-Type: application/json
 Get AI-generated answers with citations.
 
 ```bash
-POST /exa/answer
-Content-Type: application/json
-
+maton api -X POST '/exa/answer' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "What is machine learning?",
   "text": true
 }
+EOF
 ```
 
 ### Research Tasks
@@ -136,27 +144,28 @@ Run async research tasks that explore the web and synthesize findings.
 
 #### Create Research Task
 ```bash
-POST /exa/research/v1
-Content-Type: application/json
-
+maton api -X POST '/exa/research/v1' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "instructions": "What are the top AI companies and their products?",
   "model": "exa-research"
 }
+EOF
 ```
 
 Models: `exa-research-fast`, `exa-research` (default), `exa-research-pro`
 
 #### Get Research Task
 ```bash
-GET /exa/research/v1/{researchId}
+maton api '/exa/research/v1/{researchId}'
 ```
 
 Optional query params: `events=true`, `stream=true`
 
 #### List Research Tasks
 ```bash
-GET /exa/research/v1?limit=10
+maton api '/exa/research/v1?limit=10'
 ```
 
 Pagination with `cursor` and `limit` (1-50).

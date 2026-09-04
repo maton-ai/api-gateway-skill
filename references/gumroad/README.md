@@ -15,124 +15,127 @@
 
 ### Get Current User
 ```bash
-GET /gumroad/v2/user
+maton api '/gumroad/v2/user'
 ```
 
 ### List Products
 ```bash
-GET /gumroad/v2/products
+maton api '/gumroad/v2/products'
 ```
 
 ### Get Product
 ```bash
-GET /gumroad/v2/products/{product_id}
+maton api '/gumroad/v2/products/{product_id}'
 ```
 
 ### Update Product
 ```bash
-PUT /gumroad/v2/products/{product_id}
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X PUT '/gumroad/v2/products/{product_id}' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 name=Updated%20Name
+EOF
 ```
 
 ### Delete Product
 ```bash
-DELETE /gumroad/v2/products/{product_id}
+maton api -X DELETE '/gumroad/v2/products/{product_id}'
 ```
 
 ### List Sales
 ```bash
-GET /gumroad/v2/sales
-GET /gumroad/v2/sales?after=2026-01-01&before=2026-12-31
+maton api '/gumroad/v2/sales'
+maton api '/gumroad/v2/sales?after=2026-01-01&before=2026-12-31'
 ```
 
 ### Get Sale
 ```bash
-GET /gumroad/v2/sales/{sale_id}
+maton api '/gumroad/v2/sales/{sale_id}'
 ```
 
 ### List Subscribers
 ```bash
-GET /gumroad/v2/products/{product_id}/subscribers
+maton api '/gumroad/v2/products/{product_id}/subscribers'
 ```
 
 ### Get Subscriber
 ```bash
-GET /gumroad/v2/subscribers/{subscriber_id}
+maton api '/gumroad/v2/subscribers/{subscriber_id}'
 ```
 
 ### Verify License
 ```bash
-POST /gumroad/v2/licenses/verify
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X POST '/gumroad/v2/licenses/verify' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 product_id={product_id}&license_key={license_key}
+EOF
 ```
 
 ### Enable/Disable License
 ```bash
-PUT /gumroad/v2/licenses/enable
-PUT /gumroad/v2/licenses/disable
+maton api -X PUT '/gumroad/v2/licenses/enable'
+maton api -X PUT '/gumroad/v2/licenses/disable'
 ```
 
 ### List Resource Subscriptions (Webhooks)
 ```bash
-GET /gumroad/v2/resource_subscriptions?resource_name=sale
+maton api '/gumroad/v2/resource_subscriptions?resource_name=sale'
 ```
 
 Resource names: `sale`, `refund`, `dispute`, `dispute_won`, `cancellation`, `subscription_updated`, `subscription_ended`, `subscription_restarted`
 
 ### Create Resource Subscription
 ```bash
-PUT /gumroad/v2/resource_subscriptions
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X PUT '/gumroad/v2/resource_subscriptions' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 resource_name=sale&post_url=https://example.com/webhook
+EOF
 ```
 
 ### Delete Resource Subscription
 ```bash
-DELETE /gumroad/v2/resource_subscriptions/{resource_subscription_id}
+maton api -X DELETE '/gumroad/v2/resource_subscriptions/{resource_subscription_id}'
 ```
 
 ### Offer Codes
 ```bash
-GET /gumroad/v2/products/{product_id}/offer_codes
-POST /gumroad/v2/products/{product_id}/offer_codes
-PUT /gumroad/v2/products/{product_id}/offer_codes/{offer_code_id}
-DELETE /gumroad/v2/products/{product_id}/offer_codes/{offer_code_id}
+maton api '/gumroad/v2/products/{product_id}/offer_codes'
+maton api -X POST '/gumroad/v2/products/{product_id}/offer_codes'
+maton api -X PUT '/gumroad/v2/products/{product_id}/offer_codes/{offer_code_id}'
+maton api -X DELETE '/gumroad/v2/products/{product_id}/offer_codes/{offer_code_id}'
 ```
 
 ### Variant Categories
 ```bash
-GET /gumroad/v2/products/{product_id}/variant_categories
-POST /gumroad/v2/products/{product_id}/variant_categories
-DELETE /gumroad/v2/products/{product_id}/variant_categories/{variant_category_id}
+maton api '/gumroad/v2/products/{product_id}/variant_categories'
+maton api -X POST '/gumroad/v2/products/{product_id}/variant_categories'
+maton api -X DELETE '/gumroad/v2/products/{product_id}/variant_categories/{variant_category_id}'
 ```
 
 ### Variants
 ```bash
-GET /gumroad/v2/products/{product_id}/variant_categories/{variant_category_id}/variants
-POST /gumroad/v2/products/{product_id}/variant_categories/{variant_category_id}/variants
-PUT /gumroad/v2/products/{product_id}/variant_categories/{variant_category_id}/variants/{variant_id}
-DELETE /gumroad/v2/products/{product_id}/variant_categories/{variant_category_id}/variants/{variant_id}
+maton api '/gumroad/v2/products/{product_id}/variant_categories/{variant_category_id}/variants'
+maton api -X POST '/gumroad/v2/products/{product_id}/variant_categories/{variant_category_id}/variants'
+maton api -X PUT '/gumroad/v2/products/{product_id}/variant_categories/{variant_category_id}/variants/{variant_id}'
+maton api -X DELETE '/gumroad/v2/products/{product_id}/variant_categories/{variant_category_id}/variants/{variant_id}'
 ```
 
 ### Custom Fields
 ```bash
-GET /gumroad/v2/products/{product_id}/custom_fields
-POST /gumroad/v2/products/{product_id}/custom_fields
-PUT /gumroad/v2/products/{product_id}/custom_fields/{name}
-DELETE /gumroad/v2/products/{product_id}/custom_fields/{name}
+maton api '/gumroad/v2/products/{product_id}/custom_fields'
+maton api -X POST '/gumroad/v2/products/{product_id}/custom_fields'
+maton api -X PUT '/gumroad/v2/products/{product_id}/custom_fields/{name}'
+maton api -X DELETE '/gumroad/v2/products/{product_id}/custom_fields/{name}'
 ```
 
 ## Pagination
 
 Page-based pagination:
 ```bash
-GET /gumroad/v2/sales?page=1
-GET /gumroad/v2/sales?page=2
+maton api '/gumroad/v2/sales?page=1'
+maton api '/gumroad/v2/sales?page=2'
 ```
 
 ## Notes

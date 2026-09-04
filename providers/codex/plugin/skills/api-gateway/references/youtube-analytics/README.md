@@ -15,76 +15,79 @@
 
 ### Query Reports
 ```bash
-GET /youtube-analytics/v2/reports?ids=channel==MINE&startDate=2025-01-01&endDate=2025-01-31&metrics=views,likes,comments
+maton api '/youtube-analytics/v2/reports?ids=channel==MINE&startDate=2025-01-01&endDate=2025-01-31&metrics=views,likes,comments'
 ```
 
 With dimensions and sorting:
 ```bash
-GET /youtube-analytics/v2/reports?ids=channel==MINE&startDate=2025-01-01&endDate=2025-03-31&metrics=views,estimatedMinutesWatched&dimensions=day&sort=-views&maxResults=10
+maton api '/youtube-analytics/v2/reports?ids=channel==MINE&startDate=2025-01-01&endDate=2025-03-31&metrics=views,estimatedMinutesWatched&dimensions=day&sort=-views&maxResults=10'
 ```
 
 Monthly aggregation (endDate must align to 1st of month):
 ```bash
-GET /youtube-analytics/v2/reports?ids=channel==MINE&startDate=2024-01-01&endDate=2024-12-01&metrics=views,subscribersGained&dimensions=month
+maton api '/youtube-analytics/v2/reports?ids=channel==MINE&startDate=2024-01-01&endDate=2024-12-01&metrics=views,subscribersGained&dimensions=month'
 ```
 
 ### List Groups
 ```bash
-GET /youtube-analytics/v2/groups?mine=true
+maton api '/youtube-analytics/v2/groups?mine=true'
 ```
 
 ### Get Groups by ID
 ```bash
-GET /youtube-analytics/v2/groups?id={group_id}
+maton api '/youtube-analytics/v2/groups?id={group_id}'
 ```
 
 ### Create Group
 ```bash
-POST /youtube-analytics/v2/groups
-Content-Type: application/json
-
+maton api -X POST '/youtube-analytics/v2/groups' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "snippet": {"title": "My Group"},
   "contentDetails": {"itemType": "youtube#video"}
 }
+EOF
 ```
 
 ### Update Group
 ```bash
-PUT /youtube-analytics/v2/groups
-Content-Type: application/json
-
+maton api -X PUT '/youtube-analytics/v2/groups' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "id": "{group_id}",
   "snippet": {"title": "Updated Title"},
   "contentDetails": {"itemType": "youtube#video"}
 }
+EOF
 ```
 
 ### Delete Group
 ```bash
-DELETE /youtube-analytics/v2/groups?id={group_id}
+maton api -X DELETE '/youtube-analytics/v2/groups?id={group_id}'
 ```
 
 ### List Group Items
 ```bash
-GET /youtube-analytics/v2/groupItems?groupId={group_id}
+maton api '/youtube-analytics/v2/groupItems?groupId={group_id}'
 ```
 
 ### Add Item to Group
 ```bash
-POST /youtube-analytics/v2/groupItems
-Content-Type: application/json
-
+maton api -X POST '/youtube-analytics/v2/groupItems' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "groupId": "{group_id}",
   "resource": {"kind": "youtube#video", "id": "{video_id}"}
 }
+EOF
 ```
 
 ### Remove Item from Group
 ```bash
-DELETE /youtube-analytics/v2/groupItems?id={group_item_id}
+maton api -X DELETE '/youtube-analytics/v2/groupItems?id={group_item_id}'
 ```
 
 ## Report Parameters

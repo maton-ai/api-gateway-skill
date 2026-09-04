@@ -25,12 +25,12 @@
 
 #### List Contacts
 ```bash
-GET /hubspot/crm/v3/objects/contacts?limit=100
+maton api '/hubspot/crm/v3/objects/contacts?limit=100'
 ```
 
 With properties:
 ```bash
-GET /hubspot/crm/v3/objects/contacts?limit=100&properties=email,firstname,lastname,phone
+maton api '/hubspot/crm/v3/objects/contacts?limit=100&properties=email,firstname,lastname,phone'
 ```
 
 Example:
@@ -41,12 +41,12 @@ maton hubspot contact list --properties email,firstname,lastname,phone -L 100
 
 With pagination:
 ```bash
-GET /hubspot/crm/v3/objects/contacts?limit=100&properties=email,firstname&after={cursor}
+maton api '/hubspot/crm/v3/objects/contacts?limit=100&properties=email,firstname&after={cursor}'
 ```
 
 #### Get Contact
 ```bash
-GET /hubspot/crm/v3/objects/contacts/{contactId}?properties=email,firstname,lastname
+maton api '/hubspot/crm/v3/objects/contacts/{contactId}?properties=email,firstname,lastname'
 ```
 
 Example:
@@ -60,9 +60,9 @@ maton hubspot contact view <contactId> --properties email,firstname,lastname
 > **Write — confirm first.** Creates a new CRM contact. Search by email first to avoid creating a duplicate of an existing person, and confirm the exact property values with the user before calling.
 
 ```bash
-POST /hubspot/crm/v3/objects/contacts
-Content-Type: application/json
-
+maton api -X POST '/hubspot/crm/v3/objects/contacts' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "properties": {
     "email": "john@example.com",
@@ -71,6 +71,7 @@ Content-Type: application/json
     "phone": "+1234567890"
   }
 }
+EOF
 ```
 
 Example:
@@ -84,14 +85,15 @@ maton hubspot contact create --set email=john@example.com --set firstname=John -
 > **Write — confirm first.** Overwrites the named properties on an existing contact; previous values are not retained. GET the contact first, show the user the current and proposed values, and confirm the specific `contactId`.
 
 ```bash
-PATCH /hubspot/crm/v3/objects/contacts/{contactId}
-Content-Type: application/json
-
+maton api -X PATCH '/hubspot/crm/v3/objects/contacts/{contactId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "properties": {
     "phone": "+0987654321"
   }
 }
+EOF
 ```
 
 Example:
@@ -105,7 +107,7 @@ maton hubspot contact update <contactId> --set phone=+0987654321
 > **⚠ DESTRUCTIVE — confirm first.** Archives the contact and detaches it from associated deals and companies. GET the contact and show the user its name and email (not just the ID), state that the record will be archived, and obtain explicit approval for that one contact. Never delete based on a vague instruction such as 'clean up old contacts'.
 
 ```bash
-DELETE /hubspot/crm/v3/objects/contacts/{contactId}
+maton api -X DELETE '/hubspot/crm/v3/objects/contacts/{contactId}'
 ```
 
 Example:
@@ -116,9 +118,9 @@ maton hubspot contact archive <contactId>
 
 #### Search Contacts
 ```bash
-POST /hubspot/crm/v3/objects/contacts/search
-Content-Type: application/json
-
+maton api -X POST '/hubspot/crm/v3/objects/contacts/search' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "filterGroups": [{
     "filters": [{
@@ -129,6 +131,7 @@ Content-Type: application/json
   }],
   "properties": ["email", "firstname", "lastname"]
 }
+EOF
 ```
 
 Example:
@@ -141,7 +144,7 @@ maton hubspot contact search --filter email:EQ:john@example.com --properties ema
 
 #### List Companies
 ```bash
-GET /hubspot/crm/v3/objects/companies?limit=100&properties=name,domain,industry
+maton api '/hubspot/crm/v3/objects/companies?limit=100&properties=name,domain,industry'
 ```
 
 Example:
@@ -152,7 +155,7 @@ maton hubspot company list --properties name,domain,industry -L 100
 
 #### Get Company
 ```bash
-GET /hubspot/crm/v3/objects/companies/{companyId}?properties=name,domain,industry
+maton api '/hubspot/crm/v3/objects/companies/{companyId}?properties=name,domain,industry'
 ```
 
 Example:
@@ -166,9 +169,9 @@ maton hubspot company view <companyId> --properties name,domain,industry
 > **Write — confirm first.** Creates a new company record. Search by domain first to avoid duplicates, and confirm the property values with the user.
 
 ```bash
-POST /hubspot/crm/v3/objects/companies
-Content-Type: application/json
-
+maton api -X POST '/hubspot/crm/v3/objects/companies' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "properties": {
     "name": "Acme Corp",
@@ -176,6 +179,7 @@ Content-Type: application/json
     "industry": "COMPUTER_SOFTWARE"
   }
 }
+EOF
 ```
 
 Example:
@@ -191,15 +195,16 @@ maton hubspot company create --set name='Acme Corp' --set domain=acme.com --set 
 > **Write — confirm first.** Overwrites the named properties on an existing company. GET the record first, show current versus proposed values, and confirm the specific `companyId`.
 
 ```bash
-PATCH /hubspot/crm/v3/objects/companies/{companyId}
-Content-Type: application/json
-
+maton api -X PATCH '/hubspot/crm/v3/objects/companies/{companyId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "properties": {
     "industry": "COMPUTER_SOFTWARE",
     "numberofemployees": "50"
   }
 }
+EOF
 ```
 
 Example:
@@ -213,7 +218,7 @@ maton hubspot company update <companyId> --set industry=COMPUTER_SOFTWARE --set 
 > **⚠ DESTRUCTIVE — confirm first.** Archives the company and detaches its associated contacts and deals. GET the record, show the user its name and domain, and obtain explicit approval for that one company.
 
 ```bash
-DELETE /hubspot/crm/v3/objects/companies/{companyId}
+maton api -X DELETE '/hubspot/crm/v3/objects/companies/{companyId}'
 ```
 
 Example:
@@ -224,9 +229,9 @@ maton hubspot company delete <companyId>
 
 #### Search Companies
 ```bash
-POST /hubspot/crm/v3/objects/companies/search
-Content-Type: application/json
-
+maton api -X POST '/hubspot/crm/v3/objects/companies/search' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "filterGroups": [{
     "filters": [{
@@ -238,6 +243,7 @@ Content-Type: application/json
   "properties": ["name", "domain"],
   "limit": 10
 }
+EOF
 ```
 
 Example:
@@ -250,7 +256,7 @@ maton hubspot company search --filter 'domain:CONTAINS_TOKEN:*' --properties nam
 
 #### List Deals
 ```bash
-GET /hubspot/crm/v3/objects/deals?limit=100&properties=dealname,amount,dealstage
+maton api '/hubspot/crm/v3/objects/deals?limit=100&properties=dealname,amount,dealstage'
 ```
 
 Example:
@@ -261,7 +267,7 @@ maton hubspot deal list --properties dealname,amount,dealstage -L 100
 
 #### Get Deal
 ```bash
-GET /hubspot/crm/v3/objects/deals/{dealId}?properties=dealname,amount,dealstage
+maton api '/hubspot/crm/v3/objects/deals/{dealId}?properties=dealname,amount,dealstage'
 ```
 
 Example:
@@ -275,9 +281,9 @@ maton hubspot deal view <dealId> --properties dealname,amount,dealstage
 > **Write — confirm first.** Creates a new deal in a live pipeline, which affects forecasting and reporting. Confirm the pipeline, stage, amount, and owner with the user before calling.
 
 ```bash
-POST /hubspot/crm/v3/objects/deals
-Content-Type: application/json
-
+maton api -X POST '/hubspot/crm/v3/objects/deals' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "properties": {
     "dealname": "New Deal",
@@ -285,6 +291,7 @@ Content-Type: application/json
     "dealstage": "appointmentscheduled"
   }
 }
+EOF
 ```
 
 Example:
@@ -298,15 +305,16 @@ maton hubspot deal create --set dealname='New Deal' --set amount=10000 --set dea
 > **Write — confirm first.** Overwrites deal properties. Changing `dealstage` or `amount` alters revenue reporting and may fire workflows or notifications. GET the deal first, show current versus proposed values, and confirm the specific `dealId`.
 
 ```bash
-PATCH /hubspot/crm/v3/objects/deals/{dealId}
-Content-Type: application/json
-
+maton api -X PATCH '/hubspot/crm/v3/objects/deals/{dealId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "properties": {
     "amount": "15000",
     "dealstage": "qualifiedtobuy"
   }
 }
+EOF
 ```
 
 Example:
@@ -320,7 +328,7 @@ maton hubspot deal update <dealId> --set amount=15000 --set dealstage=qualifiedt
 > **⚠ DESTRUCTIVE — confirm first.** Archives the deal and removes it from the pipeline and forecasts. GET the deal, show the user its name, stage, and amount, and obtain explicit approval for that one deal.
 
 ```bash
-DELETE /hubspot/crm/v3/objects/deals/{dealId}
+maton api -X DELETE '/hubspot/crm/v3/objects/deals/{dealId}'
 ```
 
 Example:
@@ -331,9 +339,9 @@ maton hubspot deal delete <dealId>
 
 #### Search Deals
 ```bash
-POST /hubspot/crm/v3/objects/deals/search
-Content-Type: application/json
-
+maton api -X POST '/hubspot/crm/v3/objects/deals/search' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "filterGroups": [{
     "filters": [{
@@ -345,6 +353,7 @@ Content-Type: application/json
   "properties": ["dealname", "amount", "dealstage"],
   "limit": 10
 }
+EOF
 ```
 
 ### Associations (v4 API)
@@ -354,10 +363,11 @@ Content-Type: application/json
 > **Write — confirm first.** Creates a relationship between two records, which can cascade through workflows and reporting. Verify both object IDs by reading them first, and confirm the association type with the user.
 
 ```bash
-PUT /hubspot/crm/v4/objects/{fromObjectType}/{fromObjectId}/associations/{toObjectType}/{toObjectId}
-Content-Type: application/json
-
+maton api -X PUT '/hubspot/crm/v4/objects/{fromObjectType}/{fromObjectId}/associations/{toObjectType}/{toObjectId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 [{"associationCategory": "HUBSPOT_DEFINED", "associationTypeId": 279}]
+EOF
 ```
 
 Example:
@@ -373,7 +383,7 @@ Common association type IDs:
 
 #### List Associations
 ```bash
-GET /hubspot/crm/v4/objects/{objectType}/{objectId}/associations/{toObjectType}
+maton api '/hubspot/crm/v4/objects/{objectType}/{objectId}/associations/{toObjectType}'
 ```
 
 Example:
@@ -388,13 +398,14 @@ Native batch subcommands are available for `contact`, `company`, and `deal`.
 
 #### Batch Read
 ```bash
-POST /hubspot/crm/v3/objects/{objectType}/batch/read
-Content-Type: application/json
-
+maton api -X POST '/hubspot/crm/v3/objects/{objectType}/batch/read' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "properties": ["email", "firstname"],
   "inputs": [{"id": "123"}, {"id": "456"}]
 }
+EOF
 ```
 
 Example:
@@ -408,15 +419,16 @@ maton hubspot contact batch-read --id 123,456 --properties email,firstname
 > **⚠ BULK WRITE — confirm the whole set first.** Creates every record in the `inputs` array in one call. Show the user the complete list of records to be created and the total count, and obtain approval for the batch. Search for existing records first — batch create is a common source of mass duplicates. Never assemble a batch from inferred data.
 
 ```bash
-POST /hubspot/crm/v3/objects/{objectType}/batch/create
-Content-Type: application/json
-
+maton api -X POST '/hubspot/crm/v3/objects/{objectType}/batch/create' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "inputs": [
     {"properties": {"email": "one@example.com", "firstname": "One"}},
     {"properties": {"email": "two@example.com", "firstname": "Two"}}
   ]
 }
+EOF
 ```
 
 Example:
@@ -430,15 +442,16 @@ maton hubspot contact batch-create --data '[{"properties":{"email":"one@example.
 > **⚠ BULK WRITE — confirm the whole set first.** Overwrites properties on every listed record; prior values are not retained. Show the user the full list of target IDs and the changes per record, and obtain approval for the batch. Read the current values first so the user can see what will be replaced.
 
 ```bash
-POST /hubspot/crm/v3/objects/{objectType}/batch/update
-Content-Type: application/json
-
+maton api -X POST '/hubspot/crm/v3/objects/{objectType}/batch/update' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "inputs": [
     {"id": "123", "properties": {"firstname": "Updated"}},
     {"id": "456", "properties": {"firstname": "Also Updated"}}
   ]
 }
+EOF
 ```
 
 Example:
@@ -452,12 +465,13 @@ maton hubspot contact batch-update --data '[{"id":"123","properties":{"firstname
 > **⚠ BULK DESTRUCTIVE — highest-risk call in this file.** Archives every record in the `inputs` array in a single call, detaching their associations. Read and list the affected records first, show the user each one by name plus the total count, state that the action is bulk and not reversible through this skill, and obtain explicit approval for the entire set. Never derive a batch archive from a vague cleanup request, and prefer archiving records one at a time when the user only named a few.
 
 ```bash
-POST /hubspot/crm/v3/objects/{objectType}/batch/archive
-Content-Type: application/json
-
+maton api -X POST '/hubspot/crm/v3/objects/{objectType}/batch/archive' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "inputs": [{"id": "123"}, {"id": "456"}]
 }
+EOF
 ```
 
 Example:
@@ -470,7 +484,7 @@ maton hubspot contact batch-archive --id 123,456
 
 #### List Properties
 ```bash
-GET /hubspot/crm/v3/properties/{objectType}
+maton api '/hubspot/crm/v3/properties/{objectType}'
 ```
 
 Example:
@@ -507,7 +521,7 @@ List endpoints return a `paging.next.after` cursor for pagination:
 
 Use the `after` query parameter to fetch the next page:
 ```bash
-GET /hubspot/crm/v3/objects/contacts?limit=100&after=12345
+maton api '/hubspot/crm/v3/objects/contacts?limit=100&after=12345'
 ```
 
 ## Notes

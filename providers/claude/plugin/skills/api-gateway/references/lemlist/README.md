@@ -17,87 +17,87 @@
 
 #### Get Team
 ```bash
-GET /lemlist/api/team
+maton api '/lemlist/api/team'
 ```
 
 #### Get Team Credits
 ```bash
-GET /lemlist/api/team/credits
+maton api '/lemlist/api/team/credits'
 ```
 
 #### Get Team Senders
 ```bash
-GET /lemlist/api/team/senders
+maton api '/lemlist/api/team/senders'
 ```
 
 ### Campaigns
 
 #### List Campaigns
 ```bash
-GET /lemlist/api/campaigns
+maton api '/lemlist/api/campaigns'
 ```
 
 #### Create Campaign
 ```bash
-POST /lemlist/api/campaigns
+maton api -X POST '/lemlist/api/campaigns'
 ```
 
 #### Get Campaign
 ```bash
-GET /lemlist/api/campaigns/{campaignId}
+maton api '/lemlist/api/campaigns/{campaignId}'
 ```
 
 #### Update Campaign
 ```bash
-PATCH /lemlist/api/campaigns/{campaignId}
+maton api -X PATCH '/lemlist/api/campaigns/{campaignId}'
 ```
 
 #### Pause Campaign
 ```bash
-POST /lemlist/api/campaigns/{campaignId}/pause
+maton api -X POST '/lemlist/api/campaigns/{campaignId}/pause'
 ```
 
 ### Campaign Sequences
 
 #### Get Campaign Sequences
 ```bash
-GET /lemlist/api/campaigns/{campaignId}/sequences
+maton api '/lemlist/api/campaigns/{campaignId}/sequences'
 ```
 
 ### Campaign Schedules
 
 #### Get Campaign Schedules
 ```bash
-GET /lemlist/api/campaigns/{campaignId}/schedules
+maton api '/lemlist/api/campaigns/{campaignId}/schedules'
 ```
 
 ### Leads
 
 #### Add Lead to Campaign
 ```bash
-POST /lemlist/api/campaigns/{campaignId}/leads
+maton api -X POST '/lemlist/api/campaigns/{campaignId}/leads'
 ```
 
 #### Get Lead by Email
 ```bash
-GET /lemlist/api/leads/{email}
+maton api '/lemlist/api/leads/{email}'
 ```
 
 #### Update Lead in Campaign
 ```bash
-PATCH /lemlist/api/campaigns/{campaignId}/leads/{email}
+maton api -X PATCH '/lemlist/api/campaigns/{campaignId}/leads/{email}'
 ```
 
 #### Delete Lead from Campaign
 ```bash
-DELETE /lemlist/api/campaigns/{campaignId}/leads/{email}
+maton api -X DELETE '/lemlist/api/campaigns/{campaignId}/leads/{email}'
 ```
 
 ### Activities
 
 #### List Activities
 ```bash
-GET /lemlist/api/activities
+maton api '/lemlist/api/activities'
 ```
 
 Query parameters:
@@ -108,53 +108,53 @@ Query parameters:
 
 #### List Schedules
 ```bash
-GET /lemlist/api/schedules
+maton api '/lemlist/api/schedules'
 ```
 
 #### Create Schedule
 ```bash
-POST /lemlist/api/schedules
+maton api -X POST '/lemlist/api/schedules'
 ```
 
 #### Get Schedule
 ```bash
-GET /lemlist/api/schedules/{scheduleId}
+maton api '/lemlist/api/schedules/{scheduleId}'
 ```
 
 #### Update Schedule
 ```bash
-PATCH /lemlist/api/schedules/{scheduleId}
+maton api -X PATCH '/lemlist/api/schedules/{scheduleId}'
 ```
 
 #### Delete Schedule
 ```bash
-DELETE /lemlist/api/schedules/{scheduleId}
+maton api -X DELETE '/lemlist/api/schedules/{scheduleId}'
 ```
 
 ### Companies
 
 #### List Companies
 ```bash
-GET /lemlist/api/companies
+maton api '/lemlist/api/companies'
 ```
 
 ### Unsubscribes
 
 #### List Unsubscribes
 ```bash
-GET /lemlist/api/unsubscribes
+maton api '/lemlist/api/unsubscribes'
 ```
 
 #### Add Unsubscribe
 ```bash
-POST /lemlist/api/unsubscribes
+maton api -X POST '/lemlist/api/unsubscribes'
 ```
 
 ### Inbox Labels
 
 #### List Labels
 ```bash
-GET /lemlist/api/inbox/labels
+maton api '/lemlist/api/inbox/labels'
 ```
 
 ## Notes

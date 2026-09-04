@@ -17,164 +17,164 @@
 
 #### List Campaigns
 ```bash
-GET /instantly/api/v2/campaigns?limit=10
+maton api '/instantly/api/v2/campaigns?limit=10'
 ```
 
 #### Get Campaign
 ```bash
-GET /instantly/api/v2/campaigns/{campaign_id}
+maton api '/instantly/api/v2/campaigns/{campaign_id}'
 ```
 
 #### Create Campaign
 ```bash
-POST /instantly/api/v2/campaigns
+maton api -X POST '/instantly/api/v2/campaigns'
 ```
 
 #### Activate Campaign
 ```bash
-POST /instantly/api/v2/campaigns/{campaign_id}/activate
+maton api -X POST '/instantly/api/v2/campaigns/{campaign_id}/activate'
 ```
 
 #### Pause Campaign
 ```bash
-POST /instantly/api/v2/campaigns/{campaign_id}/pause
+maton api -X POST '/instantly/api/v2/campaigns/{campaign_id}/pause'
 ```
 
 #### Delete Campaign
 ```bash
-DELETE /instantly/api/v2/campaigns/{campaign_id}
+maton api -X DELETE '/instantly/api/v2/campaigns/{campaign_id}'
 ```
 
 #### Get Campaign Analytics
 ```bash
-GET /instantly/api/v2/campaigns/analytics?id={campaign_id}
+maton api '/instantly/api/v2/campaigns/analytics?id={campaign_id}'
 ```
 
 ### Leads
 
 #### Create Lead
 ```bash
-POST /instantly/api/v2/leads
+maton api -X POST '/instantly/api/v2/leads'
 ```
 
 #### List Leads (POST due to complex filtering)
 ```bash
-POST /instantly/api/v2/leads/list
+maton api -X POST '/instantly/api/v2/leads/list'
 ```
 
 #### Get Lead
 ```bash
-GET /instantly/api/v2/leads/{lead_id}
+maton api '/instantly/api/v2/leads/{lead_id}'
 ```
 
 #### Delete Lead
 ```bash
-DELETE /instantly/api/v2/leads/{lead_id}
+maton api -X DELETE '/instantly/api/v2/leads/{lead_id}'
 ```
 
 ### Lead Lists
 
 #### List Lead Lists
 ```bash
-GET /instantly/api/v2/lead-lists?limit=10
+maton api '/instantly/api/v2/lead-lists?limit=10'
 ```
 
 #### Create Lead List
 ```bash
-POST /instantly/api/v2/lead-lists
+maton api -X POST '/instantly/api/v2/lead-lists'
 ```
 
 #### Get Lead List
 ```bash
-GET /instantly/api/v2/lead-lists/{list_id}
+maton api '/instantly/api/v2/lead-lists/{list_id}'
 ```
 
 #### Update Lead List
 ```bash
-PATCH /instantly/api/v2/lead-lists/{list_id}
+maton api -X PATCH '/instantly/api/v2/lead-lists/{list_id}'
 ```
 
 #### Delete Lead List
 ```bash
-DELETE /instantly/api/v2/lead-lists/{list_id}
+maton api -X DELETE '/instantly/api/v2/lead-lists/{list_id}'
 ```
 
 ### Accounts (Sending Email Accounts)
 
 #### List Accounts
 ```bash
-GET /instantly/api/v2/accounts?limit=10
+maton api '/instantly/api/v2/accounts?limit=10'
 ```
 
 #### Get Account
 ```bash
-GET /instantly/api/v2/accounts/{email}
+maton api '/instantly/api/v2/accounts/{email}'
 ```
 
 #### Create Account
 ```bash
-POST /instantly/api/v2/accounts
+maton api -X POST '/instantly/api/v2/accounts'
 ```
 
 #### Update Account
 ```bash
-PATCH /instantly/api/v2/accounts/{email}
+maton api -X PATCH '/instantly/api/v2/accounts/{email}'
 ```
 
 #### Delete Account
 ```bash
-DELETE /instantly/api/v2/accounts/{email}
+maton api -X DELETE '/instantly/api/v2/accounts/{email}'
 ```
 
 #### Enable Warmup
 ```bash
-POST /instantly/api/v2/accounts/warmup/enable
+maton api -X POST '/instantly/api/v2/accounts/warmup/enable'
 ```
 
 #### Disable Warmup
 ```bash
-POST /instantly/api/v2/accounts/warmup/disable
+maton api -X POST '/instantly/api/v2/accounts/warmup/disable'
 ```
 
 ### Emails (Unibox)
 
 #### List Emails
 ```bash
-GET /instantly/api/v2/emails?limit=20
+maton api '/instantly/api/v2/emails?limit=20'
 ```
 
 #### Reply to Email
 ```bash
-POST /instantly/api/v2/emails/reply
+maton api -X POST '/instantly/api/v2/emails/reply'
 ```
 
 #### Forward Email
 ```bash
-POST /instantly/api/v2/emails/forward
+maton api -X POST '/instantly/api/v2/emails/forward'
 ```
 
 ### Block List
 
 #### List Block List Entries
 ```bash
-GET /instantly/api/v2/block-lists-entries?limit=100
+maton api '/instantly/api/v2/block-lists-entries?limit=100'
 ```
 
 #### Create Block List Entry
 ```bash
-POST /instantly/api/v2/block-lists-entries
+maton api -X POST '/instantly/api/v2/block-lists-entries'
 ```
 
 #### Delete Block List Entry
 ```bash
-DELETE /instantly/api/v2/block-lists-entries/{entry_id}
+maton api -X DELETE '/instantly/api/v2/block-lists-entries/{entry_id}'
 ```
 
 ### Workspace
 
 #### Get Current Workspace
 ```bash
-GET /instantly/api/v2/workspaces/current
+maton api '/instantly/api/v2/workspaces/current'
 ```
 
 ## Notes

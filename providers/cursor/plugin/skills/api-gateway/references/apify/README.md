@@ -17,187 +17,193 @@
 
 #### Get Current User
 ```bash
-GET /apify/v2/users/me
+maton api '/apify/v2/users/me'
 ```
 
 ### Actors
 
 #### List Actors
 ```bash
-GET /apify/v2/acts
-GET /apify/v2/acts?my=true
+maton api '/apify/v2/acts'
+maton api '/apify/v2/acts?my=true'
 ```
 
 #### Get Actor
 ```bash
-GET /apify/v2/acts/{actorId}
+maton api '/apify/v2/acts/{actorId}'
 ```
 
 #### Run Actor
 ```bash
-POST /apify/v2/acts/{actorId}/runs
-Content-Type: application/json
-
+maton api -X POST '/apify/v2/acts/{actorId}/runs' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "startUrls": [{"url": "https://example.com"}],
   "maxItems": 100
 }
+EOF
 ```
 
 ### Actor Runs
 
 #### List Runs
 ```bash
-GET /apify/v2/actor-runs
-GET /apify/v2/actor-runs?status=SUCCEEDED
+maton api '/apify/v2/actor-runs'
+maton api '/apify/v2/actor-runs?status=SUCCEEDED'
 ```
 
 #### Get Run
 ```bash
-GET /apify/v2/actor-runs/{runId}
+maton api '/apify/v2/actor-runs/{runId}'
 ```
 
 #### Abort Run
 ```bash
-POST /apify/v2/actor-runs/{runId}/abort
+maton api -X POST '/apify/v2/actor-runs/{runId}/abort'
 ```
 
 ### Actor Tasks
 
 #### List Tasks
 ```bash
-GET /apify/v2/actor-tasks
+maton api '/apify/v2/actor-tasks'
 ```
 
 #### Get Task
 ```bash
-GET /apify/v2/actor-tasks/{actorTaskId}
+maton api '/apify/v2/actor-tasks/{actorTaskId}'
 ```
 
 #### Run Task
 ```bash
-POST /apify/v2/actor-tasks/{actorTaskId}/runs
+maton api -X POST '/apify/v2/actor-tasks/{actorTaskId}/runs'
 ```
 
 ### Datasets
 
 #### List Datasets
 ```bash
-GET /apify/v2/datasets
+maton api '/apify/v2/datasets'
 ```
 
 #### Get Dataset
 ```bash
-GET /apify/v2/datasets/{datasetId}
+maton api '/apify/v2/datasets/{datasetId}'
 ```
 
 #### Get Dataset Items
 ```bash
-GET /apify/v2/datasets/{datasetId}/items
-GET /apify/v2/datasets/{datasetId}/items?format=json&clean=true
+maton api '/apify/v2/datasets/{datasetId}/items'
+maton api '/apify/v2/datasets/{datasetId}/items?format=json&clean=true'
 ```
 
 #### Put Items
 ```bash
-POST /apify/v2/datasets/{datasetId}/items
-Content-Type: application/json
-
+maton api -X POST '/apify/v2/datasets/{datasetId}/items' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 [{"field1": "value1"}, {"field2": "value2"}]
+EOF
 ```
 
 ### Key-Value Stores
 
 #### List Stores
 ```bash
-GET /apify/v2/key-value-stores
+maton api '/apify/v2/key-value-stores'
 ```
 
 #### Get Store
 ```bash
-GET /apify/v2/key-value-stores/{storeId}
+maton api '/apify/v2/key-value-stores/{storeId}'
 ```
 
 #### Get Record
 ```bash
-GET /apify/v2/key-value-stores/{storeId}/records/{key}
+maton api '/apify/v2/key-value-stores/{storeId}/records/{key}'
 ```
 
 #### Set Record
 ```bash
-PUT /apify/v2/key-value-stores/{storeId}/records/{key}
-Content-Type: application/json
-
+maton api -X PUT '/apify/v2/key-value-stores/{storeId}/records/{key}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"data": "value"}
+EOF
 ```
 
 ### Request Queues
 
 #### List Queues
 ```bash
-GET /apify/v2/request-queues
+maton api '/apify/v2/request-queues'
 ```
 
 #### Get Queue
 ```bash
-GET /apify/v2/request-queues/{queueId}
+maton api '/apify/v2/request-queues/{queueId}'
 ```
 
 #### Add Request
 ```bash
-POST /apify/v2/request-queues/{queueId}/requests
-Content-Type: application/json
-
+maton api -X POST '/apify/v2/request-queues/{queueId}/requests' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "url": "https://example.com",
   "uniqueKey": "unique-key"
 }
+EOF
 ```
 
 ### Schedules
 
 #### List Schedules
 ```bash
-GET /apify/v2/schedules
+maton api '/apify/v2/schedules'
 ```
 
 #### Get Schedule
 ```bash
-GET /apify/v2/schedules/{scheduleId}
+maton api '/apify/v2/schedules/{scheduleId}'
 ```
 
 #### Create Schedule
 ```bash
-POST /apify/v2/schedules
-Content-Type: application/json
-
+maton api -X POST '/apify/v2/schedules' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "My Schedule",
   "cronExpression": "0 0 * * *",
   "actorId": "actor-id"
 }
+EOF
 ```
 
 ### Webhooks
 
 #### List Webhooks
 ```bash
-GET /apify/v2/webhooks
+maton api '/apify/v2/webhooks'
 ```
 
 #### Get Webhook
 ```bash
-GET /apify/v2/webhooks/{webhookId}
+maton api '/apify/v2/webhooks/{webhookId}'
 ```
 
 #### Create Webhook
 ```bash
-POST /apify/v2/webhooks
-Content-Type: application/json
-
+maton api -X POST '/apify/v2/webhooks' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "eventTypes": ["ACTOR.RUN.SUCCEEDED"],
   "requestUrl": "https://example.com/webhook"
 }
+EOF
 ```
 
 ## Pagination
@@ -205,7 +211,7 @@ Content-Type: application/json
 Offset-based pagination:
 
 ```bash
-GET /apify/v2/acts?offset=0&limit=100
+maton api '/apify/v2/acts?offset=0&limit=100'
 ```
 
 Response includes:

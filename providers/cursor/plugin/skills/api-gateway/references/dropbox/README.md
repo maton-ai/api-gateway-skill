@@ -23,105 +23,115 @@ Maton automatically routes to the correct host based on the endpoint path.
 
 #### Get Current Account
 ```bash
-POST /dropbox/2/users/get_current_account
-Content-Type: application/json
-
+maton api -X POST '/dropbox/2/users/get_current_account' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 null
+EOF
 ```
 
 #### Get Space Usage
 ```bash
-POST /dropbox/2/users/get_space_usage
-Content-Type: application/json
-
+maton api -X POST '/dropbox/2/users/get_space_usage' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 null
+EOF
 ```
 
 ### Files
 
 #### List Folder
 ```bash
-POST /dropbox/2/files/list_folder
-Content-Type: application/json
-
+maton api -X POST '/dropbox/2/files/list_folder' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "path": ""
 }
+EOF
 ```
 
 Use empty string `""` for root folder.
 
 #### Continue Listing
 ```bash
-POST /dropbox/2/files/list_folder/continue
-Content-Type: application/json
-
+maton api -X POST '/dropbox/2/files/list_folder/continue' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "cursor": "..."
 }
+EOF
 ```
 
 #### Get Metadata
 ```bash
-POST /dropbox/2/files/get_metadata
-Content-Type: application/json
-
+maton api -X POST '/dropbox/2/files/get_metadata' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "path": "/document.pdf"
 }
+EOF
 ```
 
 #### Create Folder
 ```bash
-POST /dropbox/2/files/create_folder_v2
-Content-Type: application/json
-
+maton api -X POST '/dropbox/2/files/create_folder_v2' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "path": "/New Folder",
   "autorename": false
 }
+EOF
 ```
 
 #### Copy
 ```bash
-POST /dropbox/2/files/copy_v2
-Content-Type: application/json
-
+maton api -X POST '/dropbox/2/files/copy_v2' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "from_path": "/source/file.pdf",
   "to_path": "/destination/file.pdf"
 }
+EOF
 ```
 
 #### Move
 ```bash
-POST /dropbox/2/files/move_v2
-Content-Type: application/json
-
+maton api -X POST '/dropbox/2/files/move_v2' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "from_path": "/old/file.pdf",
   "to_path": "/new/file.pdf"
 }
+EOF
 ```
 
 #### Delete
 ```bash
-POST /dropbox/2/files/delete_v2
-Content-Type: application/json
-
+maton api -X POST '/dropbox/2/files/delete_v2' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "path": "/file-to-delete.pdf"
 }
+EOF
 ```
 
 #### Get Temporary Link
 ```bash
-POST /dropbox/2/files/get_temporary_link
-Content-Type: application/json
-
+maton api -X POST '/dropbox/2/files/get_temporary_link' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "path": "/document.pdf"
 }
+EOF
 ```
 
 ### Upload (Content Endpoints)
@@ -130,45 +140,41 @@ Content endpoints use `Content-Type: application/octet-stream` with parameters i
 
 #### Upload File (up to 150 MB)
 ```bash
-POST /dropbox/2/files/upload
-Content-Type: application/octet-stream
-Dropbox-API-Arg: {"path": "/test.txt", "mode": "add", "autorename": true}
-
-<file contents>
+maton api -X POST '/dropbox/2/files/upload' \
+  -H 'Content-Type: application/octet-stream' \
+  -H 'Dropbox-API-Arg: {"path": "/test.txt", "mode": "add", "autorename": true}' \
+  --input '{file_path}'  # <file contents>
 ```
 
 #### Upload Session Start
 ```bash
-POST /dropbox/2/files/upload_session/start
-Content-Type: application/octet-stream
-Dropbox-API-Arg: {"close": false}
-
-<first chunk>
+maton api -X POST '/dropbox/2/files/upload_session/start' \
+  -H 'Content-Type: application/octet-stream' \
+  -H 'Dropbox-API-Arg: {"close": false}' \
+  --input '{file_path}'  # <first chunk>
 ```
 
 #### Upload Session Append
 ```bash
-POST /dropbox/2/files/upload_session/append_v2
-Content-Type: application/octet-stream
-Dropbox-API-Arg: {"cursor": {"session_id": "...", "offset": 10000000}, "close": false}
-
-<next chunk>
+maton api -X POST '/dropbox/2/files/upload_session/append_v2' \
+  -H 'Content-Type: application/octet-stream' \
+  -H 'Dropbox-API-Arg: {"cursor": {"session_id": "...", "offset": 10000000}, "close": false}' \
+  --input '{file_path}'  # <next chunk>
 ```
 
 #### Upload Session Finish
 ```bash
-POST /dropbox/2/files/upload_session/finish
-Content-Type: application/octet-stream
-Dropbox-API-Arg: {"cursor": {"session_id": "...", "offset": 50000000}, "commit": {"path": "/file.zip", "mode": "add"}}
-
-<final chunk>
+maton api -X POST '/dropbox/2/files/upload_session/finish' \
+  -H 'Content-Type: application/octet-stream' \
+  -H 'Dropbox-API-Arg: {"cursor": {"session_id": "...", "offset": 50000000}, "commit": {"path": "/file.zip", "mode": "add"}}' \
+  --input '{file_path}'  # <final chunk>
 ```
 
 #### Finish Batch Upload Sessions
 ```bash
-POST /dropbox/2/files/upload_session/finish_batch
-Content-Type: application/json
-
+maton api -X POST '/dropbox/2/files/upload_session/finish_batch' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "entries": [
     {
@@ -177,106 +183,113 @@ Content-Type: application/json
     }
   ]
 }
+EOF
 ```
 
 #### Check Batch Status
 ```bash
-POST /dropbox/2/files/upload_session/finish_batch/check
-Content-Type: application/json
-
+maton api -X POST '/dropbox/2/files/upload_session/finish_batch/check' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "async_job_id": "dbjid:..."
 }
+EOF
 ```
 
 ### Download (Content Endpoints)
 
 #### Download File
 ```bash
-POST /dropbox/2/files/download
-Dropbox-API-Arg: {"path": "/document.pdf"}
+maton api -X POST '/dropbox/2/files/download' \
+  -H 'Dropbox-API-Arg: {"path": "/document.pdf"}'
 ```
 
 #### Download ZIP
 ```bash
-POST /dropbox/2/files/download_zip
-Dropbox-API-Arg: {"path": "/folder"}
+maton api -X POST '/dropbox/2/files/download_zip' \
+  -H 'Dropbox-API-Arg: {"path": "/folder"}'
 ```
 
 #### Export
 ```bash
-POST /dropbox/2/files/export
-Dropbox-API-Arg: {"path": "/document.paper"}
+maton api -X POST '/dropbox/2/files/export' \
+  -H 'Dropbox-API-Arg: {"path": "/document.paper"}'
 ```
 
 #### Get Preview
 ```bash
-POST /dropbox/2/files/get_preview
-Dropbox-API-Arg: {"path": "/document.docx"}
+maton api -X POST '/dropbox/2/files/get_preview' \
+  -H 'Dropbox-API-Arg: {"path": "/document.docx"}'
 ```
 
 #### Get Thumbnail
 ```bash
-POST /dropbox/2/files/get_thumbnail_v2
-Dropbox-API-Arg: {"resource": {".tag": "path", "path": "/photo.jpg"}, "format": "jpeg", "size": "w128h128"}
+maton api -X POST '/dropbox/2/files/get_thumbnail_v2' \
+  -H 'Dropbox-API-Arg: {"resource": {".tag": "path", "path": "/photo.jpg"}, "format": "jpeg", "size": "w128h128"}'
 ```
 
 ### Search
 
 #### Search Files
 ```bash
-POST /dropbox/2/files/search_v2
-Content-Type: application/json
-
+maton api -X POST '/dropbox/2/files/search_v2' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "document"
 }
+EOF
 ```
 
 ### Revisions
 
 #### List Revisions
 ```bash
-POST /dropbox/2/files/list_revisions
-Content-Type: application/json
-
+maton api -X POST '/dropbox/2/files/list_revisions' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "path": "/document.pdf"
 }
+EOF
 ```
 
 ### Tags
 
 #### Get Tags
 ```bash
-POST /dropbox/2/files/tags/get
-Content-Type: application/json
-
+maton api -X POST '/dropbox/2/files/tags/get' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "paths": ["/document.pdf"]
 }
+EOF
 ```
 
 #### Add Tag
 ```bash
-POST /dropbox/2/files/tags/add
-Content-Type: application/json
-
+maton api -X POST '/dropbox/2/files/tags/add' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "path": "/document.pdf",
   "tag_text": "important"
 }
+EOF
 ```
 
 #### Remove Tag
 ```bash
-POST /dropbox/2/files/tags/remove
-Content-Type: application/json
-
+maton api -X POST '/dropbox/2/files/tags/remove' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "path": "/document.pdf",
   "tag_text": "important"
 }
+EOF
 ```
 
 ## Pagination
@@ -284,10 +297,10 @@ Content-Type: application/json
 Dropbox uses cursor-based pagination:
 
 ```bash
-POST /dropbox/2/files/list_folder
+maton api -X POST '/dropbox/2/files/list_folder'
 # Response includes "cursor" and "has_more": true/false
 
-POST /dropbox/2/files/list_folder/continue
+maton api -X POST '/dropbox/2/files/list_folder/continue'
 # Use cursor from previous response
 ```
 

@@ -17,36 +17,36 @@
 
 ```bash
 # List calendars
-GET /zoho-calendar/api/v1/calendars
+maton api '/zoho-calendar/api/v1/calendars'
 
 # Get calendar details
-GET /zoho-calendar/api/v1/calendars/{calendar_uid}
+maton api '/zoho-calendar/api/v1/calendars/{calendar_uid}'
 
 # Create calendar
-POST /zoho-calendar/api/v1/calendars?calendarData={json}
+maton api -X POST '/zoho-calendar/api/v1/calendars?calendarData={json}'
 
 # Delete calendar
-DELETE /zoho-calendar/api/v1/calendars/{calendar_uid}
+maton api -X DELETE '/zoho-calendar/api/v1/calendars/{calendar_uid}'
 ```
 
 ### Events
 
 ```bash
 # List events (range required, max 31 days)
-GET /zoho-calendar/api/v1/calendars/{calendar_uid}/events?range={"start":"yyyyMMdd","end":"yyyyMMdd"}
+maton api '/zoho-calendar/api/v1/calendars/{calendar_uid}/events?range={"start":"yyyyMMdd","end":"yyyyMMdd"}'
 
 # Get event details
-GET /zoho-calendar/api/v1/calendars/{calendar_uid}/events/{event_uid}
+maton api '/zoho-calendar/api/v1/calendars/{calendar_uid}/events/{event_uid}'
 
 # Create event
-POST /zoho-calendar/api/v1/calendars/{calendar_uid}/events?eventdata={json}
+maton api -X POST '/zoho-calendar/api/v1/calendars/{calendar_uid}/events?eventdata={json}'
 
 # Update event (etag required in eventdata)
-PUT /zoho-calendar/api/v1/calendars/{calendar_uid}/events/{event_uid}?eventdata={json}
+maton api -X PUT '/zoho-calendar/api/v1/calendars/{calendar_uid}/events/{event_uid}?eventdata={json}'
 
 # Delete event (etag required as HEADER)
-DELETE /zoho-calendar/api/v1/calendars/{calendar_uid}/events/{event_uid}
-Header: etag: {etag_value}
+maton api -X DELETE '/zoho-calendar/api/v1/calendars/{calendar_uid}/events/{event_uid}' \
+  -H 'etag: {etag_value}'
 ```
 
 ## Event Data Format

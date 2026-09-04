@@ -25,7 +25,7 @@ The `/v1` prefix is mandatory. Paths without it return `404` with an **HTML** bo
 
 #### List Models
 ```bash
-GET /vercel-ai-gateway/v1/models
+maton api '/vercel-ai-gateway/v1/models'
 ```
 
 Returns the entire catalog (315 models from 34 providers at time of testing) as `{"object": "list", "data": [...]}`.
@@ -34,7 +34,7 @@ Returns the entire catalog (315 models from 34 providers at time of testing) as 
 
 #### Get Model
 ```bash
-GET /vercel-ai-gateway/v1/models/{creator}/{model}
+maton api '/vercel-ai-gateway/v1/models/{creator}/{model}'
 ```
 
 Example: `GET /vercel-ai-gateway/v1/models/anthropic/claude-haiku-4.5`
@@ -43,7 +43,7 @@ Not in the published REST reference, but works.
 
 #### List Model Endpoints
 ```bash
-GET /vercel-ai-gateway/v1/models/{creator}/{model}/endpoints
+maton api '/vercel-ai-gateway/v1/models/{creator}/{model}/endpoints'
 ```
 
 Per-provider pricing, context limits, uptime, and latency for a model. Works for all model types. `data` is an **object** here, unlike the array returned by `/v1/models`.
@@ -54,7 +54,7 @@ Provider counts vary: `anthropic/claude-opus-5` → 4 providers, `openai/gpt-4o-
 
 #### Get Credit Balance
 ```bash
-GET /vercel-ai-gateway/v1/credits
+maton api '/vercel-ai-gateway/v1/credits'
 ```
 
 ```json
@@ -65,7 +65,7 @@ Values are decimal **strings** in USD, not numbers, and carry sub-cent precision
 
 #### Get Generation Usage
 ```bash
-GET /vercel-ai-gateway/v1/generation?id=gen_{ulid}
+maton api '/vercel-ai-gateway/v1/generation?id=gen_{ulid}'
 ```
 
 Cost and token usage for one completed request. The ID comes from the `id` field of a chat completion response (or the first streaming chunk).
@@ -76,7 +76,7 @@ This route uses **different field names** from the inline `usage` on an inferenc
 
 #### Get Spend Report
 ```bash
-GET /vercel-ai-gateway/v1/report?start_date=2026-08-01&end_date=2026-08-04
+maton api '/vercel-ai-gateway/v1/report?start_date=2026-08-01&end_date=2026-08-04'
 ```
 
 **Requires a paid Vercel plan — a separate gate from having a card on file.** On an account with a valid card and positive balance, where every other endpoint returns `200`, this still returns `403 forbidden`. The plan check precedes parameter validation, so its error says nothing about your query string. This is the only endpoint here whose success shape is unverified; use `/v1/generation` or `/v1/credits` for cost data instead.
@@ -87,9 +87,9 @@ All inference routes are OpenAI/Anthropic-compatible. Model IDs are always `{cre
 
 #### Chat Completions
 ```bash
-POST /vercel-ai-gateway/v1/chat/completions
-Content-Type: application/json
-
+maton api -X POST '/vercel-ai-gateway/v1/chat/completions' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "model": "anthropic/claude-haiku-4.5",
   "messages": [
@@ -97,6 +97,7 @@ Content-Type: application/json
   ],
   "max_tokens": 100
 }
+EOF
 ```
 
 Add `"stream": true` for a `text/event-stream` of `data: {...}` chunks ending in `data: [DONE]`. The first chunk's `delta` carries only `{"role": "assistant"}`; `usage`, `provider_metadata`, and `generationId` arrive only on the final chunk (the one with `finish_reason`). `data: [DONE]` is a bare sentinel, not JSON.
@@ -107,13 +108,14 @@ Reasoning models add `message.reasoning` and `message.reasoning_details`.
 
 #### Responses
 ```bash
-POST /vercel-ai-gateway/v1/responses
-Content-Type: application/json
-
+maton api -X POST '/vercel-ai-gateway/v1/responses' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "model": "openai/gpt-4o-mini",
   "input": "Say hello in five words."
 }
+EOF
 ```
 
 `input` is required (string or structured array).
@@ -122,9 +124,9 @@ Returns `output` as an **array of typed items**, not a single message — reason
 
 #### Messages (Anthropic-shaped)
 ```bash
-POST /vercel-ai-gateway/v1/messages
-Content-Type: application/json
-
+maton api -X POST '/vercel-ai-gateway/v1/messages' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "model": "anthropic/claude-haiku-4.5",
   "max_tokens": 100,
@@ -132,6 +134,7 @@ Content-Type: application/json
     { "role": "user", "content": "Say hello in five words." }
   ]
 }
+EOF
 ```
 
 `max_tokens` is **required** here, unlike on `/v1/chat/completions`. Uses Anthropic's error envelope: `{"type": "error", "error": {...}}`.
@@ -140,13 +143,14 @@ Two differences from Anthropic's native API: the `content` array returns the `te
 
 #### Embeddings
 ```bash
-POST /vercel-ai-gateway/v1/embeddings
-Content-Type: application/json
-
+maton api -X POST '/vercel-ai-gateway/v1/embeddings' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "model": "openai/text-embedding-3-small",
   "input": ["first string", "second string"]
 }
+EOF
 ```
 
 Only models with `"type": "embedding"` (26 in the catalog) work here. One `data` entry per input string, ordered by `index`; `openai/text-embedding-3-small` returns 1536 dimensions. This route has **no top-level `id`** — the generation ID is only under `providerMetadata.gateway.generationId`.

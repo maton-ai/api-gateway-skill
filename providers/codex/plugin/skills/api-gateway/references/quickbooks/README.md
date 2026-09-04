@@ -21,134 +21,139 @@ Use `:realmId` in the path and it will be automatically replaced with the connec
 
 #### Get Company Info
 ```bash
-GET /quickbooks/v3/company/:realmId/companyinfo/:realmId
+maton api '/quickbooks/v3/company/:realmId/companyinfo/:realmId'
 ```
 
 #### Get Preferences
 ```bash
-GET /quickbooks/v3/company/:realmId/preferences
+maton api '/quickbooks/v3/company/:realmId/preferences'
 ```
 
 ### Customers
 
 #### Query Customers
 ```bash
-GET /quickbooks/v3/company/:realmId/query?query=SELECT%20*%20FROM%20Customer%20MAXRESULTS%20100
+maton api '/quickbooks/v3/company/:realmId/query?query=SELECT%20*%20FROM%20Customer%20MAXRESULTS%20100'
 ```
 
 With filter:
 ```bash
-GET /quickbooks/v3/company/:realmId/query?query=SELECT%20*%20FROM%20Customer%20WHERE%20Active%3Dtrue
+maton api '/quickbooks/v3/company/:realmId/query?query=SELECT%20*%20FROM%20Customer%20WHERE%20Active%3Dtrue'
 ```
 
 #### Get Customer
 ```bash
-GET /quickbooks/v3/company/:realmId/customer/{customerId}
+maton api '/quickbooks/v3/company/:realmId/customer/{customerId}'
 ```
 
 #### Create Customer
 ```bash
-POST /quickbooks/v3/company/:realmId/customer
-Content-Type: application/json
-
+maton api -X POST '/quickbooks/v3/company/:realmId/customer' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "DisplayName": "John Doe",
   "PrimaryEmailAddr": {"Address": "john@example.com"},
   "PrimaryPhone": {"FreeFormNumber": "555-1234"}
 }
+EOF
 ```
 
 #### Update Customer
 Requires `Id` and `SyncToken` from previous GET:
 ```bash
-POST /quickbooks/v3/company/:realmId/customer
-Content-Type: application/json
-
+maton api -X POST '/quickbooks/v3/company/:realmId/customer' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "Id": "123",
   "SyncToken": "0",
   "DisplayName": "John Doe Updated",
   "PrimaryPhone": {"FreeFormNumber": "555-9999"}
 }
+EOF
 ```
 
 #### Deactivate Customer (Soft Delete)
 ```bash
-POST /quickbooks/v3/company/:realmId/customer
-Content-Type: application/json
-
+maton api -X POST '/quickbooks/v3/company/:realmId/customer' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "Id": "123",
   "SyncToken": "1",
   "DisplayName": "John Doe",
   "Active": false
 }
+EOF
 ```
 
 ### Vendors
 
 #### Query Vendors
 ```bash
-GET /quickbooks/v3/company/:realmId/query?query=SELECT%20*%20FROM%20Vendor%20MAXRESULTS%20100
+maton api '/quickbooks/v3/company/:realmId/query?query=SELECT%20*%20FROM%20Vendor%20MAXRESULTS%20100'
 ```
 
 #### Get Vendor
 ```bash
-GET /quickbooks/v3/company/:realmId/vendor/{vendorId}
+maton api '/quickbooks/v3/company/:realmId/vendor/{vendorId}'
 ```
 
 #### Create Vendor
 ```bash
-POST /quickbooks/v3/company/:realmId/vendor
-Content-Type: application/json
-
+maton api -X POST '/quickbooks/v3/company/:realmId/vendor' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "DisplayName": "Acme Supplies",
   "PrimaryEmailAddr": {"Address": "vendor@example.com"}
 }
+EOF
 ```
 
 ### Items (Products/Services)
 
 #### Query Items
 ```bash
-GET /quickbooks/v3/company/:realmId/query?query=SELECT%20*%20FROM%20Item%20MAXRESULTS%20100
+maton api '/quickbooks/v3/company/:realmId/query?query=SELECT%20*%20FROM%20Item%20MAXRESULTS%20100'
 ```
 
 #### Get Item
 ```bash
-GET /quickbooks/v3/company/:realmId/item/{itemId}
+maton api '/quickbooks/v3/company/:realmId/item/{itemId}'
 ```
 
 #### Create Item
 ```bash
-POST /quickbooks/v3/company/:realmId/item
-Content-Type: application/json
-
+maton api -X POST '/quickbooks/v3/company/:realmId/item' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "Name": "Consulting Services",
   "Type": "Service",
   "IncomeAccountRef": {"value": "1"}
 }
+EOF
 ```
 
 ### Invoices
 
 #### Query Invoices
 ```bash
-GET /quickbooks/v3/company/:realmId/query?query=SELECT%20*%20FROM%20Invoice%20MAXRESULTS%20100
+maton api '/quickbooks/v3/company/:realmId/query?query=SELECT%20*%20FROM%20Invoice%20MAXRESULTS%20100'
 ```
 
 #### Get Invoice
 ```bash
-GET /quickbooks/v3/company/:realmId/invoice/{invoiceId}
+maton api '/quickbooks/v3/company/:realmId/invoice/{invoiceId}'
 ```
 
 #### Create Invoice
 ```bash
-POST /quickbooks/v3/company/:realmId/invoice
-Content-Type: application/json
-
+maton api -X POST '/quickbooks/v3/company/:realmId/invoice' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "CustomerRef": {"value": "123"},
   "Line": [
@@ -162,54 +167,58 @@ Content-Type: application/json
     }
   ]
 }
+EOF
 ```
 
 #### Void Invoice
 ```bash
-POST /quickbooks/v3/company/:realmId/invoice?operation=void
-Content-Type: application/json
-
+maton api -X POST '/quickbooks/v3/company/:realmId/invoice?operation=void' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "Id": "123",
   "SyncToken": "0"
 }
+EOF
 ```
 
 #### Delete Invoice
 ```bash
-POST /quickbooks/v3/company/:realmId/invoice?operation=delete
-Content-Type: application/json
-
+maton api -X POST '/quickbooks/v3/company/:realmId/invoice?operation=delete' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "Id": "123",
   "SyncToken": "0"
 }
+EOF
 ```
 
 ### Payments
 
 #### Query Payments
 ```bash
-GET /quickbooks/v3/company/:realmId/query?query=SELECT%20*%20FROM%20Payment%20MAXRESULTS%20100
+maton api '/quickbooks/v3/company/:realmId/query?query=SELECT%20*%20FROM%20Payment%20MAXRESULTS%20100'
 ```
 
 #### Create Payment
 Simple payment:
 ```bash
-POST /quickbooks/v3/company/:realmId/payment
-Content-Type: application/json
-
+maton api -X POST '/quickbooks/v3/company/:realmId/payment' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "CustomerRef": {"value": "123"},
   "TotalAmt": 100.00
 }
+EOF
 ```
 
 Payment linked to invoice:
 ```bash
-POST /quickbooks/v3/company/:realmId/payment
-Content-Type: application/json
-
+maton api -X POST '/quickbooks/v3/company/:realmId/payment' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "CustomerRef": {"value": "123"},
   "TotalAmt": 100.00,
@@ -220,20 +229,21 @@ Content-Type: application/json
     }
   ]
 }
+EOF
 ```
 
 ### Bills
 
 #### Query Bills
 ```bash
-GET /quickbooks/v3/company/:realmId/query?query=SELECT%20*%20FROM%20Bill%20MAXRESULTS%20100
+maton api '/quickbooks/v3/company/:realmId/query?query=SELECT%20*%20FROM%20Bill%20MAXRESULTS%20100'
 ```
 
 #### Create Bill
 ```bash
-POST /quickbooks/v3/company/:realmId/bill
-Content-Type: application/json
-
+maton api -X POST '/quickbooks/v3/company/:realmId/bill' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "VendorRef": {"value": "123"},
   "Line": [
@@ -246,15 +256,16 @@ Content-Type: application/json
     }
   ]
 }
+EOF
 ```
 
 ### Bill Payments
 
 #### Create Bill Payment
 ```bash
-POST /quickbooks/v3/company/:realmId/billpayment
-Content-Type: application/json
-
+maton api -X POST '/quickbooks/v3/company/:realmId/billpayment' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "VendorRef": {"value": "123"},
   "TotalAmt": 250.00,
@@ -269,6 +280,7 @@ Content-Type: application/json
     }
   ]
 }
+EOF
 ```
 
 **Note:** Use a Bank account (AccountType: "Bank") for `BankAccountRef`.
@@ -277,39 +289,40 @@ Content-Type: application/json
 
 #### Query Accounts
 ```bash
-GET /quickbooks/v3/company/:realmId/query?query=SELECT%20*%20FROM%20Account
+maton api '/quickbooks/v3/company/:realmId/query?query=SELECT%20*%20FROM%20Account'
 ```
 
 Filter by type:
 ```bash
-GET /quickbooks/v3/company/:realmId/query?query=SELECT%20*%20FROM%20Account%20WHERE%20AccountType%20%3D%20%27Bank%27
+maton api '/quickbooks/v3/company/:realmId/query?query=SELECT%20*%20FROM%20Account%20WHERE%20AccountType%20%3D%20%27Bank%27'
 ```
 
 ### Reports
 
 #### Profit and Loss
 ```bash
-GET /quickbooks/v3/company/:realmId/reports/ProfitAndLoss?start_date=2024-01-01&end_date=2024-12-31
+maton api '/quickbooks/v3/company/:realmId/reports/ProfitAndLoss?start_date=2024-01-01&end_date=2024-12-31'
 ```
 
 #### Balance Sheet
 ```bash
-GET /quickbooks/v3/company/:realmId/reports/BalanceSheet?date=2024-12-31
+maton api '/quickbooks/v3/company/:realmId/reports/BalanceSheet?date=2024-12-31'
 ```
 
 ### Batch Operations
 
 Execute multiple queries in a single request:
 ```bash
-POST /quickbooks/v3/company/:realmId/batch
-Content-Type: application/json
-
+maton api -X POST '/quickbooks/v3/company/:realmId/batch' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "BatchItemRequest": [
     {"bId": "1", "Query": "SELECT * FROM Customer MAXRESULTS 2"},
     {"bId": "2", "Query": "SELECT * FROM Vendor MAXRESULTS 2"}
   ]
 }
+EOF
 ```
 
 ## Query Language

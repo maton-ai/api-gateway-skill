@@ -19,133 +19,136 @@
 
 #### List Accounts
 ```bash
-GET /callrail/v3/a.json
+maton api '/callrail/v3/a.json'
 ```
 
 #### Get Account
 ```bash
-GET /callrail/v3/a/{account_id}.json
+maton api '/callrail/v3/a/{account_id}.json'
 ```
 
 ### Companies
 
 #### List Companies
 ```bash
-GET /callrail/v3/a/{account_id}/companies.json
+maton api '/callrail/v3/a/{account_id}/companies.json'
 ```
 
 #### Get Company
 ```bash
-GET /callrail/v3/a/{account_id}/companies/{company_id}.json
+maton api '/callrail/v3/a/{account_id}/companies/{company_id}.json'
 ```
 
 ### Calls
 
 #### List Calls
 ```bash
-GET /callrail/v3/a/{account_id}/calls.json
+maton api '/callrail/v3/a/{account_id}/calls.json'
 ```
 
 Query parameters: `page`, `per_page`, `date_range`, `start_date`, `end_date`, `company_id`, `tracker_id`, `search`, `fields`, `sort`, `order`
 
 #### Get Call
 ```bash
-GET /callrail/v3/a/{account_id}/calls/{call_id}.json
+maton api '/callrail/v3/a/{account_id}/calls/{call_id}.json'
 ```
 
 #### Update Call
 ```bash
-PUT /callrail/v3/a/{account_id}/calls/{call_id}.json
-Content-Type: application/json
-
+maton api -X PUT '/callrail/v3/a/{account_id}/calls/{call_id}.json' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "customer_name": "John Smith",
   "note": "Follow up scheduled",
   "lead_status": "good_lead"
 }
+EOF
 ```
 
 #### Call Summary
 ```bash
-GET /callrail/v3/a/{account_id}/calls/summary.json
+maton api '/callrail/v3/a/{account_id}/calls/summary.json'
 ```
 
 #### Call Timeseries
 ```bash
-GET /callrail/v3/a/{account_id}/calls/timeseries.json
+maton api '/callrail/v3/a/{account_id}/calls/timeseries.json'
 ```
 
 ### Trackers
 
 #### List Trackers
 ```bash
-GET /callrail/v3/a/{account_id}/trackers.json
+maton api '/callrail/v3/a/{account_id}/trackers.json'
 ```
 
 #### Get Tracker
 ```bash
-GET /callrail/v3/a/{account_id}/trackers/{tracker_id}.json
+maton api '/callrail/v3/a/{account_id}/trackers/{tracker_id}.json'
 ```
 
 ### Tags
 
 #### List Tags
 ```bash
-GET /callrail/v3/a/{account_id}/tags.json
+maton api '/callrail/v3/a/{account_id}/tags.json'
 ```
 
 #### Create Tag
 ```bash
-POST /callrail/v3/a/{account_id}/tags.json
-Content-Type: application/json
-
+maton api -X POST '/callrail/v3/a/{account_id}/tags.json' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "New Tag",
   "tag_level": "account",
   "color": "blue1"
 }
+EOF
 ```
 
 #### Update Tag
 ```bash
-PUT /callrail/v3/a/{account_id}/tags/{tag_id}.json
-Content-Type: application/json
-
+maton api -X PUT '/callrail/v3/a/{account_id}/tags/{tag_id}.json' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Updated Name",
   "color": "green1"
 }
+EOF
 ```
 
 #### Delete Tag
 ```bash
-DELETE /callrail/v3/a/{account_id}/tags/{tag_id}.json
+maton api -X DELETE '/callrail/v3/a/{account_id}/tags/{tag_id}.json'
 ```
 
 ### Users
 
 #### List Users
 ```bash
-GET /callrail/v3/a/{account_id}/users.json
+maton api '/callrail/v3/a/{account_id}/users.json'
 ```
 
 #### Get User
 ```bash
-GET /callrail/v3/a/{account_id}/users/{user_id}.json
+maton api '/callrail/v3/a/{account_id}/users/{user_id}.json'
 ```
 
 ### Integrations
 
 #### List Integrations
 ```bash
-GET /callrail/v3/a/{account_id}/integrations.json?company_id={company_id}
+maton api '/callrail/v3/a/{account_id}/integrations.json?company_id={company_id}'
 ```
 
 ### Notifications
 
 #### List Notifications
 ```bash
-GET /callrail/v3/a/{account_id}/notifications.json
+maton api '/callrail/v3/a/{account_id}/notifications.json'
 ```
 
 ## ID Prefixes
@@ -161,7 +164,7 @@ GET /callrail/v3/a/{account_id}/notifications.json
 Uses offset-based pagination with `page` and `per_page` parameters:
 
 ```bash
-GET /callrail/v3/a/{account_id}/calls.json?page=2&per_page=50
+maton api '/callrail/v3/a/{account_id}/calls.json?page=2&per_page=50'
 # Response includes page, per_page, total_pages, total_records
 ```
 

@@ -17,102 +17,106 @@
 
 #### List Subscribers
 ```bash
-GET /mailerlite/api/subscribers
+maton api '/mailerlite/api/subscribers'
 ```
 
 Query parameters: `filter[status]`, `limit`, `cursor`, `include`
 
 #### Get Subscriber
 ```bash
-GET /mailerlite/api/subscribers/{subscriber_id_or_email}
+maton api '/mailerlite/api/subscribers/{subscriber_id_or_email}'
 ```
 
 #### Create/Upsert Subscriber
 ```bash
-POST /mailerlite/api/subscribers
-Content-Type: application/json
-
+maton api -X POST '/mailerlite/api/subscribers' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "email": "subscriber@example.com",
   "fields": {"name": "John Doe"},
   "groups": ["12345678901234567"],
   "status": "active"
 }
+EOF
 ```
 
 #### Update Subscriber
 ```bash
-PUT /mailerlite/api/subscribers/{subscriber_id}
-Content-Type: application/json
-
+maton api -X PUT '/mailerlite/api/subscribers/{subscriber_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "fields": {"name": "Jane Doe"}
 }
+EOF
 ```
 
 #### Delete Subscriber
 ```bash
-DELETE /mailerlite/api/subscribers/{subscriber_id}
+maton api -X DELETE '/mailerlite/api/subscribers/{subscriber_id}'
 ```
 
 ### Groups
 
 #### List Groups
 ```bash
-GET /mailerlite/api/groups
+maton api '/mailerlite/api/groups'
 ```
 
 Query parameters: `limit`, `page`, `filter[name]`, `sort`
 
 #### Create Group
 ```bash
-POST /mailerlite/api/groups
-Content-Type: application/json
-
+maton api -X POST '/mailerlite/api/groups' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Newsletter Subscribers"
 }
+EOF
 ```
 
 #### Update Group
 ```bash
-PUT /mailerlite/api/groups/{group_id}
-Content-Type: application/json
-
+maton api -X PUT '/mailerlite/api/groups/{group_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Updated Group Name"
 }
+EOF
 ```
 
 #### Delete Group
 ```bash
-DELETE /mailerlite/api/groups/{group_id}
+maton api -X DELETE '/mailerlite/api/groups/{group_id}'
 ```
 
 #### Get Group Subscribers
 ```bash
-GET /mailerlite/api/groups/{group_id}/subscribers
+maton api '/mailerlite/api/groups/{group_id}/subscribers'
 ```
 
 ### Campaigns
 
 #### List Campaigns
 ```bash
-GET /mailerlite/api/campaigns
+maton api '/mailerlite/api/campaigns'
 ```
 
 Query parameters: `filter[status]`, `filter[type]`, `limit`, `page`
 
 #### Get Campaign
 ```bash
-GET /mailerlite/api/campaigns/{campaign_id}
+maton api '/mailerlite/api/campaigns/{campaign_id}'
 ```
 
 #### Create Campaign
 ```bash
-POST /mailerlite/api/campaigns
-Content-Type: application/json
-
+maton api -X POST '/mailerlite/api/campaigns' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "My Newsletter",
   "type": "regular",
@@ -125,103 +129,107 @@ Content-Type: application/json
   ],
   "groups": ["12345678901234567"]
 }
+EOF
 ```
 
 #### Schedule Campaign
 ```bash
-POST /mailerlite/api/campaigns/{campaign_id}/schedule
-Content-Type: application/json
-
+maton api -X POST '/mailerlite/api/campaigns/{campaign_id}/schedule' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "delivery": "instant"
 }
+EOF
 ```
 
 #### Delete Campaign
 ```bash
-DELETE /mailerlite/api/campaigns/{campaign_id}
+maton api -X DELETE '/mailerlite/api/campaigns/{campaign_id}'
 ```
 
 ### Automations
 
 #### List Automations
 ```bash
-GET /mailerlite/api/automations
+maton api '/mailerlite/api/automations'
 ```
 
 Query parameters: `filter[enabled]`, `filter[name]`, `page`, `limit`
 
 #### Get Automation
 ```bash
-GET /mailerlite/api/automations/{automation_id}
+maton api '/mailerlite/api/automations/{automation_id}'
 ```
 
 #### Delete Automation
 ```bash
-DELETE /mailerlite/api/automations/{automation_id}
+maton api -X DELETE '/mailerlite/api/automations/{automation_id}'
 ```
 
 ### Fields
 
 #### List Fields
 ```bash
-GET /mailerlite/api/fields
+maton api '/mailerlite/api/fields'
 ```
 
 #### Create Field
 ```bash
-POST /mailerlite/api/fields
-Content-Type: application/json
-
+maton api -X POST '/mailerlite/api/fields' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Company",
   "type": "text"
 }
+EOF
 ```
 
 ### Segments
 
 #### List Segments
 ```bash
-GET /mailerlite/api/segments
+maton api '/mailerlite/api/segments'
 ```
 
 #### Get Segment Subscribers
 ```bash
-GET /mailerlite/api/segments/{segment_id}/subscribers
+maton api '/mailerlite/api/segments/{segment_id}/subscribers'
 ```
 
 ### Forms
 
 #### List Forms
 ```bash
-GET /mailerlite/api/forms/{type}
+maton api '/mailerlite/api/forms/{type}'
 ```
 
 Path parameters: `type` - `popup`, `embedded`, or `promotion`
 
 #### Get Form Subscribers
 ```bash
-GET /mailerlite/api/forms/{form_id}/subscribers
+maton api '/mailerlite/api/forms/{form_id}/subscribers'
 ```
 
 ### Webhooks
 
 #### List Webhooks
 ```bash
-GET /mailerlite/api/webhooks
+maton api '/mailerlite/api/webhooks'
 ```
 
 #### Create Webhook
 ```bash
-POST /mailerlite/api/webhooks
-Content-Type: application/json
-
+maton api -X POST '/mailerlite/api/webhooks' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Subscriber Updates",
   "events": ["subscriber.created", "subscriber.updated"],
   "url": "https://example.com/webhook"
 }
+EOF
 ```
 
 ## Notes

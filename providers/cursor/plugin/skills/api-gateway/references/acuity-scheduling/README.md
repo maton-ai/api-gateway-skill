@@ -17,24 +17,24 @@ Maton automatically prepends `/api/v1` when proxying to Acuity.
 
 ### Get Account Info
 ```bash
-GET /acuity-scheduling/api/v1/me
+maton api '/acuity-scheduling/api/v1/me'
 ```
 
 ### List Appointments
 ```bash
-GET /acuity-scheduling/api/v1/appointments?max=100&minDate=2026-02-01
+maton api '/acuity-scheduling/api/v1/appointments?max=100&minDate=2026-02-01'
 ```
 
 ### Get Appointment
 ```bash
-GET /acuity-scheduling/api/v1/appointments/{id}
+maton api '/acuity-scheduling/api/v1/appointments/{id}'
 ```
 
 ### Create Appointment
 ```bash
-POST /acuity-scheduling/api/v1/appointments
-Content-Type: application/json
-
+maton api -X POST '/acuity-scheduling/api/v1/appointments' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "datetime": "2026-02-15T09:00",
   "appointmentTypeID": 123,
@@ -42,101 +42,106 @@ Content-Type: application/json
   "lastName": "Doe",
   "email": "john@example.com"
 }
+EOF
 ```
 
 ### Update Appointment
 ```bash
-PUT /acuity-scheduling/api/v1/appointments/{id}
-Content-Type: application/json
-
+maton api -X PUT '/acuity-scheduling/api/v1/appointments/{id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "firstName": "Jane",
   "lastName": "Smith"
 }
+EOF
 ```
 
 ### Cancel Appointment
 ```bash
-PUT /acuity-scheduling/api/v1/appointments/{id}/cancel
+maton api -X PUT '/acuity-scheduling/api/v1/appointments/{id}/cancel'
 ```
 
 ### Reschedule Appointment
 ```bash
-PUT /acuity-scheduling/api/v1/appointments/{id}/reschedule
-Content-Type: application/json
-
+maton api -X PUT '/acuity-scheduling/api/v1/appointments/{id}/reschedule' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "datetime": "2026-02-20T10:00"
 }
+EOF
 ```
 
 ### List Calendars
 ```bash
-GET /acuity-scheduling/api/v1/calendars
+maton api '/acuity-scheduling/api/v1/calendars'
 ```
 
 ### List Appointment Types
 ```bash
-GET /acuity-scheduling/api/v1/appointment-types
+maton api '/acuity-scheduling/api/v1/appointment-types'
 ```
 
 ### Get Available Dates
 ```bash
-GET /acuity-scheduling/api/v1/availability/dates?month=2026-02&appointmentTypeID=123
+maton api '/acuity-scheduling/api/v1/availability/dates?month=2026-02&appointmentTypeID=123'
 ```
 
 ### Get Available Times
 ```bash
-GET /acuity-scheduling/api/v1/availability/times?date=2026-02-04&appointmentTypeID=123
+maton api '/acuity-scheduling/api/v1/availability/times?date=2026-02-04&appointmentTypeID=123'
 ```
 
 ### List Clients
 ```bash
-GET /acuity-scheduling/api/v1/clients?search=John
+maton api '/acuity-scheduling/api/v1/clients?search=John'
 ```
 
 ### Create Client
 ```bash
-POST /acuity-scheduling/api/v1/clients
-Content-Type: application/json
-
+maton api -X POST '/acuity-scheduling/api/v1/clients' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "firstName": "John",
   "lastName": "Doe",
   "email": "john@example.com"
 }
+EOF
 ```
 
 ### List Blocks
 ```bash
-GET /acuity-scheduling/api/v1/blocks?calendarID=1234
+maton api '/acuity-scheduling/api/v1/blocks?calendarID=1234'
 ```
 
 ### Create Block
 ```bash
-POST /acuity-scheduling/api/v1/blocks
-Content-Type: application/json
-
+maton api -X POST '/acuity-scheduling/api/v1/blocks' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "start": "2026-02-15T12:00",
   "end": "2026-02-15T13:00",
   "calendarID": 1234
 }
+EOF
 ```
 
 ### Delete Block
 ```bash
-DELETE /acuity-scheduling/api/v1/blocks/{id}
+maton api -X DELETE '/acuity-scheduling/api/v1/blocks/{id}'
 ```
 
 ### List Forms
 ```bash
-GET /acuity-scheduling/api/v1/forms
+maton api '/acuity-scheduling/api/v1/forms'
 ```
 
 ### List Labels
 ```bash
-GET /acuity-scheduling/api/v1/labels
+maton api '/acuity-scheduling/api/v1/labels'
 ```
 
 ## Notes

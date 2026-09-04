@@ -15,22 +15,23 @@
 
 ### Send Text Message
 ```bash
-POST /whatsapp-business/v21.0/{phone_number_id}/messages
-Content-Type: application/json
-
+maton api -X POST '/whatsapp-business/v21.0/{phone_number_id}/messages' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "messaging_product": "whatsapp",
   "to": "1234567890",
   "type": "text",
   "text": {"body": "Hello from WhatsApp!"}
 }
+EOF
 ```
 
 ### Send Template Message
 ```bash
-POST /whatsapp-business/v21.0/{phone_number_id}/messages
-Content-Type: application/json
-
+maton api -X POST '/whatsapp-business/v21.0/{phone_number_id}/messages' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "messaging_product": "whatsapp",
   "to": "1234567890",
@@ -46,13 +47,14 @@ Content-Type: application/json
     ]
   }
 }
+EOF
 ```
 
 ### Send Image Message
 ```bash
-POST /whatsapp-business/v21.0/{phone_number_id}/messages
-Content-Type: application/json
-
+maton api -X POST '/whatsapp-business/v21.0/{phone_number_id}/messages' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "messaging_product": "whatsapp",
   "to": "1234567890",
@@ -62,13 +64,14 @@ Content-Type: application/json
     "caption": "Check out this image!"
   }
 }
+EOF
 ```
 
 ### Send Document Message
 ```bash
-POST /whatsapp-business/v21.0/{phone_number_id}/messages
-Content-Type: application/json
-
+maton api -X POST '/whatsapp-business/v21.0/{phone_number_id}/messages' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "messaging_product": "whatsapp",
   "to": "1234567890",
@@ -78,13 +81,14 @@ Content-Type: application/json
     "filename": "report.pdf"
   }
 }
+EOF
 ```
 
 ### Send Interactive Button Message
 ```bash
-POST /whatsapp-business/v21.0/{phone_number_id}/messages
-Content-Type: application/json
-
+maton api -X POST '/whatsapp-business/v21.0/{phone_number_id}/messages' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "messaging_product": "whatsapp",
   "to": "1234567890",
@@ -100,13 +104,14 @@ Content-Type: application/json
     }
   }
 }
+EOF
 ```
 
 ### Send Interactive List Message
 ```bash
-POST /whatsapp-business/v21.0/{phone_number_id}/messages
-Content-Type: application/json
-
+maton api -X POST '/whatsapp-business/v21.0/{phone_number_id}/messages' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "messaging_product": "whatsapp",
   "to": "1234567890",
@@ -128,45 +133,67 @@ Content-Type: application/json
     }
   }
 }
+EOF
 ```
 
 ### Mark Message as Read
 ```bash
-POST /whatsapp-business/v21.0/{phone_number_id}/messages
-Content-Type: application/json
-
+maton api -X POST '/whatsapp-business/v21.0/{phone_number_id}/messages' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "messaging_product": "whatsapp",
   "status": "read",
   "message_id": "wamid.xxxxx"
 }
+EOF
 ```
 
 ### Upload Media
 ```bash
-POST /whatsapp-business/v21.0/{phone_number_id}/media
-Content-Type: multipart/form-data
+# multipart/form-data is not expressible with `maton api`; call the gateway directly with `MATON_API_KEY` (see SKILL.md appendix).
+python <<'EOF'
+import json, os, urllib.request, uuid
 
-file=@/path/to/file.jpg
-type=image/jpeg
-messaging_product=whatsapp
+# Maton API key from the environment; never print, log, or persist it.
+TOKEN = os.environ["MATON_API_KEY"]
+
+# Exactly the path the user gave — never a discovered or inferred one.
+file_path = '/path/to/file.jpg'
+phone_number_id = '{phone_number_id}'
+fields = {'type': 'image/jpeg', 'messaging_product': 'whatsapp'}
+
+boundary = uuid.uuid4().hex
+body = b''
+for name, value in fields.items():
+    body += f'--{boundary}\r\nContent-Disposition: form-data; name="{name}"\r\n\r\n{value}\r\n'.encode()
+with open(file_path, 'rb') as f:
+    body += (f'--{boundary}\r\nContent-Disposition: form-data; name="file"; filename="{os.path.basename(file_path)}"\r\n'
+             f'Content-Type: {fields["type"]}\r\n\r\n').encode() + f.read() + f'\r\n--{boundary}--\r\n'.encode()
+
+req = urllib.request.Request(f'https://api.maton.ai/whatsapp-business/v21.0/{phone_number_id}/media', data=body, method='POST')
+req.add_header('Authorization', f'Bearer {TOKEN}')
+req.add_header('User-Agent', 'maton-gateway-skill/1.2')
+req.add_header('Content-Type', f'multipart/form-data; boundary={boundary}')
+print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
+EOF
 ```
 
 ### Get Media URL
 ```bash
-GET /whatsapp-business/v21.0/{media_id}
+maton api '/whatsapp-business/v21.0/{media_id}'
 ```
 
 ### List Message Templates
 ```bash
-GET /whatsapp-business/v21.0/{whatsapp_business_account_id}/message_templates
+maton api '/whatsapp-business/v21.0/{whatsapp_business_account_id}/message_templates'
 ```
 
 ### Create Message Template
 ```bash
-POST /whatsapp-business/v21.0/{whatsapp_business_account_id}/message_templates
-Content-Type: application/json
-
+maton api -X POST '/whatsapp-business/v21.0/{whatsapp_business_account_id}/message_templates' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "order_confirmation",
   "language": "en_US",
@@ -175,23 +202,25 @@ Content-Type: application/json
     {"type": "BODY", "text": "Hi {{1}}, your order #{{2}} has been confirmed!"}
   ]
 }
+EOF
 ```
 
 ### Get Business Profile
 ```bash
-GET /whatsapp-business/v21.0/{phone_number_id}/whatsapp_business_profile?fields=about,address,description,email,websites
+maton api '/whatsapp-business/v21.0/{phone_number_id}/whatsapp_business_profile?fields=about,address,description,email,websites'
 ```
 
 ### Update Business Profile
 ```bash
-POST /whatsapp-business/v21.0/{phone_number_id}/whatsapp_business_profile
-Content-Type: application/json
-
+maton api -X POST '/whatsapp-business/v21.0/{phone_number_id}/whatsapp_business_profile' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "messaging_product": "whatsapp",
   "about": "Your trusted partner",
   "description": "We provide excellent services"
 }
+EOF
 ```
 
 ## Notes

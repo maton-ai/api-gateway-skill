@@ -15,7 +15,7 @@
 
 ### List Files
 ```bash
-GET /google-drive/drive/v3/files?pageSize=10
+maton api '/google-drive/drive/v3/files?pageSize=10'
 ```
 
 Example:
@@ -26,7 +26,7 @@ maton google-drive file list -L 10
 
 With query:
 ```bash
-GET /google-drive/drive/v3/files?q=name%20contains%20'report'&pageSize=10
+maton api "/google-drive/drive/v3/files?q=name%20contains%20'report'&pageSize=10"
 ```
 
 Example:
@@ -37,7 +37,7 @@ maton google-drive file list -Q "name contains 'report'" -L 10
 
 Only folders:
 ```bash
-GET /google-drive/drive/v3/files?q=mimeType='application/vnd.google-apps.folder'
+maton api "/google-drive/drive/v3/files?q=mimeType='application/vnd.google-apps.folder'"
 ```
 
 Example:
@@ -48,7 +48,7 @@ maton google-drive file list -Q "mimeType='application/vnd.google-apps.folder'"
 
 Files in specific folder:
 ```bash
-GET /google-drive/drive/v3/files?q='FOLDER_ID'+in+parents
+maton api "/google-drive/drive/v3/files?q='FOLDER_ID'+in+parents"
 ```
 
 Example:
@@ -59,12 +59,12 @@ maton google-drive file list -Q "'FOLDER_ID' in parents"
 
 With fields:
 ```bash
-GET /google-drive/drive/v3/files?fields=files(id,name,mimeType,createdTime,modifiedTime,size)
+maton api '/google-drive/drive/v3/files?fields=files(id,name,mimeType,createdTime,modifiedTime,size)'
 ```
 
 ### Get File Metadata
 ```bash
-GET /google-drive/drive/v3/files/{fileId}?fields=id,name,mimeType,size,createdTime
+maton api '/google-drive/drive/v3/files/{fileId}?fields=id,name,mimeType,size,createdTime'
 ```
 
 Example:
@@ -75,7 +75,7 @@ maton google-drive file view FILE_ID --fields 'id,name,mimeType,size,createdTime
 
 ### Download File Content
 ```bash
-GET /google-drive/drive/v3/files/{fileId}?alt=media
+maton api '/google-drive/drive/v3/files/{fileId}?alt=media'
 ```
 
 Example:
@@ -86,7 +86,7 @@ maton google-drive file download FILE_ID --output ./report.pdf
 
 ### Export Google Docs (to PDF, DOCX, etc.)
 ```bash
-GET /google-drive/drive/v3/files/{fileId}/export?mimeType=application/pdf
+maton api '/google-drive/drive/v3/files/{fileId}/export?mimeType=application/pdf'
 ```
 
 Example:
@@ -97,13 +97,14 @@ maton google-drive file export FILE_ID --mime-type application/pdf --output ./do
 
 ### Create File (metadata only)
 ```bash
-POST /google-drive/drive/v3/files
-Content-Type: application/json
-
+maton api -X POST '/google-drive/drive/v3/files' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "New Document",
   "mimeType": "application/vnd.google-apps.document"
 }
+EOF
 ```
 
 Example:
@@ -114,13 +115,14 @@ maton google-drive file create --name 'New Document' --mime-type application/vnd
 
 ### Create Folder
 ```bash
-POST /google-drive/drive/v3/files
-Content-Type: application/json
-
+maton api -X POST '/google-drive/drive/v3/files' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "New Folder",
   "mimeType": "application/vnd.google-apps.folder"
 }
+EOF
 ```
 
 Example:
@@ -131,12 +133,13 @@ maton google-drive file create --name 'New Folder' --mime-type application/vnd.g
 
 ### Update File Metadata
 ```bash
-PATCH /google-drive/drive/v3/files/{fileId}
-Content-Type: application/json
-
+maton api -X PATCH '/google-drive/drive/v3/files/{fileId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Renamed File"
 }
+EOF
 ```
 
 Example:
@@ -147,7 +150,7 @@ maton google-drive file update FILE_ID --name 'Renamed File'
 
 ### Move File to Folder
 ```bash
-PATCH /google-drive/drive/v3/files/{fileId}?addParents=NEW_FOLDER_ID&removeParents=OLD_FOLDER_ID
+maton api -X PATCH '/google-drive/drive/v3/files/{fileId}?addParents=NEW_FOLDER_ID&removeParents=OLD_FOLDER_ID'
 ```
 
 Example:
@@ -158,7 +161,7 @@ maton google-drive file update FILE_ID --add-parents NEW_FOLDER_ID --remove-pare
 
 ### Delete File
 ```bash
-DELETE /google-drive/drive/v3/files/{fileId}
+maton api -X DELETE '/google-drive/drive/v3/files/{fileId}'
 ```
 
 Example:
@@ -169,12 +172,13 @@ maton google-drive file delete FILE_ID
 
 ### Copy File
 ```bash
-POST /google-drive/drive/v3/files/{fileId}/copy
-Content-Type: application/json
-
+maton api -X POST '/google-drive/drive/v3/files/{fileId}/copy' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Copy of File"
 }
+EOF
 ```
 
 Example:
@@ -185,14 +189,15 @@ maton google-drive file copy FILE_ID --name 'Copy of File'
 
 ### Create Permission (Share File)
 ```bash
-POST /google-drive/drive/v3/files/{fileId}/permissions
-Content-Type: application/json
-
+maton api -X POST '/google-drive/drive/v3/files/{fileId}/permissions' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "role": "reader",
   "type": "user",
   "emailAddress": "user@example.com"
 }
+EOF
 ```
 
 Example:
@@ -215,10 +220,9 @@ The CLI's `maton google-drive file upload` picks the upload type for you based o
 
 ### Simple Upload (up to 5MB)
 ```bash
-POST /google-drive/upload/drive/v3/files?uploadType=media
-Content-Type: text/plain
-
-<file content>
+maton api -X POST '/google-drive/upload/drive/v3/files?uploadType=media' \
+  -H 'Content-Type: text/plain' \
+  --input '{file_path}'  # <file content>
 ```
 
 Example:
@@ -229,9 +233,9 @@ maton google-drive file upload ./hello.txt --no-metadata
 
 ### Multipart Upload (with metadata, up to 5MB)
 ```bash
-POST /google-drive/upload/drive/v3/files?uploadType=multipart
-Content-Type: multipart/related; boundary=boundary
-
+maton api -X POST '/google-drive/upload/drive/v3/files?uploadType=multipart' \
+  -H 'Content-Type: multipart/related; boundary=boundary' \
+  --input - <<'EOF'
 --boundary
 Content-Type: application/json
 
@@ -241,6 +245,7 @@ Content-Type: text/plain
 
 <file content>
 --boundary--
+EOF
 ```
 
 Example:
@@ -252,12 +257,13 @@ maton google-drive file upload ./myfile.txt
 ### Resumable Upload (for large files)
 ```bash
 # Step 1: Initiate session
-POST /google-drive/upload/drive/v3/files?uploadType=resumable
-Content-Type: application/json
-X-Upload-Content-Type: application/octet-stream
-X-Upload-Content-Length: <file_size>
-
+maton api -X POST '/google-drive/upload/drive/v3/files?uploadType=resumable' \
+  -H 'Content-Type: application/json' \
+  -H 'X-Upload-Content-Type: application/octet-stream' \
+  -H 'X-Upload-Content-Length: <file_size>' \
+  --input - <<'EOF'
 {"name": "large_file.bin"}
+EOF
 
 # Response includes Location header with upload URI
 # Step 2: Upload content to that URI
@@ -281,10 +287,9 @@ maton google-drive file upload ./myfile.txt --parent FOLDER_ID
 
 ### Update File Content
 ```bash
-PATCH /google-drive/upload/drive/v3/files/{fileId}?uploadType=media
-Content-Type: text/plain
-
-<new file content>
+maton api -X PATCH '/google-drive/upload/drive/v3/files/{fileId}?uploadType=media' \
+  -H 'Content-Type: text/plain' \
+  --input '{file_path}'  # <new file content>
 ```
 
 Example:

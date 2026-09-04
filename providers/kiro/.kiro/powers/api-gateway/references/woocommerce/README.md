@@ -17,229 +17,241 @@
 
 #### List Products
 ```bash
-GET /woocommerce/wp-json/wc/v3/products?per_page=20&status=publish
+maton api '/woocommerce/wp-json/wc/v3/products?per_page=20&status=publish'
 ```
 
 #### Get Product
 ```bash
-GET /woocommerce/wp-json/wc/v3/products/{id}
+maton api '/woocommerce/wp-json/wc/v3/products/{id}'
 ```
 
 #### Create Product
 ```bash
-POST /woocommerce/wp-json/wc/v3/products
-Content-Type: application/json
-
+maton api -X POST '/woocommerce/wp-json/wc/v3/products' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"name": "Premium Widget", "type": "simple", "regular_price": "19.99", "sku": "WDG-001"}
+EOF
 ```
 
 #### Update Product
 ```bash
-PUT /woocommerce/wp-json/wc/v3/products/{id}
-Content-Type: application/json
-
+maton api -X PUT '/woocommerce/wp-json/wc/v3/products/{id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"regular_price": "24.99", "sale_price": "19.99"}
+EOF
 ```
 
 #### Delete Product
 ```bash
-DELETE /woocommerce/wp-json/wc/v3/products/{id}?force=true
+maton api -X DELETE '/woocommerce/wp-json/wc/v3/products/{id}?force=true'
 ```
 
 ### Product Variations
 
 #### List Variations
 ```bash
-GET /woocommerce/wp-json/wc/v3/products/{product_id}/variations
+maton api '/woocommerce/wp-json/wc/v3/products/{product_id}/variations'
 ```
 
 #### Create Variation
 ```bash
-POST /woocommerce/wp-json/wc/v3/products/{product_id}/variations
-Content-Type: application/json
-
+maton api -X POST '/woocommerce/wp-json/wc/v3/products/{product_id}/variations' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"regular_price": "29.99", "sku": "TSH-001-RED-M", "attributes": [{"id": 1, "option": "Red"}]}
+EOF
 ```
 
 ### Product Categories
 
 #### List Categories
 ```bash
-GET /woocommerce/wp-json/wc/v3/products/categories
+maton api '/woocommerce/wp-json/wc/v3/products/categories'
 ```
 
 #### Create Category
 ```bash
-POST /woocommerce/wp-json/wc/v3/products/categories
-Content-Type: application/json
-
+maton api -X POST '/woocommerce/wp-json/wc/v3/products/categories' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"name": "Electronics", "description": "Electronic products"}
+EOF
 ```
 
 ### Orders
 
 #### List Orders
 ```bash
-GET /woocommerce/wp-json/wc/v3/orders?status=processing&per_page=50
+maton api '/woocommerce/wp-json/wc/v3/orders?status=processing&per_page=50'
 ```
 
 #### Get Order
 ```bash
-GET /woocommerce/wp-json/wc/v3/orders/{id}
+maton api '/woocommerce/wp-json/wc/v3/orders/{id}'
 ```
 
 #### Create Order
 ```bash
-POST /woocommerce/wp-json/wc/v3/orders
-Content-Type: application/json
-
+maton api -X POST '/woocommerce/wp-json/wc/v3/orders' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"payment_method": "stripe", "set_paid": true, "billing": {"first_name": "John", "last_name": "Doe", "email": "john@example.com"}, "line_items": [{"product_id": 123, "quantity": 2}]}
+EOF
 ```
 
 #### Update Order Status
 ```bash
-PUT /woocommerce/wp-json/wc/v3/orders/{id}
-Content-Type: application/json
-
+maton api -X PUT '/woocommerce/wp-json/wc/v3/orders/{id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"status": "completed"}
+EOF
 ```
 
 ### Order Notes
 
 #### List Order Notes
 ```bash
-GET /woocommerce/wp-json/wc/v3/orders/{order_id}/notes
+maton api '/woocommerce/wp-json/wc/v3/orders/{order_id}/notes'
 ```
 
 #### Create Order Note
 ```bash
-POST /woocommerce/wp-json/wc/v3/orders/{order_id}/notes
-Content-Type: application/json
-
+maton api -X POST '/woocommerce/wp-json/wc/v3/orders/{order_id}/notes' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"note": "Order shipped via FedEx", "customer_note": true}
+EOF
 ```
 
 ### Order Refunds
 
 #### Create Refund
 ```bash
-POST /woocommerce/wp-json/wc/v3/orders/{order_id}/refunds
-Content-Type: application/json
-
+maton api -X POST '/woocommerce/wp-json/wc/v3/orders/{order_id}/refunds' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"amount": "25.00", "reason": "Product damaged", "api_refund": true}
+EOF
 ```
 
 ### Customers
 
 #### List Customers
 ```bash
-GET /woocommerce/wp-json/wc/v3/customers?per_page=25
+maton api '/woocommerce/wp-json/wc/v3/customers?per_page=25'
 ```
 
 #### Get Customer
 ```bash
-GET /woocommerce/wp-json/wc/v3/customers/{id}
+maton api '/woocommerce/wp-json/wc/v3/customers/{id}'
 ```
 
 #### Create Customer
 ```bash
-POST /woocommerce/wp-json/wc/v3/customers
-Content-Type: application/json
-
+maton api -X POST '/woocommerce/wp-json/wc/v3/customers' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"email": "jane@example.com", "first_name": "Jane", "last_name": "Smith", "username": "janesmith"}
+EOF
 ```
 
 ### Coupons
 
 #### List Coupons
 ```bash
-GET /woocommerce/wp-json/wc/v3/coupons
+maton api '/woocommerce/wp-json/wc/v3/coupons'
 ```
 
 #### Create Coupon
 ```bash
-POST /woocommerce/wp-json/wc/v3/coupons
-Content-Type: application/json
-
+maton api -X POST '/woocommerce/wp-json/wc/v3/coupons' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"code": "SUMMER2024", "discount_type": "percent", "amount": "15", "usage_limit": 100}
+EOF
 ```
 
 ### Taxes
 
 #### List Tax Rates
 ```bash
-GET /woocommerce/wp-json/wc/v3/taxes
+maton api '/woocommerce/wp-json/wc/v3/taxes'
 ```
 
 #### Create Tax Rate
 ```bash
-POST /woocommerce/wp-json/wc/v3/taxes
-Content-Type: application/json
-
+maton api -X POST '/woocommerce/wp-json/wc/v3/taxes' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"country": "US", "state": "CA", "rate": "7.25", "name": "CA State Tax"}
+EOF
 ```
 
 ### Shipping
 
 #### List Shipping Zones
 ```bash
-GET /woocommerce/wp-json/wc/v3/shipping/zones
+maton api '/woocommerce/wp-json/wc/v3/shipping/zones'
 ```
 
 #### List Shipping Zone Methods
 ```bash
-GET /woocommerce/wp-json/wc/v3/shipping/zones/{zone_id}/methods
+maton api '/woocommerce/wp-json/wc/v3/shipping/zones/{zone_id}/methods'
 ```
 
 ### Webhooks
 
 #### List Webhooks
 ```bash
-GET /woocommerce/wp-json/wc/v3/webhooks
+maton api '/woocommerce/wp-json/wc/v3/webhooks'
 ```
 
 #### Create Webhook
 ```bash
-POST /woocommerce/wp-json/wc/v3/webhooks
-Content-Type: application/json
-
+maton api -X POST '/woocommerce/wp-json/wc/v3/webhooks' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"name": "Order Created", "topic": "order.created", "delivery_url": "https://example.com/webhook", "status": "active"}
+EOF
 ```
 
 ### Reports
 
 #### Sales Report
 ```bash
-GET /woocommerce/wp-json/wc/v3/reports/sales?period=month
+maton api '/woocommerce/wp-json/wc/v3/reports/sales?period=month'
 ```
 
 #### Top Sellers
 ```bash
-GET /woocommerce/wp-json/wc/v3/reports/top_sellers
+maton api '/woocommerce/wp-json/wc/v3/reports/top_sellers'
 ```
 
 #### Orders Totals
 ```bash
-GET /woocommerce/wp-json/wc/v3/reports/orders/totals
+maton api '/woocommerce/wp-json/wc/v3/reports/orders/totals'
 ```
 
 ### Settings
 
 #### List Settings Groups
 ```bash
-GET /woocommerce/wp-json/wc/v3/settings
+maton api '/woocommerce/wp-json/wc/v3/settings'
 ```
 
 #### Get Settings in Group
 ```bash
-GET /woocommerce/wp-json/wc/v3/settings/{group}
+maton api '/woocommerce/wp-json/wc/v3/settings/{group}'
 ```
 
 ### System Status
 
 #### Get System Status
 ```bash
-GET /woocommerce/wp-json/wc/v3/system_status
+maton api '/woocommerce/wp-json/wc/v3/system_status'
 ```
 
 ## Notes

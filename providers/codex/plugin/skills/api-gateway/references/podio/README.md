@@ -25,56 +25,57 @@ Note: Many Podio endpoints use trailing slashes.
 
 #### List Organizations
 ```bash
-GET /podio/org/
+maton api '/podio/org/'
 ```
 
 #### Get Organization
 ```bash
-GET /podio/org/{org_id}
+maton api '/podio/org/{org_id}'
 ```
 
 ### Spaces (Workspaces)
 
 #### List Spaces in Organization
 ```bash
-GET /podio/space/org/{org_id}/
+maton api '/podio/space/org/{org_id}/'
 ```
 
 #### Get Space
 ```bash
-GET /podio/space/{space_id}
+maton api '/podio/space/{space_id}'
 ```
 
 #### Create Space
 ```bash
-POST /podio/org/{org_id}/space/
-Content-Type: application/json
-
+maton api -X POST '/podio/org/{org_id}/space/' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "New Workspace",
   "privacy": "closed"
 }
+EOF
 ```
 
 ### Applications
 
 #### List Apps in Space
 ```bash
-GET /podio/app/space/{space_id}/
+maton api '/podio/app/space/{space_id}/'
 ```
 
 #### Get App
 ```bash
-GET /podio/app/{app_id}
+maton api '/podio/app/{app_id}'
 ```
 
 ### Items
 
 #### Filter Items
 ```bash
-POST /podio/item/app/{app_id}/filter/
-Content-Type: application/json
-
+maton api -X POST '/podio/item/app/{app_id}/filter/' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "limit": 30,
   "offset": 0,
@@ -84,41 +85,44 @@ Content-Type: application/json
     "status": [1, 2]
   }
 }
+EOF
 ```
 
 #### Get Item
 ```bash
-GET /podio/item/{item_id}
+maton api '/podio/item/{item_id}'
 ```
 
 #### Create Item
 ```bash
-POST /podio/item/app/{app_id}/
-Content-Type: application/json
-
+maton api -X POST '/podio/item/app/{app_id}/' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "fields": {
     "title": "New Item",
     "status": 1
   }
 }
+EOF
 ```
 
 #### Update Item
 ```bash
-PUT /podio/item/{item_id}
-Content-Type: application/json
-
+maton api -X PUT '/podio/item/{item_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "fields": {
     "title": "Updated Title"
   }
 }
+EOF
 ```
 
 #### Delete Item
 ```bash
-DELETE /podio/item/{item_id}
+maton api -X DELETE '/podio/item/{item_id}'
 ```
 
 ### Tasks
@@ -127,63 +131,65 @@ Tasks require at least one filter: org, space, app, responsible, reference, crea
 
 #### List Tasks
 ```bash
-GET /podio/task/?org={org_id}
-GET /podio/task/?space={space_id}
-GET /podio/task/?app={app_id}&completed=false
+maton api '/podio/task/?org={org_id}'
+maton api '/podio/task/?space={space_id}'
+maton api '/podio/task/?app={app_id}&completed=false'
 ```
 
 #### Get Task
 ```bash
-GET /podio/task/{task_id}
+maton api '/podio/task/{task_id}'
 ```
 
 #### Create Task
 ```bash
-POST /podio/task/
-Content-Type: application/json
-
+maton api -X POST '/podio/task/' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "text": "Task description",
   "due_date": "2026-03-15",
   "ref_type": "item",
   "ref_id": 3250776079
 }
+EOF
 ```
 
 #### Complete Task
 ```bash
-POST /podio/task/{task_id}/complete
+maton api -X POST '/podio/task/{task_id}/complete'
 ```
 
 #### Delete Task
 ```bash
-DELETE /podio/task/{task_id}
+maton api -X DELETE '/podio/task/{task_id}'
 ```
 
 ### Comments
 
 #### Get Comments on Object
 ```bash
-GET /podio/comment/{type}/{id}/
+maton api '/podio/comment/{type}/{id}/'
 ```
 
 Where `{type}` is: item, task, status, etc.
 
 #### Add Comment
 ```bash
-POST /podio/comment/{type}/{id}
-Content-Type: application/json
-
+maton api -X POST '/podio/comment/{type}/{id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "value": "Comment text"
 }
+EOF
 ```
 
 ### User
 
 #### Get User Status
 ```bash
-GET /podio/user/status
+maton api '/podio/user/status'
 ```
 
 ## Pagination

@@ -17,28 +17,28 @@
 
 #### Get Current User
 ```bash
-GET /zoom/v2/users/me
+maton api '/zoom/v2/users/me'
 ```
 
 ### Meetings
 
 #### List User's Meetings
 ```bash
-GET /zoom/v2/users/me/meetings
-GET /zoom/v2/users/{userId}/meetings
-GET /zoom/v2/users/me/meetings?type=scheduled&page_size=50
+maton api '/zoom/v2/users/me/meetings'
+maton api '/zoom/v2/users/{userId}/meetings'
+maton api '/zoom/v2/users/me/meetings?type=scheduled&page_size=50'
 ```
 
 #### Get Upcoming Meetings
 ```bash
-GET /zoom/v2/users/me/upcoming_meetings
+maton api '/zoom/v2/users/me/upcoming_meetings'
 ```
 
 #### Create Meeting
 ```bash
-POST /zoom/v2/users/me/meetings
-Content-Type: application/json
-
+maton api -X POST '/zoom/v2/users/me/meetings' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "topic": "Team Meeting",
   "type": 2,
@@ -51,44 +51,46 @@ Content-Type: application/json
     "waiting_room": true
   }
 }
+EOF
 ```
 
 #### Get Meeting
 ```bash
-GET /zoom/v2/meetings/{meetingId}
+maton api '/zoom/v2/meetings/{meetingId}'
 ```
 
 #### Update Meeting
 ```bash
-PATCH /zoom/v2/meetings/{meetingId}
-Content-Type: application/json
-
+maton api -X PATCH '/zoom/v2/meetings/{meetingId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "topic": "Updated Title",
   "duration": 45
 }
+EOF
 ```
 
 #### Delete Meeting
 ```bash
-DELETE /zoom/v2/meetings/{meetingId}
+maton api -X DELETE '/zoom/v2/meetings/{meetingId}'
 ```
 
 ### Recordings
 
 #### List User's Recordings
 ```bash
-GET /zoom/v2/users/me/recordings?from=2026-04-01&to=2026-04-10
+maton api '/zoom/v2/users/me/recordings?from=2026-04-01&to=2026-04-10'
 ```
 
 #### Get Meeting Recordings
 ```bash
-GET /zoom/v2/meetings/{meetingId}/recordings
+maton api '/zoom/v2/meetings/{meetingId}/recordings'
 ```
 
 #### Delete Meeting Recordings
 ```bash
-DELETE /zoom/v2/meetings/{meetingId}/recordings
+maton api -X DELETE '/zoom/v2/meetings/{meetingId}/recordings'
 ```
 
 ### Webinars
@@ -97,58 +99,60 @@ DELETE /zoom/v2/meetings/{meetingId}/recordings
 
 #### List User's Webinars
 ```bash
-GET /zoom/v2/users/me/webinars
+maton api '/zoom/v2/users/me/webinars'
 ```
 
 #### Create Webinar
 ```bash
-POST /zoom/v2/users/{userId}/webinars
-Content-Type: application/json
-
+maton api -X POST '/zoom/v2/users/{userId}/webinars' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "topic": "Product Launch",
   "type": 5,
   "start_time": "2026-05-01T10:00:00Z",
   "duration": 90
 }
+EOF
 ```
 
 #### Get/Update/Delete Webinar
 ```bash
-GET /zoom/v2/webinars/{webinarId}
-PATCH /zoom/v2/webinars/{webinarId}
-DELETE /zoom/v2/webinars/{webinarId}
+maton api '/zoom/v2/webinars/{webinarId}'
+maton api -X PATCH '/zoom/v2/webinars/{webinarId}'
+maton api -X DELETE '/zoom/v2/webinars/{webinarId}'
 ```
 
 ### Meeting Registrants
 
 #### List Registrants
 ```bash
-GET /zoom/v2/meetings/{meetingId}/registrants
+maton api '/zoom/v2/meetings/{meetingId}/registrants'
 ```
 
 #### Add Registrant
 ```bash
-POST /zoom/v2/meetings/{meetingId}/registrants
-Content-Type: application/json
-
+maton api -X POST '/zoom/v2/meetings/{meetingId}/registrants' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "email": "attendee@example.com",
   "first_name": "Jane",
   "last_name": "Smith"
 }
+EOF
 ```
 
 ### Past Meetings
 
 #### Get Past Meeting Details
 ```bash
-GET /zoom/v2/past_meetings/{meetingUUID}
+maton api '/zoom/v2/past_meetings/{meetingUUID}'
 ```
 
 #### List Past Meeting Participants
 ```bash
-GET /zoom/v2/past_meetings/{meetingUUID}/participants
+maton api '/zoom/v2/past_meetings/{meetingUUID}/participants'
 ```
 
 ## Meeting Types
@@ -173,7 +177,7 @@ GET /zoom/v2/past_meetings/{meetingUUID}/participants
 Cursor-based pagination using `next_page_token`:
 
 ```bash
-GET /zoom/v2/users/me/meetings?page_size=50&next_page_token={token}
+maton api '/zoom/v2/users/me/meetings?page_size=50&next_page_token={token}'
 ```
 
 Response includes:

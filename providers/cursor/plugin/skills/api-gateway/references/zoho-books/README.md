@@ -17,108 +17,109 @@
 
 ```bash
 # List contacts
-GET /zoho-books/books/v3/contacts
+maton api '/zoho-books/books/v3/contacts'
 
 # Get contact
-GET /zoho-books/books/v3/contacts/{contact_id}
+maton api '/zoho-books/books/v3/contacts/{contact_id}'
 
 # Create contact
-POST /zoho-books/books/v3/contacts
-Content-Type: application/json
-
+maton api -X POST '/zoho-books/books/v3/contacts' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "contact_name": "Customer Name",
   "contact_type": "customer"
 }
+EOF
 
 # Update contact
-PUT /zoho-books/books/v3/contacts/{contact_id}
+maton api -X PUT '/zoho-books/books/v3/contacts/{contact_id}'
 
 # Delete contact
-DELETE /zoho-books/books/v3/contacts/{contact_id}
+maton api -X DELETE '/zoho-books/books/v3/contacts/{contact_id}'
 ```
 
 ### Invoices
 
 ```bash
 # List invoices
-GET /zoho-books/books/v3/invoices
+maton api '/zoho-books/books/v3/invoices'
 
 # Get invoice
-GET /zoho-books/books/v3/invoices/{invoice_id}
+maton api '/zoho-books/books/v3/invoices/{invoice_id}'
 
 # Create invoice
-POST /zoho-books/books/v3/invoices
+maton api -X POST '/zoho-books/books/v3/invoices'
 
 # Mark as sent
-POST /zoho-books/books/v3/invoices/{invoice_id}/status/sent
+maton api -X POST '/zoho-books/books/v3/invoices/{invoice_id}/status/sent'
 
 # Email invoice
-POST /zoho-books/books/v3/invoices/{invoice_id}/email
+maton api -X POST '/zoho-books/books/v3/invoices/{invoice_id}/email'
 ```
 
 ### Bills
 
 ```bash
 # List bills
-GET /zoho-books/books/v3/bills
+maton api '/zoho-books/books/v3/bills'
 
 # Create bill
-POST /zoho-books/books/v3/bills
+maton api -X POST '/zoho-books/books/v3/bills'
 
 # Update bill
-PUT /zoho-books/books/v3/bills/{bill_id}
+maton api -X PUT '/zoho-books/books/v3/bills/{bill_id}'
 
 # Delete bill
-DELETE /zoho-books/books/v3/bills/{bill_id}
+maton api -X DELETE '/zoho-books/books/v3/bills/{bill_id}'
 ```
 
 ### Expenses
 
 ```bash
 # List expenses
-GET /zoho-books/books/v3/expenses
+maton api '/zoho-books/books/v3/expenses'
 
 # Create expense
-POST /zoho-books/books/v3/expenses
+maton api -X POST '/zoho-books/books/v3/expenses'
 
 # Update expense
-PUT /zoho-books/books/v3/expenses/{expense_id}
+maton api -X PUT '/zoho-books/books/v3/expenses/{expense_id}'
 
 # Delete expense
-DELETE /zoho-books/books/v3/expenses/{expense_id}
+maton api -X DELETE '/zoho-books/books/v3/expenses/{expense_id}'
 ```
 
 ### Sales Orders
 
 ```bash
-GET /zoho-books/books/v3/salesorders
-POST /zoho-books/books/v3/salesorders
+maton api '/zoho-books/books/v3/salesorders'
+maton api -X POST '/zoho-books/books/v3/salesorders'
 ```
 
 ### Purchase Orders
 
 ```bash
-GET /zoho-books/books/v3/purchaseorders
-POST /zoho-books/books/v3/purchaseorders
+maton api '/zoho-books/books/v3/purchaseorders'
+maton api -X POST '/zoho-books/books/v3/purchaseorders'
 ```
 
 ### Credit Notes
 
 ```bash
-GET /zoho-books/books/v3/creditnotes
+maton api '/zoho-books/books/v3/creditnotes'
 ```
 
 ### Recurring Invoices
 
 ```bash
-GET /zoho-books/books/v3/recurringinvoices
+maton api '/zoho-books/books/v3/recurringinvoices'
 ```
 
 ### Recurring Bills
 
 ```bash
-GET /zoho-books/books/v3/recurringbills
+maton api '/zoho-books/books/v3/recurringbills'
 ```
 
 ## Available Modules

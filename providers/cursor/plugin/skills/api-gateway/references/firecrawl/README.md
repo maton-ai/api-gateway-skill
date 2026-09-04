@@ -21,114 +21,114 @@
 
 ### Scrape Webpage
 ```bash
-POST /firecrawl/v2/scrape
+maton api -X POST '/firecrawl/v2/scrape'
 ```
 
 ### Batch Scrape
 ```bash
-POST /firecrawl/v2/batch/scrape
+maton api -X POST '/firecrawl/v2/batch/scrape'
 ```
 
 ### Get Batch Scrape Status
 ```bash
-GET /firecrawl/v2/batch/scrape/{id}
+maton api '/firecrawl/v2/batch/scrape/{id}'
 ```
 
 ### Cancel Batch Scrape
 ```bash
-DELETE /firecrawl/v2/batch/scrape/{id}
+maton api -X DELETE '/firecrawl/v2/batch/scrape/{id}'
 ```
 
 ### Get Batch Scrape Errors
 ```bash
-GET /firecrawl/v2/batch/scrape/{id}/errors
+maton api '/firecrawl/v2/batch/scrape/{id}/errors'
 ```
 
 ## Crawl Endpoints
 
 ### Start Crawl
 ```bash
-POST /firecrawl/v2/crawl
+maton api -X POST '/firecrawl/v2/crawl'
 ```
 
 ### Get Crawl Status
 ```bash
-GET /firecrawl/v2/crawl/{id}
+maton api '/firecrawl/v2/crawl/{id}'
 ```
 
 ### Cancel Crawl
 ```bash
-DELETE /firecrawl/v2/crawl/{id}
+maton api -X DELETE '/firecrawl/v2/crawl/{id}'
 ```
 
 ### Get Crawl Errors
 ```bash
-GET /firecrawl/v2/crawl/{id}/errors
+maton api '/firecrawl/v2/crawl/{id}/errors'
 ```
 
 ### Get Active Crawls
 ```bash
-GET /firecrawl/v2/crawl/active
+maton api '/firecrawl/v2/crawl/active'
 ```
 
 ## Map Endpoints
 
 ### Map Site URLs
 ```bash
-POST /firecrawl/v2/map
+maton api -X POST '/firecrawl/v2/map'
 ```
 
 ## Search Endpoints
 
 ### Search Web
 ```bash
-POST /firecrawl/v2/search
+maton api -X POST '/firecrawl/v2/search'
 ```
 
 ## Extract Endpoints
 
 ### Start Extract
 ```bash
-POST /firecrawl/v2/extract
+maton api -X POST '/firecrawl/v2/extract'
 ```
 
 ### Get Extract Status
 ```bash
-GET /firecrawl/v2/extract/{id}
+maton api '/firecrawl/v2/extract/{id}'
 ```
 
 ## Browser Endpoints
 
 ### Create Browser Session
 ```bash
-POST /firecrawl/v2/browser
+maton api -X POST '/firecrawl/v2/browser'
 ```
 
 ### List Browser Sessions
 ```bash
-GET /firecrawl/v2/browser
+maton api '/firecrawl/v2/browser'
 ```
 
 ### Delete Browser Session
 ```bash
-DELETE /firecrawl/v2/browser/{id}
+maton api -X DELETE '/firecrawl/v2/browser/{id}'
 ```
 
 ## Agent Endpoints
 
 ### Start Agent
 ```bash
-POST /firecrawl/v2/agent
+maton api -X POST '/firecrawl/v2/agent'
 ```
 
 ### Get Agent Status
 ```bash
-GET /firecrawl/v2/agent/{id}
+maton api '/firecrawl/v2/agent/{id}'
 ```
 
 ### Cancel Agent
 ```bash
-DELETE /firecrawl/v2/agent/{id}
+maton api -X DELETE '/firecrawl/v2/agent/{id}'
 ```
 
 ## Common Parameters

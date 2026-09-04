@@ -15,29 +15,29 @@
 
 ### List Accounts
 ```bash
-GET /google-analytics-admin/v1beta/accounts
+maton api '/google-analytics-admin/v1beta/accounts'
 ```
 
 ### Get Account
 ```bash
-GET /google-analytics-admin/v1beta/accounts/{accountId}
+maton api '/google-analytics-admin/v1beta/accounts/{accountId}'
 ```
 
 ### List Properties
 ```bash
-GET /google-analytics-admin/v1beta/properties?filter=parent:accounts/{accountId}
+maton api '/google-analytics-admin/v1beta/properties?filter=parent:accounts/{accountId}'
 ```
 
 ### Get Property
 ```bash
-GET /google-analytics-admin/v1beta/properties/{propertyId}
+maton api '/google-analytics-admin/v1beta/properties/{propertyId}'
 ```
 
 ### Create Property
 ```bash
-POST /google-analytics-admin/v1beta/properties
-Content-Type: application/json
-
+maton api -X POST '/google-analytics-admin/v1beta/properties' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "parent": "accounts/{accountId}",
   "displayName": "My New Property",
@@ -45,33 +45,35 @@ Content-Type: application/json
   "currencyCode": "USD",
   "industryCategory": "TECHNOLOGY"
 }
+EOF
 ```
 
 ### Update Property
 ```bash
-PATCH /google-analytics-admin/v1beta/properties/{propertyId}?updateMask=displayName
-Content-Type: application/json
-
+maton api -X PATCH '/google-analytics-admin/v1beta/properties/{propertyId}?updateMask=displayName' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "displayName": "Updated Property Name"
 }
+EOF
 ```
 
 ### List Data Streams
 ```bash
-GET /google-analytics-admin/v1beta/properties/{propertyId}/dataStreams
+maton api '/google-analytics-admin/v1beta/properties/{propertyId}/dataStreams'
 ```
 
 ### Get Data Stream
 ```bash
-GET /google-analytics-admin/v1beta/properties/{propertyId}/dataStreams/{dataStreamId}
+maton api '/google-analytics-admin/v1beta/properties/{propertyId}/dataStreams/{dataStreamId}'
 ```
 
 ### Create Web Data Stream
 ```bash
-POST /google-analytics-admin/v1beta/properties/{propertyId}/dataStreams
-Content-Type: application/json
-
+maton api -X POST '/google-analytics-admin/v1beta/properties/{propertyId}/dataStreams' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "type": "WEB_DATA_STREAM",
   "displayName": "My Website",
@@ -79,36 +81,38 @@ Content-Type: application/json
     "defaultUri": "https://example.com"
   }
 }
+EOF
 ```
 
 ### List Custom Dimensions
 ```bash
-GET /google-analytics-admin/v1beta/properties/{propertyId}/customDimensions
+maton api '/google-analytics-admin/v1beta/properties/{propertyId}/customDimensions'
 ```
 
 ### Create Custom Dimension
 ```bash
-POST /google-analytics-admin/v1beta/properties/{propertyId}/customDimensions
-Content-Type: application/json
-
+maton api -X POST '/google-analytics-admin/v1beta/properties/{propertyId}/customDimensions' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "parameterName": "user_type",
   "displayName": "User Type",
   "scope": "USER",
   "description": "Type of user (free, premium, enterprise)"
 }
+EOF
 ```
 
 ### List Custom Metrics
 ```bash
-GET /google-analytics-admin/v1beta/properties/{propertyId}/customMetrics
+maton api '/google-analytics-admin/v1beta/properties/{propertyId}/customMetrics'
 ```
 
 ### Create Custom Metric
 ```bash
-POST /google-analytics-admin/v1beta/properties/{propertyId}/customMetrics
-Content-Type: application/json
-
+maton api -X POST '/google-analytics-admin/v1beta/properties/{propertyId}/customMetrics' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "parameterName": "points_earned",
   "displayName": "Points Earned",
@@ -116,43 +120,46 @@ Content-Type: application/json
   "measurementUnit": "STANDARD",
   "description": "Number of loyalty points earned"
 }
+EOF
 ```
 
 ### List Conversion Events
 ```bash
-GET /google-analytics-admin/v1beta/properties/{propertyId}/conversionEvents
+maton api '/google-analytics-admin/v1beta/properties/{propertyId}/conversionEvents'
 ```
 
 ### Create Conversion Event
 ```bash
-POST /google-analytics-admin/v1beta/properties/{propertyId}/conversionEvents
-Content-Type: application/json
-
+maton api -X POST '/google-analytics-admin/v1beta/properties/{propertyId}/conversionEvents' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "eventName": "purchase"
 }
+EOF
 ```
 
 ### Get Measurement Protocol Secret
 ```bash
-GET /google-analytics-admin/v1beta/properties/{propertyId}/dataStreams/{dataStreamId}/measurementProtocolSecrets
+maton api '/google-analytics-admin/v1beta/properties/{propertyId}/dataStreams/{dataStreamId}/measurementProtocolSecrets'
 ```
 
 ### Create Measurement Protocol Secret
 ```bash
-POST /google-analytics-admin/v1beta/properties/{propertyId}/dataStreams/{dataStreamId}/measurementProtocolSecrets
-Content-Type: application/json
-
+maton api -X POST '/google-analytics-admin/v1beta/properties/{propertyId}/dataStreams/{dataStreamId}/measurementProtocolSecrets' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "displayName": "Server-side tracking"
 }
+EOF
 ```
 
 ## Account Summaries
 
 ### List Account Summaries
 ```bash
-GET /google-analytics-admin/v1beta/accountSummaries
+maton api '/google-analytics-admin/v1beta/accountSummaries'
 ```
 Returns a lightweight summary of all accounts and properties the user has access to.
 

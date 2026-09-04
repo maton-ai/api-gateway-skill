@@ -17,15 +17,15 @@
 
 ```bash
 # List records (fields required)
-GET /zoho-crm/crm/v8/{module_api_name}?fields={field1},{field2}
+maton api '/zoho-crm/crm/v8/{module_api_name}?fields={field1},{field2}'
 
 # Get record
-GET /zoho-crm/crm/v8/{module_api_name}/{record_id}
+maton api '/zoho-crm/crm/v8/{module_api_name}/{record_id}'
 
 # Create records
-POST /zoho-crm/crm/v8/{module_api_name}
-Content-Type: application/json
-
+maton api -X POST '/zoho-crm/crm/v8/{module_api_name}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": [
     {
@@ -33,11 +33,12 @@ Content-Type: application/json
     }
   ]
 }
+EOF
 
 # Update records
-PUT /zoho-crm/crm/v8/{module_api_name}
-Content-Type: application/json
-
+maton api -X PUT '/zoho-crm/crm/v8/{module_api_name}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": [
     {
@@ -46,67 +47,68 @@ Content-Type: application/json
     }
   ]
 }
+EOF
 
 # Delete records
-DELETE /zoho-crm/crm/v8/{module_api_name}?ids={id1},{id2}
+maton api -X DELETE '/zoho-crm/crm/v8/{module_api_name}?ids={id1},{id2}'
 ```
 
 ### Search
 
 ```bash
 # Search by criteria
-GET /zoho-crm/crm/v8/{module_api_name}/search?criteria=(Last_Name:equals:Smith)
+maton api '/zoho-crm/crm/v8/{module_api_name}/search?criteria=(Last_Name:equals:Smith)'
 
 # Search by email
-GET /zoho-crm/crm/v8/{module_api_name}/search?email=user@example.com
+maton api '/zoho-crm/crm/v8/{module_api_name}/search?email=user@example.com'
 
 # Search by phone
-GET /zoho-crm/crm/v8/{module_api_name}/search?phone=555-1234
+maton api '/zoho-crm/crm/v8/{module_api_name}/search?phone=555-1234'
 
 # Global text search
-GET /zoho-crm/crm/v8/{module_api_name}/search?word=searchterm
+maton api '/zoho-crm/crm/v8/{module_api_name}/search?word=searchterm'
 ```
 
 ### Organization
 
 ```bash
 # Get organization details
-GET /zoho-crm/crm/v8/org
+maton api '/zoho-crm/crm/v8/org'
 ```
 
 ### Users
 
 ```bash
 # List users (type: AllUsers, ActiveUsers, AdminUsers, CurrentUser, etc.)
-GET /zoho-crm/crm/v8/users?type=AllUsers
+maton api '/zoho-crm/crm/v8/users?type=AllUsers'
 
 # Get specific user
-GET /zoho-crm/crm/v8/users/{user_id}
+maton api '/zoho-crm/crm/v8/users/{user_id}'
 ```
 
 ### Settings / Metadata
 
 ```bash
 # List all modules
-GET /zoho-crm/crm/v8/settings/modules
+maton api '/zoho-crm/crm/v8/settings/modules'
 
 # Get fields for a module
-GET /zoho-crm/crm/v8/settings/fields?module={module_api_name}
+maton api '/zoho-crm/crm/v8/settings/fields?module={module_api_name}'
 
 # Get layouts for a module
-GET /zoho-crm/crm/v8/settings/layouts?module={module_api_name}
+maton api '/zoho-crm/crm/v8/settings/layouts?module={module_api_name}'
 
 # List roles
-GET /zoho-crm/crm/v8/settings/roles
+maton api '/zoho-crm/crm/v8/settings/roles'
 
 # Get specific role
-GET /zoho-crm/crm/v8/settings/roles/{role_id}
+maton api '/zoho-crm/crm/v8/settings/roles/{role_id}'
 
 # List profiles
-GET /zoho-crm/crm/v8/settings/profiles
+maton api '/zoho-crm/crm/v8/settings/profiles'
 
 # Get specific profile
-GET /zoho-crm/crm/v8/settings/profiles/{profile_id}
+maton api '/zoho-crm/crm/v8/settings/profiles/{profile_id}'
 ```
 
 ## Available Modules

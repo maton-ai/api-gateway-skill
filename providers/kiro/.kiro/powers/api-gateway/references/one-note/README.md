@@ -15,111 +15,116 @@
 
 ### List Notebooks
 ```bash
-GET /one-note/v1.0/me/onenote/notebooks
+maton api '/one-note/v1.0/me/onenote/notebooks'
 ```
 
 ### Get Notebook
 ```bash
-GET /one-note/v1.0/me/onenote/notebooks/{notebook_id}
+maton api '/one-note/v1.0/me/onenote/notebooks/{notebook_id}'
 ```
 
 ### Create Notebook
 ```bash
-POST /one-note/v1.0/me/onenote/notebooks
-Content-Type: application/json
-
+maton api -X POST '/one-note/v1.0/me/onenote/notebooks' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "displayName": "New Notebook"
 }
+EOF
 ```
 
 ### List Notebooks with Sections
 ```bash
-GET /one-note/v1.0/me/onenote/notebooks?$expand=sections,sectionGroups
+maton api '/one-note/v1.0/me/onenote/notebooks?$expand=sections,sectionGroups'
 ```
 
 ### Copy Notebook
 ```bash
-POST /one-note/v1.0/me/onenote/notebooks/{notebook_id}/copyNotebook
-Content-Type: application/json
-
+maton api -X POST '/one-note/v1.0/me/onenote/notebooks/{notebook_id}/copyNotebook' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "renameAs": "Copied Notebook"
 }
+EOF
 ```
 
 ### Get Recent Notebooks
 ```bash
-GET /one-note/v1.0/me/onenote/notebooks/getRecentNotebooks(includePersonalNotebooks=true)
+maton api '/one-note/v1.0/me/onenote/notebooks/getRecentNotebooks(includePersonalNotebooks=true)'
 ```
 
 ### List Sections
 ```bash
-GET /one-note/v1.0/me/onenote/sections
+maton api '/one-note/v1.0/me/onenote/sections'
 ```
 
 ### List Notebook Sections
 ```bash
-GET /one-note/v1.0/me/onenote/notebooks/{notebook_id}/sections
+maton api '/one-note/v1.0/me/onenote/notebooks/{notebook_id}/sections'
 ```
 
 ### Create Section
 ```bash
-POST /one-note/v1.0/me/onenote/notebooks/{notebook_id}/sections
-Content-Type: application/json
-
+maton api -X POST '/one-note/v1.0/me/onenote/notebooks/{notebook_id}/sections' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "displayName": "New Section"
 }
+EOF
 ```
 
 ### List Section Groups
 ```bash
-GET /one-note/v1.0/me/onenote/sectionGroups
+maton api '/one-note/v1.0/me/onenote/sectionGroups'
 ```
 
 ### Create Section Group
 ```bash
-POST /one-note/v1.0/me/onenote/notebooks/{notebook_id}/sectionGroups
-Content-Type: application/json
-
+maton api -X POST '/one-note/v1.0/me/onenote/notebooks/{notebook_id}/sectionGroups' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "displayName": "New Section Group"
 }
+EOF
 ```
 
 ### List Pages
 ```bash
-GET /one-note/v1.0/me/onenote/pages
+maton api '/one-note/v1.0/me/onenote/pages'
 ```
 
 ### List Section Pages
 ```bash
-GET /one-note/v1.0/me/onenote/sections/{section_id}/pages
+maton api '/one-note/v1.0/me/onenote/sections/{section_id}/pages'
 ```
 
 ### Get Page Content
 ```bash
-GET /one-note/v1.0/me/onenote/pages/{page_id}/content
+maton api '/one-note/v1.0/me/onenote/pages/{page_id}/content'
 ```
 
 ### Create Page
 ```bash
-POST /one-note/v1.0/me/onenote/sections/{section_id}/pages
-Content-Type: text/html
-
+maton api -X POST '/one-note/v1.0/me/onenote/sections/{section_id}/pages' \
+  -H 'Content-Type: text/html' \
+  --input - <<'EOF'
 <!DOCTYPE html>
 <html>
   <head><title>Page Title</title></head>
   <body><p>Content</p></body>
 </html>
+EOF
 ```
 
 ### Update Page Content
 ```bash
-PATCH /one-note/v1.0/me/onenote/pages/{page_id}/content
-Content-Type: application/json
-
+maton api -X PATCH '/one-note/v1.0/me/onenote/pages/{page_id}/content' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 [
   {
     "target": "body",
@@ -127,6 +132,7 @@ Content-Type: application/json
     "content": "<p>Appended content</p>"
   }
 ]
+EOF
 ```
 
 ## OData Query Parameters

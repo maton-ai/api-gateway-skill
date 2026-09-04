@@ -21,16 +21,16 @@ LinkedIn-Version: 202606
 
 ### Get Current User Profile
 ```bash
-GET /linkedin/rest/me
-LinkedIn-Version: 202606
+maton api '/linkedin/rest/me' \
+  -H 'LinkedIn-Version: 202606'
 ```
 
 ### Create Text Post
 ```bash
-POST /linkedin/rest/posts
-Content-Type: application/json
-LinkedIn-Version: 202606
-
+maton api -X POST '/linkedin/rest/posts' \
+  -H 'Content-Type: application/json' \
+  -H 'LinkedIn-Version: 202606' \
+  --input - <<'EOF'
 {
   "author": "urn:li:person:{personId}",
   "lifecycleState": "PUBLISHED",
@@ -40,14 +40,15 @@ LinkedIn-Version: 202606
     "feedDistribution": "MAIN_FEED"
   }
 }
+EOF
 ```
 
 ### Create Article/URL Share
 ```bash
-POST /linkedin/rest/posts
-Content-Type: application/json
-LinkedIn-Version: 202606
-
+maton api -X POST '/linkedin/rest/posts' \
+  -H 'Content-Type: application/json' \
+  -H 'LinkedIn-Version: 202606' \
+  --input - <<'EOF'
 {
   "author": "urn:li:person:{personId}",
   "lifecycleState": "PUBLISHED",
@@ -64,31 +65,33 @@ LinkedIn-Version: 202606
     }
   }
 }
+EOF
 ```
 
 ### Initialize Image Upload
 ```bash
-POST /linkedin/rest/images?action=initializeUpload
-Content-Type: application/json
-LinkedIn-Version: 202606
-
+maton api -X POST '/linkedin/rest/images?action=initializeUpload' \
+  -H 'Content-Type: application/json' \
+  -H 'LinkedIn-Version: 202606' \
+  --input - <<'EOF'
 {
   "initializeUploadRequest": {
     "owner": "urn:li:person:{personId}"
   }
 }
+EOF
 ```
 
 ### Ad Library - Search Ads
 ```bash
-GET /linkedin/rest/adLibrary?q=criteria&keyword=linkedin
-LinkedIn-Version: 202606
+maton api '/linkedin/rest/adLibrary?q=criteria&keyword=linkedin' \
+  -H 'LinkedIn-Version: 202606'
 ```
 
 ### Job Library - Search Jobs
 ```bash
-GET /linkedin/rest/jobLibrary?q=criteria&keyword=software
-LinkedIn-Version: 202606
+maton api '/linkedin/rest/jobLibrary?q=criteria&keyword=software' \
+  -H 'LinkedIn-Version: 202606'
 ```
 
 ## Marketing API (Advertising)
@@ -100,90 +103,93 @@ LinkedIn-Version: 202606
 
 ### List Ad Accounts
 ```bash
-GET /linkedin/rest/adAccounts?q=search
+maton api '/linkedin/rest/adAccounts?q=search'
 ```
 
 ### Get Ad Account
 ```bash
-GET /linkedin/rest/adAccounts/{adAccountId}
+maton api '/linkedin/rest/adAccounts/{adAccountId}'
 ```
 
 ### Create Ad Account
 ```bash
-POST /linkedin/rest/adAccounts
-Content-Type: application/json
-
+maton api -X POST '/linkedin/rest/adAccounts' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Ad Account Name",
   "currency": "USD",
   "reference": "urn:li:organization:{orgId}",
   "type": "BUSINESS"
 }
+EOF
 ```
 
 ### List Campaign Groups
 ```bash
-GET /linkedin/rest/adAccounts/{adAccountId}/adCampaignGroups
+maton api '/linkedin/rest/adAccounts/{adAccountId}/adCampaignGroups'
 ```
 
 ### Create Campaign Group
 ```bash
-POST /linkedin/rest/adAccounts/{adAccountId}/adCampaignGroups
-Content-Type: application/json
-
+maton api -X POST '/linkedin/rest/adAccounts/{adAccountId}/adCampaignGroups' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Campaign Group Name",
   "status": "DRAFT"
 }
+EOF
 ```
 
 ### Get Campaign Group
 ```bash
-GET /linkedin/rest/adAccounts/{adAccountId}/adCampaignGroups/{campaignGroupId}
+maton api '/linkedin/rest/adAccounts/{adAccountId}/adCampaignGroups/{campaignGroupId}'
 ```
 
 ### List Campaigns
 ```bash
-GET /linkedin/rest/adAccounts/{adAccountId}/adCampaigns
+maton api '/linkedin/rest/adAccounts/{adAccountId}/adCampaigns'
 ```
 
 ### Create Campaign
 ```bash
-POST /linkedin/rest/adAccounts/{adAccountId}/adCampaigns
-Content-Type: application/json
-
+maton api -X POST '/linkedin/rest/adAccounts/{adAccountId}/adCampaigns' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "campaignGroup": "urn:li:sponsoredCampaignGroup:{groupId}",
   "name": "Campaign Name",
   "status": "DRAFT",
   "objectiveType": "BRAND_AWARENESS"
 }
+EOF
 ```
 
 ### Get Campaign
 ```bash
-GET /linkedin/rest/adAccounts/{adAccountId}/adCampaigns/{campaignId}
+maton api '/linkedin/rest/adAccounts/{adAccountId}/adCampaigns/{campaignId}'
 ```
 
 ### List Organization ACLs
 ```bash
-GET /linkedin/rest/organizationAcls?q=roleAssignee
-LinkedIn-Version: 202606
+maton api '/linkedin/rest/organizationAcls?q=roleAssignee' \
+  -H 'LinkedIn-Version: 202606'
 ```
 
 ### Lookup Organization by Vanity Name
 ```bash
-GET /linkedin/rest/organizations?q=vanityName&vanityName=microsoft
+maton api '/linkedin/rest/organizations?q=vanityName&vanityName=microsoft'
 ```
 
 ### Get Organization Share Statistics
 ```bash
-GET /linkedin/rest/organizationalEntityShareStatistics?q=organizationalEntity&organizationalEntity=urn:li:organization:12345
+maton api '/linkedin/rest/organizationalEntityShareStatistics?q=organizationalEntity&organizationalEntity=urn:li:organization:12345'
 ```
 
 ### Get Organization Posts
 ```bash
-GET /linkedin/rest/posts?q=author&author=urn:li:organization:12345
+maton api '/linkedin/rest/posts?q=author&author=urn:li:organization:12345'
 ```
 
 ## Media Upload
@@ -200,11 +206,12 @@ GET /linkedin/rest/posts?q=author&author=urn:li:organization:12345
 
 ### Initialize Image Upload
 ```bash
-POST /linkedin/rest/images?action=initializeUpload
-Content-Type: application/json
-LinkedIn-Version: 202606
-
+maton api -X POST '/linkedin/rest/images?action=initializeUpload' \
+  -H 'Content-Type: application/json' \
+  -H 'LinkedIn-Version: 202606' \
+  --input - <<'EOF'
 {"initializeUploadRequest": {"owner": "urn:li:person:{personId}"}}
+EOF
 ```
 
 ### Video Upload (4-step process)
@@ -214,14 +221,14 @@ Video uploads require: initialize → upload binary → finalize → create post
 **Complete working example:**
 ```bash
 python <<'EOF'
-import json, os, subprocess, urllib.request
+import json, os, urllib.request
 
 GATEWAY = 'https://api.maton.ai'
-TOKEN = subprocess.run(
-    ["maton", "token"], capture_output=True, text=True, check=True
-).stdout.strip()
+# Maton API key from the environment; never print, log, or persist it.
+TOKEN = os.environ["MATON_API_KEY"]
 HEADERS = {
     'Authorization': f'Bearer {TOKEN}',
+    'User-Agent': 'maton-gateway-skill/1.2',
     'Content-Type': 'application/json',
     'LinkedIn-Version': '202606',
     'X-Restli-Protocol-Version': '2.0.0',
@@ -283,19 +290,20 @@ EOF
 
 ### Initialize Document Upload
 ```bash
-POST /linkedin/rest/documents?action=initializeUpload
-Content-Type: application/json
-LinkedIn-Version: 202606
-
+maton api -X POST '/linkedin/rest/documents?action=initializeUpload' \
+  -H 'Content-Type: application/json' \
+  -H 'LinkedIn-Version: 202606' \
+  --input - <<'EOF'
 {"initializeUploadRequest": {"owner": "urn:li:person:{personId}"}}
+EOF
 ```
 
 ## Ad Targeting
 
 ### Get Targeting Facets
 ```bash
-GET /linkedin/rest/adTargetingFacets
-LinkedIn-Version: 202606
+maton api '/linkedin/rest/adTargetingFacets' \
+  -H 'LinkedIn-Version: 202606'
 ```
 
 Returns 31 targeting facets (skills, industries, titles, locations, etc.)

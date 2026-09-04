@@ -26,7 +26,7 @@ Before using v1 endpoints, you must complete a one-time registration:
 Try listing accounts using the v1beta endpoint. If this works, you can get your account ID automatically:
 
 ```bash
-GET /google-merchant/accounts/v1beta/accounts
+maton api '/google-merchant/accounts/v1beta/accounts'
 ```
 
 Response (if successful):
@@ -50,12 +50,13 @@ For example, if your URL is `https://merchants.google.com/mc/overview?a=12345678
 ### Step 2: Register for API Access
 
 ```bash
-POST /google-merchant/accounts/v1/accounts/{accountId}/developerRegistration:registerGcp
-Content-Type: application/json
-
+maton api -X POST '/google-merchant/accounts/v1/accounts/{accountId}/developerRegistration:registerGcp' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "developerEmail": "your-email@example.com"
 }
+EOF
 ```
 
 Replace `{accountId}` with your account ID from Step 1, and use the email associated with your Google account.
@@ -73,7 +74,7 @@ Replace `{accountId}` with your account ID from Step 1, and use the email associ
 After registration, test that v1 endpoints work:
 
 ```bash
-GET /google-merchant/accounts/v1/accounts/{accountId}
+maton api '/google-merchant/accounts/v1/accounts/{accountId}'
 ```
 
 **Note:** Registration only needs to be done once per Merchant Center account. After successful registration, all v1 endpoints will work for that account.
@@ -82,26 +83,26 @@ GET /google-merchant/accounts/v1/accounts/{accountId}
 
 ### List Accounts
 ```bash
-GET /google-merchant/accounts/v1/accounts
+maton api '/google-merchant/accounts/v1/accounts'
 ```
 
 ### List Products
 ```bash
-GET /google-merchant/products/v1/accounts/{accountId}/products
+maton api '/google-merchant/products/v1/accounts/{accountId}/products'
 ```
 
 ### Get Product
 ```bash
-GET /google-merchant/products/v1/accounts/{accountId}/products/{productId}
+maton api '/google-merchant/products/v1/accounts/{accountId}/products/{productId}'
 ```
 
 Product ID format: `contentLanguage~feedLabel~offerId` (e.g., `en~US~sku123`)
 
 ### Insert Product Input
 ```bash
-POST /google-merchant/products/v1/accounts/{accountId}/productInputs:insert?dataSource=accounts/{accountId}/dataSources/{dataSourceId}
-Content-Type: application/json
-
+maton api -X POST '/google-merchant/products/v1/accounts/{accountId}/productInputs:insert?dataSource=accounts/{accountId}/dataSources/{dataSourceId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "offerId": "sku123",
   "contentLanguage": "en",
@@ -114,50 +115,52 @@ Content-Type: application/json
     "price": {"amountMicros": "19990000", "currencyCode": "USD"}
   }
 }
+EOF
 ```
 
 ### Delete Product Input
 ```bash
-DELETE /google-merchant/products/v1/accounts/{accountId}/productInputs/{productId}?dataSource=accounts/{accountId}/dataSources/{dataSourceId}
+maton api -X DELETE '/google-merchant/products/v1/accounts/{accountId}/productInputs/{productId}?dataSource=accounts/{accountId}/dataSources/{dataSourceId}'
 ```
 
 ### List Data Sources
 ```bash
-GET /google-merchant/datasources/v1/accounts/{accountId}/dataSources
+maton api '/google-merchant/datasources/v1/accounts/{accountId}/dataSources'
 ```
 
 ### Search Reports
 ```bash
-POST /google-merchant/reports/v1/accounts/{accountId}/reports:search
-Content-Type: application/json
-
+maton api -X POST '/google-merchant/reports/v1/accounts/{accountId}/reports:search' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "SELECT id, offer_id, title FROM product_view LIMIT 10"
 }
+EOF
 ```
 
 Note: The `product_view` table requires the `id` field in SELECT clause.
 
 ### List Promotions
 ```bash
-GET /google-merchant/promotions/v1/accounts/{accountId}/promotions
+maton api '/google-merchant/promotions/v1/accounts/{accountId}/promotions'
 ```
 
 Note: Requires Promotions program enrollment.
 
 ### Get Account
 ```bash
-GET /google-merchant/accounts/v1/accounts/{accountId}
+maton api '/google-merchant/accounts/v1/accounts/{accountId}'
 ```
 
 ### List Regional Inventories
 ```bash
-GET /google-merchant/inventories/v1/accounts/{accountId}/products/{productId}/regionalInventories
+maton api '/google-merchant/inventories/v1/accounts/{accountId}/products/{productId}/regionalInventories'
 ```
 
 ### List Local Inventories
 ```bash
-GET /google-merchant/inventories/v1/accounts/{accountId}/products/{productId}/localInventories
+maton api '/google-merchant/inventories/v1/accounts/{accountId}/products/{productId}/localInventories'
 ```
 
 Note: Local inventories only work for products with LOCAL channel.

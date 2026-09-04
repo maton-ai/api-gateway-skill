@@ -33,96 +33,97 @@ Distinguish the `403` bodies: `{"message":"Invalid scope"}` means the endpoint i
 
 ### Get Authenticated User
 ```bash
-GET /figma/v1/me
+maton api '/figma/v1/me'
 ```
 
 ### Get File
 ```bash
-GET /figma/v1/files/{file_key}?depth=1
+maton api '/figma/v1/files/{file_key}?depth=1'
 ```
 
 Query params: `version`, `ids`, `depth`, `geometry`, `plugin_data`, `branch_data`. Full responses are very large — start with `depth=1`, then fetch specific nodes.
 
 ### Get File Nodes
 ```bash
-GET /figma/v1/files/{file_key}/nodes?ids={node_id_1},{node_id_2}
+maton api '/figma/v1/files/{file_key}/nodes?ids={node_id_1},{node_id_2}'
 ```
 
 ### Get File Metadata
 ```bash
-GET /figma/v1/files/{file_key}/meta
+maton api '/figma/v1/files/{file_key}/meta'
 ```
 
 ### Get File Version History
 ```bash
-GET /figma/v1/files/{file_key}/versions
+maton api '/figma/v1/files/{file_key}/versions'
 ```
 
 ### Render Nodes as Images
 ```bash
-GET /figma/v1/images/{file_key}?ids={node_id}&format=png&scale=2
+maton api '/figma/v1/images/{file_key}?ids={node_id}&format=png&scale=2'
 ```
 
 Formats: `jpg`, `png`, `svg`, `pdf`. Returns temporary S3 URLs.
 
 ### Get Image Fills
 ```bash
-GET /figma/v1/files/{file_key}/images
+maton api '/figma/v1/files/{file_key}/images'
 ```
 
 ### Get Comments
 ```bash
-GET /figma/v1/files/{file_key}/comments
-GET /figma/v1/files/{file_key}/comments?as_md=true
+maton api '/figma/v1/files/{file_key}/comments'
+maton api '/figma/v1/files/{file_key}/comments?as_md=true'
 ```
 
 ### Post Comment
 ```bash
-POST /figma/v1/files/{file_key}/comments
-Content-Type: application/json
-
+maton api -X POST '/figma/v1/files/{file_key}/comments' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "message": "Comment text"
 }
+EOF
 ```
 
 Optional: `comment_id` to reply in a thread, `client_meta` to pin to a coordinate or region.
 
 ### Delete Comment
 ```bash
-DELETE /figma/v1/files/{file_key}/comments/{comment_id}
+maton api -X DELETE '/figma/v1/files/{file_key}/comments/{comment_id}'
 ```
 
 Only the comment's author may delete it.
 
 ### Comment Reactions
 ```bash
-GET    /figma/v1/files/{file_key}/comments/{comment_id}/reactions
-POST   /figma/v1/files/{file_key}/comments/{comment_id}/reactions
-DELETE /figma/v1/files/{file_key}/comments/{comment_id}/reactions?emoji=:eyes:
+maton api '/figma/v1/files/{file_key}/comments/{comment_id}/reactions'
+maton api -X POST '/figma/v1/files/{file_key}/comments/{comment_id}/reactions'
+maton api -X DELETE '/figma/v1/files/{file_key}/comments/{comment_id}/reactions?emoji=:eyes:'
 ```
 
 ### Components, Component Sets, Styles
 ```bash
-GET /figma/v1/files/{file_key}/components
-GET /figma/v1/files/{file_key}/component_sets
-GET /figma/v1/files/{file_key}/styles
-GET /figma/v1/teams/{team_id}/components?page_size=30
-GET /figma/v1/teams/{team_id}/component_sets?page_size=30
-GET /figma/v1/teams/{team_id}/styles?page_size=30
-GET /figma/v1/components/{key}
-GET /figma/v1/component_sets/{key}
-GET /figma/v1/styles/{key}
+maton api '/figma/v1/files/{file_key}/components'
+maton api '/figma/v1/files/{file_key}/component_sets'
+maton api '/figma/v1/files/{file_key}/styles'
+maton api '/figma/v1/teams/{team_id}/components?page_size=30'
+maton api '/figma/v1/teams/{team_id}/component_sets?page_size=30'
+maton api '/figma/v1/teams/{team_id}/styles?page_size=30'
+maton api '/figma/v1/components/{key}'
+maton api '/figma/v1/component_sets/{key}'
+maton api '/figma/v1/styles/{key}'
 ```
 
 File-scoped variants require a **main file key, not a branch key**.
 
 ### Dev Resources
 ```bash
-GET    /figma/v1/files/{file_key}/dev_resources?node_ids={node_id}
-POST   /figma/v1/dev_resources
-PUT    /figma/v1/dev_resources
-DELETE /figma/v1/files/{file_key}/dev_resources/{dev_resource_id}
+maton api '/figma/v1/files/{file_key}/dev_resources?node_ids={node_id}'
+maton api -X POST '/figma/v1/dev_resources'
+maton api -X PUT '/figma/v1/dev_resources'
+maton api -X DELETE '/figma/v1/files/{file_key}/dev_resources/{dev_resource_id}'
 ```
 
 Create and update take a `dev_resources` array; the file is identified inside each element, not in the path.

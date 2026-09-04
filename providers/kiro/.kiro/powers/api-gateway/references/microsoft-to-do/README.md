@@ -19,56 +19,58 @@ All Microsoft To Do endpoints use the Microsoft Graph API under the `/me/todo/` 
 
 #### List All Task Lists
 ```bash
-GET /microsoft-to-do/v1.0/me/todo/lists
+maton api '/microsoft-to-do/v1.0/me/todo/lists'
 ```
 
 #### Get Task List
 ```bash
-GET /microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}
+maton api '/microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}'
 ```
 
 #### Create Task List
 ```bash
-POST /microsoft-to-do/v1.0/me/todo/lists
-Content-Type: application/json
-
+maton api -X POST '/microsoft-to-do/v1.0/me/todo/lists' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "displayName": "My New List"
 }
+EOF
 ```
 
 #### Update Task List
 ```bash
-PATCH /microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}
-Content-Type: application/json
-
+maton api -X PATCH '/microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "displayName": "Updated List Name"
 }
+EOF
 ```
 
 #### Delete Task List
 ```bash
-DELETE /microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}
+maton api -X DELETE '/microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}'
 ```
 
 ### Tasks
 
 #### List Tasks
 ```bash
-GET /microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks
+maton api '/microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks'
 ```
 
 #### Get Task
 ```bash
-GET /microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks/{taskId}
+maton api '/microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks/{taskId}'
 ```
 
 #### Create Task
 ```bash
-POST /microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks
-Content-Type: application/json
-
+maton api -X POST '/microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "title": "New Task",
   "importance": "high",
@@ -78,77 +80,82 @@ Content-Type: application/json
     "timeZone": "UTC"
   }
 }
+EOF
 ```
 
 #### Update Task
 ```bash
-PATCH /microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks/{taskId}
-Content-Type: application/json
-
+maton api -X PATCH '/microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks/{taskId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "status": "completed"
 }
+EOF
 ```
 
 #### Delete Task
 ```bash
-DELETE /microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks/{taskId}
+maton api -X DELETE '/microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks/{taskId}'
 ```
 
 ### Checklist Items
 
 #### List Checklist Items
 ```bash
-GET /microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks/{taskId}/checklistItems
+maton api '/microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks/{taskId}/checklistItems'
 ```
 
 #### Create Checklist Item
 ```bash
-POST /microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks/{taskId}/checklistItems
-Content-Type: application/json
-
+maton api -X POST '/microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks/{taskId}/checklistItems' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "displayName": "Subtask name"
 }
+EOF
 ```
 
 #### Update Checklist Item
 ```bash
-PATCH /microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks/{taskId}/checklistItems/{checklistItemId}
-Content-Type: application/json
-
+maton api -X PATCH '/microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks/{taskId}/checklistItems/{checklistItemId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "isChecked": true
 }
+EOF
 ```
 
 #### Delete Checklist Item
 ```bash
-DELETE /microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks/{taskId}/checklistItems/{checklistItemId}
+maton api -X DELETE '/microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks/{taskId}/checklistItems/{checklistItemId}'
 ```
 
 ### Linked Resources
 
 #### List Linked Resources
 ```bash
-GET /microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks/{taskId}/linkedResources
+maton api '/microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks/{taskId}/linkedResources'
 ```
 
 #### Create Linked Resource
 ```bash
-POST /microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks/{taskId}/linkedResources
-Content-Type: application/json
-
+maton api -X POST '/microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks/{taskId}/linkedResources' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "webUrl": "https://example.com/item",
   "applicationName": "MyApp",
   "displayName": "Related Item"
 }
+EOF
 ```
 
 #### Delete Linked Resource
 ```bash
-DELETE /microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks/{taskId}/linkedResources/{linkedResourceId}
+maton api -X DELETE '/microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks/{taskId}/linkedResources/{linkedResourceId}'
 ```
 
 ## Notes

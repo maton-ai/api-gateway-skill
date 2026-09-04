@@ -19,107 +19,109 @@ All paths must end with `.json`.
 
 ### Get Current User
 ```bash
-GET /basecamp/my/profile.json
+maton api '/basecamp/my/profile.json'
 ```
 
 ### List People
 ```bash
-GET /basecamp/people.json
+maton api '/basecamp/people.json'
 ```
 
 ### List Projects
 ```bash
-GET /basecamp/projects.json
+maton api '/basecamp/projects.json'
 ```
 
 ### Get Project
 ```bash
-GET /basecamp/projects/{project_id}.json
+maton api '/basecamp/projects/{project_id}.json'
 ```
 
 Returns project with `dock` array containing tool IDs.
 
 ### Create Project
 ```bash
-POST /basecamp/projects.json
-Content-Type: application/json
-
+maton api -X POST '/basecamp/projects.json' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Project Name",
   "description": "Description"
 }
+EOF
 ```
 
 ### Get Todoset
 ```bash
-GET /basecamp/buckets/{project_id}/todosets/{todoset_id}.json
+maton api '/basecamp/buckets/{project_id}/todosets/{todoset_id}.json'
 ```
 
 ### List Todolists
 ```bash
-GET /basecamp/buckets/{project_id}/todosets/{todoset_id}/todolists.json
+maton api '/basecamp/buckets/{project_id}/todosets/{todoset_id}/todolists.json'
 ```
 
 ### List Todos
 ```bash
-GET /basecamp/buckets/{project_id}/todolists/{todolist_id}/todos.json
+maton api '/basecamp/buckets/{project_id}/todolists/{todolist_id}/todos.json'
 ```
 
 ### Create Todo
 ```bash
-POST /basecamp/buckets/{project_id}/todolists/{todolist_id}/todos.json
-Content-Type: application/json
-
+maton api -X POST '/basecamp/buckets/{project_id}/todolists/{todolist_id}/todos.json' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "content": "Todo content",
   "due_on": "2026-02-15",
   "assignee_ids": [123]
 }
+EOF
 ```
 
 ### Complete Todo
 ```bash
-POST /basecamp/buckets/{project_id}/todos/{todo_id}/completion.json
+maton api -X POST '/basecamp/buckets/{project_id}/todos/{todo_id}/completion.json'
 ```
 
 ### Get Message Board
 ```bash
-GET /basecamp/buckets/{project_id}/message_boards/{message_board_id}.json
+maton api '/basecamp/buckets/{project_id}/message_boards/{message_board_id}.json'
 ```
 
 ### List Messages
 ```bash
-GET /basecamp/buckets/{project_id}/message_boards/{message_board_id}/messages.json
+maton api '/basecamp/buckets/{project_id}/message_boards/{message_board_id}/messages.json'
 ```
 
 ### Get Schedule
 ```bash
-GET /basecamp/buckets/{project_id}/schedules/{schedule_id}.json
+maton api '/basecamp/buckets/{project_id}/schedules/{schedule_id}.json'
 ```
 
 ### List Schedule Entries
 ```bash
-GET /basecamp/buckets/{project_id}/schedules/{schedule_id}/entries.json
+maton api '/basecamp/buckets/{project_id}/schedules/{schedule_id}/entries.json'
 ```
 
 ### Get Vault (Documents)
 ```bash
-GET /basecamp/buckets/{project_id}/vaults/{vault_id}.json
+maton api '/basecamp/buckets/{project_id}/vaults/{vault_id}.json'
 ```
 
 ### List Documents
 ```bash
-GET /basecamp/buckets/{project_id}/vaults/{vault_id}/documents.json
+maton api '/basecamp/buckets/{project_id}/vaults/{vault_id}/documents.json'
 ```
 
 ### List Campfires
 ```bash
-GET /basecamp/chats.json
+maton api '/basecamp/chats.json'
 ```
 
 ### Trash Recording
 ```bash
-PUT /basecamp/buckets/{project_id}/recordings/{recording_id}/status/trashed.json
+maton api -X PUT '/basecamp/buckets/{project_id}/recordings/{recording_id}/status/trashed.json'
 ```
 
 ## Key Concepts

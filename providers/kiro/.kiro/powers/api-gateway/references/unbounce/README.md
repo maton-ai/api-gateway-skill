@@ -32,74 +32,74 @@
 
 ### List Accounts
 ```bash
-GET /unbounce/accounts
+maton api '/unbounce/accounts'
 ```
 
 ### Get Account
 ```bash
-GET /unbounce/accounts/{account_id}
+maton api '/unbounce/accounts/{account_id}'
 ```
 
 ### List Sub-Accounts
 ```bash
-GET /unbounce/accounts/{account_id}/sub_accounts
+maton api '/unbounce/accounts/{account_id}/sub_accounts'
 ```
 
 ### Get Sub-Account
 ```bash
-GET /unbounce/sub_accounts/{sub_account_id}
+maton api '/unbounce/sub_accounts/{sub_account_id}'
 ```
 
 ### List Pages
 ```bash
-GET /unbounce/pages
+maton api '/unbounce/pages'
 ```
 
 ### Get Page
 ```bash
-GET /unbounce/pages/{page_id}
+maton api '/unbounce/pages/{page_id}'
 ```
 
 ### List Page Form Fields
 ```bash
-GET /unbounce/pages/{page_id}/form_fields
+maton api '/unbounce/pages/{page_id}/form_fields'
 ```
 
 ### List Page Leads
 ```bash
-GET /unbounce/pages/{page_id}/leads
+maton api '/unbounce/pages/{page_id}/leads'
 ```
 
 ### Get Lead
 ```bash
-GET /unbounce/leads/{lead_id}
+maton api '/unbounce/leads/{lead_id}'
 ```
 
 ### List Domains
 ```bash
-GET /unbounce/sub_accounts/{sub_account_id}/domains
+maton api '/unbounce/sub_accounts/{sub_account_id}/domains'
 ```
 
 ### Get Domain
 ```bash
-GET /unbounce/domains/{domain_id}
+maton api '/unbounce/domains/{domain_id}'
 ```
 
 ### List Page Groups
 ```bash
-GET /unbounce/sub_accounts/{sub_account_id}/page_groups
+maton api '/unbounce/sub_accounts/{sub_account_id}/page_groups'
 ```
 
 ### List Page Group Pages
 ```bash
-GET /unbounce/page_groups/{page_group_id}/pages
+maton api '/unbounce/page_groups/{page_group_id}/pages'
 ```
 
 ### Create Lead
 ```bash
-POST /unbounce/pages/{page_id}/leads
-Content-Type: application/json
-
+maton api -X POST '/unbounce/pages/{page_id}/leads' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "conversion": true,
   "visitor_id": "unique-visitor-id",
@@ -112,16 +112,17 @@ Content-Type: application/json
     }
   }
 }
+EOF
 ```
 
 ### Get Current User
 ```bash
-GET /unbounce/users/self
+maton api '/unbounce/users/self'
 ```
 
 ### Get User
 ```bash
-GET /unbounce/users/{user_id}
+maton api '/unbounce/users/{user_id}'
 ```
 
 ## Query Parameters

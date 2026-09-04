@@ -24,12 +24,12 @@ All requests require these headers in addition to the Authorization header:
 
 ### Get Current Member Profile
 ```bash
-GET /linkedin-community-management/rest/me
+maton api '/linkedin-community-management/rest/me'
 ```
 
 ### Get Person by ID
 ```bash
-GET /linkedin-community-management/rest/people/(id:{personId})
+maton api '/linkedin-community-management/rest/people/(id:{personId})'
 ```
 
 Returns profile fields: `id`, `firstName`, `lastName`, `vanityName`, `localizedFirstName`, `localizedLastName`, `localizedHeadline`, `headline`, `profilePicture`.
@@ -38,34 +38,34 @@ Non-connected members may return `{"id": "private"}`.
 
 Use `fields` query param to request a single field:
 ```bash
-GET /linkedin-community-management/rest/people/(id:{personId})?fields=localizedHeadline
+maton api '/linkedin-community-management/rest/people/(id:{personId})?fields=localizedHeadline'
 ```
 
 ### Find Organization by Vanity Name
 ```bash
-GET /linkedin-community-management/rest/organizations?q=vanityName&vanityName={name}
+maton api '/linkedin-community-management/rest/organizations?q=vanityName&vanityName={name}'
 ```
 
 ### Get Organization by ID
 ```bash
-GET /linkedin-community-management/rest/organizations/{orgId}
+maton api '/linkedin-community-management/rest/organizations/{orgId}'
 ```
 
 ### Get Organization Follower Count
 ```bash
-GET /linkedin-community-management/rest/networkSizes/urn%3Ali%3Aorganization%3A{orgId}?edgeType=COMPANY_FOLLOWED_BY_MEMBER
+maton api '/linkedin-community-management/rest/networkSizes/urn%3Ali%3Aorganization%3A{orgId}?edgeType=COMPANY_FOLLOWED_BY_MEMBER'
 ```
 
 ### Find Administered Organizations
 ```bash
-GET /linkedin-community-management/rest/organizationAcls?q=roleAssignee&role=ADMINISTRATOR&state=APPROVED
+maton api '/linkedin-community-management/rest/organizationAcls?q=roleAssignee&role=ADMINISTRATOR&state=APPROVED'
 ```
 
 ### Create a Post
 ```bash
-POST /linkedin-community-management/rest/posts
-Content-Type: application/json
-
+maton api -X POST '/linkedin-community-management/rest/posts' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "author": "urn:li:organization:{orgId}",
   "commentary": "Post text",
@@ -74,82 +74,86 @@ Content-Type: application/json
   "lifecycleState": "PUBLISHED",
   "isReshareDisabledByAuthor": false
 }
+EOF
 ```
 
 ### Get Post by URN
 ```bash
-GET /linkedin-community-management/rest/posts/{encoded_postUrn}
+maton api '/linkedin-community-management/rest/posts/{encoded_postUrn}'
 ```
 
 ### Find Posts by Author
 ```bash
-GET /linkedin-community-management/rest/posts?author={encoded_orgUrn}&q=author&count=10&sortBy=LAST_MODIFIED
-X-RestLi-Method: FINDER
+maton api '/linkedin-community-management/rest/posts?author={encoded_orgUrn}&q=author&count=10&sortBy=LAST_MODIFIED' \
+  -H 'X-RestLi-Method: FINDER'
 ```
 
 ### Update a Post
 ```bash
-POST /linkedin-community-management/rest/posts/{encoded_postUrn}
-X-RestLi-Method: PARTIAL_UPDATE
-Content-Type: application/json
-
+maton api -X POST '/linkedin-community-management/rest/posts/{encoded_postUrn}' \
+  -H 'X-RestLi-Method: PARTIAL_UPDATE' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"patch": {"$set": {"commentary": "Updated text"}}}
+EOF
 ```
 
 ### Delete a Post
 ```bash
-DELETE /linkedin-community-management/rest/posts/{encoded_postUrn}
-X-RestLi-Method: DELETE
+maton api -X DELETE '/linkedin-community-management/rest/posts/{encoded_postUrn}' \
+  -H 'X-RestLi-Method: DELETE'
 ```
 
 ### Get Comments on a Post
 ```bash
-GET /linkedin-community-management/rest/socialActions/{encoded_postUrn}/comments
+maton api '/linkedin-community-management/rest/socialActions/{encoded_postUrn}/comments'
 ```
 
 ### Create a Comment
 ```bash
-POST /linkedin-community-management/rest/socialActions/{encoded_postUrn}/comments
-Content-Type: application/json
-
+maton api -X POST '/linkedin-community-management/rest/socialActions/{encoded_postUrn}/comments' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "actor": "urn:li:organization:{orgId}",
   "object": "urn:li:activity:{activityId}",
   "message": {"text": "Comment text"}
 }
+EOF
 ```
 
 ### Delete a Comment
 ```bash
-DELETE /linkedin-community-management/rest/socialActions/{encoded_postUrn}/comments/{commentId}?actor={encoded_actorUrn}
+maton api -X DELETE '/linkedin-community-management/rest/socialActions/{encoded_postUrn}/comments/{commentId}?actor={encoded_actorUrn}'
 ```
 
 ### Create a Reaction
 ```bash
-POST /linkedin-community-management/rest/reactions?actor={encoded_actorUrn}
-Content-Type: application/json
-
+maton api -X POST '/linkedin-community-management/rest/reactions?actor={encoded_actorUrn}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"root": "urn:li:activity:{activityId}", "reactionType": "LIKE"}
+EOF
 ```
 
 ### Delete a Reaction
 ```bash
-DELETE /linkedin-community-management/rest/reactions/(actor:{encoded_actorUrn},entity:{encoded_entityUrn})
+maton api -X DELETE '/linkedin-community-management/rest/reactions/(actor:{encoded_actorUrn},entity:{encoded_entityUrn})'
 ```
 
 ### Follower Statistics (Lifetime)
 ```bash
-GET /linkedin-community-management/rest/organizationalEntityFollowerStatistics?q=organizationalEntity&organizationalEntity={encoded_orgUrn}
+maton api '/linkedin-community-management/rest/organizationalEntityFollowerStatistics?q=organizationalEntity&organizationalEntity={encoded_orgUrn}'
 ```
 
 ### Page Statistics
 ```bash
-GET /linkedin-community-management/rest/organizationPageStatistics?q=organization&organization={encoded_orgUrn}
+maton api '/linkedin-community-management/rest/organizationPageStatistics?q=organization&organization={encoded_orgUrn}'
 ```
 
 ### Share Statistics
 ```bash
-GET /linkedin-community-management/rest/organizationalEntityShareStatistics?q=organizationalEntity&organizationalEntity={encoded_orgUrn}
+maton api '/linkedin-community-management/rest/organizationalEntityShareStatistics?q=organizationalEntity&organizationalEntity={encoded_orgUrn}'
 ```
 
 ## Notes

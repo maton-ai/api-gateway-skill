@@ -15,10 +15,11 @@
 
 ### Create Space
 ```bash
-POST /google-meet/v2/spaces
-Content-Type: application/json
-
+maton api -X POST '/google-meet/v2/spaces' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {}
+EOF
 ```
 
 Response:
@@ -36,74 +37,75 @@ Response:
 
 ### Get Space
 ```bash
-GET /google-meet/v2/spaces/{spaceId}
+maton api '/google-meet/v2/spaces/{spaceId}'
 ```
 
 ### Update Space
 ```bash
-PATCH /google-meet/v2/spaces/{spaceId}
-Content-Type: application/json
-
+maton api -X PATCH '/google-meet/v2/spaces/{spaceId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "config": {
     "accessType": "TRUSTED"
   }
 }
+EOF
 ```
 
 ### End Active Call
 ```bash
-POST /google-meet/v2/spaces/{spaceId}:endActiveConference
+maton api -X POST '/google-meet/v2/spaces/{spaceId}:endActiveConference'
 ```
 
 ### List Conference Records
 ```bash
-GET /google-meet/v2/conferenceRecords
+maton api '/google-meet/v2/conferenceRecords'
 ```
 
 With filter:
 ```bash
-GET /google-meet/v2/conferenceRecords?filter=space.name="spaces/abc123"
+maton api '/google-meet/v2/conferenceRecords?filter=space.name="spaces/abc123"'
 ```
 
 ### Get Conference Record
 ```bash
-GET /google-meet/v2/conferenceRecords/{conferenceRecordId}
+maton api '/google-meet/v2/conferenceRecords/{conferenceRecordId}'
 ```
 
 ### List Participants
 ```bash
-GET /google-meet/v2/conferenceRecords/{conferenceRecordId}/participants
+maton api '/google-meet/v2/conferenceRecords/{conferenceRecordId}/participants'
 ```
 
 ### Get Participant
 ```bash
-GET /google-meet/v2/conferenceRecords/{conferenceRecordId}/participants/{participantId}
+maton api '/google-meet/v2/conferenceRecords/{conferenceRecordId}/participants/{participantId}'
 ```
 
 ### List Recordings
 ```bash
-GET /google-meet/v2/conferenceRecords/{conferenceRecordId}/recordings
+maton api '/google-meet/v2/conferenceRecords/{conferenceRecordId}/recordings'
 ```
 
 ### Get Recording
 ```bash
-GET /google-meet/v2/conferenceRecords/{conferenceRecordId}/recordings/{recordingId}
+maton api '/google-meet/v2/conferenceRecords/{conferenceRecordId}/recordings/{recordingId}'
 ```
 
 ### List Transcripts
 ```bash
-GET /google-meet/v2/conferenceRecords/{conferenceRecordId}/transcripts
+maton api '/google-meet/v2/conferenceRecords/{conferenceRecordId}/transcripts'
 ```
 
 ### Get Transcript
 ```bash
-GET /google-meet/v2/conferenceRecords/{conferenceRecordId}/transcripts/{transcriptId}
+maton api '/google-meet/v2/conferenceRecords/{conferenceRecordId}/transcripts/{transcriptId}'
 ```
 
 ### List Transcript Entries
 ```bash
-GET /google-meet/v2/conferenceRecords/{conferenceRecordId}/transcripts/{transcriptId}/entries
+maton api '/google-meet/v2/conferenceRecords/{conferenceRecordId}/transcripts/{transcriptId}/entries'
 ```
 
 ## Notes

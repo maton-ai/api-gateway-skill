@@ -15,164 +15,172 @@
 
 ### Send Email
 ```bash
-POST /resend/emails
-Content-Type: application/json
-
+maton api -X POST '/resend/emails' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "from": "sender@yourdomain.com",
   "to": ["recipient@example.com"],
   "subject": "Hello",
   "html": "<p>Hello World</p>"
 }
+EOF
 ```
 
 ### Send Batch Emails
 ```bash
-POST /resend/emails/batch
-Content-Type: application/json
-
+maton api -X POST '/resend/emails/batch' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 [
   {"from": "sender@yourdomain.com", "to": ["a@example.com"], "subject": "Hi A", "text": "Hello A"},
   {"from": "sender@yourdomain.com", "to": ["b@example.com"], "subject": "Hi B", "text": "Hello B"}
 ]
+EOF
 ```
 
 ### List Emails
 ```bash
-GET /resend/emails
+maton api '/resend/emails'
 ```
 
 ### Get Email
 ```bash
-GET /resend/emails/{email_id}
+maton api '/resend/emails/{email_id}'
 ```
 
 ### Update Email (Cancel Scheduled)
 ```bash
-PATCH /resend/emails/{email_id}
-Content-Type: application/json
-
+maton api -X PATCH '/resend/emails/{email_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"scheduled_at": "2026-03-15T10:00:00Z"}
+EOF
 ```
 
 ### Cancel Scheduled Email
 ```bash
-POST /resend/emails/{email_id}/cancel
+maton api -X POST '/resend/emails/{email_id}/cancel'
 ```
 
 ## Domains
 
 ### List Domains
 ```bash
-GET /resend/domains
+maton api '/resend/domains'
 ```
 
 ### Create Domain
 ```bash
-POST /resend/domains
-Content-Type: application/json
-
+maton api -X POST '/resend/domains' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"name": "example.com"}
+EOF
 ```
 
 ### Get Domain
 ```bash
-GET /resend/domains/{domain_id}
+maton api '/resend/domains/{domain_id}'
 ```
 
 ### Update Domain
 ```bash
-PATCH /resend/domains/{domain_id}
-Content-Type: application/json
-
+maton api -X PATCH '/resend/domains/{domain_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"open_tracking": true, "click_tracking": true}
+EOF
 ```
 
 ### Delete Domain
 ```bash
-DELETE /resend/domains/{domain_id}
+maton api -X DELETE '/resend/domains/{domain_id}'
 ```
 
 ### Verify Domain
 ```bash
-POST /resend/domains/{domain_id}/verify
+maton api -X POST '/resend/domains/{domain_id}/verify'
 ```
 
 ## Audiences
 
 ### List Audiences
 ```bash
-GET /resend/audiences
+maton api '/resend/audiences'
 ```
 
 ### Create Audience
 ```bash
-POST /resend/audiences
-Content-Type: application/json
-
+maton api -X POST '/resend/audiences' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"name": "Newsletter Subscribers"}
+EOF
 ```
 
 ### Get Audience
 ```bash
-GET /resend/audiences/{audience_id}
+maton api '/resend/audiences/{audience_id}'
 ```
 
 ### Delete Audience
 ```bash
-DELETE /resend/audiences/{audience_id}
+maton api -X DELETE '/resend/audiences/{audience_id}'
 ```
 
 ## Contacts
 
 ### List Contacts
 ```bash
-GET /resend/audiences/{audience_id}/contacts
+maton api '/resend/audiences/{audience_id}/contacts'
 ```
 
 ### Create Contact
 ```bash
-POST /resend/audiences/{audience_id}/contacts
-Content-Type: application/json
-
+maton api -X POST '/resend/audiences/{audience_id}/contacts' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "email": "user@example.com",
   "first_name": "John",
   "last_name": "Doe",
   "unsubscribed": false
 }
+EOF
 ```
 
 ### Get Contact
 ```bash
-GET /resend/audiences/{audience_id}/contacts/{contact_id}
+maton api '/resend/audiences/{audience_id}/contacts/{contact_id}'
 ```
 
 ### Update Contact
 ```bash
-PATCH /resend/audiences/{audience_id}/contacts/{contact_id}
-Content-Type: application/json
-
+maton api -X PATCH '/resend/audiences/{audience_id}/contacts/{contact_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"first_name": "Jane", "unsubscribed": true}
+EOF
 ```
 
 ### Delete Contact
 ```bash
-DELETE /resend/audiences/{audience_id}/contacts/{contact_id}
+maton api -X DELETE '/resend/audiences/{audience_id}/contacts/{contact_id}'
 ```
 
 ## Broadcasts
 
 ### List Broadcasts
 ```bash
-GET /resend/broadcasts
+maton api '/resend/broadcasts'
 ```
 
 ### Create Broadcast
 ```bash
-POST /resend/broadcasts
-Content-Type: application/json
-
+maton api -X POST '/resend/broadcasts' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Weekly Newsletter",
   "audience_id": "aud_123",
@@ -180,93 +188,98 @@ Content-Type: application/json
   "subject": "This Week's Update",
   "html": "<p>Newsletter content</p>"
 }
+EOF
 ```
 
 ### Get Broadcast
 ```bash
-GET /resend/broadcasts/{broadcast_id}
+maton api '/resend/broadcasts/{broadcast_id}'
 ```
 
 ### Update Broadcast
 ```bash
-PATCH /resend/broadcasts/{broadcast_id}
-Content-Type: application/json
-
+maton api -X PATCH '/resend/broadcasts/{broadcast_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"name": "Updated Newsletter", "subject": "New Subject"}
+EOF
 ```
 
 ### Delete Broadcast
 ```bash
-DELETE /resend/broadcasts/{broadcast_id}
+maton api -X DELETE '/resend/broadcasts/{broadcast_id}'
 ```
 
 ### Send Broadcast
 ```bash
-POST /resend/broadcasts/{broadcast_id}/send
+maton api -X POST '/resend/broadcasts/{broadcast_id}/send'
 ```
 
 ## Segments
 
 ### List Segments
 ```bash
-GET /resend/segments
+maton api '/resend/segments'
 ```
 
 ### Create Segment
 ```bash
-POST /resend/segments
-Content-Type: application/json
-
+maton api -X POST '/resend/segments' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"name": "Active Users", "audience_id": "aud_123"}
+EOF
 ```
 
 ### Get Segment
 ```bash
-GET /resend/segments/{segment_id}
+maton api '/resend/segments/{segment_id}'
 ```
 
 ### Delete Segment
 ```bash
-DELETE /resend/segments/{segment_id}
+maton api -X DELETE '/resend/segments/{segment_id}'
 ```
 
 ## Topics
 
 ### List Topics
 ```bash
-GET /resend/topics
+maton api '/resend/topics'
 ```
 
 ### Create Topic
 ```bash
-POST /resend/topics
-Content-Type: application/json
-
+maton api -X POST '/resend/topics' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "audience_id": "aud_123",
   "name": "Product Updates",
   "default_subscription": true
 }
+EOF
 ```
 
 Note: `default_subscription` is required and must be a boolean.
 
 ### Get Topic
 ```bash
-GET /resend/topics/{topic_id}
+maton api '/resend/topics/{topic_id}'
 ```
 
 ### Update Topic
 ```bash
-PATCH /resend/topics/{topic_id}
-Content-Type: application/json
-
+maton api -X PATCH '/resend/topics/{topic_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"name": "Updated Topic Name"}
+EOF
 ```
 
 ### Delete Topic
 ```bash
-DELETE /resend/topics/{topic_id}
+maton api -X DELETE '/resend/topics/{topic_id}'
 ```
 
 ## Webhooks
@@ -283,95 +296,100 @@ DELETE /resend/topics/{topic_id}
 
 ### List Webhooks
 ```bash
-GET /resend/webhooks
+maton api '/resend/webhooks'
 ```
 
 ### Create Webhook
 ```bash
-POST /resend/webhooks
-Content-Type: application/json
-
+maton api -X POST '/resend/webhooks' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "endpoint": "https://example.com/webhook",
   "events": ["email.sent", "email.delivered", "email.bounced", "email.opened", "email.clicked"]
 }
+EOF
 ```
 
 Note: Use `endpoint` field, not `endpoint_url`.
 
 ### Get Webhook
 ```bash
-GET /resend/webhooks/{webhook_id}
+maton api '/resend/webhooks/{webhook_id}'
 ```
 
 ### Update Webhook
 ```bash
-PUT /resend/webhooks/{webhook_id}
-Content-Type: application/json
-
+maton api -X PUT '/resend/webhooks/{webhook_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "endpoint": "https://example.com/new-webhook",
   "events": ["email.sent", "email.delivered"]
 }
+EOF
 ```
 
 ### Delete Webhook
 ```bash
-DELETE /resend/webhooks/{webhook_id}
+maton api -X DELETE '/resend/webhooks/{webhook_id}'
 ```
 
 ## API Keys
 
 ### List API Keys
 ```bash
-GET /resend/api-keys
+maton api '/resend/api-keys'
 ```
 
 ### Create API Key
 ```bash
-POST /resend/api-keys
-Content-Type: application/json
-
+maton api -X POST '/resend/api-keys' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"name": "Production Key"}
+EOF
 ```
 
 ### Delete API Key
 ```bash
-DELETE /resend/api-keys/{api_key_id}
+maton api -X DELETE '/resend/api-keys/{api_key_id}'
 ```
 
 ## Contact Properties (Custom Fields)
 
 ### List Contact Properties
 ```bash
-GET /resend/contact-properties
+maton api '/resend/contact-properties'
 ```
 
 ### Create Contact Property
 ```bash
-POST /resend/contact-properties
-Content-Type: application/json
-
+maton api -X POST '/resend/contact-properties' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "company",
   "type": "string",
   "audience_id": "aud_123"
 }
+EOF
 ```
 
 Types: `string`, `number`, `boolean`, `date`
 
 ### Update Contact Property
 ```bash
-PATCH /resend/contact-properties/{property_id}
-Content-Type: application/json
-
+maton api -X PATCH '/resend/contact-properties/{property_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"name": "updated_property_name"}
+EOF
 ```
 
 ### Delete Contact Property
 ```bash
-DELETE /resend/contact-properties/{property_id}
+maton api -X DELETE '/resend/contact-properties/{property_id}'
 ```
 
 ## Rate Limits

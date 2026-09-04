@@ -19,153 +19,160 @@ The router automatically handles the subdomain from your connection.
 
 #### List Customers
 ```bash
-GET /chargebee/api/v2/customers?limit=10
+maton api '/chargebee/api/v2/customers?limit=10'
 ```
 
 #### Get Customer
 ```bash
-GET /chargebee/api/v2/customers/{customerId}
+maton api '/chargebee/api/v2/customers/{customerId}'
 ```
 
 #### Create Customer
 ```bash
-POST /chargebee/api/v2/customers
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X POST '/chargebee/api/v2/customers' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 first_name=John&last_name=Doe&email=john@example.com
+EOF
 ```
 
 #### Update Customer
 ```bash
-POST /chargebee/api/v2/customers/{customerId}
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X POST '/chargebee/api/v2/customers/{customerId}' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 first_name=Jane
+EOF
 ```
 
 ### Subscriptions
 
 #### List Subscriptions
 ```bash
-GET /chargebee/api/v2/subscriptions?limit=10
+maton api '/chargebee/api/v2/subscriptions?limit=10'
 ```
 
 #### Get Subscription
 ```bash
-GET /chargebee/api/v2/subscriptions/{subscriptionId}
+maton api '/chargebee/api/v2/subscriptions/{subscriptionId}'
 ```
 
 #### Create Subscription
 ```bash
-POST /chargebee/api/v2/subscriptions
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X POST '/chargebee/api/v2/subscriptions' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 plan_id=basic-plan&customer[email]=john@example.com&customer[first_name]=John
+EOF
 ```
 
 #### Cancel Subscription
 ```bash
-POST /chargebee/api/v2/subscriptions/{subscriptionId}/cancel
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X POST '/chargebee/api/v2/subscriptions/{subscriptionId}/cancel' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 end_of_term=true
+EOF
 ```
 
 ### Item Prices (Product Catalog 2.0)
 
 #### List Item Prices
 ```bash
-GET /chargebee/api/v2/item_prices?limit=10
+maton api '/chargebee/api/v2/item_prices?limit=10'
 ```
 
 #### Get Item Price
 ```bash
-GET /chargebee/api/v2/item_prices/{itemPriceId}
+maton api '/chargebee/api/v2/item_prices/{itemPriceId}'
 ```
 
 ### Items (Product Catalog 2.0)
 
 #### List Items
 ```bash
-GET /chargebee/api/v2/items?limit=10
+maton api '/chargebee/api/v2/items?limit=10'
 ```
 
 #### Get Item
 ```bash
-GET /chargebee/api/v2/items/{itemId}
+maton api '/chargebee/api/v2/items/{itemId}'
 ```
 
 ### Plans (Product Catalog 1.0 - Legacy)
 
 #### List Plans
 ```bash
-GET /chargebee/api/v2/plans?limit=10
+maton api '/chargebee/api/v2/plans?limit=10'
 ```
 
 #### Get Plan
 ```bash
-GET /chargebee/api/v2/plans/{planId}
+maton api '/chargebee/api/v2/plans/{planId}'
 ```
 
 ### Invoices
 
 #### List Invoices
 ```bash
-GET /chargebee/api/v2/invoices?limit=10
+maton api '/chargebee/api/v2/invoices?limit=10'
 ```
 
 #### Get Invoice
 ```bash
-GET /chargebee/api/v2/invoices/{invoiceId}
+maton api '/chargebee/api/v2/invoices/{invoiceId}'
 ```
 
 #### Download Invoice PDF
 ```bash
-POST /chargebee/api/v2/invoices/{invoiceId}/pdf
+maton api -X POST '/chargebee/api/v2/invoices/{invoiceId}/pdf'
 ```
 
 ### Transactions
 
 #### List Transactions
 ```bash
-GET /chargebee/api/v2/transactions?limit=10
+maton api '/chargebee/api/v2/transactions?limit=10'
 ```
 
 ### Hosted Pages
 
 #### Checkout New Subscription
 ```bash
-POST /chargebee/api/v2/hosted_pages/checkout_new_for_items
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X POST '/chargebee/api/v2/hosted_pages/checkout_new_for_items' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 subscription[plan_id]=basic-plan&customer[email]=john@example.com
+EOF
 ```
 
 #### Manage Payment Sources
 ```bash
-POST /chargebee/api/v2/hosted_pages/manage_payment_sources
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X POST '/chargebee/api/v2/hosted_pages/manage_payment_sources' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 customer[id]=cust_123
+EOF
 ```
 
 ### Portal Sessions
 
 #### Create Portal Session
 ```bash
-POST /chargebee/api/v2/portal_sessions
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X POST '/chargebee/api/v2/portal_sessions' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 customer[id]=cust_123
+EOF
 ```
 
 ## Filtering
 
 Use filter parameters:
 ```bash
-GET /chargebee/api/v2/subscriptions?status[is]=active
-GET /chargebee/api/v2/customers?email[is]=john@example.com
-GET /chargebee/api/v2/invoices?date[after]=1704067200
+maton api '/chargebee/api/v2/subscriptions?status[is]=active'
+maton api '/chargebee/api/v2/customers?email[is]=john@example.com'
+maton api '/chargebee/api/v2/invoices?date[after]=1704067200'
 ```
 
 ## Notes

@@ -15,7 +15,7 @@
 
 ### List Calendars
 ```bash
-GET /google-calendar/calendar/v3/users/me/calendarList
+maton api '/google-calendar/calendar/v3/users/me/calendarList'
 ```
 
 Example:
@@ -26,7 +26,7 @@ maton google-calendar calendar list
 
 ### Get Calendar
 ```bash
-GET /google-calendar/calendar/v3/calendars/{calendarId}
+maton api '/google-calendar/calendar/v3/calendars/{calendarId}'
 ```
 
 Use `primary` for the user's primary calendar.
@@ -39,7 +39,7 @@ maton google-calendar calendar view primary
 
 ### List Events
 ```bash
-GET /google-calendar/calendar/v3/calendars/primary/events?maxResults=10&orderBy=startTime&singleEvents=true
+maton api '/google-calendar/calendar/v3/calendars/primary/events?maxResults=10&orderBy=startTime&singleEvents=true'
 ```
 
 Example:
@@ -50,7 +50,7 @@ maton google-calendar event list -c primary -L 10
 
 With time bounds:
 ```bash
-GET /google-calendar/calendar/v3/calendars/primary/events?timeMin=2024-01-01T00:00:00Z&timeMax=2024-12-31T23:59:59Z&singleEvents=true&orderBy=startTime
+maton api '/google-calendar/calendar/v3/calendars/primary/events?timeMin=2024-01-01T00:00:00Z&timeMax=2024-12-31T23:59:59Z&singleEvents=true&orderBy=startTime'
 ```
 
 Example:
@@ -69,7 +69,7 @@ maton google-calendar agenda --today
 
 ### Get Event
 ```bash
-GET /google-calendar/calendar/v3/calendars/primary/events/{eventId}
+maton api '/google-calendar/calendar/v3/calendars/primary/events/{eventId}'
 ```
 
 Example:
@@ -80,9 +80,9 @@ maton google-calendar event view EVENT_ID
 
 ### Insert Event
 ```bash
-POST /google-calendar/calendar/v3/calendars/primary/events
-Content-Type: application/json
-
+maton api -X POST '/google-calendar/calendar/v3/calendars/primary/events' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "summary": "Team Meeting",
   "description": "Weekly sync",
@@ -98,6 +98,7 @@ Content-Type: application/json
     {"email": "attendee@example.com"}
   ]
 }
+EOF
 ```
 
 Example:
@@ -108,26 +109,28 @@ maton google-calendar event create --summary 'Team Meeting' --description 'Weekl
 
 All-day event:
 ```bash
-POST /google-calendar/calendar/v3/calendars/primary/events
-Content-Type: application/json
-
+maton api -X POST '/google-calendar/calendar/v3/calendars/primary/events' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "summary": "All Day Event",
   "start": {"date": "2024-01-15"},
   "end": {"date": "2024-01-16"}
 }
+EOF
 ```
 
 ### Update Event
 ```bash
-PUT /google-calendar/calendar/v3/calendars/primary/events/{eventId}
-Content-Type: application/json
-
+maton api -X PUT '/google-calendar/calendar/v3/calendars/primary/events/{eventId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "summary": "Updated Meeting Title",
   "start": {"dateTime": "2024-01-15T10:00:00Z"},
   "end": {"dateTime": "2024-01-15T11:00:00Z"}
 }
+EOF
 ```
 
 Example:
@@ -138,12 +141,13 @@ maton google-calendar event update EVENT_ID --summary 'Updated Meeting Title' --
 
 ### Patch Event (partial update)
 ```bash
-PATCH /google-calendar/calendar/v3/calendars/primary/events/{eventId}
-Content-Type: application/json
-
+maton api -X PATCH '/google-calendar/calendar/v3/calendars/primary/events/{eventId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "summary": "New Title Only"
 }
+EOF
 ```
 
 Example:
@@ -154,7 +158,7 @@ maton google-calendar event update EVENT_ID --summary 'New Title Only'
 
 ### Delete Event
 ```bash
-DELETE /google-calendar/calendar/v3/calendars/primary/events/{eventId}
+maton api -X DELETE '/google-calendar/calendar/v3/calendars/primary/events/{eventId}'
 ```
 
 Example:
@@ -165,7 +169,7 @@ maton google-calendar event delete EVENT_ID
 
 ### Quick Add Event (natural language)
 ```bash
-POST /google-calendar/calendar/v3/calendars/primary/events/quickAdd?text=Meeting+with+John+tomorrow+at+3pm
+maton api -X POST '/google-calendar/calendar/v3/calendars/primary/events/quickAdd?text=Meeting+with+John+tomorrow+at+3pm'
 ```
 
 Example:
@@ -176,14 +180,15 @@ maton google-calendar event quick-add --text 'Meeting with John tomorrow at 3pm'
 
 ### Free/Busy Query
 ```bash
-POST /google-calendar/calendar/v3/freeBusy
-Content-Type: application/json
-
+maton api -X POST '/google-calendar/calendar/v3/freeBusy' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "timeMin": "2024-01-15T00:00:00Z",
   "timeMax": "2024-01-16T00:00:00Z",
   "items": [{"id": "primary"}]
 }
+EOF
 ```
 
 Example:

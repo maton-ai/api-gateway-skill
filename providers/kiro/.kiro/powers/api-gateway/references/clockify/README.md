@@ -15,122 +15,127 @@
 
 ### Get Current User
 ```bash
-GET /clockify/api/v1/user
+maton api '/clockify/api/v1/user'
 ```
 
 ### List Workspaces
 ```bash
-GET /clockify/api/v1/workspaces
+maton api '/clockify/api/v1/workspaces'
 ```
 
 ### Get Workspace
 ```bash
-GET /clockify/api/v1/workspaces/{workspaceId}
+maton api '/clockify/api/v1/workspaces/{workspaceId}'
 ```
 
 ### List Workspace Users
 ```bash
-GET /clockify/api/v1/workspaces/{workspaceId}/users
+maton api '/clockify/api/v1/workspaces/{workspaceId}/users'
 ```
 
 ### List Projects
 ```bash
-GET /clockify/api/v1/workspaces/{workspaceId}/projects
+maton api '/clockify/api/v1/workspaces/{workspaceId}/projects'
 ```
 
 ### Get Project
 ```bash
-GET /clockify/api/v1/workspaces/{workspaceId}/projects/{projectId}
+maton api '/clockify/api/v1/workspaces/{workspaceId}/projects/{projectId}'
 ```
 
 ### Create Project
 ```bash
-POST /clockify/api/v1/workspaces/{workspaceId}/projects
-Content-Type: application/json
-
+maton api -X POST '/clockify/api/v1/workspaces/{workspaceId}/projects' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "My Project",
   "isPublic": true,
   "clientId": "optional-client-id"
 }
+EOF
 ```
 
 ### Update Project
 ```bash
-PUT /clockify/api/v1/workspaces/{workspaceId}/projects/{projectId}
-Content-Type: application/json
-
+maton api -X PUT '/clockify/api/v1/workspaces/{workspaceId}/projects/{projectId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Updated Project Name",
   "archived": true
 }
+EOF
 ```
 
 ### Delete Project
 ```bash
-DELETE /clockify/api/v1/workspaces/{workspaceId}/projects/{projectId}
+maton api -X DELETE '/clockify/api/v1/workspaces/{workspaceId}/projects/{projectId}'
 ```
 
 ### List Clients
 ```bash
-GET /clockify/api/v1/workspaces/{workspaceId}/clients
+maton api '/clockify/api/v1/workspaces/{workspaceId}/clients'
 ```
 
 ### Create Client
 ```bash
-POST /clockify/api/v1/workspaces/{workspaceId}/clients
-Content-Type: application/json
-
+maton api -X POST '/clockify/api/v1/workspaces/{workspaceId}/clients' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Client Name",
   "address": "123 Main St",
   "note": "Client notes"
 }
+EOF
 ```
 
 ### List Tags
 ```bash
-GET /clockify/api/v1/workspaces/{workspaceId}/tags
+maton api '/clockify/api/v1/workspaces/{workspaceId}/tags'
 ```
 
 ### Create Tag
 ```bash
-POST /clockify/api/v1/workspaces/{workspaceId}/tags
-Content-Type: application/json
-
+maton api -X POST '/clockify/api/v1/workspaces/{workspaceId}/tags' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "urgent"
 }
+EOF
 ```
 
 ### List Tasks on Project
 ```bash
-GET /clockify/api/v1/workspaces/{workspaceId}/projects/{projectId}/tasks
+maton api '/clockify/api/v1/workspaces/{workspaceId}/projects/{projectId}/tasks'
 ```
 
 ### Create Task
 ```bash
-POST /clockify/api/v1/workspaces/{workspaceId}/projects/{projectId}/tasks
-Content-Type: application/json
-
+maton api -X POST '/clockify/api/v1/workspaces/{workspaceId}/projects/{projectId}/tasks' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Task Name",
   "assigneeIds": ["user-id"],
   "estimate": "PT2H",
   "billable": true
 }
+EOF
 ```
 
 ### Get User's Time Entries
 ```bash
-GET /clockify/api/v1/workspaces/{workspaceId}/user/{userId}/time-entries
+maton api '/clockify/api/v1/workspaces/{workspaceId}/user/{userId}/time-entries'
 ```
 
 ### Create Time Entry
 ```bash
-POST /clockify/api/v1/workspaces/{workspaceId}/time-entries
-Content-Type: application/json
-
+maton api -X POST '/clockify/api/v1/workspaces/{workspaceId}/time-entries' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "start": "2026-02-13T09:00:00Z",
   "end": "2026-02-13T10:00:00Z",
@@ -140,37 +145,40 @@ Content-Type: application/json
   "tagIds": ["tag-id"],
   "billable": true
 }
+EOF
 ```
 
 ### Get Time Entry
 ```bash
-GET /clockify/api/v1/workspaces/{workspaceId}/time-entries/{timeEntryId}
+maton api '/clockify/api/v1/workspaces/{workspaceId}/time-entries/{timeEntryId}'
 ```
 
 ### Update Time Entry
 ```bash
-PUT /clockify/api/v1/workspaces/{workspaceId}/time-entries/{timeEntryId}
-Content-Type: application/json
-
+maton api -X PUT '/clockify/api/v1/workspaces/{workspaceId}/time-entries/{timeEntryId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "description": "Updated description",
   "end": "2026-02-13T11:00:00Z"
 }
+EOF
 ```
 
 ### Delete Time Entry
 ```bash
-DELETE /clockify/api/v1/workspaces/{workspaceId}/time-entries/{timeEntryId}
+maton api -X DELETE '/clockify/api/v1/workspaces/{workspaceId}/time-entries/{timeEntryId}'
 ```
 
 ### Stop Running Timer
 ```bash
-PATCH /clockify/api/v1/workspaces/{workspaceId}/user/{userId}/time-entries
-Content-Type: application/json
-
+maton api -X PATCH '/clockify/api/v1/workspaces/{workspaceId}/user/{userId}/time-entries' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "end": "2026-02-13T17:00:00Z"
 }
+EOF
 ```
 
 ## Notes

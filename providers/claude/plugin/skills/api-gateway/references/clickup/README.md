@@ -19,49 +19,49 @@ Workspace (team) → Space → Folder → List → Task
 
 ### Get Current User
 ```bash
-GET /clickup/api/v2/user
+maton api '/clickup/api/v2/user'
 ```
 
 ### Get Workspaces (Teams)
 ```bash
-GET /clickup/api/v2/team
+maton api '/clickup/api/v2/team'
 ```
 
 ### Get Spaces
 ```bash
-GET /clickup/api/v2/team/{team_id}/space
+maton api '/clickup/api/v2/team/{team_id}/space'
 ```
 
 ### Get Folders
 ```bash
-GET /clickup/api/v2/space/{space_id}/folder
+maton api '/clickup/api/v2/space/{space_id}/folder'
 ```
 
 ### Get Lists
 ```bash
-GET /clickup/api/v2/folder/{folder_id}/list
+maton api '/clickup/api/v2/folder/{folder_id}/list'
 ```
 
 ### Get Folderless Lists
 ```bash
-GET /clickup/api/v2/space/{space_id}/list
+maton api '/clickup/api/v2/space/{space_id}/list'
 ```
 
 ### Get Tasks
 ```bash
-GET /clickup/api/v2/list/{list_id}/task?include_closed=true
+maton api '/clickup/api/v2/list/{list_id}/task?include_closed=true'
 ```
 
 ### Get a Task
 ```bash
-GET /clickup/api/v2/task/{task_id}
+maton api '/clickup/api/v2/task/{task_id}'
 ```
 
 ### Create a Task
 ```bash
-POST /clickup/api/v2/list/{list_id}/task
-Content-Type: application/json
-
+maton api -X POST '/clickup/api/v2/list/{list_id}/task' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Task name",
   "description": "Task description",
@@ -71,70 +71,76 @@ Content-Type: application/json
   "due_date": 1709251200000,
   "tags": ["api", "backend"]
 }
+EOF
 ```
 
 ### Update a Task
 ```bash
-PUT /clickup/api/v2/task/{task_id}
-Content-Type: application/json
-
+maton api -X PUT '/clickup/api/v2/task/{task_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "status": "complete",
   "priority": null
 }
+EOF
 ```
 
 ### Delete a Task
 ```bash
-DELETE /clickup/api/v2/task/{task_id}
+maton api -X DELETE '/clickup/api/v2/task/{task_id}'
 ```
 
 ### Get Filtered Team Tasks
 ```bash
-GET /clickup/api/v2/team/{team_id}/task?statuses[]=to%20do&assignees[]=123
+maton api '/clickup/api/v2/team/{team_id}/task?statuses[]=to%20do&assignees[]=123'
 ```
 
 ### Create Space
 ```bash
-POST /clickup/api/v2/team/{team_id}/space
-Content-Type: application/json
-
+maton api -X POST '/clickup/api/v2/team/{team_id}/space' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "New Space",
   "multiple_assignees": true
 }
+EOF
 ```
 
 ### Create Folder
 ```bash
-POST /clickup/api/v2/space/{space_id}/folder
-Content-Type: application/json
-
+maton api -X POST '/clickup/api/v2/space/{space_id}/folder' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"name": "New Folder"}
+EOF
 ```
 
 ### Create List
 ```bash
-POST /clickup/api/v2/folder/{folder_id}/list
-Content-Type: application/json
-
+maton api -X POST '/clickup/api/v2/folder/{folder_id}/list' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"name": "New List"}
+EOF
 ```
 
 ### Create Webhook
 ```bash
-POST /clickup/api/v2/team/{team_id}/webhook
-Content-Type: application/json
-
+maton api -X POST '/clickup/api/v2/team/{team_id}/webhook' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "endpoint": "https://example.com/webhook",
   "events": ["taskCreated", "taskUpdated", "taskDeleted"]
 }
+EOF
 ```
 
 ### Delete Webhook
 ```bash
-DELETE /clickup/api/v2/webhook/{webhook_id}
+maton api -X DELETE '/clickup/api/v2/webhook/{webhook_id}'
 ```
 
 ## Notes

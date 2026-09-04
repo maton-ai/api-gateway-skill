@@ -16,71 +16,96 @@
 ### User
 
 ```bash
-GET /signnow/user
-GET /signnow/user/documents
+maton api '/signnow/user'
+maton api '/signnow/user/documents'
 ```
 
 ### Documents
 
 ```bash
-# Upload document (multipart form data)
-POST /signnow/document
+# Upload document: multipart/form-data is not expressible with `maton api`; see the Python snippet below.
 
 # Get document
-GET /signnow/document/{document_id}
+maton api '/signnow/document/{document_id}'
 
 # Update document
-PUT /signnow/document/{document_id}
+maton api -X PUT '/signnow/document/{document_id}'
 
 # Download document
-GET /signnow/document/{document_id}/download?type=collapsed
+maton api '/signnow/document/{document_id}/download?type=collapsed'
 
 # Get document history
-GET /signnow/document/{document_id}/historyfull
+maton api '/signnow/document/{document_id}/historyfull'
 
 # Move document to folder
-POST /signnow/document/{document_id}/move
+maton api -X POST '/signnow/document/{document_id}/move'
 
 # Merge documents (returns PDF)
-POST /signnow/document/merge
+maton api -X POST '/signnow/document/merge'
 
 # Delete document
-DELETE /signnow/document/{document_id}
+maton api -X DELETE '/signnow/document/{document_id}'
+```
+
+Upload document:
+
+```bash
+# multipart/form-data is not expressible with `maton api`; call the gateway directly with `MATON_API_KEY` (see SKILL.md appendix).
+python <<'EOF'
+import json, os, urllib.request, uuid
+
+# Maton API key from the environment; never print, log, or persist it.
+TOKEN = os.environ["MATON_API_KEY"]
+
+# Exactly the path the user gave — never a discovered or inferred one.
+file_path = '/path/to/document.pdf'
+
+boundary = uuid.uuid4().hex
+with open(file_path, 'rb') as f:
+    body = (f'--{boundary}\r\nContent-Disposition: form-data; name="file"; filename="{os.path.basename(file_path)}"\r\n'
+            f'Content-Type: application/pdf\r\n\r\n').encode() + f.read() + f'\r\n--{boundary}--\r\n'.encode()
+
+req = urllib.request.Request('https://api.maton.ai/signnow/document', data=body, method='POST')
+req.add_header('Authorization', f'Bearer {TOKEN}')
+req.add_header('User-Agent', 'maton-gateway-skill/1.2')
+req.add_header('Content-Type', f'multipart/form-data; boundary={boundary}')
+print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
+EOF
 ```
 
 ### Templates
 
 ```bash
 # Create template from document
-POST /signnow/template
+maton api -X POST '/signnow/template'
 
 # Create document from template
-POST /signnow/template/{template_id}/copy
+maton api -X POST '/signnow/template/{template_id}/copy'
 ```
 
 ### Invites
 
 ```bash
 # Send freeform invite
-POST /signnow/document/{document_id}/invite
+maton api -X POST '/signnow/document/{document_id}/invite'
 
 # Create signing link (requires document fields)
-POST /signnow/link
+maton api -X POST '/signnow/link'
 ```
 
 ### Folders
 
 ```bash
-GET /signnow/folder
-GET /signnow/folder/{folder_id}
+maton api '/signnow/folder'
+maton api '/signnow/folder/{folder_id}'
 ```
 
 ### Webhooks (Event Subscriptions)
 
 ```bash
-GET /signnow/event_subscription
-POST /signnow/event_subscription
-DELETE /signnow/event_subscription/{subscription_id}
+maton api '/signnow/event_subscription'
+maton api -X POST '/signnow/event_subscription'
+maton api -X DELETE '/signnow/event_subscription/{subscription_id}'
 ```
 
 ## Notes

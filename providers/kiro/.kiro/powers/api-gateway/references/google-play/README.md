@@ -17,19 +17,19 @@
 
 #### List In-App Products
 ```bash
-GET /google-play/androidpublisher/v3/applications/{packageName}/inappproducts
+maton api '/google-play/androidpublisher/v3/applications/{packageName}/inappproducts'
 ```
 
 #### Get In-App Product
 ```bash
-GET /google-play/androidpublisher/v3/applications/{packageName}/inappproducts/{sku}
+maton api '/google-play/androidpublisher/v3/applications/{packageName}/inappproducts/{sku}'
 ```
 
 #### Create In-App Product
 ```bash
-POST /google-play/androidpublisher/v3/applications/{packageName}/inappproducts
-Content-Type: application/json
-
+maton api -X POST '/google-play/androidpublisher/v3/applications/{packageName}/inappproducts' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "packageName": "com.example.app",
   "sku": "premium_upgrade",
@@ -46,89 +46,92 @@ Content-Type: application/json
     }
   }
 }
+EOF
 ```
 
 #### Delete In-App Product
 ```bash
-DELETE /google-play/androidpublisher/v3/applications/{packageName}/inappproducts/{sku}
+maton api -X DELETE '/google-play/androidpublisher/v3/applications/{packageName}/inappproducts/{sku}'
 ```
 
 ### Subscriptions
 
 #### List Subscriptions
 ```bash
-GET /google-play/androidpublisher/v3/applications/{packageName}/subscriptions
+maton api '/google-play/androidpublisher/v3/applications/{packageName}/subscriptions'
 ```
 
 #### Get Subscription
 ```bash
-GET /google-play/androidpublisher/v3/applications/{packageName}/subscriptions/{productId}
+maton api '/google-play/androidpublisher/v3/applications/{packageName}/subscriptions/{productId}'
 ```
 
 ### Purchases
 
 #### Get Product Purchase
 ```bash
-GET /google-play/androidpublisher/v3/applications/{packageName}/purchases/products/{productId}/tokens/{token}
+maton api '/google-play/androidpublisher/v3/applications/{packageName}/purchases/products/{productId}/tokens/{token}'
 ```
 
 #### Acknowledge Purchase
 ```bash
-POST /google-play/androidpublisher/v3/applications/{packageName}/purchases/products/{productId}/tokens/{token}:acknowledge
-Content-Type: application/json
-
+maton api -X POST '/google-play/androidpublisher/v3/applications/{packageName}/purchases/products/{productId}/tokens/{token}:acknowledge' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "developerPayload": "optional payload"
 }
+EOF
 ```
 
 #### Get Subscription Purchase
 ```bash
-GET /google-play/androidpublisher/v3/applications/{packageName}/purchases/subscriptions/{subscriptionId}/tokens/{token}
+maton api '/google-play/androidpublisher/v3/applications/{packageName}/purchases/subscriptions/{subscriptionId}/tokens/{token}'
 ```
 
 #### Cancel Subscription
 ```bash
-POST /google-play/androidpublisher/v3/applications/{packageName}/purchases/subscriptions/{subscriptionId}/tokens/{token}:cancel
+maton api -X POST '/google-play/androidpublisher/v3/applications/{packageName}/purchases/subscriptions/{subscriptionId}/tokens/{token}:cancel'
 ```
 
 ### Reviews
 
 #### List Reviews
 ```bash
-GET /google-play/androidpublisher/v3/applications/{packageName}/reviews
+maton api '/google-play/androidpublisher/v3/applications/{packageName}/reviews'
 ```
 
 #### Get Review
 ```bash
-GET /google-play/androidpublisher/v3/applications/{packageName}/reviews/{reviewId}
+maton api '/google-play/androidpublisher/v3/applications/{packageName}/reviews/{reviewId}'
 ```
 
 #### Reply to Review
 ```bash
-POST /google-play/androidpublisher/v3/applications/{packageName}/reviews/{reviewId}:reply
-Content-Type: application/json
-
+maton api -X POST '/google-play/androidpublisher/v3/applications/{packageName}/reviews/{reviewId}:reply' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "replyText": "Thank you for your feedback!"
 }
+EOF
 ```
 
 ### Edits (App Updates)
 
 #### Create Edit
 ```bash
-POST /google-play/androidpublisher/v3/applications/{packageName}/edits
+maton api -X POST '/google-play/androidpublisher/v3/applications/{packageName}/edits'
 ```
 
 #### Commit Edit
 ```bash
-POST /google-play/androidpublisher/v3/applications/{packageName}/edits/{editId}:commit
+maton api -X POST '/google-play/androidpublisher/v3/applications/{packageName}/edits/{editId}:commit'
 ```
 
 #### Delete Edit
 ```bash
-DELETE /google-play/androidpublisher/v3/applications/{packageName}/edits/{editId}
+maton api -X DELETE '/google-play/androidpublisher/v3/applications/{packageName}/edits/{editId}'
 ```
 
 ## Notes

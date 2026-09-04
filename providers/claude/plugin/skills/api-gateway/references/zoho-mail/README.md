@@ -17,84 +17,87 @@
 
 ```bash
 # Get all accounts
-GET /zoho-mail/api/accounts
+maton api '/zoho-mail/api/accounts'
 
 # Get account details
-GET /zoho-mail/api/accounts/{accountId}
+maton api '/zoho-mail/api/accounts/{accountId}'
 ```
 
 ### Folders
 
 ```bash
 # List all folders
-GET /zoho-mail/api/accounts/{accountId}/folders
+maton api '/zoho-mail/api/accounts/{accountId}/folders'
 
 # Create folder
-POST /zoho-mail/api/accounts/{accountId}/folders
-Content-Type: application/json
-
+maton api -X POST '/zoho-mail/api/accounts/{accountId}/folders' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "folderName": "My Folder"
 }
+EOF
 
 # Rename folder
-PUT /zoho-mail/api/accounts/{accountId}/folders/{folderId}
-Content-Type: application/json
-
+maton api -X PUT '/zoho-mail/api/accounts/{accountId}/folders/{folderId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "folderName": "Renamed Folder"
 }
+EOF
 
 # Delete folder
-DELETE /zoho-mail/api/accounts/{accountId}/folders/{folderId}
+maton api -X DELETE '/zoho-mail/api/accounts/{accountId}/folders/{folderId}'
 ```
 
 ### Labels
 
 ```bash
 # List labels
-GET /zoho-mail/api/accounts/{accountId}/labels
+maton api '/zoho-mail/api/accounts/{accountId}/labels'
 
 # Create label
-POST /zoho-mail/api/accounts/{accountId}/labels
-Content-Type: application/json
-
+maton api -X POST '/zoho-mail/api/accounts/{accountId}/labels' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "labelName": "Important"
 }
+EOF
 
 # Update label
-PUT /zoho-mail/api/accounts/{accountId}/labels/{labelId}
+maton api -X PUT '/zoho-mail/api/accounts/{accountId}/labels/{labelId}'
 
 # Delete label
-DELETE /zoho-mail/api/accounts/{accountId}/labels/{labelId}
+maton api -X DELETE '/zoho-mail/api/accounts/{accountId}/labels/{labelId}'
 ```
 
 ### Messages
 
 ```bash
 # List emails in folder
-GET /zoho-mail/api/accounts/{accountId}/messages/view?folderId={folderId}&limit=50
+maton api '/zoho-mail/api/accounts/{accountId}/messages/view?folderId={folderId}&limit=50'
 
 # Search emails
-GET /zoho-mail/api/accounts/{accountId}/messages/search?searchKey={query}
+maton api '/zoho-mail/api/accounts/{accountId}/messages/search?searchKey={query}'
 
 # Get email content
-GET /zoho-mail/api/accounts/{accountId}/folders/{folderId}/messages/{messageId}/content
+maton api '/zoho-mail/api/accounts/{accountId}/folders/{folderId}/messages/{messageId}/content'
 
 # Get email headers
-GET /zoho-mail/api/accounts/{accountId}/folders/{folderId}/messages/{messageId}/header
+maton api '/zoho-mail/api/accounts/{accountId}/folders/{folderId}/messages/{messageId}/header'
 
 # Get email metadata
-GET /zoho-mail/api/accounts/{accountId}/folders/{folderId}/messages/{messageId}/details
+maton api '/zoho-mail/api/accounts/{accountId}/folders/{folderId}/messages/{messageId}/details'
 
 # Get original MIME message
-GET /zoho-mail/api/accounts/{accountId}/messages/{messageId}/originalmessage
+maton api '/zoho-mail/api/accounts/{accountId}/messages/{messageId}/originalmessage'
 
 # Send email
-POST /zoho-mail/api/accounts/{accountId}/messages
-Content-Type: application/json
-
+maton api -X POST '/zoho-mail/api/accounts/{accountId}/messages' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "fromAddress": "sender@yourdomain.com",
   "toAddress": "recipient@example.com",
@@ -102,36 +105,42 @@ Content-Type: application/json
   "content": "Email body",
   "mailFormat": "html"
 }
+EOF
 
 # Reply to email
-POST /zoho-mail/api/accounts/{accountId}/messages/{messageId}
+maton api -X POST '/zoho-mail/api/accounts/{accountId}/messages/{messageId}'
 
 # Update message (mark read, move, flag, archive, spam)
-PUT /zoho-mail/api/accounts/{accountId}/updatemessage
-Content-Type: application/json
-
+maton api -X PUT '/zoho-mail/api/accounts/{accountId}/updatemessage' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "messageId": ["messageId1"],
   "folderId": "folderId",
   "mode": "markAsRead"
 }
+EOF
 
 # Delete email
-DELETE /zoho-mail/api/accounts/{accountId}/folders/{folderId}/messages/{messageId}
+maton api -X DELETE '/zoho-mail/api/accounts/{accountId}/folders/{folderId}/messages/{messageId}'
 ```
 
 ### Attachments
 
 ```bash
-# Upload attachment
-POST /zoho-mail/api/accounts/{accountId}/messages/attachments
-Content-Type: multipart/form-data
-
 # Get attachment info
-GET /zoho-mail/api/accounts/{accountId}/folders/{folderId}/messages/{messageId}/attachmentinfo
+maton api '/zoho-mail/api/accounts/{accountId}/folders/{folderId}/messages/{messageId}/attachmentinfo'
 
 # Download attachment
-GET /zoho-mail/api/accounts/{accountId}/folders/{folderId}/messages/{messageId}/attachments/{attachmentId}
+maton api '/zoho-mail/api/accounts/{accountId}/folders/{folderId}/messages/{messageId}/attachments/{attachmentId}'
+```
+
+Upload attachment (raw file body; `fileName` is required, `isInline` optional):
+
+```bash
+maton api -X POST '/zoho-mail/api/accounts/{accountId}/messages/attachments?fileName=document.pdf' \
+  -H 'Content-Type: application/octet-stream' \
+  --input '{file_path}'
 ```
 
 ## Update Message Modes
@@ -151,14 +160,15 @@ GET /zoho-mail/api/accounts/{accountId}/folders/{folderId}/messages/{messageId}/
 ### Set Flag on Messages
 
 ```bash
-PUT /zoho-mail/api/accounts/{accountId}/updatemessage
-Content-Type: application/json
-
+maton api -X PUT '/zoho-mail/api/accounts/{accountId}/updatemessage' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "mode": "setFlag",
   "messageId": ["messageId1"],
   "flagid": "important"
 }
+EOF
 ```
 
 **Flag ID Options:**
@@ -172,14 +182,15 @@ Content-Type: application/json
 ### Apply Label to Messages
 
 ```bash
-PUT /zoho-mail/api/accounts/{accountId}/updatemessage
-Content-Type: application/json
-
+maton api -X PUT '/zoho-mail/api/accounts/{accountId}/updatemessage' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "mode": "applyLabel",
   "messageId": ["messageId1"],
   "labelId": ["labelId1", "labelId2"]
 }
+EOF
 ```
 
 **Required:** Either `messageId` or `threadId` array, plus `labelId` array

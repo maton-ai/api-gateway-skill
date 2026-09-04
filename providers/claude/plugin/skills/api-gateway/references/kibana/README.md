@@ -17,160 +17,163 @@
 
 ### Get Status
 ```bash
-GET /kibana/api/status
+maton api '/kibana/api/status'
 ```
 
 ### List Features
 ```bash
-GET /kibana/api/features
+maton api '/kibana/api/features'
 ```
 
 ## Saved Objects
 
 ### Find Saved Objects
 ```bash
-GET /kibana/api/saved_objects/_find?type={type}
+maton api '/kibana/api/saved_objects/_find?type={type}'
 ```
 
 Types: `dashboard`, `visualization`, `index-pattern`, `search`, `lens`, `map`
 
 ### Get Saved Object
 ```bash
-GET /kibana/api/saved_objects/{type}/{id}
+maton api '/kibana/api/saved_objects/{type}/{id}'
 ```
 
 ### Create Saved Object
 ```bash
-POST /kibana/api/saved_objects/{type}/{id}
-Content-Type: application/json
-
+maton api -X POST '/kibana/api/saved_objects/{type}/{id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"attributes": {"title": "Name"}}
+EOF
 ```
 
 ### Delete Saved Object
 ```bash
-DELETE /kibana/api/saved_objects/{type}/{id}
+maton api -X DELETE '/kibana/api/saved_objects/{type}/{id}'
 ```
 
 ## Data Views
 
 ### List Data Views
 ```bash
-GET /kibana/api/data_views
+maton api '/kibana/api/data_views'
 ```
 
 ### Get Data View
 ```bash
-GET /kibana/api/data_views/data_view/{id}
+maton api '/kibana/api/data_views/data_view/{id}'
 ```
 
 ### Create Data View
 ```bash
-POST /kibana/api/data_views/data_view
-Content-Type: application/json
-
+maton api -X POST '/kibana/api/data_views/data_view' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data_view": {
     "title": "logs-*",
     "timeFieldName": "@timestamp"
   }
 }
+EOF
 ```
 
 ### Delete Data View
 ```bash
-DELETE /kibana/api/data_views/data_view/{id}
+maton api -X DELETE '/kibana/api/data_views/data_view/{id}'
 ```
 
 ## Spaces
 
 ### List Spaces
 ```bash
-GET /kibana/api/spaces/space
+maton api '/kibana/api/spaces/space'
 ```
 
 ### Get Space
 ```bash
-GET /kibana/api/spaces/space/{id}
+maton api '/kibana/api/spaces/space/{id}'
 ```
 
 ### Create Space
 ```bash
-POST /kibana/api/spaces/space
-Content-Type: application/json
-
+maton api -X POST '/kibana/api/spaces/space' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"id": "space-id", "name": "Space Name"}
+EOF
 ```
 
 ### Delete Space
 ```bash
-DELETE /kibana/api/spaces/space/{id}
+maton api -X DELETE '/kibana/api/spaces/space/{id}'
 ```
 
 ## Alerting
 
 ### Find Alert Rules
 ```bash
-GET /kibana/api/alerting/rules/_find
+maton api '/kibana/api/alerting/rules/_find'
 ```
 
 ### Get Alert Rule
 ```bash
-GET /kibana/api/alerting/rule/{id}
+maton api '/kibana/api/alerting/rule/{id}'
 ```
 
 ### Enable/Disable Rule
 ```bash
-POST /kibana/api/alerting/rule/{id}/_enable
-POST /kibana/api/alerting/rule/{id}/_disable
+maton api -X POST '/kibana/api/alerting/rule/{id}/_enable'
+maton api -X POST '/kibana/api/alerting/rule/{id}/_disable'
 ```
 
 ## Connectors
 
 ### List Connectors
 ```bash
-GET /kibana/api/actions/connectors
+maton api '/kibana/api/actions/connectors'
 ```
 
 ### Get Connector
 ```bash
-GET /kibana/api/actions/connector/{id}
+maton api '/kibana/api/actions/connector/{id}'
 ```
 
 ### Execute Connector
 ```bash
-POST /kibana/api/actions/connector/{id}/_execute
+maton api -X POST '/kibana/api/actions/connector/{id}/_execute'
 ```
 
 ## Fleet
 
 ### List Agent Policies
 ```bash
-GET /kibana/api/fleet/agent_policies
+maton api '/kibana/api/fleet/agent_policies'
 ```
 
 ### List Agents
 ```bash
-GET /kibana/api/fleet/agents
+maton api '/kibana/api/fleet/agents'
 ```
 
 ### List Packages
 ```bash
-GET /kibana/api/fleet/epm/packages
+maton api '/kibana/api/fleet/epm/packages'
 ```
 
 ## Security
 
 ### List Roles
 ```bash
-GET /kibana/api/security/role
+maton api '/kibana/api/security/role'
 ```
 
 ## Cases
 
 ### Find Cases
 ```bash
-GET /kibana/api/cases/_find
+maton api '/kibana/api/cases/_find'
 ```
 
 ## Notes

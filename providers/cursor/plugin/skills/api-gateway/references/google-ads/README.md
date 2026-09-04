@@ -15,7 +15,7 @@
 
 ### List Accessible Customers
 ```bash
-GET /google-ads/v23/customers:listAccessibleCustomers
+maton api '/google-ads/v23/customers:listAccessibleCustomers'
 ```
 
 Example:
@@ -26,12 +26,13 @@ maton google-ads account list
 
 ### Search (GAQL Query)
 ```bash
-POST /google-ads/v23/customers/{customerId}/googleAds:search
-Content-Type: application/json
-
+maton api -X POST '/google-ads/v23/customers/{customerId}/googleAds:search' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "SELECT campaign.id, campaign.name, campaign.status FROM campaign ORDER BY campaign.id"
 }
+EOF
 ```
 
 Example:
@@ -42,12 +43,13 @@ maton google-ads query -c 1234567890 --resource campaign --fields 'campaign.id, 
 
 ### Search Stream (for large result sets)
 ```bash
-POST /google-ads/v23/customers/{customerId}/googleAds:searchStream
-Content-Type: application/json
-
+maton api -X POST '/google-ads/v23/customers/{customerId}/googleAds:searchStream' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "SELECT campaign.id, campaign.name FROM campaign"
 }
+EOF
 ```
 
 Example:
@@ -128,9 +130,9 @@ WHERE segments.date DURING LAST_7_DAYS
 
 ### Create Campaign
 ```bash
-POST /google-ads/v23/customers/{customerId}/campaigns:mutate
-Content-Type: application/json
-
+maton api -X POST '/google-ads/v23/customers/{customerId}/campaigns:mutate' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "operations": [
     {
@@ -144,13 +146,14 @@ Content-Type: application/json
     }
   ]
 }
+EOF
 ```
 
 ### Update Campaign Status
 ```bash
-POST /google-ads/v23/customers/{customerId}/campaigns:mutate
-Content-Type: application/json
-
+maton api -X POST '/google-ads/v23/customers/{customerId}/campaigns:mutate' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "operations": [
     {
@@ -162,6 +165,7 @@ Content-Type: application/json
     }
   ]
 }
+EOF
 ```
 
 ## Manager (MCC) Account Access

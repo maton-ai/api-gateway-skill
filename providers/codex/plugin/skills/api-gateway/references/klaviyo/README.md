@@ -23,7 +23,7 @@ revision: 2026-01-15
 
 ### Get Profiles
 ```bash
-GET /klaviyo/api/profiles
+maton api '/klaviyo/api/profiles'
 ```
 
 Query parameters:
@@ -33,14 +33,14 @@ Query parameters:
 
 ### Get a Profile
 ```bash
-GET /klaviyo/api/profiles/{profile_id}
+maton api '/klaviyo/api/profiles/{profile_id}'
 ```
 
 ### Create a Profile
 ```bash
-POST /klaviyo/api/profiles
-Content-Type: application/json
-
+maton api -X POST '/klaviyo/api/profiles' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": {
     "type": "profile",
@@ -51,13 +51,14 @@ Content-Type: application/json
     }
   }
 }
+EOF
 ```
 
 ### Update a Profile
 ```bash
-PATCH /klaviyo/api/profiles/{profile_id}
-Content-Type: application/json
-
+maton api -X PATCH '/klaviyo/api/profiles/{profile_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": {
     "type": "profile",
@@ -67,18 +68,19 @@ Content-Type: application/json
     }
   }
 }
+EOF
 ```
 
 ### Get Lists
 ```bash
-GET /klaviyo/api/lists
+maton api '/klaviyo/api/lists'
 ```
 
 ### Create a List
 ```bash
-POST /klaviyo/api/lists
-Content-Type: application/json
-
+maton api -X POST '/klaviyo/api/lists' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": {
     "type": "list",
@@ -87,37 +89,39 @@ Content-Type: application/json
     }
   }
 }
+EOF
 ```
 
 ### Add Profiles to List
 ```bash
-POST /klaviyo/api/lists/{list_id}/relationships/profiles
-Content-Type: application/json
-
+maton api -X POST '/klaviyo/api/lists/{list_id}/relationships/profiles' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": [
     {"type": "profile", "id": "PROFILE_ID"}
   ]
 }
+EOF
 ```
 
 ### Get Segments
 ```bash
-GET /klaviyo/api/segments
+maton api '/klaviyo/api/segments'
 ```
 
 ### Get Campaigns
 ```bash
-GET /klaviyo/api/campaigns?filter=equals(messages.channel,"email")
+maton api '/klaviyo/api/campaigns?filter=equals(messages.channel,"email")'
 ```
 
 > **Note:** A channel filter is required (email or sms).
 
 ### Create a Campaign
 ```bash
-POST /klaviyo/api/campaigns
-Content-Type: application/json
-
+maton api -X POST '/klaviyo/api/campaigns' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": {
     "type": "campaign",
@@ -129,18 +133,19 @@ Content-Type: application/json
     }
   }
 }
+EOF
 ```
 
 ### Get Flows
 ```bash
-GET /klaviyo/api/flows
+maton api '/klaviyo/api/flows'
 ```
 
 ### Update Flow Status
 ```bash
-PATCH /klaviyo/api/flows/{flow_id}
-Content-Type: application/json
-
+maton api -X PATCH '/klaviyo/api/flows/{flow_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": {
     "type": "flow",
@@ -150,13 +155,14 @@ Content-Type: application/json
     }
   }
 }
+EOF
 ```
 
 ### Create an Event
 ```bash
-POST /klaviyo/api/events
-Content-Type: application/json
-
+maton api -X POST '/klaviyo/api/events' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": {
     "type": "event",
@@ -184,23 +190,24 @@ Content-Type: application/json
     }
   }
 }
+EOF
 ```
 
 ### Get Metrics
 ```bash
-GET /klaviyo/api/metrics
+maton api '/klaviyo/api/metrics'
 ```
 
 ### Get Templates
 ```bash
-GET /klaviyo/api/templates
+maton api '/klaviyo/api/templates'
 ```
 
 ### Create Webhook
 ```bash
-POST /klaviyo/api/webhooks
-Content-Type: application/json
-
+maton api -X POST '/klaviyo/api/webhooks' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": {
     "type": "webhook",
@@ -218,48 +225,49 @@ Content-Type: application/json
     }
   }
 }
+EOF
 ```
 
 ### Delete Webhook
 ```bash
-DELETE /klaviyo/api/webhooks/{webhook_id}
+maton api -X DELETE '/klaviyo/api/webhooks/{webhook_id}'
 ```
 
 ### Get Webhook Topics
 ```bash
-GET /klaviyo/api/webhook-topics
+maton api '/klaviyo/api/webhook-topics'
 ```
 
 ### Get Images
 ```bash
-GET /klaviyo/api/images
+maton api '/klaviyo/api/images'
 ```
 
 ### Get Forms
 ```bash
-GET /klaviyo/api/forms
+maton api '/klaviyo/api/forms'
 ```
 
 ### Get Reviews
 ```bash
-GET /klaviyo/api/reviews
+maton api '/klaviyo/api/reviews'
 ```
 
 ### Get Tag Groups
 ```bash
-GET /klaviyo/api/tag-groups
+maton api '/klaviyo/api/tag-groups'
 ```
 
 ### Get Universal Content
 ```bash
-GET /klaviyo/api/template-universal-content
+maton api '/klaviyo/api/template-universal-content'
 ```
 
 ### Bulk Subscribe Profiles
 ```bash
-POST /klaviyo/api/profile-subscription-bulk-create-jobs
-Content-Type: application/json
-
+maton api -X POST '/klaviyo/api/profile-subscription-bulk-create-jobs' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": {
     "type": "profile-subscription-bulk-create-job",
@@ -281,11 +289,12 @@ Content-Type: application/json
     }
   }
 }
+EOF
 ```
 
 ### Get Bulk Import Jobs
 ```bash
-GET /klaviyo/api/profile-bulk-import-jobs
+maton api '/klaviyo/api/profile-bulk-import-jobs'
 ```
 
 ## Notes

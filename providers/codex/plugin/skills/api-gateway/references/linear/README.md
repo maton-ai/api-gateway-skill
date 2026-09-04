@@ -21,12 +21,13 @@ All operations use POST with a JSON body containing the `query` field.
 
 ### Get Current User (Viewer)
 ```bash
-POST /linear/graphql
-Content-Type: application/json
-
+maton api -X POST '/linear/graphql' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "{ viewer { id name email } }"
 }
+EOF
 ```
 
 Example:
@@ -37,12 +38,13 @@ maton linear whoami
 
 ### Get Organization
 ```bash
-POST /linear/graphql
-Content-Type: application/json
-
+maton api -X POST '/linear/graphql' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "{ organization { id name urlKey } }"
 }
+EOF
 ```
 
 Example:
@@ -53,12 +55,13 @@ maton linear org view
 
 ### List Teams
 ```bash
-POST /linear/graphql
-Content-Type: application/json
-
+maton api -X POST '/linear/graphql' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "{ teams { nodes { id name key } } }"
 }
+EOF
 ```
 
 Example:
@@ -69,12 +72,13 @@ maton linear team list
 
 ### List Issues
 ```bash
-POST /linear/graphql
-Content-Type: application/json
-
+maton api -X POST '/linear/graphql' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "{ issues(first: 20) { nodes { id identifier title state { name } priority } pageInfo { hasNextPage endCursor } } }"
 }
+EOF
 ```
 
 Example:
@@ -85,12 +89,13 @@ maton linear issue list -c ABC -L 20
 
 ### Get Issue by Identifier
 ```bash
-POST /linear/graphql
-Content-Type: application/json
-
+maton api -X POST '/linear/graphql' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "{ issue(id: \"MTN-527\") { id identifier title description state { name } priority assignee { name } team { key } createdAt } }"
 }
+EOF
 ```
 
 Example:
@@ -101,12 +106,13 @@ maton linear issue view MTN-527
 
 ### Filter Issues by State
 ```bash
-POST /linear/graphql
-Content-Type: application/json
-
+maton api -X POST '/linear/graphql' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "{ issues(first: 20, filter: { state: { type: { eq: \"started\" } } }) { nodes { id identifier title state { name } } } }"
 }
+EOF
 ```
 
 Example:
@@ -117,12 +123,13 @@ maton linear issue list --state started -L 20
 
 ### Search Issues
 ```bash
-POST /linear/graphql
-Content-Type: application/json
-
+maton api -X POST '/linear/graphql' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "{ searchIssues(first: 20, term: \"search term\") { nodes { id identifier title } } }"
 }
+EOF
 ```
 
 Example:
@@ -133,12 +140,13 @@ maton linear issue search 'search term' -L 20
 
 ### Create Issue
 ```bash
-POST /linear/graphql
-Content-Type: application/json
-
+maton api -X POST '/linear/graphql' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "mutation { issueCreate(input: { teamId: \"TEAM_ID\", title: \"Issue title\", description: \"Description\" }) { success issue { id identifier title } } }"
 }
+EOF
 ```
 
 Example:
@@ -149,12 +157,13 @@ maton linear issue create --team-id TEAM_ID -t 'Issue title'
 
 ### Update Issue
 ```bash
-POST /linear/graphql
-Content-Type: application/json
-
+maton api -X POST '/linear/graphql' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "mutation { issueUpdate(id: \"ISSUE_ID\", input: { title: \"Updated title\", priority: 2 }) { success issue { id identifier title priority } } }"
 }
+EOF
 ```
 
 Example:
@@ -165,12 +174,13 @@ maton linear issue update ISSUE_ID -t 'Updated title' --priority 2
 
 ### Create Comment
 ```bash
-POST /linear/graphql
-Content-Type: application/json
-
+maton api -X POST '/linear/graphql' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "mutation { commentCreate(input: { issueId: \"ISSUE_ID\", body: \"Comment text\" }) { success comment { id body } } }"
 }
+EOF
 ```
 
 Example:
@@ -181,12 +191,13 @@ maton linear comment create --issue ISSUE_ID -b 'Comment text'
 
 ### List Projects
 ```bash
-POST /linear/graphql
-Content-Type: application/json
-
+maton api -X POST '/linear/graphql' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "{ projects(first: 20) { nodes { id name state createdAt } } }"
 }
+EOF
 ```
 
 Example:
@@ -197,12 +208,13 @@ maton linear project list
 
 ### List Labels
 ```bash
-POST /linear/graphql
-Content-Type: application/json
-
+maton api -X POST '/linear/graphql' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "{ issueLabels(first: 50) { nodes { id name color } } }"
 }
+EOF
 ```
 
 Example:
@@ -213,12 +225,13 @@ maton linear label list
 
 ### List Workflow States
 ```bash
-POST /linear/graphql
-Content-Type: application/json
-
+maton api -X POST '/linear/graphql' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "{ workflowStates(first: 50) { nodes { id name type team { key } } } }"
 }
+EOF
 ```
 
 Example:
@@ -229,12 +242,13 @@ maton linear state list
 
 ### List Users
 ```bash
-POST /linear/graphql
-Content-Type: application/json
-
+maton api -X POST '/linear/graphql' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "{ users(first: 50) { nodes { id name email active } } }"
 }
+EOF
 ```
 
 Example:
@@ -245,12 +259,13 @@ maton linear user list
 
 ### List Cycles
 ```bash
-POST /linear/graphql
-Content-Type: application/json
-
+maton api -X POST '/linear/graphql' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "{ cycles(first: 20) { nodes { id name number startsAt endsAt } } }"
 }
+EOF
 ```
 
 Example:
@@ -271,16 +286,20 @@ For raw GraphQL requests, supply an `after: "CURSOR_VALUE"` argument with the `e
 
 ```bash
 # First page
-POST /linear/graphql
+maton api -X POST '/linear/graphql' \
+  --input - <<'EOF'
 {
   "query": "{ issues(first: 20) { nodes { id identifier title } pageInfo { hasNextPage endCursor } } }"
 }
+EOF
 
 # Next page
-POST /linear/graphql
+maton api -X POST '/linear/graphql' \
+  --input - <<'EOF'
 {
   "query": "{ issues(first: 20, after: \"CURSOR_VALUE\") { nodes { id identifier title } pageInfo { hasNextPage endCursor } } }"
 }
+EOF
 ```
 
 ## Notes

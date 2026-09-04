@@ -10,7 +10,7 @@
 Confluence Cloud requires a cloud ID in the API path. First, get accessible resources:
 
 ```bash
-GET /confluence/oauth/token/accessible-resources
+maton api '/confluence/oauth/token/accessible-resources'
 ```
 
 Response:
@@ -41,22 +41,22 @@ V1 REST API (limited):
 
 #### List Pages
 ```bash
-GET /confluence/ex/confluence/{cloudId}/wiki/api/v2/pages
-GET /confluence/ex/confluence/{cloudId}/wiki/api/v2/pages?space-id={spaceId}
-GET /confluence/ex/confluence/{cloudId}/wiki/api/v2/pages?limit=25
+maton api '/confluence/ex/confluence/{cloudId}/wiki/api/v2/pages'
+maton api '/confluence/ex/confluence/{cloudId}/wiki/api/v2/pages?space-id={spaceId}'
+maton api '/confluence/ex/confluence/{cloudId}/wiki/api/v2/pages?limit=25'
 ```
 
 #### Get Page
 ```bash
-GET /confluence/ex/confluence/{cloudId}/wiki/api/v2/pages/{pageId}
-GET /confluence/ex/confluence/{cloudId}/wiki/api/v2/pages/{pageId}?body-format=storage
+maton api '/confluence/ex/confluence/{cloudId}/wiki/api/v2/pages/{pageId}'
+maton api '/confluence/ex/confluence/{cloudId}/wiki/api/v2/pages/{pageId}?body-format=storage'
 ```
 
 #### Create Page
 ```bash
-POST /confluence/ex/confluence/{cloudId}/wiki/api/v2/pages
-Content-Type: application/json
-
+maton api -X POST '/confluence/ex/confluence/{cloudId}/wiki/api/v2/pages' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "spaceId": "98306",
   "status": "current",
@@ -66,13 +66,14 @@ Content-Type: application/json
     "value": "<p>Page content</p>"
   }
 }
+EOF
 ```
 
 #### Update Page
 ```bash
-PUT /confluence/ex/confluence/{cloudId}/wiki/api/v2/pages/{pageId}
-Content-Type: application/json
-
+maton api -X PUT '/confluence/ex/confluence/{cloudId}/wiki/api/v2/pages/{pageId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "id": "98391",
   "status": "current",
@@ -83,57 +84,58 @@ Content-Type: application/json
   },
   "version": {"number": 2}
 }
+EOF
 ```
 
 #### Delete Page
 ```bash
-DELETE /confluence/ex/confluence/{cloudId}/wiki/api/v2/pages/{pageId}
+maton api -X DELETE '/confluence/ex/confluence/{cloudId}/wiki/api/v2/pages/{pageId}'
 ```
 
 #### Get Page Children
 ```bash
-GET /confluence/ex/confluence/{cloudId}/wiki/api/v2/pages/{pageId}/children
+maton api '/confluence/ex/confluence/{cloudId}/wiki/api/v2/pages/{pageId}/children'
 ```
 
 #### Get Page Labels
 ```bash
-GET /confluence/ex/confluence/{cloudId}/wiki/api/v2/pages/{pageId}/labels
+maton api '/confluence/ex/confluence/{cloudId}/wiki/api/v2/pages/{pageId}/labels'
 ```
 
 #### Get Page Comments
 ```bash
-GET /confluence/ex/confluence/{cloudId}/wiki/api/v2/pages/{pageId}/footer-comments
+maton api '/confluence/ex/confluence/{cloudId}/wiki/api/v2/pages/{pageId}/footer-comments'
 ```
 
 ### Spaces
 
 #### List Spaces
 ```bash
-GET /confluence/ex/confluence/{cloudId}/wiki/api/v2/spaces
+maton api '/confluence/ex/confluence/{cloudId}/wiki/api/v2/spaces'
 ```
 
 #### Get Space
 ```bash
-GET /confluence/ex/confluence/{cloudId}/wiki/api/v2/spaces/{spaceId}
+maton api '/confluence/ex/confluence/{cloudId}/wiki/api/v2/spaces/{spaceId}'
 ```
 
 #### Get Space Pages
 ```bash
-GET /confluence/ex/confluence/{cloudId}/wiki/api/v2/spaces/{spaceId}/pages
+maton api '/confluence/ex/confluence/{cloudId}/wiki/api/v2/spaces/{spaceId}/pages'
 ```
 
 ### Blogposts
 
 #### List Blogposts
 ```bash
-GET /confluence/ex/confluence/{cloudId}/wiki/api/v2/blogposts
+maton api '/confluence/ex/confluence/{cloudId}/wiki/api/v2/blogposts'
 ```
 
 #### Create Blogpost
 ```bash
-POST /confluence/ex/confluence/{cloudId}/wiki/api/v2/blogposts
-Content-Type: application/json
-
+maton api -X POST '/confluence/ex/confluence/{cloudId}/wiki/api/v2/blogposts' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "spaceId": "98306",
   "title": "Blog Post Title",
@@ -142,20 +144,21 @@ Content-Type: application/json
     "value": "<p>Blog content</p>"
   }
 }
+EOF
 ```
 
 ### Comments
 
 #### List Footer Comments
 ```bash
-GET /confluence/ex/confluence/{cloudId}/wiki/api/v2/footer-comments
+maton api '/confluence/ex/confluence/{cloudId}/wiki/api/v2/footer-comments'
 ```
 
 #### Create Footer Comment
 ```bash
-POST /confluence/ex/confluence/{cloudId}/wiki/api/v2/footer-comments
-Content-Type: application/json
-
+maton api -X POST '/confluence/ex/confluence/{cloudId}/wiki/api/v2/footer-comments' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "pageId": "98391",
   "body": {
@@ -163,32 +166,33 @@ Content-Type: application/json
     "value": "<p>Comment text</p>"
   }
 }
+EOF
 ```
 
 ### Attachments
 
 #### List Attachments
 ```bash
-GET /confluence/ex/confluence/{cloudId}/wiki/api/v2/attachments
+maton api '/confluence/ex/confluence/{cloudId}/wiki/api/v2/attachments'
 ```
 
 #### Get Page Attachments
 ```bash
-GET /confluence/ex/confluence/{cloudId}/wiki/api/v2/pages/{pageId}/attachments
+maton api '/confluence/ex/confluence/{cloudId}/wiki/api/v2/pages/{pageId}/attachments'
 ```
 
 ### Tasks
 
 #### List Tasks
 ```bash
-GET /confluence/ex/confluence/{cloudId}/wiki/api/v2/tasks
+maton api '/confluence/ex/confluence/{cloudId}/wiki/api/v2/tasks'
 ```
 
 ### User (V1 API)
 
 #### Get Current User
 ```bash
-GET /confluence/ex/confluence/{cloudId}/wiki/rest/api/user/current
+maton api '/confluence/ex/confluence/{cloudId}/wiki/rest/api/user/current'
 ```
 
 ## Notes

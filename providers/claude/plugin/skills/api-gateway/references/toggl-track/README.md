@@ -15,40 +15,40 @@
 
 ### Get Current User
 ```bash
-GET /toggl-track/api/v9/me
+maton api '/toggl-track/api/v9/me'
 ```
 
 ### List Workspaces
 ```bash
-GET /toggl-track/api/v9/me/workspaces
+maton api '/toggl-track/api/v9/me/workspaces'
 ```
 
 ### Get Workspace
 ```bash
-GET /toggl-track/api/v9/workspaces/{workspace_id}
+maton api '/toggl-track/api/v9/workspaces/{workspace_id}'
 ```
 
 ### List Workspace Users
 ```bash
-GET /toggl-track/api/v9/workspaces/{workspace_id}/users
+maton api '/toggl-track/api/v9/workspaces/{workspace_id}/users'
 ```
 
 ### List Time Entries
 ```bash
-GET /toggl-track/api/v9/me/time_entries
-GET /toggl-track/api/v9/me/time_entries?start_date=2026-02-01&end_date=2026-02-28
+maton api '/toggl-track/api/v9/me/time_entries'
+maton api '/toggl-track/api/v9/me/time_entries?start_date=2026-02-01&end_date=2026-02-28'
 ```
 
 ### Get Current Time Entry
 ```bash
-GET /toggl-track/api/v9/me/time_entries/current
+maton api '/toggl-track/api/v9/me/time_entries/current'
 ```
 
 ### Create Time Entry
 ```bash
-POST /toggl-track/api/v9/workspaces/{workspace_id}/time_entries
-Content-Type: application/json
-
+maton api -X POST '/toggl-track/api/v9/workspaces/{workspace_id}/time_entries' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "description": "Working on task",
   "start": "2026-02-13T10:00:00Z",
@@ -56,119 +56,127 @@ Content-Type: application/json
   "workspace_id": 21180405,
   "created_with": "maton-api"
 }
+EOF
 ```
 
 ### Stop Time Entry
 ```bash
-PATCH /toggl-track/api/v9/workspaces/{workspace_id}/time_entries/{time_entry_id}/stop
+maton api -X PATCH '/toggl-track/api/v9/workspaces/{workspace_id}/time_entries/{time_entry_id}/stop'
 ```
 
 ### Update Time Entry
 ```bash
-PUT /toggl-track/api/v9/workspaces/{workspace_id}/time_entries/{time_entry_id}
-Content-Type: application/json
-
+maton api -X PUT '/toggl-track/api/v9/workspaces/{workspace_id}/time_entries/{time_entry_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "description": "Updated description"
 }
+EOF
 ```
 
 ### Delete Time Entry
 ```bash
-DELETE /toggl-track/api/v9/workspaces/{workspace_id}/time_entries/{time_entry_id}
+maton api -X DELETE '/toggl-track/api/v9/workspaces/{workspace_id}/time_entries/{time_entry_id}'
 ```
 
 ### List Projects
 ```bash
-GET /toggl-track/api/v9/workspaces/{workspace_id}/projects
-GET /toggl-track/api/v9/workspaces/{workspace_id}/projects?active=true
+maton api '/toggl-track/api/v9/workspaces/{workspace_id}/projects'
+maton api '/toggl-track/api/v9/workspaces/{workspace_id}/projects?active=true'
 ```
 
 ### Create Project
 ```bash
-POST /toggl-track/api/v9/workspaces/{workspace_id}/projects
-Content-Type: application/json
-
+maton api -X POST '/toggl-track/api/v9/workspaces/{workspace_id}/projects' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "New Project",
   "active": true,
   "color": "#0b83d9"
 }
+EOF
 ```
 
 ### Update Project
 ```bash
-PUT /toggl-track/api/v9/workspaces/{workspace_id}/projects/{project_id}
-Content-Type: application/json
-
+maton api -X PUT '/toggl-track/api/v9/workspaces/{workspace_id}/projects/{project_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Updated Project"
 }
+EOF
 ```
 
 ### Delete Project
 ```bash
-DELETE /toggl-track/api/v9/workspaces/{workspace_id}/projects/{project_id}
+maton api -X DELETE '/toggl-track/api/v9/workspaces/{workspace_id}/projects/{project_id}'
 ```
 
 ### List Clients
 ```bash
-GET /toggl-track/api/v9/workspaces/{workspace_id}/clients
+maton api '/toggl-track/api/v9/workspaces/{workspace_id}/clients'
 ```
 
 ### Create Client
 ```bash
-POST /toggl-track/api/v9/workspaces/{workspace_id}/clients
-Content-Type: application/json
-
+maton api -X POST '/toggl-track/api/v9/workspaces/{workspace_id}/clients' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "New Client"
 }
+EOF
 ```
 
 ### Update Client
 ```bash
-PUT /toggl-track/api/v9/workspaces/{workspace_id}/clients/{client_id}
-Content-Type: application/json
-
+maton api -X PUT '/toggl-track/api/v9/workspaces/{workspace_id}/clients/{client_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Updated Client"
 }
+EOF
 ```
 
 ### Delete Client
 ```bash
-DELETE /toggl-track/api/v9/workspaces/{workspace_id}/clients/{client_id}
+maton api -X DELETE '/toggl-track/api/v9/workspaces/{workspace_id}/clients/{client_id}'
 ```
 
 ### List Tags
 ```bash
-GET /toggl-track/api/v9/workspaces/{workspace_id}/tags
+maton api '/toggl-track/api/v9/workspaces/{workspace_id}/tags'
 ```
 
 ### Create Tag
 ```bash
-POST /toggl-track/api/v9/workspaces/{workspace_id}/tags
-Content-Type: application/json
-
+maton api -X POST '/toggl-track/api/v9/workspaces/{workspace_id}/tags' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "New Tag"
 }
+EOF
 ```
 
 ### Update Tag
 ```bash
-PUT /toggl-track/api/v9/workspaces/{workspace_id}/tags/{tag_id}
-Content-Type: application/json
-
+maton api -X PUT '/toggl-track/api/v9/workspaces/{workspace_id}/tags/{tag_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Updated Tag"
 }
+EOF
 ```
 
 ### Delete Tag
 ```bash
-DELETE /toggl-track/api/v9/workspaces/{workspace_id}/tags/{tag_id}
+maton api -X DELETE '/toggl-track/api/v9/workspaces/{workspace_id}/tags/{tag_id}'
 ```
 
 ## Notes

@@ -20,236 +20,242 @@
 
 ### Get Root Site
 ```bash
-GET /sharepoint/v1.0/sites/root
+maton api '/sharepoint/v1.0/sites/root'
 ```
 
 ### Get Site by ID
 ```bash
-GET /sharepoint/v1.0/sites/{site_id}
+maton api '/sharepoint/v1.0/sites/{site_id}'
 ```
 
 Site IDs follow the format: `{hostname},{site-guid},{web-guid}`
 
 ### Get Site by Hostname
 ```bash
-GET /sharepoint/v1.0/sites/{hostname}:/
-GET /sharepoint/v1.0/sites/{hostname}:/{site-path}
+maton api '/sharepoint/v1.0/sites/{hostname}:/'
+maton api '/sharepoint/v1.0/sites/{hostname}:/{site-path}'
 ```
 
 ### Search Sites
 ```bash
-GET /sharepoint/v1.0/sites?search={query}
+maton api '/sharepoint/v1.0/sites?search={query}'
 ```
 
 ### List Subsites
 ```bash
-GET /sharepoint/v1.0/sites/{site_id}/sites
+maton api '/sharepoint/v1.0/sites/{site_id}/sites'
 ```
 
 ### Get Site Columns
 ```bash
-GET /sharepoint/v1.0/sites/{site_id}/columns
+maton api '/sharepoint/v1.0/sites/{site_id}/columns'
 ```
 
 ### Get Followed Sites
 ```bash
-GET /sharepoint/v1.0/me/followedSites
+maton api '/sharepoint/v1.0/me/followedSites'
 ```
 
 ## Lists
 
 ### List Site Lists
 ```bash
-GET /sharepoint/v1.0/sites/{site_id}/lists
+maton api '/sharepoint/v1.0/sites/{site_id}/lists'
 ```
 
 ### Get List
 ```bash
-GET /sharepoint/v1.0/sites/{site_id}/lists/{list_id}
+maton api '/sharepoint/v1.0/sites/{site_id}/lists/{list_id}'
 ```
 
 ### List Columns
 ```bash
-GET /sharepoint/v1.0/sites/{site_id}/lists/{list_id}/columns
+maton api '/sharepoint/v1.0/sites/{site_id}/lists/{list_id}/columns'
 ```
 
 ### List Content Types
 ```bash
-GET /sharepoint/v1.0/sites/{site_id}/lists/{list_id}/contentTypes
+maton api '/sharepoint/v1.0/sites/{site_id}/lists/{list_id}/contentTypes'
 ```
 
 ### List Items
 ```bash
-GET /sharepoint/v1.0/sites/{site_id}/lists/{list_id}/items
-GET /sharepoint/v1.0/sites/{site_id}/lists/{list_id}/items?$expand=fields
+maton api '/sharepoint/v1.0/sites/{site_id}/lists/{list_id}/items'
+maton api '/sharepoint/v1.0/sites/{site_id}/lists/{list_id}/items?$expand=fields'
 ```
 
 ### Create List Item
 ```bash
-POST /sharepoint/v1.0/sites/{site_id}/lists/{list_id}/items
-Content-Type: application/json
-
+maton api -X POST '/sharepoint/v1.0/sites/{site_id}/lists/{list_id}/items' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "fields": {
     "Title": "New Item",
     "Description": "Item description"
   }
 }
+EOF
 ```
 
 ### Update List Item
 ```bash
-PATCH /sharepoint/v1.0/sites/{site_id}/lists/{list_id}/items/{item_id}/fields
-Content-Type: application/json
-
+maton api -X PATCH '/sharepoint/v1.0/sites/{site_id}/lists/{list_id}/items/{item_id}/fields' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "Title": "Updated Title"
 }
+EOF
 ```
 
 ### Delete List Item
 ```bash
-DELETE /sharepoint/v1.0/sites/{site_id}/lists/{list_id}/items/{item_id}
+maton api -X DELETE '/sharepoint/v1.0/sites/{site_id}/lists/{list_id}/items/{item_id}'
 ```
 
 ## Drives (Document Libraries)
 
 ### List Site Drives
 ```bash
-GET /sharepoint/v1.0/sites/{site_id}/drives
+maton api '/sharepoint/v1.0/sites/{site_id}/drives'
 ```
 
 ### Get Default Drive
 ```bash
-GET /sharepoint/v1.0/sites/{site_id}/drive
+maton api '/sharepoint/v1.0/sites/{site_id}/drive'
 ```
 
 ### Get Drive by ID
 ```bash
-GET /sharepoint/v1.0/drives/{drive_id}
+maton api '/sharepoint/v1.0/drives/{drive_id}'
 ```
 
 ## Files and Folders
 
 ### List Root Contents
 ```bash
-GET /sharepoint/v1.0/drives/{drive_id}/root/children
+maton api '/sharepoint/v1.0/drives/{drive_id}/root/children'
 ```
 
 ### Get Item by ID
 ```bash
-GET /sharepoint/v1.0/drives/{drive_id}/items/{item_id}
+maton api '/sharepoint/v1.0/drives/{drive_id}/items/{item_id}'
 ```
 
 ### Get Item by Path
 ```bash
-GET /sharepoint/v1.0/drives/{drive_id}/root:/{path}
+maton api '/sharepoint/v1.0/drives/{drive_id}/root:/{path}'
 ```
 
 ### List Folder Contents
 ```bash
-GET /sharepoint/v1.0/drives/{drive_id}/items/{folder_id}/children
+maton api '/sharepoint/v1.0/drives/{drive_id}/items/{folder_id}/children'
 ```
 
 ### Download File
 ```bash
-GET /sharepoint/v1.0/drives/{drive_id}/items/{item_id}/content
-GET /sharepoint/v1.0/drives/{drive_id}/root:/{path}:/content
+maton api '/sharepoint/v1.0/drives/{drive_id}/items/{item_id}/content'
+maton api '/sharepoint/v1.0/drives/{drive_id}/root:/{path}:/content'
 ```
 
 ### Upload File
 ```bash
-PUT /sharepoint/v1.0/drives/{drive_id}/root:/{filename}:/content
-Content-Type: application/octet-stream
+maton api -X PUT '/sharepoint/v1.0/drives/{drive_id}/root:/{filename}:/content' \
+  -H 'Content-Type: application/octet-stream'
 ```
 
 ### Create Folder
 ```bash
-POST /sharepoint/v1.0/drives/{drive_id}/root/children
-Content-Type: application/json
-
+maton api -X POST '/sharepoint/v1.0/drives/{drive_id}/root/children' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "New Folder",
   "folder": {},
   "@microsoft.graph.conflictBehavior": "rename"
 }
+EOF
 ```
 
 ### Rename/Move Item
 ```bash
-PATCH /sharepoint/v1.0/drives/{drive_id}/items/{item_id}
-Content-Type: application/json
-
+maton api -X PATCH '/sharepoint/v1.0/drives/{drive_id}/items/{item_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "new-name.txt"
 }
+EOF
 ```
 
 ### Copy Item
 ```bash
-POST /sharepoint/v1.0/drives/{drive_id}/items/{item_id}/copy
-Content-Type: application/json
-
+maton api -X POST '/sharepoint/v1.0/drives/{drive_id}/items/{item_id}/copy' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "copied-file.txt"
 }
+EOF
 ```
 
 ### Delete Item
 ```bash
-DELETE /sharepoint/v1.0/drives/{drive_id}/items/{item_id}
+maton api -X DELETE '/sharepoint/v1.0/drives/{drive_id}/items/{item_id}'
 ```
 
 ### Search Files
 ```bash
-GET /sharepoint/v1.0/drives/{drive_id}/root/search(q='{query}')
+maton api "/sharepoint/v1.0/drives/{drive_id}/root/search(q='{query}')"
 ```
 
 ### Track Changes (Delta)
 ```bash
-GET /sharepoint/v1.0/drives/{drive_id}/root/delta
+maton api '/sharepoint/v1.0/drives/{drive_id}/root/delta'
 ```
 
 ## Sharing and Permissions
 
 ### Get Permissions
 ```bash
-GET /sharepoint/v1.0/drives/{drive_id}/items/{item_id}/permissions
+maton api '/sharepoint/v1.0/drives/{drive_id}/items/{item_id}/permissions'
 ```
 
 ### Create Sharing Link
 ```bash
-POST /sharepoint/v1.0/drives/{drive_id}/items/{item_id}/createLink
-Content-Type: application/json
-
+maton api -X POST '/sharepoint/v1.0/drives/{drive_id}/items/{item_id}/createLink' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "type": "view",
   "scope": "organization"
 }
+EOF
 ```
 
 ## Versions
 
 ### List Versions
 ```bash
-GET /sharepoint/v1.0/drives/{drive_id}/items/{item_id}/versions
+maton api '/sharepoint/v1.0/drives/{drive_id}/items/{item_id}/versions'
 ```
 
 ### Get Version
 ```bash
-GET /sharepoint/v1.0/drives/{drive_id}/items/{item_id}/versions/{version_id}
+maton api '/sharepoint/v1.0/drives/{drive_id}/items/{item_id}/versions/{version_id}'
 ```
 
 ### Download Version Content
 ```bash
-GET /sharepoint/v1.0/drives/{drive_id}/items/{item_id}/versions/{version_id}/content
+maton api '/sharepoint/v1.0/drives/{drive_id}/items/{item_id}/versions/{version_id}/content'
 ```
 
 ## Thumbnails
 
 ### Get Thumbnails
 ```bash
-GET /sharepoint/v1.0/drives/{drive_id}/items/{item_id}/thumbnails
+maton api '/sharepoint/v1.0/drives/{drive_id}/items/{item_id}/thumbnails'
 ```
 
 ## Query Parameters

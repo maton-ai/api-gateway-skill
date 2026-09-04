@@ -27,7 +27,7 @@
 
 #### List Customers
 ```bash
-GET /stripe/v1/customers?limit=10
+maton api '/stripe/v1/customers?limit=10'
 ```
 
 Example:
@@ -38,7 +38,7 @@ maton stripe customer list -L 10
 
 #### Get Customer
 ```bash
-GET /stripe/v1/customers/{customerId}
+maton api '/stripe/v1/customers/{customerId}'
 ```
 
 Example:
@@ -49,10 +49,11 @@ maton stripe customer view {customerId}
 
 #### Create Customer
 ```bash
-POST /stripe/v1/customers
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X POST '/stripe/v1/customers' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 email=customer@example.com&name=John%20Doe&description=New%20customer
+EOF
 ```
 
 Example:
@@ -63,10 +64,11 @@ maton stripe customer create --email customer@example.com --name 'John Doe'
 
 #### Update Customer
 ```bash
-POST /stripe/v1/customers/{customerId}
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X POST '/stripe/v1/customers/{customerId}' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 email=newemail@example.com
+EOF
 ```
 
 Example:
@@ -79,7 +81,7 @@ maton stripe customer update {customerId} --email newemail@example.com
 
 #### List Products
 ```bash
-GET /stripe/v1/products?limit=10&active=true
+maton api '/stripe/v1/products?limit=10&active=true'
 ```
 
 Example:
@@ -90,10 +92,11 @@ maton stripe product list -L 10
 
 #### Create Product
 ```bash
-POST /stripe/v1/products
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X POST '/stripe/v1/products' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 name=Premium%20Plan&description=Monthly%20subscription
+EOF
 ```
 
 Example:
@@ -106,7 +109,7 @@ maton stripe product create --name 'Premium Plan' --description 'Monthly subscri
 
 #### List Prices
 ```bash
-GET /stripe/v1/prices?limit=10&active=true
+maton api '/stripe/v1/prices?limit=10&active=true'
 ```
 
 Example:
@@ -117,10 +120,11 @@ maton stripe price list -L 10
 
 #### Create Price
 ```bash
-POST /stripe/v1/prices
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X POST '/stripe/v1/prices' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 unit_amount=1999&currency=usd&product=prod_XXX&recurring[interval]=month
+EOF
 ```
 
 Example:
@@ -133,7 +137,7 @@ maton stripe price create --product prod_XXX --unit-amount 1999 --currency usd -
 
 #### List Subscriptions
 ```bash
-GET /stripe/v1/subscriptions?limit=10&status=active
+maton api '/stripe/v1/subscriptions?limit=10&status=active'
 ```
 
 Example:
@@ -144,7 +148,7 @@ maton stripe subscription list -L 10
 
 #### Get Subscription
 ```bash
-GET /stripe/v1/subscriptions/{subscriptionId}
+maton api '/stripe/v1/subscriptions/{subscriptionId}'
 ```
 
 Example:
@@ -155,10 +159,11 @@ maton stripe subscription view {subscriptionId}
 
 #### Create Subscription
 ```bash
-POST /stripe/v1/subscriptions
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X POST '/stripe/v1/subscriptions' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 customer=cus_XXX&items[0][price]=price_XXX
+EOF
 ```
 
 Example:
@@ -169,7 +174,7 @@ maton stripe subscription create --customer cus_XXX --price price_XXX
 
 #### Cancel Subscription
 ```bash
-DELETE /stripe/v1/subscriptions/{subscriptionId}
+maton api -X DELETE '/stripe/v1/subscriptions/{subscriptionId}'
 ```
 
 Example:
@@ -182,7 +187,7 @@ maton stripe subscription cancel {subscriptionId}
 
 #### List Invoices
 ```bash
-GET /stripe/v1/invoices?limit=10&customer=cus_XXX
+maton api '/stripe/v1/invoices?limit=10&customer=cus_XXX'
 ```
 
 Example:
@@ -193,7 +198,7 @@ maton stripe invoice list -L 10
 
 #### Get Invoice
 ```bash
-GET /stripe/v1/invoices/{invoiceId}
+maton api '/stripe/v1/invoices/{invoiceId}'
 ```
 
 Example:
@@ -206,7 +211,7 @@ maton stripe invoice view {invoiceId}
 
 #### List Charges
 ```bash
-GET /stripe/v1/charges?limit=10
+maton api '/stripe/v1/charges?limit=10'
 ```
 
 Example:
@@ -219,10 +224,11 @@ maton stripe charge list -L 10
 
 #### Create Payment Intent
 ```bash
-POST /stripe/v1/payment_intents
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X POST '/stripe/v1/payment_intents' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 amount=1999&currency=usd&customer=cus_XXX
+EOF
 ```
 
 Example:
@@ -235,7 +241,7 @@ maton stripe payment create --amount 1999 --currency usd --customer cus_XXX
 
 #### Get Balance
 ```bash
-GET /stripe/v1/balance
+maton api '/stripe/v1/balance'
 ```
 
 Example:
@@ -248,14 +254,14 @@ maton stripe balance
 
 #### List Events
 ```bash
-GET /stripe/v1/events?limit=10&type=customer.created
+maton api '/stripe/v1/events?limit=10&type=customer.created'
 ```
 
 ### Payment Methods
 
 #### List Payment Methods
 ```bash
-GET /stripe/v1/payment_methods?customer=cus_XXX&type=card
+maton api '/stripe/v1/payment_methods?customer=cus_XXX&type=card'
 ```
 
 Example:
@@ -266,10 +272,11 @@ maton stripe payment-method list --customer cus_XXX --type card
 
 #### Attach Payment Method
 ```bash
-POST /stripe/v1/payment_methods/{paymentMethodId}/attach
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X POST '/stripe/v1/payment_methods/{paymentMethodId}/attach' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 customer=cus_XXX
+EOF
 ```
 
 Example:
@@ -280,7 +287,7 @@ maton stripe payment-method attach {paymentMethodId} --customer cus_XXX
 
 #### Detach Payment Method
 ```bash
-POST /stripe/v1/payment_methods/{paymentMethodId}/detach
+maton api -X POST '/stripe/v1/payment_methods/{paymentMethodId}/detach'
 ```
 
 Example:
@@ -293,7 +300,7 @@ maton stripe payment-method detach {paymentMethodId}
 
 #### List Coupons
 ```bash
-GET /stripe/v1/coupons?limit=10
+maton api '/stripe/v1/coupons?limit=10'
 ```
 
 Example:
@@ -304,10 +311,11 @@ maton stripe coupon list -L 10
 
 #### Create Coupon
 ```bash
-POST /stripe/v1/coupons
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X POST '/stripe/v1/coupons' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 percent_off=25&duration=once
+EOF
 ```
 
 Example:
@@ -318,7 +326,7 @@ maton stripe coupon create --percent-off 25 --duration once
 
 #### Delete Coupon
 ```bash
-DELETE /stripe/v1/coupons/{couponId}
+maton api -X DELETE '/stripe/v1/coupons/{couponId}'
 ```
 
 Example:
@@ -331,7 +339,7 @@ maton stripe coupon delete {couponId}
 
 #### List Refunds
 ```bash
-GET /stripe/v1/refunds?limit=10
+maton api '/stripe/v1/refunds?limit=10'
 ```
 
 Example:
@@ -342,10 +350,11 @@ maton stripe refund list -L 10
 
 #### Create Refund
 ```bash
-POST /stripe/v1/refunds
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X POST '/stripe/v1/refunds' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 charge=ch_XXX&amount=1000
+EOF
 ```
 
 Example:
@@ -359,7 +368,7 @@ maton stripe refund create --charge ch_XXX --amount 1000
 Stripe uses cursor-based pagination with `starting_after` and `ending_before`:
 
 ```bash
-GET /stripe/v1/customers?limit=10&starting_after=cus_XXX
+maton api '/stripe/v1/customers?limit=10&starting_after=cus_XXX'
 ```
 
 Example:

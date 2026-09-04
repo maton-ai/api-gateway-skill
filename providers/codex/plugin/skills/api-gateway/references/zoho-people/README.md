@@ -23,14 +23,14 @@ or for view-based endpoints:
 
 ```bash
 # List all forms
-GET /zoho-people/people/api/forms
+maton api '/zoho-people/people/api/forms'
 ```
 
 ### Records (Bulk)
 
 ```bash
 # Get records from any form
-GET /zoho-people/people/api/forms/{formLinkName}/getRecords?sIndex=1&limit=200
+maton api '/zoho-people/people/api/forms/{formLinkName}/getRecords?sIndex=1&limit=200'
 
 # Common form link names:
 # - employee
@@ -44,7 +44,7 @@ GET /zoho-people/people/api/forms/{formLinkName}/getRecords?sIndex=1&limit=200
 
 ```bash
 # Get records using a view
-GET /zoho-people/api/forms/{viewName}/records?rec_limit=200
+maton api '/zoho-people/api/forms/{viewName}/records?rec_limit=200'
 
 # Common view names:
 # - P_EmployeeView
@@ -56,57 +56,61 @@ GET /zoho-people/api/forms/{viewName}/records?rec_limit=200
 
 ```bash
 # Search by Employee ID
-GET /zoho-people/people/api/forms/employee/getRecords?SearchColumn=EMPLOYEEID&SearchValue={empId}
+maton api '/zoho-people/people/api/forms/employee/getRecords?SearchColumn=EMPLOYEEID&SearchValue={empId}'
 
 # Search by Email
-GET /zoho-people/people/api/forms/employee/getRecords?SearchColumn=EMPLOYEEMAILALIAS&SearchValue={email}
+maton api '/zoho-people/people/api/forms/employee/getRecords?SearchColumn=EMPLOYEEMAILALIAS&SearchValue={email}'
 
 # Get modified records
-GET /zoho-people/people/api/forms/{formLinkName}/getRecords?modifiedtime={timestamp_ms}
+maton api '/zoho-people/people/api/forms/{formLinkName}/getRecords?modifiedtime={timestamp_ms}'
 ```
 
 ### Insert Record
 
 ```bash
-POST /zoho-people/people/api/forms/json/{formLinkName}/insertRecord
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X POST '/zoho-people/people/api/forms/json/{formLinkName}/insertRecord' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 inputData={"field1":"value1","field2":"value2"}
+EOF
 ```
 
 ### Update Record
 
 ```bash
-POST /zoho-people/people/api/forms/json/{formLinkName}/updateRecord
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X POST '/zoho-people/people/api/forms/json/{formLinkName}/updateRecord' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 inputData={"field1":"newValue"}&recordId={recordId}
+EOF
 ```
 
 ### Attendance
 
 ```bash
 # Get attendance entries (requires additional scope)
-GET /zoho-people/people/api/attendance/getAttendanceEntries?date={date}&dateFormat={format}
+maton api '/zoho-people/people/api/attendance/getAttendanceEntries?date={date}&dateFormat={format}'
 
 # Check-in/Check-out (requires additional scope)
-POST /zoho-people/people/api/attendance
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X POST '/zoho-people/people/api/attendance' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 dateFormat=dd/MM/yyyy HH:mm:ss&checkIn={datetime}&checkOut={datetime}&empId={empId}
+EOF
 ```
 
 ### Leave
 
 ```bash
 # Get leave records
-GET /zoho-people/people/api/forms/leave/getRecords?sIndex=1&limit=200
+maton api '/zoho-people/people/api/forms/leave/getRecords?sIndex=1&limit=200'
 
 # Add leave
-POST /zoho-people/people/api/forms/json/leave/insertRecord
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X POST '/zoho-people/people/api/forms/json/leave/insertRecord' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 inputData={"Employee_ID":"EMP001","Leavetype":"123456","From":"01-Feb-2026","To":"02-Feb-2026"}
+EOF
 ```
 
 ## Common Form Link Names

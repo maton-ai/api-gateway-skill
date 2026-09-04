@@ -17,69 +17,72 @@
 
 ```bash
 # List all modules
-GET /zoho-recruit/recruit/v2/settings/modules
+maton api '/zoho-recruit/recruit/v2/settings/modules'
 
 # Get specific module
-GET /zoho-recruit/recruit/v2/settings/modules/{module_api_name}
+maton api '/zoho-recruit/recruit/v2/settings/modules/{module_api_name}'
 ```
 
 ### Records
 
 ```bash
 # List records
-GET /zoho-recruit/recruit/v2/{module_api_name}?page=1&per_page=200
+maton api '/zoho-recruit/recruit/v2/{module_api_name}?page=1&per_page=200'
 
 # Get single record
-GET /zoho-recruit/recruit/v2/{module_api_name}/{record_id}
+maton api '/zoho-recruit/recruit/v2/{module_api_name}/{record_id}'
 
 # Create records (max 100)
-POST /zoho-recruit/recruit/v2/{module_api_name}
-Content-Type: application/json
-
+maton api -X POST '/zoho-recruit/recruit/v2/{module_api_name}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": [
     {"field_api_name": "value"}
   ]
 }
+EOF
 
 # Update single record
-PUT /zoho-recruit/recruit/v2/{module_api_name}/{record_id}
-Content-Type: application/json
-
+maton api -X PUT '/zoho-recruit/recruit/v2/{module_api_name}/{record_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": [
     {"field_api_name": "new_value"}
   ]
 }
+EOF
 
 # Update multiple records (max 100)
-PUT /zoho-recruit/recruit/v2/{module_api_name}
-Content-Type: application/json
-
+maton api -X PUT '/zoho-recruit/recruit/v2/{module_api_name}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": [
     {"id": "record_id", "field_api_name": "value"}
   ]
 }
+EOF
 
 # Delete records (max 100)
-DELETE /zoho-recruit/recruit/v2/{module_api_name}?ids={id1},{id2}
+maton api -X DELETE '/zoho-recruit/recruit/v2/{module_api_name}?ids={id1},{id2}'
 ```
 
 ### Search
 
 ```bash
 # Search by criteria
-GET /zoho-recruit/recruit/v2/{module_api_name}/search?criteria=(field:operator:value)
+maton api '/zoho-recruit/recruit/v2/{module_api_name}/search?criteria=(field:operator:value)'
 
 # Search by email
-GET /zoho-recruit/recruit/v2/{module_api_name}/search?email=user@example.com
+maton api '/zoho-recruit/recruit/v2/{module_api_name}/search?email=user@example.com'
 
 # Search by phone
-GET /zoho-recruit/recruit/v2/{module_api_name}/search?phone=555-1234
+maton api '/zoho-recruit/recruit/v2/{module_api_name}/search?phone=555-1234'
 
 # Global word search
-GET /zoho-recruit/recruit/v2/{module_api_name}/search?word=keyword
+maton api '/zoho-recruit/recruit/v2/{module_api_name}/search?word=keyword'
 ```
 
 ## Available Modules

@@ -22,13 +22,13 @@
 By default, Clio returns minimal fields (`id`, `etag`). Always specify fields:
 
 ```bash
-GET /clio/api/v4/matters?fields=id,display_number,description,status
+maton api '/clio/api/v4/matters?fields=id,display_number,description,status'
 ```
 
 Nested resources use curly bracket syntax:
 
 ```bash
-GET /clio/api/v4/activities?fields=id,type,matter{id,description}
+maton api '/clio/api/v4/activities?fields=id,type,matter{id,description}'
 ```
 
 ## Common Endpoints
@@ -37,19 +37,19 @@ GET /clio/api/v4/activities?fields=id,type,matter{id,description}
 
 #### List Matters
 ```bash
-GET /clio/api/v4/matters?fields=id,display_number,description,status
+maton api '/clio/api/v4/matters?fields=id,display_number,description,status'
 ```
 
 #### Get Matter
 ```bash
-GET /clio/api/v4/matters/{id}?fields=id,display_number,description,status,open_date
+maton api '/clio/api/v4/matters/{id}?fields=id,display_number,description,status,open_date'
 ```
 
 #### Create Matter
 ```bash
-POST /clio/api/v4/matters
-Content-Type: application/json
-
+maton api -X POST '/clio/api/v4/matters' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": {
     "description": "New Legal Matter",
@@ -57,42 +57,44 @@ Content-Type: application/json
     "client": {"id": 12345}
   }
 }
+EOF
 ```
 
 #### Update Matter
 ```bash
-PATCH /clio/api/v4/matters/{id}
-Content-Type: application/json
-
+maton api -X PATCH '/clio/api/v4/matters/{id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": {
     "description": "Updated Description"
   }
 }
+EOF
 ```
 
 #### Delete Matter
 ```bash
-DELETE /clio/api/v4/matters/{id}
+maton api -X DELETE '/clio/api/v4/matters/{id}'
 ```
 
 ### Contacts
 
 #### List Contacts
 ```bash
-GET /clio/api/v4/contacts?fields=id,name,type,primary_email_address
+maton api '/clio/api/v4/contacts?fields=id,name,type,primary_email_address'
 ```
 
 #### Get Contact
 ```bash
-GET /clio/api/v4/contacts/{id}?fields=id,name,type,first_name,last_name
+maton api '/clio/api/v4/contacts/{id}?fields=id,name,type,first_name,last_name'
 ```
 
 #### Create Contact (Person)
 ```bash
-POST /clio/api/v4/contacts
-Content-Type: application/json
-
+maton api -X POST '/clio/api/v4/contacts' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": {
     "type": "Person",
@@ -100,55 +102,58 @@ Content-Type: application/json
     "last_name": "Doe"
   }
 }
+EOF
 ```
 
 #### Create Contact (Company)
 ```bash
-POST /clio/api/v4/contacts
-Content-Type: application/json
-
+maton api -X POST '/clio/api/v4/contacts' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": {
     "type": "Company",
     "name": "Acme Corporation"
   }
 }
+EOF
 ```
 
 #### Update Contact
 ```bash
-PATCH /clio/api/v4/contacts/{id}
-Content-Type: application/json
-
+maton api -X PATCH '/clio/api/v4/contacts/{id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": {
     "first_name": "Jane"
   }
 }
+EOF
 ```
 
 #### Delete Contact
 ```bash
-DELETE /clio/api/v4/contacts/{id}
+maton api -X DELETE '/clio/api/v4/contacts/{id}'
 ```
 
 ### Activities
 
 #### List Activities
 ```bash
-GET /clio/api/v4/activities?fields=id,type,date,quantity,matter{id,description}
+maton api '/clio/api/v4/activities?fields=id,type,date,quantity,matter{id,description}'
 ```
 
 #### Get Activity
 ```bash
-GET /clio/api/v4/activities/{id}?fields=id,type,date,quantity,note
+maton api '/clio/api/v4/activities/{id}?fields=id,type,date,quantity,note'
 ```
 
 #### Create Activity
 ```bash
-POST /clio/api/v4/activities
-Content-Type: application/json
-
+maton api -X POST '/clio/api/v4/activities' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": {
     "type": "TimeEntry",
@@ -157,35 +162,37 @@ Content-Type: application/json
     "matter": {"id": 12345}
   }
 }
+EOF
 ```
 
 #### Update Activity
 ```bash
-PATCH /clio/api/v4/activities/{id}
-Content-Type: application/json
-
+maton api -X PATCH '/clio/api/v4/activities/{id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": {
     "note": "Updated note"
   }
 }
+EOF
 ```
 
 #### Delete Activity
 ```bash
-DELETE /clio/api/v4/activities/{id}
+maton api -X DELETE '/clio/api/v4/activities/{id}'
 ```
 
 ### Tasks
 
 #### List Tasks
 ```bash
-GET /clio/api/v4/tasks?fields=id,name,status,due_at,priority
+maton api '/clio/api/v4/tasks?fields=id,name,status,due_at,priority'
 ```
 
 #### Get Task
 ```bash
-GET /clio/api/v4/tasks/{id}?fields=id,name,description,status,due_at
+maton api '/clio/api/v4/tasks/{id}?fields=id,name,description,status,due_at'
 ```
 
 #### Create Task
@@ -193,9 +200,9 @@ GET /clio/api/v4/tasks/{id}?fields=id,name,description,status,due_at
 Requires `assignee` with `id` and `type`:
 
 ```bash
-POST /clio/api/v4/tasks
-Content-Type: application/json
-
+maton api -X POST '/clio/api/v4/tasks' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": {
     "name": "Review contract",
@@ -205,35 +212,37 @@ Content-Type: application/json
     "matter": {"id": 67890}
   }
 }
+EOF
 ```
 
 #### Update Task
 ```bash
-PATCH /clio/api/v4/tasks/{id}
-Content-Type: application/json
-
+maton api -X PATCH '/clio/api/v4/tasks/{id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": {
     "status": "complete"
   }
 }
+EOF
 ```
 
 #### Delete Task
 ```bash
-DELETE /clio/api/v4/tasks/{id}
+maton api -X DELETE '/clio/api/v4/tasks/{id}'
 ```
 
 ### Calendar Entries
 
 #### List Calendar Entries
 ```bash
-GET /clio/api/v4/calendar_entries?fields=id,summary,start_at,end_at
+maton api '/clio/api/v4/calendar_entries?fields=id,summary,start_at,end_at'
 ```
 
 #### Get Calendar Entry
 ```bash
-GET /clio/api/v4/calendar_entries/{id}?fields=id,summary,description,start_at,end_at
+maton api '/clio/api/v4/calendar_entries/{id}?fields=id,summary,description,start_at,end_at'
 ```
 
 #### Create Calendar Entry
@@ -241,9 +250,9 @@ GET /clio/api/v4/calendar_entries/{id}?fields=id,summary,description,start_at,en
 Requires `calendar_owner` with `id` and `type`:
 
 ```bash
-POST /clio/api/v4/calendar_entries
-Content-Type: application/json
-
+maton api -X POST '/clio/api/v4/calendar_entries' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": {
     "summary": "Client Meeting",
@@ -252,37 +261,39 @@ Content-Type: application/json
     "calendar_owner": {"id": 12345, "type": "User"}
   }
 }
+EOF
 ```
 
 **Note:** Associating a matter during creation may return 404. Use PATCH to link matters after creation.
 
 #### Update Calendar Entry
 ```bash
-PATCH /clio/api/v4/calendar_entries/{id}
-Content-Type: application/json
-
+maton api -X PATCH '/clio/api/v4/calendar_entries/{id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": {
     "summary": "Updated Meeting"
   }
 }
+EOF
 ```
 
 #### Delete Calendar Entry
 ```bash
-DELETE /clio/api/v4/calendar_entries/{id}
+maton api -X DELETE '/clio/api/v4/calendar_entries/{id}'
 ```
 
 ### Documents
 
 #### List Documents
 ```bash
-GET /clio/api/v4/documents?fields=id,name,content_type,size
+maton api '/clio/api/v4/documents?fields=id,name,content_type,size'
 ```
 
 #### Get Document
 ```bash
-GET /clio/api/v4/documents/{id}?fields=id,name,content_type,size,created_at
+maton api '/clio/api/v4/documents/{id}?fields=id,name,content_type,size,created_at'
 ```
 
 #### Download Document
@@ -290,31 +301,31 @@ GET /clio/api/v4/documents/{id}?fields=id,name,content_type,size,created_at
 > **Privileged client material.** This returns the full contents of a legal document. Confirm the specific document and the reason with the user first. Do not save it outside the working directory the user specified, do not include its contents in output beyond what was asked, and never upload or forward it to any third-party host (including document-processing or conversion APIs).
 
 ```bash
-GET /clio/api/v4/documents/{id}/download
+maton api '/clio/api/v4/documents/{id}/download'
 ```
 
 ### Users
 
 #### Get Current User
 ```bash
-GET /clio/api/v4/users/who_am_i?fields=id,name,email,enabled
+maton api '/clio/api/v4/users/who_am_i?fields=id,name,email,enabled'
 ```
 
 #### List Users
 ```bash
-GET /clio/api/v4/users?fields=id,name,email,enabled
+maton api '/clio/api/v4/users?fields=id,name,email,enabled'
 ```
 
 ### Bills
 
 #### List Bills
 ```bash
-GET /clio/api/v4/bills?fields=id,number,issued_at,due_at,total,balance,state
+maton api '/clio/api/v4/bills?fields=id,number,issued_at,due_at,total,balance,state'
 ```
 
 #### Get Bill
 ```bash
-GET /clio/api/v4/bills/{id}?fields=id,number,total,balance,state
+maton api '/clio/api/v4/bills/{id}?fields=id,number,total,balance,state'
 ```
 
 ## Pagination
@@ -322,7 +333,7 @@ GET /clio/api/v4/bills/{id}?fields=id,number,total,balance,state
 Clio uses cursor-based pagination:
 
 ```bash
-GET /clio/api/v4/matters?fields=id,description&limit=50
+maton api '/clio/api/v4/matters?fields=id,description&limit=50'
 ```
 
 Response includes pagination in `meta`:
@@ -341,7 +352,7 @@ Response includes pagination in `meta`:
 Use `page_token` for next page:
 
 ```bash
-GET /clio/api/v4/matters?page_token=xyz123
+maton api '/clio/api/v4/matters?page_token=xyz123'
 ```
 
 ## Notes

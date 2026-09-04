@@ -26,104 +26,130 @@
 
 ### List Rows
 ```bash
-GET /baserow/api/database/rows/table/{table_id}/?user_field_names=true
+maton api '/baserow/api/database/rows/table/{table_id}/?user_field_names=true'
 ```
 
 ### Get Row
 ```bash
-GET /baserow/api/database/rows/table/{table_id}/{row_id}/
+maton api '/baserow/api/database/rows/table/{table_id}/{row_id}/'
 ```
 
 ### Create Row
 ```bash
-POST /baserow/api/database/rows/table/{table_id}/
-Content-Type: application/json
-
+maton api -X POST '/baserow/api/database/rows/table/{table_id}/' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "field_123": "value"
 }
+EOF
 ```
 
 ### Update Row
 ```bash
-PATCH /baserow/api/database/rows/table/{table_id}/{row_id}/
-Content-Type: application/json
-
+maton api -X PATCH '/baserow/api/database/rows/table/{table_id}/{row_id}/' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "field_123": "updated value"
 }
+EOF
 ```
 
 ### Delete Row
 ```bash
-DELETE /baserow/api/database/rows/table/{table_id}/{row_id}/
+maton api -X DELETE '/baserow/api/database/rows/table/{table_id}/{row_id}/'
 ```
 
 ### Batch Create Rows
 ```bash
-POST /baserow/api/database/rows/table/{table_id}/batch/
-Content-Type: application/json
-
+maton api -X POST '/baserow/api/database/rows/table/{table_id}/batch/' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "items": [
     {"field_123": "value1"},
     {"field_123": "value2"}
   ]
 }
+EOF
 ```
 
 ### Batch Update Rows
 ```bash
-PATCH /baserow/api/database/rows/table/{table_id}/batch/
-Content-Type: application/json
-
+maton api -X PATCH '/baserow/api/database/rows/table/{table_id}/batch/' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "items": [
     {"id": 1, "field_123": "updated1"},
     {"id": 2, "field_123": "updated2"}
   ]
 }
+EOF
 ```
 
 ### Batch Delete Rows
 ```bash
-POST /baserow/api/database/rows/table/{table_id}/batch-delete/
-Content-Type: application/json
-
+maton api -X POST '/baserow/api/database/rows/table/{table_id}/batch-delete/' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "items": [1, 2, 3]
 }
+EOF
 ```
 
 ### List Fields
 ```bash
-GET /baserow/api/database/fields/table/{table_id}/
+maton api '/baserow/api/database/fields/table/{table_id}/'
 ```
 
 ### List All Tables
 ```bash
-GET /baserow/api/database/tables/all-tables/
+maton api '/baserow/api/database/tables/all-tables/'
 ```
 
 ### Move Row
 ```bash
-PATCH /baserow/api/database/rows/table/{table_id}/{row_id}/move/?before_id={row_id}
+maton api -X PATCH '/baserow/api/database/rows/table/{table_id}/{row_id}/move/?before_id={row_id}'
 ```
 
 ### Upload File via URL
 ```bash
-POST /baserow/api/user-files/upload-via-url/
-Content-Type: application/json
-
+maton api -X POST '/baserow/api/user-files/upload-via-url/' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "url": "https://example.com/image.png"
 }
+EOF
 ```
 
 ### Upload File (Multipart)
 ```bash
-POST /baserow/api/user-files/upload-file/
-Content-Type: multipart/form-data
+# multipart/form-data is not expressible with `maton api`; call the gateway directly with `MATON_API_KEY` (see SKILL.md appendix).
+python <<'EOF'
+import json, mimetypes, os, urllib.request, uuid
+
+# Maton API key from the environment; never print, log, or persist it.
+TOKEN = os.environ["MATON_API_KEY"]
+
+# Exactly the path the user gave — never a discovered or inferred one.
+file_path = '/path/to/file.png'
+
+boundary = uuid.uuid4().hex
+mime = mimetypes.guess_type(file_path)[0] or 'application/octet-stream'
+with open(file_path, 'rb') as f:
+    body = (f'--{boundary}\r\nContent-Disposition: form-data; name="file"; filename="{os.path.basename(file_path)}"\r\n'
+            f'Content-Type: {mime}\r\n\r\n').encode() + f.read() + f'\r\n--{boundary}--\r\n'.encode()
+
+req = urllib.request.Request('https://api.maton.ai/baserow/api/user-files/upload-file/', data=body, method='POST')
+req.add_header('Authorization', f'Bearer {TOKEN}')
+req.add_header('User-Agent', 'maton-gateway-skill/1.2')
+req.add_header('Content-Type', f'multipart/form-data; boundary={boundary}')
+print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
+EOF
 ```
 
 ## Query Parameters

@@ -22,141 +22,147 @@ Services:
 
 #### Get OpenAPI Schema
 ```bash
-GET /supabase/rest/v1/
+maton api '/supabase/rest/v1/'
 ```
 
 #### List Records
 ```bash
-GET /supabase/rest/v1/{table_name}?select=*&limit=10
+maton api '/supabase/rest/v1/{table_name}?select=*&limit=10'
 ```
 
 #### Get Single Record
 ```bash
-GET /supabase/rest/v1/{table_name}?id=eq.{id}
+maton api '/supabase/rest/v1/{table_name}?id=eq.{id}'
 ```
 
 #### Insert Record
 ```bash
-POST /supabase/rest/v1/{table_name}
-Content-Type: application/json
-Prefer: return=representation
-
+maton api -X POST '/supabase/rest/v1/{table_name}' \
+  -H 'Content-Type: application/json' \
+  -H 'Prefer: return=representation' \
+  --input - <<'EOF'
 {"name": "value"}
+EOF
 ```
 
 #### Update Record
 ```bash
-PATCH /supabase/rest/v1/{table_name}?id=eq.{id}
-Content-Type: application/json
-Prefer: return=representation
-
+maton api -X PATCH '/supabase/rest/v1/{table_name}?id=eq.{id}' \
+  -H 'Content-Type: application/json' \
+  -H 'Prefer: return=representation' \
+  --input - <<'EOF'
 {"name": "new_value"}
+EOF
 ```
 
 #### Delete Record
 ```bash
-DELETE /supabase/rest/v1/{table_name}?id=eq.{id}
+maton api -X DELETE '/supabase/rest/v1/{table_name}?id=eq.{id}'
 ```
 
 ### Auth (GoTrue)
 
 #### Get Health
 ```bash
-GET /supabase/auth/v1/health
+maton api '/supabase/auth/v1/health'
 ```
 
 #### Get Settings
 ```bash
-GET /supabase/auth/v1/settings
+maton api '/supabase/auth/v1/settings'
 ```
 
 #### List Users (Admin)
 ```bash
-GET /supabase/auth/v1/admin/users
+maton api '/supabase/auth/v1/admin/users'
 ```
 
 #### Get User (Admin)
 ```bash
-GET /supabase/auth/v1/admin/users/{user_id}
+maton api '/supabase/auth/v1/admin/users/{user_id}'
 ```
 
 #### Create User (Admin)
 ```bash
-POST /supabase/auth/v1/admin/users
-Content-Type: application/json
-
+maton api -X POST '/supabase/auth/v1/admin/users' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "email": "user@example.com",
   "password": "password123",
   "email_confirm": true
 }
+EOF
 ```
 
 #### Delete User (Admin)
 ```bash
-DELETE /supabase/auth/v1/admin/users/{user_id}
+maton api -X DELETE '/supabase/auth/v1/admin/users/{user_id}'
 ```
 
 ### Storage
 
 #### List Buckets
 ```bash
-GET /supabase/storage/v1/bucket
+maton api '/supabase/storage/v1/bucket'
 ```
 
 #### Get Bucket
 ```bash
-GET /supabase/storage/v1/bucket/{bucket_id}
+maton api '/supabase/storage/v1/bucket/{bucket_id}'
 ```
 
 #### Create Bucket
 ```bash
-POST /supabase/storage/v1/bucket
-Content-Type: application/json
-
+maton api -X POST '/supabase/storage/v1/bucket' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "id": "my-bucket",
   "name": "my-bucket",
   "public": false
 }
+EOF
 ```
 
 #### Delete Bucket
 ```bash
-DELETE /supabase/storage/v1/bucket/{bucket_id}
+maton api -X DELETE '/supabase/storage/v1/bucket/{bucket_id}'
 ```
 
 #### List Objects
 ```bash
-POST /supabase/storage/v1/object/list/{bucket_id}
-Content-Type: application/json
-
+maton api -X POST '/supabase/storage/v1/object/list/{bucket_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"prefix": "", "limit": 100}
+EOF
 ```
 
 #### Upload Object
 ```bash
-POST /supabase/storage/v1/object/{bucket_id}/{path}
-Content-Type: {mime_type}
-
+maton api -X POST '/supabase/storage/v1/object/{bucket_id}/{path}' \
+  -H 'Content-Type: {mime_type}' \
+  --input - <<'EOF'
 {binary_data}
+EOF
 ```
 
 #### Download Object
 ```bash
-GET /supabase/storage/v1/object/{bucket_id}/{path}
+maton api '/supabase/storage/v1/object/{bucket_id}/{path}'
 ```
 
 #### Delete Object
 ```bash
-DELETE /supabase/storage/v1/object/{bucket_id}/{path}
+maton api -X DELETE '/supabase/storage/v1/object/{bucket_id}/{path}'
 ```
 
 ## Pagination
 
 ### PostgREST
 ```bash
-GET /supabase/rest/v1/{table}?limit=10&offset=20
+maton api '/supabase/rest/v1/{table}?limit=10&offset=20'
 ```
 
 Or use Range header:
@@ -166,7 +172,7 @@ Range: 0-9
 
 ### Auth Users
 ```bash
-GET /supabase/auth/v1/admin/users?page=1&per_page=50
+maton api '/supabase/auth/v1/admin/users?page=1&per_page=50'
 ```
 
 ## PostgREST Filter Operators

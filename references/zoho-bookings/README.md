@@ -17,61 +17,66 @@
 
 ```bash
 # List workspaces
-GET /zoho-bookings/bookings/v1/json/workspaces
+maton api '/zoho-bookings/bookings/v1/json/workspaces'
 
 # Get specific workspace
-GET /zoho-bookings/bookings/v1/json/workspaces?workspace_id={workspace_id}
+maton api '/zoho-bookings/bookings/v1/json/workspaces?workspace_id={workspace_id}'
 
 # Create workspace
-POST /zoho-bookings/bookings/v1/json/createworkspace
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X POST '/zoho-bookings/bookings/v1/json/createworkspace' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 name=New+Workspace
+EOF
 ```
 
 ### Services
 
 ```bash
 # List services (workspace_id required)
-GET /zoho-bookings/bookings/v1/json/services?workspace_id={workspace_id}
+maton api '/zoho-bookings/bookings/v1/json/services?workspace_id={workspace_id}'
 
 # Create service
-POST /zoho-bookings/bookings/v1/json/createservice
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X POST '/zoho-bookings/bookings/v1/json/createservice' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 name=Consultation&workspace_id={workspace_id}&duration=60
+EOF
 ```
 
 ### Staff
 
 ```bash
 # List staff (workspace_id required)
-GET /zoho-bookings/bookings/v1/json/staffs?workspace_id={workspace_id}
+maton api '/zoho-bookings/bookings/v1/json/staffs?workspace_id={workspace_id}'
 ```
 
 ### Appointments
 
 ```bash
 # Book appointment
-POST /zoho-bookings/bookings/v1/json/appointment
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X POST '/zoho-bookings/bookings/v1/json/appointment' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 service_id={service_id}&staff_id={staff_id}&from_time=20-Feb-2026+10:00:00&customer_details={"name":"John","email":"john@example.com","phone_number":"+15551234567"}
+EOF
 
 # Get appointment
-GET /zoho-bookings/bookings/v1/json/getappointment?booking_id=%23NU-00001
+maton api '/zoho-bookings/bookings/v1/json/getappointment?booking_id=%23NU-00001'
 
 # Fetch appointments (uses 'data' wrapper)
-POST /zoho-bookings/bookings/v1/json/fetchappointment
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X POST '/zoho-bookings/bookings/v1/json/fetchappointment' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 data={"from_time":"17-Feb-2026 00:00:00","to_time":"20-Feb-2026 23:59:59"}
+EOF
 
 # Update appointment (cancel/complete/noshow)
-POST /zoho-bookings/bookings/v1/json/updateappointment
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X POST '/zoho-bookings/bookings/v1/json/updateappointment' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 booking_id=#NU-00001&action=cancel
+EOF
 ```
 
 ## Request Format Notes

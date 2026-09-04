@@ -15,7 +15,7 @@
 
 ### Search Videos
 ```bash
-GET /youtube/youtube/v3/search?part=snippet&q=coding+tutorial&type=video&maxResults=10
+maton api '/youtube/youtube/v3/search?part=snippet&q=coding+tutorial&type=video&maxResults=10'
 ```
 
 Query parameters:
@@ -34,7 +34,7 @@ maton youtube search videos 'coding tutorial' --limit 10
 
 ### Get Video Details
 ```bash
-GET /youtube/youtube/v3/videos?part=snippet,statistics,contentDetails&id={videoId}
+maton api '/youtube/youtube/v3/videos?part=snippet,statistics,contentDetails&id={videoId}'
 ```
 
 Parts available: `snippet`, `statistics`, `contentDetails`, `status`, `player`
@@ -47,7 +47,7 @@ maton youtube video view {videoId}
 
 ### Get Trending Videos
 ```bash
-GET /youtube/youtube/v3/videos?part=snippet,statistics&chart=mostPopular&regionCode=US&maxResults=10
+maton api '/youtube/youtube/v3/videos?part=snippet,statistics&chart=mostPopular&regionCode=US&maxResults=10'
 ```
 
 Example:
@@ -58,7 +58,7 @@ maton youtube video list --region US --limit 10
 
 ### Rate Video
 ```bash
-POST /youtube/youtube/v3/videos/rate?id={videoId}&rating=like
+maton api -X POST '/youtube/youtube/v3/videos/rate?id={videoId}&rating=like'
 ```
 
 Rating values: `like`, `dislike`, `none`
@@ -71,7 +71,7 @@ maton youtube video rate {videoId} --rating like
 
 ### Get My Channel
 ```bash
-GET /youtube/youtube/v3/channels?part=snippet,statistics,contentDetails&mine=true
+maton api '/youtube/youtube/v3/channels?part=snippet,statistics,contentDetails&mine=true'
 ```
 
 Example:
@@ -82,7 +82,7 @@ maton youtube channel mine
 
 ### Get Channel Details
 ```bash
-GET /youtube/youtube/v3/channels?part=snippet,statistics&id={channelId}
+maton api '/youtube/youtube/v3/channels?part=snippet,statistics&id={channelId}'
 ```
 
 Example:
@@ -93,7 +93,7 @@ maton youtube channel view {channelId}
 
 ### List My Playlists
 ```bash
-GET /youtube/youtube/v3/playlists?part=snippet,contentDetails&mine=true&maxResults=25
+maton api '/youtube/youtube/v3/playlists?part=snippet,contentDetails&mine=true&maxResults=25'
 ```
 
 Example:
@@ -104,9 +104,9 @@ maton youtube playlist list --limit 25
 
 ### Create Playlist
 ```bash
-POST /youtube/youtube/v3/playlists?part=snippet,status
-Content-Type: application/json
-
+maton api -X POST '/youtube/youtube/v3/playlists?part=snippet,status' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "snippet": {
     "title": "My New Playlist",
@@ -116,6 +116,7 @@ Content-Type: application/json
     "privacyStatus": "private"
   }
 }
+EOF
 ```
 
 Privacy values: `public`, `private`, `unlisted`
@@ -128,7 +129,7 @@ maton youtube playlist create --title 'My New Playlist' --description 'A collect
 
 ### Delete Playlist
 ```bash
-DELETE /youtube/youtube/v3/playlists?id={playlistId}
+maton api -X DELETE '/youtube/youtube/v3/playlists?id={playlistId}'
 ```
 
 Example:
@@ -139,7 +140,7 @@ maton youtube playlist delete {playlistId}
 
 ### List Playlist Items
 ```bash
-GET /youtube/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId={playlistId}&maxResults=50
+maton api '/youtube/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId={playlistId}&maxResults=50'
 ```
 
 Example:
@@ -150,9 +151,9 @@ maton youtube playlist items {playlistId} --limit 50
 
 ### Add Video to Playlist
 ```bash
-POST /youtube/youtube/v3/playlistItems?part=snippet
-Content-Type: application/json
-
+maton api -X POST '/youtube/youtube/v3/playlistItems?part=snippet' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "snippet": {
     "playlistId": "PLxyz123",
@@ -163,6 +164,7 @@ Content-Type: application/json
     "position": 0
   }
 }
+EOF
 ```
 
 Example:
@@ -173,7 +175,7 @@ maton youtube playlist add-video --playlist PLxyz123 --video abc123xyz --positio
 
 ### List My Subscriptions
 ```bash
-GET /youtube/youtube/v3/subscriptions?part=snippet&mine=true&maxResults=50
+maton api '/youtube/youtube/v3/subscriptions?part=snippet&mine=true&maxResults=50'
 ```
 
 Example:
@@ -184,9 +186,9 @@ maton youtube subscription list --limit 50
 
 ### Subscribe to Channel
 ```bash
-POST /youtube/youtube/v3/subscriptions?part=snippet
-Content-Type: application/json
-
+maton api -X POST '/youtube/youtube/v3/subscriptions?part=snippet' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "snippet": {
     "resourceId": {
@@ -195,6 +197,7 @@ Content-Type: application/json
     }
   }
 }
+EOF
 ```
 
 Example:
@@ -205,7 +208,7 @@ maton youtube subscription create --channel UCxyz123
 
 ### List Video Comments
 ```bash
-GET /youtube/youtube/v3/commentThreads?part=snippet,replies&videoId={videoId}&maxResults=100
+maton api '/youtube/youtube/v3/commentThreads?part=snippet,replies&videoId={videoId}&maxResults=100'
 ```
 
 Example:
@@ -216,9 +219,9 @@ maton youtube comment list --video {videoId} --limit 100
 
 ### Add Comment to Video
 ```bash
-POST /youtube/youtube/v3/commentThreads?part=snippet
-Content-Type: application/json
-
+maton api -X POST '/youtube/youtube/v3/commentThreads?part=snippet' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "snippet": {
     "videoId": "abc123xyz",
@@ -229,6 +232,7 @@ Content-Type: application/json
     }
   }
 }
+EOF
 ```
 
 Example:

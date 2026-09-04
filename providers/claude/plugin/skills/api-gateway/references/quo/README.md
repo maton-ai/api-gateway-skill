@@ -17,94 +17,95 @@
 
 #### List Phone Numbers
 ```bash
-GET /quo/v1/phone-numbers
+maton api '/quo/v1/phone-numbers'
 ```
 
 ### Users
 
 #### List Users
 ```bash
-GET /quo/v1/users?maxResults=50
+maton api '/quo/v1/users?maxResults=50'
 ```
 
 #### Get User
 ```bash
-GET /quo/v1/users/{userId}
+maton api '/quo/v1/users/{userId}'
 ```
 
 ### Messages
 
 #### Send Text Message
 ```bash
-POST /quo/v1/messages
-Content-Type: application/json
-
+maton api -X POST '/quo/v1/messages' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "content": "Hello, world!",
   "from": "PN123abc",
   "to": ["+15555555555"]
 }
+EOF
 ```
 
 #### List Messages
 ```bash
-GET /quo/v1/messages?phoneNumberId=PN123abc&participants[]=+15555555555&maxResults=100
+maton api '/quo/v1/messages?phoneNumberId=PN123abc&participants[]=+15555555555&maxResults=100'
 ```
 
 #### Get Message
 ```bash
-GET /quo/v1/messages/{messageId}
+maton api '/quo/v1/messages/{messageId}'
 ```
 
 ### Calls
 
 #### List Calls
 ```bash
-GET /quo/v1/calls?phoneNumberId=PN123abc&participants[]=+15555555555&maxResults=100
+maton api '/quo/v1/calls?phoneNumberId=PN123abc&participants[]=+15555555555&maxResults=100'
 ```
 
 #### Get Call
 ```bash
-GET /quo/v1/calls/{callId}
+maton api '/quo/v1/calls/{callId}'
 ```
 
 #### Get Call Recordings
 ```bash
-GET /quo/v1/call-recordings/{callId}
+maton api '/quo/v1/call-recordings/{callId}'
 ```
 
 #### Get Call Summary
 ```bash
-GET /quo/v1/call-summaries/{callId}
+maton api '/quo/v1/call-summaries/{callId}'
 ```
 
 #### Get Call Transcript
 ```bash
-GET /quo/v1/call-transcripts/{callId}
+maton api '/quo/v1/call-transcripts/{callId}'
 ```
 
 #### Get Call Voicemail
 ```bash
-GET /quo/v1/call-voicemails/{callId}
+maton api '/quo/v1/call-voicemails/{callId}'
 ```
 
 ### Contacts
 
 #### List Contacts
 ```bash
-GET /quo/v1/contacts?maxResults=50
+maton api '/quo/v1/contacts?maxResults=50'
 ```
 
 #### Get Contact
 ```bash
-GET /quo/v1/contacts/{contactId}
+maton api '/quo/v1/contacts/{contactId}'
 ```
 
 #### Create Contact
 ```bash
-POST /quo/v1/contacts
-Content-Type: application/json
-
+maton api -X POST '/quo/v1/contacts' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "defaultFields": {
     "firstName": "Jane",
@@ -112,65 +113,68 @@ Content-Type: application/json
     "phoneNumbers": [{"name": "mobile", "value": "+15555555555"}]
   }
 }
+EOF
 ```
 
 #### Update Contact
 ```bash
-PATCH /quo/v1/contacts/{contactId}
-Content-Type: application/json
-
+maton api -X PATCH '/quo/v1/contacts/{contactId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "defaultFields": {
     "company": "New Company"
   }
 }
+EOF
 ```
 
 #### Delete Contact
 ```bash
-DELETE /quo/v1/contacts/{contactId}
+maton api -X DELETE '/quo/v1/contacts/{contactId}'
 ```
 
 #### Get Contact Custom Fields
 ```bash
-GET /quo/v1/contact-custom-fields
+maton api '/quo/v1/contact-custom-fields'
 ```
 
 ### Conversations
 
 #### List Conversations
 ```bash
-GET /quo/v1/conversations?maxResults=100
+maton api '/quo/v1/conversations?maxResults=100'
 ```
 
 ### Webhooks
 
 #### List Webhooks
 ```bash
-GET /quo/v1/webhooks
+maton api '/quo/v1/webhooks'
 ```
 
 #### Get Webhook
 ```bash
-GET /quo/v1/webhooks/{webhookId}
+maton api '/quo/v1/webhooks/{webhookId}'
 ```
 
 #### Create Webhook
 ```bash
-POST /quo/v1/webhooks
-Content-Type: application/json
-
+maton api -X POST '/quo/v1/webhooks' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "url": "https://example.com/webhooks/calls",
   "resourceType": "call"
 }
+EOF
 ```
 
 Resource types: `call`, `message`, `callSummary`, `callTranscript`
 
 #### Delete Webhook
 ```bash
-DELETE /quo/v1/webhooks/{webhookId}
+maton api -X DELETE '/quo/v1/webhooks/{webhookId}'
 ```
 
 ## Notes

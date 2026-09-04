@@ -17,178 +17,185 @@
 
 #### List Joined Teams
 ```bash
-GET /microsoft-teams/v1.0/me/joinedTeams
+maton api '/microsoft-teams/v1.0/me/joinedTeams'
 ```
 
 #### Get Team
 ```bash
-GET /microsoft-teams/v1.0/teams/{team-id}
+maton api '/microsoft-teams/v1.0/teams/{team-id}'
 ```
 
 ### Channels
 
 #### List Channels
 ```bash
-GET /microsoft-teams/v1.0/teams/{team-id}/channels
+maton api '/microsoft-teams/v1.0/teams/{team-id}/channels'
 ```
 
 #### List Private Channels
 ```bash
-GET /microsoft-teams/v1.0/teams/{team-id}/channels?$filter=membershipType eq 'private'
+maton api "/microsoft-teams/v1.0/teams/{team-id}/channels?\$filter=membershipType%20eq%20'private'"
 ```
 
 #### Get Channel
 ```bash
-GET /microsoft-teams/v1.0/teams/{team-id}/channels/{channel-id}
+maton api '/microsoft-teams/v1.0/teams/{team-id}/channels/{channel-id}'
 ```
 
 #### Create Channel
 ```bash
-POST /microsoft-teams/v1.0/teams/{team-id}/channels
-Content-Type: application/json
-
+maton api -X POST '/microsoft-teams/v1.0/teams/{team-id}/channels' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "displayName": "Channel Name",
   "description": "Description",
   "membershipType": "standard"
 }
+EOF
 ```
 
 #### Update Channel
 ```bash
-PATCH /microsoft-teams/v1.0/teams/{team-id}/channels/{channel-id}
-Content-Type: application/json
-
+maton api -X PATCH '/microsoft-teams/v1.0/teams/{team-id}/channels/{channel-id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "description": "Updated description"
 }
+EOF
 ```
 
 #### Delete Channel
 ```bash
-DELETE /microsoft-teams/v1.0/teams/{team-id}/channels/{channel-id}
+maton api -X DELETE '/microsoft-teams/v1.0/teams/{team-id}/channels/{channel-id}'
 ```
 
 ### Channel Members
 
 #### List Channel Members
 ```bash
-GET /microsoft-teams/v1.0/teams/{team-id}/channels/{channel-id}/members
+maton api '/microsoft-teams/v1.0/teams/{team-id}/channels/{channel-id}/members'
 ```
 
 ### Messages
 
 #### List Channel Messages
 ```bash
-GET /microsoft-teams/v1.0/teams/{team-id}/channels/{channel-id}/messages
+maton api '/microsoft-teams/v1.0/teams/{team-id}/channels/{channel-id}/messages'
 ```
 
 #### Send Message
 ```bash
-POST /microsoft-teams/v1.0/teams/{team-id}/channels/{channel-id}/messages
-Content-Type: application/json
-
+maton api -X POST '/microsoft-teams/v1.0/teams/{team-id}/channels/{channel-id}/messages' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "body": {
     "content": "Hello World"
   }
 }
+EOF
 ```
 
 #### Send HTML Message
 ```bash
-POST /microsoft-teams/v1.0/teams/{team-id}/channels/{channel-id}/messages
-Content-Type: application/json
-
+maton api -X POST '/microsoft-teams/v1.0/teams/{team-id}/channels/{channel-id}/messages' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "body": {
     "contentType": "html",
     "content": "<p>Formatted message</p>"
   }
 }
+EOF
 ```
 
 #### Reply to Message
 ```bash
-POST /microsoft-teams/v1.0/teams/{team-id}/channels/{channel-id}/messages/{message-id}/replies
-Content-Type: application/json
-
+maton api -X POST '/microsoft-teams/v1.0/teams/{team-id}/channels/{channel-id}/messages/{message-id}/replies' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "body": {
     "content": "Reply content"
   }
 }
+EOF
 ```
 
 #### List Message Replies
 ```bash
-GET /microsoft-teams/v1.0/teams/{team-id}/channels/{channel-id}/messages/{message-id}/replies
+maton api '/microsoft-teams/v1.0/teams/{team-id}/channels/{channel-id}/messages/{message-id}/replies'
 ```
 
 #### Edit Message
 ```bash
-PATCH /microsoft-teams/v1.0/teams/{team-id}/channels/{channel-id}/messages/{message-id}
-Content-Type: application/json
-
+maton api -X PATCH '/microsoft-teams/v1.0/teams/{team-id}/channels/{channel-id}/messages/{message-id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "body": {
     "content": "Updated message content"
   }
 }
+EOF
 ```
 
 ### Team Members
 
 #### List Members
 ```bash
-GET /microsoft-teams/v1.0/teams/{team-id}/members
+maton api '/microsoft-teams/v1.0/teams/{team-id}/members'
 ```
 
 ### Presence
 
 #### Get User Presence
 ```bash
-GET /microsoft-teams/v1.0/me/presence
+maton api '/microsoft-teams/v1.0/me/presence'
 ```
 
 #### Get User Presence by ID
 ```bash
-GET /microsoft-teams/v1.0/users/{user-id}/presence
+maton api '/microsoft-teams/v1.0/users/{user-id}/presence'
 ```
 
 ### Tabs
 
 #### List Channel Tabs
 ```bash
-GET /microsoft-teams/v1.0/teams/{team-id}/channels/{channel-id}/tabs
+maton api '/microsoft-teams/v1.0/teams/{team-id}/channels/{channel-id}/tabs'
 ```
 
 ### Apps
 
 #### List Installed Apps
 ```bash
-GET /microsoft-teams/v1.0/teams/{team-id}/installedApps
+maton api '/microsoft-teams/v1.0/teams/{team-id}/installedApps'
 ```
 
 ### Online Meetings
 
 #### Create Meeting
 ```bash
-POST /microsoft-teams/v1.0/me/onlineMeetings
-Content-Type: application/json
-
+maton api -X POST '/microsoft-teams/v1.0/me/onlineMeetings' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "subject": "Team Sync",
   "startDateTime": "2026-02-18T10:00:00Z",
   "endDateTime": "2026-02-18T11:00:00Z"
 }
+EOF
 ```
 
 #### Create Meeting with Attendees
 ```bash
-POST /microsoft-teams/v1.0/me/onlineMeetings
-Content-Type: application/json
-
+maton api -X POST '/microsoft-teams/v1.0/me/onlineMeetings' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "subject": "Project Review",
   "startDateTime": "2026-02-18T14:00:00Z",
@@ -202,85 +209,87 @@ Content-Type: application/json
     ]
   }
 }
+EOF
 ```
 
 #### Get Meeting
 ```bash
-GET /microsoft-teams/v1.0/me/onlineMeetings/{meeting-id}
+maton api '/microsoft-teams/v1.0/me/onlineMeetings/{meeting-id}'
 ```
 
 #### Find Meeting by Join URL
 ```bash
-GET /microsoft-teams/v1.0/me/onlineMeetings?$filter=JoinWebUrl eq '{encoded-join-url}'
+maton api "/microsoft-teams/v1.0/me/onlineMeetings?\$filter=JoinWebUrl%20eq%20'{encoded-join-url}'"
 ```
 
 #### Delete Meeting
 ```bash
-DELETE /microsoft-teams/v1.0/me/onlineMeetings/{meeting-id}
+maton api -X DELETE '/microsoft-teams/v1.0/me/onlineMeetings/{meeting-id}'
 ```
 
 #### List Calendar Events
 ```bash
-GET /microsoft-teams/v1.0/me/calendar/events?$top=10
+maton api '/microsoft-teams/v1.0/me/calendar/events?$top=10'
 ```
 
 #### List Meeting Recordings
 ```bash
-GET /microsoft-teams/v1.0/me/onlineMeetings/{meeting-id}/recordings
+maton api '/microsoft-teams/v1.0/me/onlineMeetings/{meeting-id}/recordings'
 ```
 
 #### Get Meeting Recording
 ```bash
-GET /microsoft-teams/v1.0/me/onlineMeetings/{meeting-id}/recordings/{recording-id}
+maton api '/microsoft-teams/v1.0/me/onlineMeetings/{meeting-id}/recordings/{recording-id}'
 ```
 
 #### List Meeting Transcripts
 ```bash
-GET /microsoft-teams/v1.0/me/onlineMeetings/{meeting-id}/transcripts
+maton api '/microsoft-teams/v1.0/me/onlineMeetings/{meeting-id}/transcripts'
 ```
 
 #### Get Meeting Transcript
 ```bash
-GET /microsoft-teams/v1.0/me/onlineMeetings/{meeting-id}/transcripts/{transcript-id}
+maton api '/microsoft-teams/v1.0/me/onlineMeetings/{meeting-id}/transcripts/{transcript-id}'
 ```
 
 #### List Attendance Reports
 ```bash
-GET /microsoft-teams/v1.0/me/onlineMeetings/{meeting-id}/attendanceReports
+maton api '/microsoft-teams/v1.0/me/onlineMeetings/{meeting-id}/attendanceReports'
 ```
 
 #### Get Attendance Report
 ```bash
-GET /microsoft-teams/v1.0/me/onlineMeetings/{meeting-id}/attendanceReports/{report-id}
+maton api '/microsoft-teams/v1.0/me/onlineMeetings/{meeting-id}/attendanceReports/{report-id}'
 ```
 
 ### Chats
 
 #### List Chats
 ```bash
-GET /microsoft-teams/v1.0/me/chats
+maton api '/microsoft-teams/v1.0/me/chats'
 ```
 
 #### Get Chat
 ```bash
-GET /microsoft-teams/v1.0/chats/{chat-id}
+maton api '/microsoft-teams/v1.0/chats/{chat-id}'
 ```
 
 #### List Chat Messages
 ```bash
-GET /microsoft-teams/v1.0/chats/{chat-id}/messages
+maton api '/microsoft-teams/v1.0/chats/{chat-id}/messages'
 ```
 
 #### Send Chat Message
 ```bash
-POST /microsoft-teams/v1.0/chats/{chat-id}/messages
-Content-Type: application/json
-
+maton api -X POST '/microsoft-teams/v1.0/chats/{chat-id}/messages' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "body": {
     "content": "Hello"
   }
 }
+EOF
 ```
 
 ## OData Query Parameters

@@ -74,7 +74,7 @@ The referenced value must match the target argument's type. `#ids` expects an **
 Every method call needs an `accountId`. Read it from the session resource first.
 
 ```bash
-GET /fastmail/jmap/session
+maton api '/fastmail/jmap/session'
 ```
 
 ```bash
@@ -104,13 +104,14 @@ Those six are blocked **at the gateway regardless of the API token's scopes** �
 
 ### List Mailboxes (folders)
 ```bash
-POST /fastmail/jmap/api/
-Content-Type: application/json
-
+maton api -X POST '/fastmail/jmap/api/' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "using": ["urn:ietf:params:jmap:core", "urn:ietf:params:jmap:mail"],
   "methodCalls": [["Mailbox/get", { "accountId": "{accountId}", "ids": null }, "c0"]]
 }
+EOF
 ```
 
 Match mailboxes by `role` (`inbox`, `archive`, `drafts`, `sent`, `junk`, `trash`, `scheduled`), not by `name` — names are user-editable and localized. IDs are short opaque strings (`P-F`, `P3V`, `P2F`) that differ per account.
@@ -119,9 +120,9 @@ Match mailboxes by `role` (`inbox`, `archive`, `drafts`, `sent`, `junk`, `trash`
 `Email/query` returns IDs only — pair it with `Email/get` in the same request.
 
 ```bash
-POST /fastmail/jmap/api/
-Content-Type: application/json
-
+maton api -X POST '/fastmail/jmap/api/' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "using": ["urn:ietf:params:jmap:core", "urn:ietf:params:jmap:mail"],
   "methodCalls": [
@@ -140,6 +141,7 @@ Content-Type: application/json
     }, "g"]
   ]
 }
+EOF
 ```
 
 Filter conditions: `inMailbox`, `inMailboxOtherThan`, `text`, `from`, `to`, `cc`, `bcc`, `subject`, `body`, `before`, `after`, `hasKeyword`, `notKeyword`, `hasAttachment`, `minSize`, `maxSize`. Combine with `{ "operator": "AND" | "OR" | "NOT", "conditions": [...] }`.
@@ -148,9 +150,9 @@ Sort properties: `receivedAt`, `sentAt`, `from`, `to`, `subject`, `size`, `hasKe
 
 ### Get Message with Body
 ```bash
-POST /fastmail/jmap/api/
-Content-Type: application/json
-
+maton api -X POST '/fastmail/jmap/api/' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "using": ["urn:ietf:params:jmap:core", "urn:ietf:params:jmap:mail"],
   "methodCalls": [["Email/get", {
@@ -160,24 +162,26 @@ Content-Type: application/json
     "fetchTextBodyValues": true
   }, "c0"]]
 }
+EOF
 ```
 
 `fetchTextBodyValues` populates `bodyValues` for `text/plain`; `fetchHTMLBodyValues` for `text/html`; `fetchAllBodyValues` for both. Without one of these, `textBody`/`htmlBody` carry part metadata only. Cap size with `maxBodyValueBytes`. Request arbitrary headers as properties, e.g. `"header:Message-ID"`.
 
 ### Get Thread
 ```bash
-POST /fastmail/jmap/api/
-
+maton api -X POST '/fastmail/jmap/api/' \
+  --input - <<'EOF'
 {
   "using": ["urn:ietf:params:jmap:core", "urn:ietf:params:jmap:mail"],
   "methodCalls": [["Thread/get", { "accountId": "{accountId}", "ids": ["{threadId}"] }, "c0"]]
 }
+EOF
 ```
 
 ### Search Snippets
 ```bash
-POST /fastmail/jmap/api/
-
+maton api -X POST '/fastmail/jmap/api/' \
+  --input - <<'EOF'
 {
   "using": ["urn:ietf:params:jmap:core", "urn:ietf:params:jmap:mail"],
   "methodCalls": [["SearchSnippet/get", {
@@ -186,6 +190,7 @@ POST /fastmail/jmap/api/
     "emailIds": ["{emailId}"]
   }, "c0"]]
 }
+EOF
 ```
 
 Matches come back wrapped in `<mark>` tags. Do not render snippet text as trusted HTML.
@@ -194,8 +199,8 @@ Matches come back wrapped in `<mark>` tags. Do not render snippet text as truste
 `Email/set` `update` takes JSON-Pointer-style patch keys, so you can change one field without resending the object.
 
 ```bash
-POST /fastmail/jmap/api/
-
+maton api -X POST '/fastmail/jmap/api/' \
+  --input - <<'EOF'
 {
   "using": ["urn:ietf:params:jmap:core", "urn:ietf:params:jmap:mail"],
   "methodCalls": [["Email/set", {
@@ -210,6 +215,7 @@ POST /fastmail/jmap/api/
     }
   }, "c0"]]
 }
+EOF
 ```
 
 `true` adds, `null` removes. Setting one `mailboxIds` key and clearing another **moves** the message. Standard keywords: `$seen`, `$flagged`, `$draft`, `$answered`, `$forwarded`. Fastmail also sets internal keywords (`$istrusted`, `$x-me-annot-2`) — prefer patch keys over replacing the whole `keywords` object so these survive.
@@ -218,8 +224,8 @@ Successful updates map the ID to `null` in `updated`; failures appear in `notUpd
 
 ### Create Mailbox
 ```bash
-POST /fastmail/jmap/api/
-
+maton api -X POST '/fastmail/jmap/api/' \
+  --input - <<'EOF'
 {
   "using": ["urn:ietf:params:jmap:core", "urn:ietf:params:jmap:mail"],
   "methodCalls": [["Mailbox/set", {
@@ -227,14 +233,15 @@ POST /fastmail/jmap/api/
     "create": { "m1": { "name": "Project X", "parentId": null, "isSubscribed": true } }
   }, "c0"]]
 }
+EOF
 ```
 
 `m1` is a client-side creation ID; the real ID returns under `created.m1.id`. Reference it later in the same request as `"#m1"`.
 
 ### Rename / Delete Mailbox
 ```bash
-POST /fastmail/jmap/api/
-
+maton api -X POST '/fastmail/jmap/api/' \
+  --input - <<'EOF'
 {
   "using": ["urn:ietf:params:jmap:core", "urn:ietf:params:jmap:mail"],
   "methodCalls": [
@@ -242,14 +249,15 @@ POST /fastmail/jmap/api/
     ["Mailbox/set", { "accountId": "{accountId}", "destroy": ["{mailboxId}"], "onDestroyRemoveEmails": true }, "c1"]
   ]
 }
+EOF
 ```
 
 Without `onDestroyRemoveEmails`, destroying a non-empty mailbox fails with `mailboxHasEmail`. **With** it, every message inside is permanently deleted.
 
 ### Create Draft
 ```bash
-POST /fastmail/jmap/api/
-
+maton api -X POST '/fastmail/jmap/api/' \
+  --input - <<'EOF'
 {
   "using": ["urn:ietf:params:jmap:core", "urn:ietf:params:jmap:mail"],
   "methodCalls": [["Email/set", {
@@ -267,18 +275,20 @@ POST /fastmail/jmap/api/
     }
   }, "c0"]]
 }
+EOF
 ```
 
 Resolve `{draftsMailboxId}` from `Mailbox/get` by `role: "drafts"`. `keywords: { "$draft": true }` is required for Fastmail's UI to treat it as a draft. For HTML use `"type": "text/html"`; for both, a `multipart/alternative` `bodyStructure` with `subParts`.
 
 ### Get Identities
 ```bash
-POST /fastmail/jmap/api/
-
+maton api -X POST '/fastmail/jmap/api/' \
+  --input - <<'EOF'
 {
   "using": ["urn:ietf:params:jmap:core", "urn:ietf:params:jmap:submission"],
   "methodCalls": [["Identity/get", { "accountId": "{accountId}", "ids": null }, "c0"]]
 }
+EOF
 ```
 
 Returns `id`, `email`, `name`, `replyTo`, `bcc`, signatures, and `saveSentToMailboxId`.
@@ -287,8 +297,8 @@ Returns `id`, `email`, `name`, `replyTo`, `bcc`, signatures, and `saveSentToMail
 **Requires explicit user approval — delivery is irreversible.** Create the draft first, then submit it. `onSuccessUpdateEmail` files the message into Sent and clears `$draft` in the same round trip.
 
 ```bash
-POST /fastmail/jmap/api/
-
+maton api -X POST '/fastmail/jmap/api/' \
+  --input - <<'EOF'
 {
   "using": ["urn:ietf:params:jmap:core", "urn:ietf:params:jmap:mail", "urn:ietf:params:jmap:submission"],
   "methodCalls": [["EmailSubmission/set", {
@@ -312,6 +322,7 @@ POST /fastmail/jmap/api/
     }
   }, "c0"]]
 }
+EOF
 ```
 
 `envelope` is optional — omit it and Fastmail derives recipients from `To`/`Cc`/`Bcc`. Add `"sendAt"` (UTC, ISO 8601) to schedule; `undoStatus` stays `pending` until then and the submission can be canceled with `destroy`. `maxDelayedSend` in the session response caps the lead time.
@@ -320,8 +331,8 @@ The response includes an extra `Email/set` entry from `onSuccessUpdateEmail`, sh
 
 ### List Submissions
 ```bash
-POST /fastmail/jmap/api/
-
+maton api -X POST '/fastmail/jmap/api/' \
+  --input - <<'EOF'
 {
   "using": ["urn:ietf:params:jmap:core", "urn:ietf:params:jmap:submission"],
   "methodCalls": [
@@ -329,28 +340,29 @@ POST /fastmail/jmap/api/
     ["EmailSubmission/get", { "accountId": "{accountId}", "#ids": { "resultOf": "q", "name": "EmailSubmission/query", "path": "/ids" } }, "g"]
   ]
 }
+EOF
 ```
 
 Fastmail retains submission records only briefly, so an empty result does not mean nothing was sent — verify via the Sent mailbox.
 
 ### Delete Messages
 ```bash
-POST /fastmail/jmap/api/
-
+maton api -X POST '/fastmail/jmap/api/' \
+  --input - <<'EOF'
 {
   "using": ["urn:ietf:params:jmap:core", "urn:ietf:params:jmap:mail"],
   "methodCalls": [["Email/set", { "accountId": "{accountId}", "destroy": ["{emailId}"] }, "c0"]]
 }
+EOF
 ```
 
 **Permanent — bypasses Trash.** To move to Trash instead, patch `mailboxIds` to the `trash` mailbox.
 
 ### Upload a Blob
 ```bash
-POST /fastmail/jmap/upload/{accountId}/
-Content-Type: application/pdf
-
-<binary data>
+maton api -X POST '/fastmail/jmap/upload/{accountId}/' \
+  -H 'Content-Type: application/pdf' \
+  --input '{file_path}'  # <binary data>
 ```
 
 Returns `{ "blobId": "...", "type": "...", "size": 32, "expires": "..." }`. Unreferenced blobs expire in roughly 24 hours. Attach one to a draft via `bodyStructure`:
@@ -372,8 +384,8 @@ To combine an attachment with both plain and HTML bodies, nest a `multipart/alte
 
 ### Import a Message
 ```bash
-POST /fastmail/jmap/api/
-
+maton api -X POST '/fastmail/jmap/api/' \
+  --input - <<'EOF'
 {
   "using": ["urn:ietf:params:jmap:core", "urn:ietf:params:jmap:mail"],
   "methodCalls": [["Email/import", {
@@ -387,6 +399,7 @@ POST /fastmail/jmap/api/
     }
   }, "c0"]]
 }
+EOF
 ```
 
 The uploaded blob **must use CRLF (`\r\n`) line endings**, or import fails with `invalidEmail` / "Message contains bare newlines".
@@ -397,16 +410,17 @@ Requires `urn:ietf:params:jmap:contacts`. Fastmail uses **JSContact** (RFC 9553)
 
 ```bash
 # List address books (read-only — create/update both return `forbidden`; no AddressBook/query)
-POST /fastmail/jmap/api/
-
+maton api -X POST '/fastmail/jmap/api/' \
+  --input - <<'EOF'
 {
   "using": ["urn:ietf:params:jmap:core", "urn:ietf:params:jmap:contacts"],
   "methodCalls": [["AddressBook/get", { "accountId": "{accountId}", "ids": null }, "c0"]]
 }
+EOF
 
 # Search contacts, then fetch them
-POST /fastmail/jmap/api/
-
+maton api -X POST '/fastmail/jmap/api/' \
+  --input - <<'EOF'
 {
   "using": ["urn:ietf:params:jmap:core", "urn:ietf:params:jmap:contacts"],
   "methodCalls": [
@@ -414,6 +428,7 @@ POST /fastmail/jmap/api/
     ["ContactCard/get", { "accountId": "{accountId}", "#ids": { "resultOf": "q", "name": "ContactCard/query", "path": "/ids" }, "properties": ["id", "name", "emails", "phones"] }, "g"]
   ]
 }
+EOF
 ```
 
 Filter conditions: `text`, `name`, `email`, `inAddressBook`, plus `operator` composites.
@@ -421,8 +436,8 @@ Filter conditions: `text`, `name`, `email`, `inAddressBook`, plus `operator` com
 Creating a card **requires `@type: "Card"` and `version: "1.0"`** — omitting them fails with `invalidProperties: ["@type", "version"]`:
 
 ```bash
-POST /fastmail/jmap/api/
-
+maton api -X POST '/fastmail/jmap/api/' \
+  --input - <<'EOF'
 {
   "using": ["urn:ietf:params:jmap:core", "urn:ietf:params:jmap:contacts"],
   "methodCalls": [["ContactCard/set", {
@@ -436,6 +451,7 @@ POST /fastmail/jmap/api/
     }}
   }, "c0"]]
 }
+EOF
 ```
 
 `emails`, `phones`, `organizations`, and `notes` are **maps of client-chosen keys**, not arrays. JSON-Pointer patch keys work on update, including nested paths (`organizations/o1/name`); `null` removes. Updates return metadata (`updated`, `cyrusimap.org:blobId`, `cyrusimap.org:size`) rather than `null`.
@@ -448,16 +464,17 @@ Requires `https://www.fastmail.com/dev/maskedemail` — a Fastmail extension, so
 
 ```bash
 # List (includes state:"deleted" records — filter client-side)
-POST /fastmail/jmap/api/
-
+maton api -X POST '/fastmail/jmap/api/' \
+  --input - <<'EOF'
 {
   "using": ["urn:ietf:params:jmap:core", "https://www.fastmail.com/dev/maskedemail"],
   "methodCalls": [["MaskedEmail/get", { "accountId": "{accountId}", "ids": null }, "c0"]]
 }
+EOF
 
 # Create — all properties optional; read the generated address from the response
-POST /fastmail/jmap/api/
-
+maton api -X POST '/fastmail/jmap/api/' \
+  --input - <<'EOF'
 {
   "using": ["urn:ietf:params:jmap:core", "https://www.fastmail.com/dev/maskedemail"],
   "methodCalls": [["MaskedEmail/set", {
@@ -465,6 +482,7 @@ POST /fastmail/jmap/api/
     "create": { "m1": { "forDomain": "shop.example.com", "emailPrefix": "news", "description": "Signup", "state": "enabled" } }
   }, "c0"]]
 }
+EOF
 ```
 
 `emailPrefix` is advisory — a random suffix is always appended (`news.tztmu@fastmail.com`), and some prefixes are reserved (`shop`, `store`, `admin`, `beta` all fail with `invalidProperties` / "Name is reserved"). Never assume the address; read `email` off `created`.
@@ -484,8 +502,8 @@ Any other value fails with `invalidProperties: ["state"]`.
 
 ### Track Changes
 ```bash
-POST /fastmail/jmap/api/
-
+maton api -X POST '/fastmail/jmap/api/' \
+  --input - <<'EOF'
 {
   "using": ["urn:ietf:params:jmap:core", "urn:ietf:params:jmap:mail"],
   "methodCalls": [
@@ -493,6 +511,7 @@ POST /fastmail/jmap/api/
     ["Mailbox/changes", { "accountId": "{accountId}", "sinceState": "{state}" }, "c1"]
   ]
 }
+EOF
 ```
 
 Returns `created`, `updated`, `destroyed`, `oldState`, `newState`, `hasMoreChanges`. Loop while `hasMoreChanges` is `true`, passing each `newState` as the next `sinceState`.
@@ -501,7 +520,7 @@ Returns `created`, `updated`, `destroyed`, `oldState`, `newState`, `hasMoreChang
 
 ### Server-Sent Events
 ```bash
-GET /fastmail/jmap/event/?types=*&closeafter=state&ping=0
+maton api '/fastmail/jmap/event/?types=*&closeafter=state&ping=0'
 ```
 
 Streams `StateChange` events naming the changed types and their new states; feed those into `Email/changes` / `Mailbox/changes`.
@@ -511,8 +530,8 @@ Streams `StateChange` events naming the changed types and their new states; feed
 `Email/query` and `Mailbox/query` page by position or anchor:
 
 ```bash
-POST /fastmail/jmap/api/
-
+maton api -X POST '/fastmail/jmap/api/' \
+  --input - <<'EOF'
 {
   "using": ["urn:ietf:params:jmap:core", "urn:ietf:params:jmap:mail"],
   "methodCalls": [["Email/query", {
@@ -524,6 +543,7 @@ POST /fastmail/jmap/api/
     "calculateTotal": true
   }, "c0"]]
 }
+EOF
 ```
 
 - `position` — zero-based offset; negative counts back from the end.

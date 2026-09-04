@@ -25,12 +25,12 @@ User-Agent: Maton/1.0
 
 ### Get Current User
 ```bash
-GET /tally/users/me
+maton api '/tally/users/me'
 ```
 
 ### List Forms
 ```bash
-GET /tally/forms
+maton api '/tally/forms'
 ```
 
 **Query Parameters:**
@@ -39,14 +39,14 @@ GET /tally/forms
 
 ### Get Form
 ```bash
-GET /tally/forms/{formId}
+maton api '/tally/forms/{formId}'
 ```
 
 ### Create Form
 ```bash
-POST /tally/forms
-Content-Type: application/json
-
+maton api -X POST '/tally/forms' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "status": "DRAFT",
   "blocks": [
@@ -68,32 +68,34 @@ Content-Type: application/json
     }
   ]
 }
+EOF
 ```
 
 ### Update Form
 ```bash
-PATCH /tally/forms/{formId}
-Content-Type: application/json
-
+maton api -X PATCH '/tally/forms/{formId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Updated Form Name",
   "status": "PUBLISHED"
 }
+EOF
 ```
 
 ### Delete Form
 ```bash
-DELETE /tally/forms/{formId}
+maton api -X DELETE '/tally/forms/{formId}'
 ```
 
 ### List Form Questions
 ```bash
-GET /tally/forms/{formId}/questions
+maton api '/tally/forms/{formId}/questions'
 ```
 
 ### List Form Submissions
 ```bash
-GET /tally/forms/{formId}/submissions
+maton api '/tally/forms/{formId}/submissions'
 ```
 
 **Query Parameters:**
@@ -105,59 +107,61 @@ GET /tally/forms/{formId}/submissions
 
 ### Get Submission
 ```bash
-GET /tally/forms/{formId}/submissions/{submissionId}
+maton api '/tally/forms/{formId}/submissions/{submissionId}'
 ```
 
 ### Delete Submission
 ```bash
-DELETE /tally/forms/{formId}/submissions/{submissionId}
+maton api -X DELETE '/tally/forms/{formId}/submissions/{submissionId}'
 ```
 
 ### List Workspaces
 ```bash
-GET /tally/workspaces
+maton api '/tally/workspaces'
 ```
 
 ### Get Workspace
 ```bash
-GET /tally/workspaces/{workspaceId}
+maton api '/tally/workspaces/{workspaceId}'
 ```
 
 ### Create Workspace
 ```bash
-POST /tally/workspaces
-Content-Type: application/json
-
+maton api -X POST '/tally/workspaces' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "New Workspace"
 }
+EOF
 ```
 
 ### List Organization Users
 ```bash
-GET /tally/organizations/{organizationId}/users
+maton api '/tally/organizations/{organizationId}/users'
 ```
 
 ### List Organization Invites
 ```bash
-GET /tally/organizations/{organizationId}/invites
+maton api '/tally/organizations/{organizationId}/invites'
 ```
 
 ### List Webhooks
 ```bash
-GET /tally/webhooks
+maton api '/tally/webhooks'
 ```
 
 ### Create Webhook
 ```bash
-POST /tally/webhooks
-Content-Type: application/json
-
+maton api -X POST '/tally/webhooks' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "formId": "GxdRaQ",
   "url": "https://your-endpoint.com/webhook",
   "eventTypes": ["FORM_RESPONSE"]
 }
+EOF
 ```
 
 ## Notes

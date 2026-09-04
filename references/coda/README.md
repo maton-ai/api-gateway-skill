@@ -17,189 +17,189 @@
 
 #### Get Current User
 ```bash
-GET /coda/apis/v1/whoami
+maton api '/coda/apis/v1/whoami'
 ```
 
 ### Docs
 
 #### List Docs
 ```bash
-GET /coda/apis/v1/docs
+maton api '/coda/apis/v1/docs'
 ```
 
 #### Create Doc
 ```bash
-POST /coda/apis/v1/docs
+maton api -X POST '/coda/apis/v1/docs'
 ```
 
 #### Get Doc
 ```bash
-GET /coda/apis/v1/docs/{docId}
+maton api '/coda/apis/v1/docs/{docId}'
 ```
 
 #### Delete Doc
 ```bash
-DELETE /coda/apis/v1/docs/{docId}
+maton api -X DELETE '/coda/apis/v1/docs/{docId}'
 ```
 
 ### Pages
 
 #### List Pages
 ```bash
-GET /coda/apis/v1/docs/{docId}/pages
+maton api '/coda/apis/v1/docs/{docId}/pages'
 ```
 
 #### Create Page
 ```bash
-POST /coda/apis/v1/docs/{docId}/pages
+maton api -X POST '/coda/apis/v1/docs/{docId}/pages'
 ```
 
 #### Get Page
 ```bash
-GET /coda/apis/v1/docs/{docId}/pages/{pageIdOrName}
+maton api '/coda/apis/v1/docs/{docId}/pages/{pageIdOrName}'
 ```
 
 #### Update Page
 ```bash
-PUT /coda/apis/v1/docs/{docId}/pages/{pageIdOrName}
+maton api -X PUT '/coda/apis/v1/docs/{docId}/pages/{pageIdOrName}'
 ```
 
 #### Delete Page
 ```bash
-DELETE /coda/apis/v1/docs/{docId}/pages/{pageIdOrName}
+maton api -X DELETE '/coda/apis/v1/docs/{docId}/pages/{pageIdOrName}'
 ```
 
 ### Tables
 
 #### List Tables
 ```bash
-GET /coda/apis/v1/docs/{docId}/tables
+maton api '/coda/apis/v1/docs/{docId}/tables'
 ```
 
 #### Get Table
 ```bash
-GET /coda/apis/v1/docs/{docId}/tables/{tableIdOrName}
+maton api '/coda/apis/v1/docs/{docId}/tables/{tableIdOrName}'
 ```
 
 ### Columns
 
 #### List Columns
 ```bash
-GET /coda/apis/v1/docs/{docId}/tables/{tableIdOrName}/columns
+maton api '/coda/apis/v1/docs/{docId}/tables/{tableIdOrName}/columns'
 ```
 
 #### Get Column
 ```bash
-GET /coda/apis/v1/docs/{docId}/tables/{tableIdOrName}/columns/{columnIdOrName}
+maton api '/coda/apis/v1/docs/{docId}/tables/{tableIdOrName}/columns/{columnIdOrName}'
 ```
 
 ### Rows
 
 #### List Rows
 ```bash
-GET /coda/apis/v1/docs/{docId}/tables/{tableIdOrName}/rows
+maton api '/coda/apis/v1/docs/{docId}/tables/{tableIdOrName}/rows'
 ```
 
 #### Get Row
 ```bash
-GET /coda/apis/v1/docs/{docId}/tables/{tableIdOrName}/rows/{rowIdOrName}
+maton api '/coda/apis/v1/docs/{docId}/tables/{tableIdOrName}/rows/{rowIdOrName}'
 ```
 
 #### Insert/Upsert Rows
 ```bash
-POST /coda/apis/v1/docs/{docId}/tables/{tableIdOrName}/rows
+maton api -X POST '/coda/apis/v1/docs/{docId}/tables/{tableIdOrName}/rows'
 ```
 
 #### Update Row
 ```bash
-PUT /coda/apis/v1/docs/{docId}/tables/{tableIdOrName}/rows/{rowIdOrName}
+maton api -X PUT '/coda/apis/v1/docs/{docId}/tables/{tableIdOrName}/rows/{rowIdOrName}'
 ```
 
 #### Delete Row
 ```bash
-DELETE /coda/apis/v1/docs/{docId}/tables/{tableIdOrName}/rows/{rowIdOrName}
+maton api -X DELETE '/coda/apis/v1/docs/{docId}/tables/{tableIdOrName}/rows/{rowIdOrName}'
 ```
 
 ### Formulas
 
 #### List Formulas
 ```bash
-GET /coda/apis/v1/docs/{docId}/formulas
+maton api '/coda/apis/v1/docs/{docId}/formulas'
 ```
 
 #### Get Formula
 ```bash
-GET /coda/apis/v1/docs/{docId}/formulas/{formulaIdOrName}
+maton api '/coda/apis/v1/docs/{docId}/formulas/{formulaIdOrName}'
 ```
 
 ### Controls
 
 #### List Controls
 ```bash
-GET /coda/apis/v1/docs/{docId}/controls
+maton api '/coda/apis/v1/docs/{docId}/controls'
 ```
 
 #### Get Control
 ```bash
-GET /coda/apis/v1/docs/{docId}/controls/{controlIdOrName}
+maton api '/coda/apis/v1/docs/{docId}/controls/{controlIdOrName}'
 ```
 
 ### Permissions
 
 #### Get Sharing Metadata
 ```bash
-GET /coda/apis/v1/docs/{docId}/acl/metadata
+maton api '/coda/apis/v1/docs/{docId}/acl/metadata'
 ```
 
 #### List Permissions
 ```bash
-GET /coda/apis/v1/docs/{docId}/acl/permissions
+maton api '/coda/apis/v1/docs/{docId}/acl/permissions'
 ```
 
 #### Add Permission
 ```bash
-POST /coda/apis/v1/docs/{docId}/acl/permissions
+maton api -X POST '/coda/apis/v1/docs/{docId}/acl/permissions'
 ```
 
 #### Delete Permission
 ```bash
-DELETE /coda/apis/v1/docs/{docId}/acl/permissions/{permissionId}
+maton api -X DELETE '/coda/apis/v1/docs/{docId}/acl/permissions/{permissionId}'
 ```
 
 ### Categories
 
 #### List Categories
 ```bash
-GET /coda/apis/v1/categories
+maton api '/coda/apis/v1/categories'
 ```
 
 ### Utilities
 
 #### Resolve Browser Link
 ```bash
-GET /coda/apis/v1/resolveBrowserLink?url={encodedUrl}
+maton api '/coda/apis/v1/resolveBrowserLink?url={encodedUrl}'
 ```
 
 #### Get Mutation Status
 ```bash
-GET /coda/apis/v1/mutationStatus/{requestId}
+maton api '/coda/apis/v1/mutationStatus/{requestId}'
 ```
 
 ### Analytics
 
 #### List Doc Analytics
 ```bash
-GET /coda/apis/v1/analytics/docs
+maton api '/coda/apis/v1/analytics/docs'
 ```
 
 #### List Pack Analytics
 ```bash
-GET /coda/apis/v1/analytics/packs
+maton api '/coda/apis/v1/analytics/packs'
 ```
 
 #### Get Analytics Update Time
 ```bash
-GET /coda/apis/v1/analytics/updated
+maton api '/coda/apis/v1/analytics/updated'
 ```
 
 ## Query Parameters

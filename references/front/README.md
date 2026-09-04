@@ -17,239 +17,250 @@
 
 #### Get Current Company
 ```bash
-GET /front/me
+maton api '/front/me'
 ```
 
 ### Teammates
 
 #### List Teammates
 ```bash
-GET /front/teammates
+maton api '/front/teammates'
 ```
 
 #### Get Teammate
 ```bash
-GET /front/teammates/{teammate_id}
+maton api '/front/teammates/{teammate_id}'
 ```
 
 ### Teams
 
 #### List Teams
 ```bash
-GET /front/teams
+maton api '/front/teams'
 ```
 
 ### Inboxes
 
 #### List Inboxes
 ```bash
-GET /front/inboxes
+maton api '/front/inboxes'
 ```
 
 #### Get Inbox
 ```bash
-GET /front/inboxes/{inbox_id}
+maton api '/front/inboxes/{inbox_id}'
 ```
 
 #### Create Inbox
 ```bash
-POST /front/inboxes
-Content-Type: application/json
-
+maton api -X POST '/front/inboxes' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "New Inbox",
   "teammate_ids": ["tea_abc123"]
 }
+EOF
 ```
 
 ### Channels
 
 #### List Channels
 ```bash
-GET /front/channels
+maton api '/front/channels'
 ```
 
 #### Get Channel
 ```bash
-GET /front/channels/{channel_id}
+maton api '/front/channels/{channel_id}'
 ```
 
 ### Conversations
 
 #### List Conversations
 ```bash
-GET /front/conversations
-GET /front/conversations?q=search_term
+maton api '/front/conversations'
+maton api '/front/conversations?q=search_term'
 ```
 
 #### Get Conversation
 ```bash
-GET /front/conversations/{conversation_id}
+maton api '/front/conversations/{conversation_id}'
 ```
 
 #### Update Conversation
 ```bash
-PATCH /front/conversations/{conversation_id}
-Content-Type: application/json
-
+maton api -X PATCH '/front/conversations/{conversation_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "assignee_id": "tea_abc123",
   "status": "archived"
 }
+EOF
 ```
 
 #### Update Assignee
 ```bash
-PUT /front/conversations/{conversation_id}/assignee
-Content-Type: application/json
-
+maton api -X PUT '/front/conversations/{conversation_id}/assignee' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"assignee_id": "tea_abc123"}
+EOF
 ```
 
 ### Messages
 
 #### Get Message
 ```bash
-GET /front/messages/{message_id}
+maton api '/front/messages/{message_id}'
 ```
 
 #### Send Reply
 ```bash
-POST /front/conversations/{conversation_id}/messages
-Content-Type: application/json
-
+maton api -X POST '/front/conversations/{conversation_id}/messages' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "author_id": "tea_abc123",
   "body": "Reply content",
   "type": "reply"
 }
+EOF
 ```
 
 #### Send New Message
 ```bash
-POST /front/channels/{channel_id}/messages
-Content-Type: application/json
-
+maton api -X POST '/front/channels/{channel_id}/messages' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "author_id": "tea_abc123",
   "to": ["recipient@example.com"],
   "subject": "Subject",
   "body": "Message body"
 }
+EOF
 ```
 
 ### Contacts
 
 #### List Contacts
 ```bash
-GET /front/contacts
-GET /front/contacts?q=search_term
+maton api '/front/contacts'
+maton api '/front/contacts?q=search_term'
 ```
 
 #### Get Contact
 ```bash
-GET /front/contacts/{contact_id}
+maton api '/front/contacts/{contact_id}'
 ```
 
 #### Create Contact
 ```bash
-POST /front/contacts
-Content-Type: application/json
-
+maton api -X POST '/front/contacts' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "John Doe",
   "handles": [{"source": "email", "handle": "john@example.com"}]
 }
+EOF
 ```
 
 #### Update Contact
 ```bash
-PATCH /front/contacts/{contact_id}
-Content-Type: application/json
-
+maton api -X PATCH '/front/contacts/{contact_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"name": "Updated Name"}
+EOF
 ```
 
 #### Delete Contact
 ```bash
-DELETE /front/contacts/{contact_id}
+maton api -X DELETE '/front/contacts/{contact_id}'
 ```
 
 ### Tags
 
 #### List Tags
 ```bash
-GET /front/tags
+maton api '/front/tags'
 ```
 
 #### Get Tag
 ```bash
-GET /front/tags/{tag_id}
+maton api '/front/tags/{tag_id}'
 ```
 
 #### Create Tag
 ```bash
-POST /front/tags
-Content-Type: application/json
-
+maton api -X POST '/front/tags' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Urgent",
   "highlight": "red"
 }
+EOF
 ```
 
 #### Update Tag
 ```bash
-PATCH /front/tags/{tag_id}
-Content-Type: application/json
-
+maton api -X PATCH '/front/tags/{tag_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"name": "Updated Tag"}
+EOF
 ```
 
 #### Delete Tag
 ```bash
-DELETE /front/tags/{tag_id}
+maton api -X DELETE '/front/tags/{tag_id}'
 ```
 
 ### Accounts
 
 #### List Accounts
 ```bash
-GET /front/accounts
+maton api '/front/accounts'
 ```
 
 #### Get Account
 ```bash
-GET /front/accounts/{account_id}
+maton api '/front/accounts/{account_id}'
 ```
 
 #### Create Account
 ```bash
-POST /front/accounts
-Content-Type: application/json
-
+maton api -X POST '/front/accounts' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Acme Corp",
   "domains": ["acme.com"]
 }
+EOF
 ```
 
 ### Comments
 
 #### List Conversation Comments
 ```bash
-GET /front/conversations/{conversation_id}/comments
+maton api '/front/conversations/{conversation_id}/comments'
 ```
 
 #### Create Comment
 ```bash
-POST /front/conversations/{conversation_id}/comments
-Content-Type: application/json
-
+maton api -X POST '/front/conversations/{conversation_id}/comments' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "author_id": "tea_abc123",
   "body": "Internal note"
 }
+EOF
 ```
 
 ## Pagination
@@ -257,7 +268,7 @@ Content-Type: application/json
 Cursor-based pagination:
 
 ```bash
-GET /front/contacts?page_token={token}
+maton api '/front/contacts?page_token={token}'
 ```
 
 Response includes:

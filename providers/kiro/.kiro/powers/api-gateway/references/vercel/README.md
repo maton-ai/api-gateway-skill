@@ -19,33 +19,33 @@ Note: API versions vary by endpoint (v2, v5, v6, v9, v10, v13, etc.)
 
 #### Get Current User
 ```bash
-GET /vercel/v2/user
+maton api '/vercel/v2/user'
 ```
 
 ### Teams
 
 #### List Teams
 ```bash
-GET /vercel/v2/teams
+maton api '/vercel/v2/teams'
 ```
 
 ### Projects
 
 #### List Projects
 ```bash
-GET /vercel/v9/projects?limit=20
+maton api '/vercel/v9/projects?limit=20'
 ```
 
 #### Get Project
 ```bash
-GET /vercel/v9/projects/{projectId}
+maton api '/vercel/v9/projects/{projectId}'
 ```
 
 #### Create Project
 ```bash
-POST /vercel/v9/projects
-Content-Type: application/json
-
+maton api -X POST '/vercel/v9/projects' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "my-project",
   "framework": "nextjs",
@@ -54,113 +54,118 @@ Content-Type: application/json
     "repo": "username/repo"
   }
 }
+EOF
 ```
 
 #### Update Project
 ```bash
-PATCH /vercel/v9/projects/{projectId}
-Content-Type: application/json
-
+maton api -X PATCH '/vercel/v9/projects/{projectId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "updated-name"
 }
+EOF
 ```
 
 #### Delete Project
 ```bash
-DELETE /vercel/v9/projects/{projectId}
+maton api -X DELETE '/vercel/v9/projects/{projectId}'
 ```
 
 ### Deployments
 
 #### List Deployments
 ```bash
-GET /vercel/v6/deployments?limit=20
-GET /vercel/v6/deployments?projectId={projectId}&limit=20
+maton api '/vercel/v6/deployments?limit=20'
+maton api '/vercel/v6/deployments?projectId={projectId}&limit=20'
 ```
 
 #### Get Deployment
 ```bash
-GET /vercel/v13/deployments/{deploymentId}
+maton api '/vercel/v13/deployments/{deploymentId}'
 ```
 
 #### Get Deployment Build Logs
 ```bash
-GET /vercel/v3/deployments/{deploymentId}/events
+maton api '/vercel/v3/deployments/{deploymentId}/events'
 ```
 
 #### Cancel Deployment
 ```bash
-PATCH /vercel/v12/deployments/{deploymentId}/cancel
+maton api -X PATCH '/vercel/v12/deployments/{deploymentId}/cancel'
 ```
 
 ### Environment Variables
 
 #### List Environment Variables
 ```bash
-GET /vercel/v10/projects/{projectId}/env
+maton api '/vercel/v10/projects/{projectId}/env'
 ```
 
 #### Create Environment Variable
 ```bash
-POST /vercel/v10/projects/{projectId}/env
-Content-Type: application/json
-
+maton api -X POST '/vercel/v10/projects/{projectId}/env' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "key": "API_KEY",
   "value": "secret-value",
   "type": "encrypted",
   "target": ["production", "preview"]
 }
+EOF
 ```
 
 #### Update Environment Variable
 ```bash
-PATCH /vercel/v10/projects/{projectId}/env/{envId}
-Content-Type: application/json
-
+maton api -X PATCH '/vercel/v10/projects/{projectId}/env/{envId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "value": "new-value"
 }
+EOF
 ```
 
 #### Delete Environment Variable
 ```bash
-DELETE /vercel/v10/projects/{projectId}/env/{envId}
+maton api -X DELETE '/vercel/v10/projects/{projectId}/env/{envId}'
 ```
 
 ### Domains
 
 #### List Domains
 ```bash
-GET /vercel/v5/domains
+maton api '/vercel/v5/domains'
 ```
 
 #### Get Domain
 ```bash
-GET /vercel/v5/domains/{domain}
+maton api '/vercel/v5/domains/{domain}'
 ```
 
 #### Add Domain
 ```bash
-POST /vercel/v5/domains
-Content-Type: application/json
-
+maton api -X POST '/vercel/v5/domains' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "example.com"
 }
+EOF
 ```
 
 #### Remove Domain
 ```bash
-DELETE /vercel/v6/domains/{domain}
+maton api -X DELETE '/vercel/v6/domains/{domain}'
 ```
 
 ### Remote Caching (Artifacts)
 
 #### Get Artifacts Status
 ```bash
-GET /vercel/v8/artifacts/status
+maton api '/vercel/v8/artifacts/status'
 ```
 
 ## Pagination
@@ -168,7 +173,7 @@ GET /vercel/v8/artifacts/status
 Cursor-based pagination:
 
 ```bash
-GET /vercel/v9/projects?limit=20&until={next}
+maton api '/vercel/v9/projects?limit=20&until={next}'
 ```
 
 Parameters:

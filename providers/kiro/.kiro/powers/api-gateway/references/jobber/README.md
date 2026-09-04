@@ -25,40 +25,43 @@ Maton automatically injects the `X-JOBBER-GRAPHQL-VERSION` header (currently `20
 
 ### Get Account
 ```bash
-POST /jobber/graphql
-Content-Type: application/json
-
+maton api -X POST '/jobber/graphql' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "{ account { id name } }"
 }
+EOF
 ```
 
 ### List Clients
 ```bash
-POST /jobber/graphql
-Content-Type: application/json
-
+maton api -X POST '/jobber/graphql' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "{ clients(first: 20) { nodes { id name emails { address } phones { number } } pageInfo { hasNextPage endCursor } } }"
 }
+EOF
 ```
 
 ### Get Client
 ```bash
-POST /jobber/graphql
-Content-Type: application/json
-
+maton api -X POST '/jobber/graphql' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "query($id: EncodedId!) { client(id: $id) { id name emails { address } } }",
   "variables": { "id": "CLIENT_ID" }
 }
+EOF
 ```
 
 ### Create Client
 ```bash
-POST /jobber/graphql
-Content-Type: application/json
-
+maton api -X POST '/jobber/graphql' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "mutation($input: ClientCreateInput!) { clientCreate(input: $input) { client { id name } userErrors { message path } } }",
   "variables": {
@@ -69,23 +72,25 @@ Content-Type: application/json
     }
   }
 }
+EOF
 ```
 
 ### List Jobs
 ```bash
-POST /jobber/graphql
-Content-Type: application/json
-
+maton api -X POST '/jobber/graphql' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "{ jobs(first: 20) { nodes { id title jobNumber jobStatus client { name } } pageInfo { hasNextPage endCursor } } }"
 }
+EOF
 ```
 
 ### Create Job
 ```bash
-POST /jobber/graphql
-Content-Type: application/json
-
+maton api -X POST '/jobber/graphql' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "mutation($input: JobCreateInput!) { jobCreate(input: $input) { job { id jobNumber } userErrors { message path } } }",
   "variables": {
@@ -95,46 +100,51 @@ Content-Type: application/json
     }
   }
 }
+EOF
 ```
 
 ### List Invoices
 ```bash
-POST /jobber/graphql
-Content-Type: application/json
-
+maton api -X POST '/jobber/graphql' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "{ invoices(first: 20) { nodes { id invoiceNumber total invoiceStatus } pageInfo { hasNextPage endCursor } } }"
 }
+EOF
 ```
 
 ### List Quotes
 ```bash
-POST /jobber/graphql
-Content-Type: application/json
-
+maton api -X POST '/jobber/graphql' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "{ quotes(first: 20) { nodes { id quoteNumber title quoteStatus } pageInfo { hasNextPage endCursor } } }"
 }
+EOF
 ```
 
 ### List Properties
 ```bash
-POST /jobber/graphql
-Content-Type: application/json
-
+maton api -X POST '/jobber/graphql' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "{ properties(first: 20) { nodes { id address { street city } client { name } } } }"
 }
+EOF
 ```
 
 ### List Users
 ```bash
-POST /jobber/graphql
-Content-Type: application/json
-
+maton api -X POST '/jobber/graphql' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "{ users(first: 50) { nodes { id name { full } email { raw } } } }"
 }
+EOF
 ```
 
 ## Pagination

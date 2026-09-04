@@ -16,98 +16,98 @@
 ### User
 
 ```bash
-GET /vimeo/me
-GET /vimeo/users/{user_id}
-GET /vimeo/me/feed
+maton api '/vimeo/me'
+maton api '/vimeo/users/{user_id}'
+maton api '/vimeo/me/feed'
 ```
 
 ### Videos
 
 ```bash
 # List user videos
-GET /vimeo/me/videos
+maton api '/vimeo/me/videos'
 
 # Search videos
-GET /vimeo/videos?query=nature
+maton api '/vimeo/videos?query=nature'
 
 # Get video
-GET /vimeo/videos/{video_id}
+maton api '/vimeo/videos/{video_id}'
 
 # Update video
-PATCH /vimeo/videos/{video_id}
+maton api -X PATCH '/vimeo/videos/{video_id}'
 
 # Delete video
-DELETE /vimeo/videos/{video_id}
+maton api -X DELETE '/vimeo/videos/{video_id}'
 ```
 
 ### Folders (Projects)
 
 ```bash
-GET /vimeo/me/folders
-POST /vimeo/me/folders
-PATCH /vimeo/me/projects/{project_id}
-DELETE /vimeo/me/projects/{project_id}
+maton api '/vimeo/me/folders'
+maton api -X POST '/vimeo/me/folders'
+maton api -X PATCH '/vimeo/me/projects/{project_id}'
+maton api -X DELETE '/vimeo/me/projects/{project_id}'
 
 # Folder videos
-GET /vimeo/me/projects/{project_id}/videos
-PUT /vimeo/me/projects/{project_id}/videos/{video_id}
-DELETE /vimeo/me/projects/{project_id}/videos/{video_id}
+maton api '/vimeo/me/projects/{project_id}/videos'
+maton api -X PUT '/vimeo/me/projects/{project_id}/videos/{video_id}'
+maton api -X DELETE '/vimeo/me/projects/{project_id}/videos/{video_id}'
 ```
 
 ### Albums (Showcases)
 
 ```bash
-GET /vimeo/me/albums
-POST /vimeo/me/albums
-PATCH /vimeo/me/albums/{album_id}
-DELETE /vimeo/me/albums/{album_id}
+maton api '/vimeo/me/albums'
+maton api -X POST '/vimeo/me/albums'
+maton api -X PATCH '/vimeo/me/albums/{album_id}'
+maton api -X DELETE '/vimeo/me/albums/{album_id}'
 
 # Album videos
-GET /vimeo/me/albums/{album_id}/videos
-PUT /vimeo/me/albums/{album_id}/videos/{video_id}
-DELETE /vimeo/me/albums/{album_id}/videos/{video_id}
+maton api '/vimeo/me/albums/{album_id}/videos'
+maton api -X PUT '/vimeo/me/albums/{album_id}/videos/{video_id}'
+maton api -X DELETE '/vimeo/me/albums/{album_id}/videos/{video_id}'
 ```
 
 ### Comments
 
 ```bash
-GET /vimeo/videos/{video_id}/comments
-POST /vimeo/videos/{video_id}/comments
-DELETE /vimeo/videos/{video_id}/comments/{comment_id}
+maton api '/vimeo/videos/{video_id}/comments'
+maton api -X POST '/vimeo/videos/{video_id}/comments'
+maton api -X DELETE '/vimeo/videos/{video_id}/comments/{comment_id}'
 ```
 
 ### Likes
 
 ```bash
-GET /vimeo/me/likes
-PUT /vimeo/me/likes/{video_id}
-DELETE /vimeo/me/likes/{video_id}
+maton api '/vimeo/me/likes'
+maton api -X PUT '/vimeo/me/likes/{video_id}'
+maton api -X DELETE '/vimeo/me/likes/{video_id}'
 ```
 
 ### Watch Later
 
 ```bash
-GET /vimeo/me/watchlater
-PUT /vimeo/me/watchlater/{video_id}
-DELETE /vimeo/me/watchlater/{video_id}
+maton api '/vimeo/me/watchlater'
+maton api -X PUT '/vimeo/me/watchlater/{video_id}'
+maton api -X DELETE '/vimeo/me/watchlater/{video_id}'
 ```
 
 ### Following
 
 ```bash
-GET /vimeo/me/followers
-GET /vimeo/me/following
-PUT /vimeo/me/following/{user_id}
-DELETE /vimeo/me/following/{user_id}
+maton api '/vimeo/me/followers'
+maton api '/vimeo/me/following'
+maton api -X PUT '/vimeo/me/following/{user_id}'
+maton api -X DELETE '/vimeo/me/following/{user_id}'
 ```
 
 ### Channels and Categories
 
 ```bash
-GET /vimeo/channels
-GET /vimeo/channels/{channel_id}
-GET /vimeo/categories
-GET /vimeo/categories/{category}/videos
+maton api '/vimeo/channels'
+maton api '/vimeo/channels/{channel_id}'
+maton api '/vimeo/categories'
+maton api '/vimeo/categories/{category}/videos'
 ```
 
 ## Notes

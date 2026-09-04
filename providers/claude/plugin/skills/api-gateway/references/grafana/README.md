@@ -15,33 +15,33 @@
 
 ### Get Current Organization
 ```bash
-GET /grafana/api/org
+maton api '/grafana/api/org'
 ```
 
 ### Get Current User
 ```bash
-GET /grafana/api/user
+maton api '/grafana/api/user'
 ```
 
 ## Dashboards
 
 ### Search Dashboards
 ```bash
-GET /grafana/api/search?type=dash-db
+maton api '/grafana/api/search?type=dash-db'
 ```
 
 Query params: `type`, `query`, `tag`, `folderIds`, `limit`
 
 ### Get Dashboard by UID
 ```bash
-GET /grafana/api/dashboards/uid/{uid}
+maton api '/grafana/api/dashboards/uid/{uid}'
 ```
 
 ### Create/Update Dashboard
 ```bash
-POST /grafana/api/dashboards/db
-Content-Type: application/json
-
+maton api -X POST '/grafana/api/dashboards/db' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "dashboard": {
     "title": "Dashboard Title",
@@ -50,130 +50,135 @@ Content-Type: application/json
   },
   "overwrite": false
 }
+EOF
 ```
 
 ### Delete Dashboard
 ```bash
-DELETE /grafana/api/dashboards/uid/{uid}
+maton api -X DELETE '/grafana/api/dashboards/uid/{uid}'
 ```
 
 ## Folders
 
 ### List Folders
 ```bash
-GET /grafana/api/folders
+maton api '/grafana/api/folders'
 ```
 
 ### Get Folder
 ```bash
-GET /grafana/api/folders/{uid}
+maton api '/grafana/api/folders/{uid}'
 ```
 
 ### Create Folder
 ```bash
-POST /grafana/api/folders
-Content-Type: application/json
-
+maton api -X POST '/grafana/api/folders' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"title": "Folder Name"}
+EOF
 ```
 
 ### Delete Folder
 ```bash
-DELETE /grafana/api/folders/{uid}
+maton api -X DELETE '/grafana/api/folders/{uid}'
 ```
 
 ## Data Sources
 
 ### List Data Sources
 ```bash
-GET /grafana/api/datasources
+maton api '/grafana/api/datasources'
 ```
 
 ### Get Data Source
 ```bash
-GET /grafana/api/datasources/{id}
-GET /grafana/api/datasources/uid/{uid}
-GET /grafana/api/datasources/name/{name}
+maton api '/grafana/api/datasources/{id}'
+maton api '/grafana/api/datasources/uid/{uid}'
+maton api '/grafana/api/datasources/name/{name}'
 ```
 
 ### Create Data Source
 ```bash
-POST /grafana/api/datasources
-Content-Type: application/json
-
+maton api -X POST '/grafana/api/datasources' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Prometheus",
   "type": "prometheus",
   "url": "http://prometheus:9090",
   "access": "proxy"
 }
+EOF
 ```
 
 ### Delete Data Source
 ```bash
-DELETE /grafana/api/datasources/{id}
+maton api -X DELETE '/grafana/api/datasources/{id}'
 ```
 
 ## Annotations
 
 ### List Annotations
 ```bash
-GET /grafana/api/annotations
+maton api '/grafana/api/annotations'
 ```
 
 Query params: `from`, `to`, `dashboardUID`, `tags`, `limit`
 
 ### Create Annotation
 ```bash
-POST /grafana/api/annotations
-Content-Type: application/json
-
+maton api -X POST '/grafana/api/annotations' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "dashboardUID": "abc123",
   "time": 1609459200000,
   "text": "Annotation text",
   "tags": ["tag1"]
 }
+EOF
 ```
 
 ### Delete Annotation
 ```bash
-DELETE /grafana/api/annotations/{id}
+maton api -X DELETE '/grafana/api/annotations/{id}'
 ```
 
 ## Teams
 
 ### Search Teams
 ```bash
-GET /grafana/api/teams/search
+maton api '/grafana/api/teams/search'
 ```
 
 ### Create Team
 ```bash
-POST /grafana/api/teams
-Content-Type: application/json
-
+maton api -X POST '/grafana/api/teams' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"name": "Team Name"}
+EOF
 ```
 
 ## Alert Rules
 
 ### List Alert Rules
 ```bash
-GET /grafana/api/v1/provisioning/alert-rules
-GET /grafana/api/ruler/grafana/api/v1/rules
+maton api '/grafana/api/v1/provisioning/alert-rules'
+maton api '/grafana/api/ruler/grafana/api/v1/rules'
 ```
 
 ## Other Endpoints
 
 ### Service Accounts
 ```bash
-GET /grafana/api/serviceaccounts/search
+maton api '/grafana/api/serviceaccounts/search'
 ```
 
 ### Plugins
 ```bash
-GET /grafana/api/plugins
+maton api '/grafana/api/plugins'
 ```
 
 ## Notes

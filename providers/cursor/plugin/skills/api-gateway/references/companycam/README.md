@@ -17,234 +17,234 @@
 
 #### Get Company
 ```bash
-GET /companycam/v2/company
+maton api '/companycam/v2/company'
 ```
 
 ### Users
 
 #### Get Current User
 ```bash
-GET /companycam/v2/users/current
+maton api '/companycam/v2/users/current'
 ```
 
 #### List Users
 ```bash
-GET /companycam/v2/users
+maton api '/companycam/v2/users'
 ```
 
 #### Create User
 ```bash
-POST /companycam/v2/users
+maton api -X POST '/companycam/v2/users'
 ```
 
 #### Get User
 ```bash
-GET /companycam/v2/users/{id}
+maton api '/companycam/v2/users/{id}'
 ```
 
 #### Update User
 ```bash
-PUT /companycam/v2/users/{id}
+maton api -X PUT '/companycam/v2/users/{id}'
 ```
 
 #### Delete User
 ```bash
-DELETE /companycam/v2/users/{id}
+maton api -X DELETE '/companycam/v2/users/{id}'
 ```
 
 ### Projects
 
 #### List Projects
 ```bash
-GET /companycam/v2/projects
+maton api '/companycam/v2/projects'
 ```
 
 #### Create Project
 ```bash
-POST /companycam/v2/projects
+maton api -X POST '/companycam/v2/projects'
 ```
 
 #### Get Project
 ```bash
-GET /companycam/v2/projects/{id}
+maton api '/companycam/v2/projects/{id}'
 ```
 
 #### Update Project
 ```bash
-PUT /companycam/v2/projects/{id}
+maton api -X PUT '/companycam/v2/projects/{id}'
 ```
 
 #### Delete Project
 ```bash
-DELETE /companycam/v2/projects/{id}
+maton api -X DELETE '/companycam/v2/projects/{id}'
 ```
 
 #### Archive Project
 ```bash
-PATCH /companycam/v2/projects/{id}/archive
+maton api -X PATCH '/companycam/v2/projects/{id}/archive'
 ```
 
 #### Restore Project
 ```bash
-PUT /companycam/v2/projects/{id}/restore
+maton api -X PUT '/companycam/v2/projects/{id}/restore'
 ```
 
 ### Project Photos
 
 #### List Project Photos
 ```bash
-GET /companycam/v2/projects/{project_id}/photos
+maton api '/companycam/v2/projects/{project_id}/photos'
 ```
 
 #### Add Photo to Project
 ```bash
-POST /companycam/v2/projects/{project_id}/photos
+maton api -X POST '/companycam/v2/projects/{project_id}/photos'
 ```
 
 ### Project Comments
 
 #### List Project Comments
 ```bash
-GET /companycam/v2/projects/{project_id}/comments
+maton api '/companycam/v2/projects/{project_id}/comments'
 ```
 
 #### Add Project Comment
 ```bash
-POST /companycam/v2/projects/{project_id}/comments
+maton api -X POST '/companycam/v2/projects/{project_id}/comments'
 ```
 
 ### Project Labels
 
 #### List Project Labels
 ```bash
-GET /companycam/v2/projects/{project_id}/labels
+maton api '/companycam/v2/projects/{project_id}/labels'
 ```
 
 #### Add Labels
 ```bash
-POST /companycam/v2/projects/{project_id}/labels
+maton api -X POST '/companycam/v2/projects/{project_id}/labels'
 ```
 
 ### Project Documents
 
 #### List Documents
 ```bash
-GET /companycam/v2/projects/{project_id}/documents
+maton api '/companycam/v2/projects/{project_id}/documents'
 ```
 
 #### Upload Document
 ```bash
-POST /companycam/v2/projects/{project_id}/documents
+maton api -X POST '/companycam/v2/projects/{project_id}/documents'
 ```
 
 ### Photos
 
 #### List All Photos
 ```bash
-GET /companycam/v2/photos
+maton api '/companycam/v2/photos'
 ```
 
 #### Get Photo
 ```bash
-GET /companycam/v2/photos/{id}
+maton api '/companycam/v2/photos/{id}'
 ```
 
 #### Update Photo
 ```bash
-PUT /companycam/v2/photos/{id}
+maton api -X PUT '/companycam/v2/photos/{id}'
 ```
 
 #### Delete Photo
 ```bash
-DELETE /companycam/v2/photos/{id}
+maton api -X DELETE '/companycam/v2/photos/{id}'
 ```
 
 ### Tags
 
 #### List Tags
 ```bash
-GET /companycam/v2/tags
+maton api '/companycam/v2/tags'
 ```
 
 #### Create Tag
 ```bash
-POST /companycam/v2/tags
+maton api -X POST '/companycam/v2/tags'
 ```
 
 #### Get Tag
 ```bash
-GET /companycam/v2/tags/{id}
+maton api '/companycam/v2/tags/{id}'
 ```
 
 #### Update Tag
 ```bash
-PUT /companycam/v2/tags/{id}
+maton api -X PUT '/companycam/v2/tags/{id}'
 ```
 
 #### Delete Tag
 ```bash
-DELETE /companycam/v2/tags/{id}
+maton api -X DELETE '/companycam/v2/tags/{id}'
 ```
 
 ### Groups
 
 #### List Groups
 ```bash
-GET /companycam/v2/groups
+maton api '/companycam/v2/groups'
 ```
 
 #### Create Group
 ```bash
-POST /companycam/v2/groups
+maton api -X POST '/companycam/v2/groups'
 ```
 
 #### Get Group
 ```bash
-GET /companycam/v2/groups/{id}
+maton api '/companycam/v2/groups/{id}'
 ```
 
 #### Update Group
 ```bash
-PUT /companycam/v2/groups/{id}
+maton api -X PUT '/companycam/v2/groups/{id}'
 ```
 
 #### Delete Group
 ```bash
-DELETE /companycam/v2/groups/{id}
+maton api -X DELETE '/companycam/v2/groups/{id}'
 ```
 
 ### Checklists
 
 #### List Checklists
 ```bash
-GET /companycam/v2/checklists
+maton api '/companycam/v2/checklists'
 ```
 
 ### Webhooks
 
 #### List Webhooks
 ```bash
-GET /companycam/v2/webhooks
+maton api '/companycam/v2/webhooks'
 ```
 
 #### Create Webhook
 ```bash
-POST /companycam/v2/webhooks
+maton api -X POST '/companycam/v2/webhooks'
 ```
 
 #### Get Webhook
 ```bash
-GET /companycam/v2/webhooks/{id}
+maton api '/companycam/v2/webhooks/{id}'
 ```
 
 #### Update Webhook
 ```bash
-PUT /companycam/v2/webhooks/{id}
+maton api -X PUT '/companycam/v2/webhooks/{id}'
 ```
 
 #### Delete Webhook
 ```bash
-DELETE /companycam/v2/webhooks/{id}
+maton api -X DELETE '/companycam/v2/webhooks/{id}'
 ```
 
 ## Query Parameters

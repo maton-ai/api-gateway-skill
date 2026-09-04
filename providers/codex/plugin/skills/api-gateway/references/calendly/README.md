@@ -15,80 +15,82 @@
 
 ### Get Current User
 ```bash
-GET /calendly/users/me
+maton api '/calendly/users/me'
 ```
 
 ### List Event Types
 ```bash
-GET /calendly/event_types?user=USER_URI&active=true
+maton api '/calendly/event_types?user=USER_URI&active=true'
 ```
 
 ### Get an Event Type
 ```bash
-GET /calendly/event_types/{uuid}
+maton api '/calendly/event_types/{uuid}'
 ```
 
 ### List Scheduled Events
 ```bash
-GET /calendly/scheduled_events?user=USER_URI&status=active&min_start_time=2025-03-01T00:00:00Z
+maton api '/calendly/scheduled_events?user=USER_URI&status=active&min_start_time=2025-03-01T00:00:00Z'
 ```
 
 ### Get a Scheduled Event
 ```bash
-GET /calendly/scheduled_events/{uuid}
+maton api '/calendly/scheduled_events/{uuid}'
 ```
 
 ### Cancel a Scheduled Event
 ```bash
-POST /calendly/scheduled_events/{uuid}/cancellation
-Content-Type: application/json
-
+maton api -X POST '/calendly/scheduled_events/{uuid}/cancellation' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "reason": "Meeting rescheduled"
 }
+EOF
 ```
 
 ### List Event Invitees
 ```bash
-GET /calendly/scheduled_events/{event_uuid}/invitees
+maton api '/calendly/scheduled_events/{event_uuid}/invitees'
 ```
 
 ### Get Available Times
 ```bash
-GET /calendly/event_type_available_times?event_type=EVENT_TYPE_URI&start_time=2025-03-15T00:00:00Z&end_time=2025-03-22T00:00:00Z
+maton api '/calendly/event_type_available_times?event_type=EVENT_TYPE_URI&start_time=2025-03-15T00:00:00Z&end_time=2025-03-22T00:00:00Z'
 ```
 
 ### Get User Busy Times
 ```bash
-GET /calendly/user_busy_times?user=USER_URI&start_time=2025-03-15T00:00:00Z&end_time=2025-03-22T00:00:00Z
+maton api '/calendly/user_busy_times?user=USER_URI&start_time=2025-03-15T00:00:00Z&end_time=2025-03-22T00:00:00Z'
 ```
 
 ### List Organization Memberships
 ```bash
-GET /calendly/organization_memberships?organization=ORGANIZATION_URI
+maton api '/calendly/organization_memberships?organization=ORGANIZATION_URI'
 ```
 
 ### List Webhook Subscriptions
 ```bash
-GET /calendly/webhook_subscriptions?organization=ORGANIZATION_URI&scope=organization
+maton api '/calendly/webhook_subscriptions?organization=ORGANIZATION_URI&scope=organization'
 ```
 
 ### Create Webhook Subscription
 ```bash
-POST /calendly/webhook_subscriptions
-Content-Type: application/json
-
+maton api -X POST '/calendly/webhook_subscriptions' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "url": "https://example.com/webhook",
   "events": ["invitee.created", "invitee.canceled"],
   "organization": "ORGANIZATION_URI",
   "scope": "organization"
 }
+EOF
 ```
 
 ### Delete Webhook Subscription
 ```bash
-DELETE /calendly/webhook_subscriptions/{uuid}
+maton api -X DELETE '/calendly/webhook_subscriptions/{uuid}'
 ```
 
 ## Notes

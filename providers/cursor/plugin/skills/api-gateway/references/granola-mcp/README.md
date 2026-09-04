@@ -51,12 +51,13 @@ All MCP tools use `POST` method:
 
 Chat with your meeting notes using natural language queries:
 ```bash
-POST /granola/query_granola_meetings
-Content-Type: application/json
-
+maton api -X POST '/granola/query_granola_meetings' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "What action items came from my meetings this week?"
 }
+EOF
 ```
 
 **Response:**
@@ -82,10 +83,11 @@ Content-Type: application/json
 
 List your meetings with metadata including IDs, titles, dates, and attendees:
 ```bash
-POST /granola/list_meetings
-Content-Type: application/json
-
+maton api -X POST '/granola/list_meetings' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {}
+EOF
 ```
 
 **Response:**
@@ -110,12 +112,13 @@ Content-Type: application/json
 
 Retrieve detailed content for specific meetings by ID:
 ```bash
-POST /granola/get_meetings
-Content-Type: application/json
-
+maton api -X POST '/granola/get_meetings' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "meeting_ids": ["0dba4400-50f1-4262-9ac7-89cd27b79371"]
 }
+EOF
 ```
 
 **Response:**
@@ -140,12 +143,13 @@ Content-Type: application/json
 
 Retrieve the raw transcript for a specific meeting (paid tiers only):
 ```bash
-POST /granola/get_meeting_transcript
-Content-Type: application/json
-
+maton api -X POST '/granola/get_meeting_transcript' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "meeting_id": "0dba4400-50f1-4262-9ac7-89cd27b79371"
 }
+EOF
 ```
 
 **Response (paid tier):**

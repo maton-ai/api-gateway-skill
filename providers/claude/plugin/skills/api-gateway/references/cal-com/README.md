@@ -17,191 +17,191 @@
 
 #### Get Profile
 ```bash
-GET /cal-com/v2/me
+maton api '/cal-com/v2/me'
 ```
 
 #### Update Profile
 ```bash
-PATCH /cal-com/v2/me
+maton api -X PATCH '/cal-com/v2/me'
 ```
 
 ### Event Types
 
 #### List Event Types
 ```bash
-GET /cal-com/v2/event-types
+maton api '/cal-com/v2/event-types'
 ```
 
 #### Get Event Type
 ```bash
-GET /cal-com/v2/event-types/{eventTypeId}
+maton api '/cal-com/v2/event-types/{eventTypeId}'
 ```
 
 #### Create Event Type
 ```bash
-POST /cal-com/v2/event-types
+maton api -X POST '/cal-com/v2/event-types'
 ```
 
 #### Update Event Type
 ```bash
-PATCH /cal-com/v2/event-types/{eventTypeId}
+maton api -X PATCH '/cal-com/v2/event-types/{eventTypeId}'
 ```
 
 #### Delete Event Type
 ```bash
-DELETE /cal-com/v2/event-types/{eventTypeId}
+maton api -X DELETE '/cal-com/v2/event-types/{eventTypeId}'
 ```
 
 ### Event Type Webhooks
 
 #### List Webhooks
 ```bash
-GET /cal-com/v2/event-types/{eventTypeId}/webhooks
+maton api '/cal-com/v2/event-types/{eventTypeId}/webhooks'
 ```
 
 #### Create Webhook
 ```bash
-POST /cal-com/v2/event-types/{eventTypeId}/webhooks
+maton api -X POST '/cal-com/v2/event-types/{eventTypeId}/webhooks'
 ```
 
 #### Get Webhook
 ```bash
-GET /cal-com/v2/event-types/{eventTypeId}/webhooks/{webhookId}
+maton api '/cal-com/v2/event-types/{eventTypeId}/webhooks/{webhookId}'
 ```
 
 #### Update Webhook
 ```bash
-PATCH /cal-com/v2/event-types/{eventTypeId}/webhooks/{webhookId}
+maton api -X PATCH '/cal-com/v2/event-types/{eventTypeId}/webhooks/{webhookId}'
 ```
 
 #### Delete Webhook
 ```bash
-DELETE /cal-com/v2/event-types/{eventTypeId}/webhooks/{webhookId}
+maton api -X DELETE '/cal-com/v2/event-types/{eventTypeId}/webhooks/{webhookId}'
 ```
 
 ### Bookings
 
 #### List Bookings
 ```bash
-GET /cal-com/v2/bookings
-GET /cal-com/v2/bookings?status=upcoming
-GET /cal-com/v2/bookings?status=past
-GET /cal-com/v2/bookings?status=cancelled
-GET /cal-com/v2/bookings?take=10
+maton api '/cal-com/v2/bookings'
+maton api '/cal-com/v2/bookings?status=upcoming'
+maton api '/cal-com/v2/bookings?status=past'
+maton api '/cal-com/v2/bookings?status=cancelled'
+maton api '/cal-com/v2/bookings?take=10'
 ```
 
 #### Get Booking
 ```bash
-GET /cal-com/v2/bookings/{bookingUid}
+maton api '/cal-com/v2/bookings/{bookingUid}'
 ```
 
 #### Create Booking
 ```bash
-POST /cal-com/v2/bookings
+maton api -X POST '/cal-com/v2/bookings'
 ```
 
 #### Cancel Booking
 ```bash
-POST /cal-com/v2/bookings/{bookingUid}/cancel
+maton api -X POST '/cal-com/v2/bookings/{bookingUid}/cancel'
 ```
 
 ### Schedules
 
 #### Get Default Schedule
 ```bash
-GET /cal-com/v2/schedules/default
+maton api '/cal-com/v2/schedules/default'
 ```
 
 #### Get Schedule
 ```bash
-GET /cal-com/v2/schedules/{scheduleId}
+maton api '/cal-com/v2/schedules/{scheduleId}'
 ```
 
 #### Create Schedule
 ```bash
-POST /cal-com/v2/schedules
+maton api -X POST '/cal-com/v2/schedules'
 ```
 
 #### Update Schedule
 ```bash
-PATCH /cal-com/v2/schedules/{scheduleId}
+maton api -X PATCH '/cal-com/v2/schedules/{scheduleId}'
 ```
 
 #### Delete Schedule
 ```bash
-DELETE /cal-com/v2/schedules/{scheduleId}
+maton api -X DELETE '/cal-com/v2/schedules/{scheduleId}'
 ```
 
 ### Availability Slots
 
 #### Get Available Slots
 ```bash
-GET /cal-com/v2/slots/available?eventTypeId={id}&startTime={iso8601}&endTime={iso8601}
+maton api '/cal-com/v2/slots/available?eventTypeId={id}&startTime={iso8601}&endTime={iso8601}'
 ```
 
 #### Reserve Slot
 ```bash
-POST /cal-com/v2/slots/reserve
+maton api -X POST '/cal-com/v2/slots/reserve'
 ```
 
 ### Calendars
 
 #### List Connected Calendars
 ```bash
-GET /cal-com/v2/calendars
+maton api '/cal-com/v2/calendars'
 ```
 
 ### Conferencing
 
 #### List Conferencing Apps
 ```bash
-GET /cal-com/v2/conferencing
+maton api '/cal-com/v2/conferencing'
 ```
 
 #### Get Default Conferencing App
 ```bash
-GET /cal-com/v2/conferencing/default
+maton api '/cal-com/v2/conferencing/default'
 ```
 
 ### Webhooks (User-level)
 
 #### List Webhooks
 ```bash
-GET /cal-com/v2/webhooks
+maton api '/cal-com/v2/webhooks'
 ```
 
 #### Create Webhook
 ```bash
-POST /cal-com/v2/webhooks
+maton api -X POST '/cal-com/v2/webhooks'
 ```
 
 #### Get Webhook
 ```bash
-GET /cal-com/v2/webhooks/{webhookId}
+maton api '/cal-com/v2/webhooks/{webhookId}'
 ```
 
 #### Update Webhook
 ```bash
-PATCH /cal-com/v2/webhooks/{webhookId}
+maton api -X PATCH '/cal-com/v2/webhooks/{webhookId}'
 ```
 
 #### Delete Webhook
 ```bash
-DELETE /cal-com/v2/webhooks/{webhookId}
+maton api -X DELETE '/cal-com/v2/webhooks/{webhookId}'
 ```
 
 ### Teams
 
 #### List Teams
 ```bash
-GET /cal-com/v2/teams
+maton api '/cal-com/v2/teams'
 ```
 
 ### Verified Resources
 
 #### List Verified Emails
 ```bash
-GET /cal-com/v2/verified-resources/emails
+maton api '/cal-com/v2/verified-resources/emails'
 ```
 
 ## Notes

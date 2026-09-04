@@ -16,83 +16,85 @@
 
 ### Get Current User
 ```bash
-GET /posthog/api/users/@me/
+maton api '/posthog/api/users/@me/'
 ```
 
 ### Get Current Organization
 ```bash
-GET /posthog/api/organizations/@current/
+maton api '/posthog/api/organizations/@current/'
 ```
 
 ### List Projects
 ```bash
-GET /posthog/api/projects/
+maton api '/posthog/api/projects/'
 ```
 
 ### Get Current Project
 ```bash
-GET /posthog/api/projects/@current/
+maton api '/posthog/api/projects/@current/'
 ```
 
 ### Run HogQL Query
 ```bash
-POST /posthog/api/projects/{project_id}/query/
-Content-Type: application/json
-
+maton api -X POST '/posthog/api/projects/{project_id}/query/' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": {
     "kind": "HogQLQuery",
     "query": "SELECT event, count() FROM events GROUP BY event LIMIT 10"
   }
 }
+EOF
 ```
 
 ### List Persons
 ```bash
-GET /posthog/api/projects/{project_id}/persons/?limit=10
+maton api '/posthog/api/projects/{project_id}/persons/?limit=10'
 ```
 
 ### Get Person
 ```bash
-GET /posthog/api/projects/{project_id}/persons/{person_uuid}/
+maton api '/posthog/api/projects/{project_id}/persons/{person_uuid}/'
 ```
 
 ### List Dashboards
 ```bash
-GET /posthog/api/projects/{project_id}/dashboards/
+maton api '/posthog/api/projects/{project_id}/dashboards/'
 ```
 
 ### Get Dashboard
 ```bash
-GET /posthog/api/projects/{project_id}/dashboards/{dashboard_id}/
+maton api '/posthog/api/projects/{project_id}/dashboards/{dashboard_id}/'
 ```
 
 ### Create Dashboard
 ```bash
-POST /posthog/api/projects/{project_id}/dashboards/
-Content-Type: application/json
-
+maton api -X POST '/posthog/api/projects/{project_id}/dashboards/' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "My Dashboard",
   "description": "Analytics overview"
 }
+EOF
 ```
 
 ### List Insights
 ```bash
-GET /posthog/api/projects/{project_id}/insights/?limit=10
+maton api '/posthog/api/projects/{project_id}/insights/?limit=10'
 ```
 
 ### List Feature Flags
 ```bash
-GET /posthog/api/projects/{project_id}/feature_flags/
+maton api '/posthog/api/projects/{project_id}/feature_flags/'
 ```
 
 ### Create Feature Flag
 ```bash
-POST /posthog/api/projects/{project_id}/feature_flags/
-Content-Type: application/json
-
+maton api -X POST '/posthog/api/projects/{project_id}/feature_flags/' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "key": "my-feature-flag",
   "name": "My Feature Flag",
@@ -101,52 +103,54 @@ Content-Type: application/json
     "groups": [{"rollout_percentage": 100}]
   }
 }
+EOF
 ```
 
 ### Delete Feature Flag
 Use soft delete by setting `deleted: true`:
 ```bash
-PATCH /posthog/api/projects/{project_id}/feature_flags/{flag_id}/
-Content-Type: application/json
-
+maton api -X PATCH '/posthog/api/projects/{project_id}/feature_flags/{flag_id}/' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "deleted": true
 }
+EOF
 ```
 
 ### List Session Recordings
 ```bash
-GET /posthog/api/projects/{project_id}/session_recordings/?limit=10
+maton api '/posthog/api/projects/{project_id}/session_recordings/?limit=10'
 ```
 
 ### List Cohorts
 ```bash
-GET /posthog/api/projects/{project_id}/cohorts/
+maton api '/posthog/api/projects/{project_id}/cohorts/'
 ```
 
 ### List Actions
 ```bash
-GET /posthog/api/projects/{project_id}/actions/
+maton api '/posthog/api/projects/{project_id}/actions/'
 ```
 
 ### List Experiments
 ```bash
-GET /posthog/api/projects/{project_id}/experiments/
+maton api '/posthog/api/projects/{project_id}/experiments/'
 ```
 
 ### List Surveys
 ```bash
-GET /posthog/api/projects/{project_id}/surveys/
+maton api '/posthog/api/projects/{project_id}/surveys/'
 ```
 
 ### List Event Definitions
 ```bash
-GET /posthog/api/projects/{project_id}/event_definitions/?limit=10
+maton api '/posthog/api/projects/{project_id}/event_definitions/?limit=10'
 ```
 
 ### List Property Definitions
 ```bash
-GET /posthog/api/projects/{project_id}/property_definitions/?limit=10
+maton api '/posthog/api/projects/{project_id}/property_definitions/?limit=10'
 ```
 
 ## Notes

@@ -15,111 +15,117 @@
 
 ### Create Project
 ```bash
-POST /google-apps-script/v1/projects
-Content-Type: application/json
-
+maton api -X POST '/google-apps-script/v1/projects' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"title": "My Script", "parentId": "{optional_drive_file_id}"}
+EOF
 ```
 
 ### Get Project
 ```bash
-GET /google-apps-script/v1/projects/{scriptId}
+maton api '/google-apps-script/v1/projects/{scriptId}'
 ```
 
 ### Get Project Content
 ```bash
-GET /google-apps-script/v1/projects/{scriptId}/content
+maton api '/google-apps-script/v1/projects/{scriptId}/content'
 ```
 
 With specific version:
 ```bash
-GET /google-apps-script/v1/projects/{scriptId}/content?versionNumber=1
+maton api '/google-apps-script/v1/projects/{scriptId}/content?versionNumber=1'
 ```
 
 ### Update Project Content
 ```bash
-PUT /google-apps-script/v1/projects/{scriptId}/content
-Content-Type: application/json
-
+maton api -X PUT '/google-apps-script/v1/projects/{scriptId}/content' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "files": [
     {"name": "appsscript", "type": "JSON", "source": "{...manifest...}"},
     {"name": "Code", "type": "SERVER_JS", "source": "function main() {}"}
   ]
 }
+EOF
 ```
 
 ### Get Project Metrics
 ```bash
-GET /google-apps-script/v1/projects/{scriptId}/metrics?metricsGranularity=DAILY
+maton api '/google-apps-script/v1/projects/{scriptId}/metrics?metricsGranularity=DAILY'
 ```
 
 ### Create Version
 ```bash
-POST /google-apps-script/v1/projects/{scriptId}/versions
-Content-Type: application/json
-
+maton api -X POST '/google-apps-script/v1/projects/{scriptId}/versions' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"description": "v1.0"}
+EOF
 ```
 
 ### List Versions
 ```bash
-GET /google-apps-script/v1/projects/{scriptId}/versions
+maton api '/google-apps-script/v1/projects/{scriptId}/versions'
 ```
 
 ### Get Version
 ```bash
-GET /google-apps-script/v1/projects/{scriptId}/versions/{versionNumber}
+maton api '/google-apps-script/v1/projects/{scriptId}/versions/{versionNumber}'
 ```
 
 ### Create Deployment
 ```bash
-POST /google-apps-script/v1/projects/{scriptId}/deployments
-Content-Type: application/json
-
+maton api -X POST '/google-apps-script/v1/projects/{scriptId}/deployments' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"versionNumber": 1, "description": "Production"}
+EOF
 ```
 
 ### List Deployments
 ```bash
-GET /google-apps-script/v1/projects/{scriptId}/deployments
+maton api '/google-apps-script/v1/projects/{scriptId}/deployments'
 ```
 
 ### Get Deployment
 ```bash
-GET /google-apps-script/v1/projects/{scriptId}/deployments/{deploymentId}
+maton api '/google-apps-script/v1/projects/{scriptId}/deployments/{deploymentId}'
 ```
 
 ### Update Deployment
 ```bash
-PUT /google-apps-script/v1/projects/{scriptId}/deployments/{deploymentId}
-Content-Type: application/json
-
+maton api -X PUT '/google-apps-script/v1/projects/{scriptId}/deployments/{deploymentId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"deploymentConfig": {"scriptId": "...", "versionNumber": 2, "description": "Updated"}}
+EOF
 ```
 
 ### Delete Deployment
 ```bash
-DELETE /google-apps-script/v1/projects/{scriptId}/deployments/{deploymentId}
+maton api -X DELETE '/google-apps-script/v1/projects/{scriptId}/deployments/{deploymentId}'
 ```
 
 ### List Processes
 ```bash
-GET /google-apps-script/v1/processes
-GET /google-apps-script/v1/processes?pageSize=10
+maton api '/google-apps-script/v1/processes'
+maton api '/google-apps-script/v1/processes?pageSize=10'
 ```
 
 ### List Script Processes
 ```bash
-GET /google-apps-script/v1/processes:listScriptProcesses?scriptId={scriptId}
+maton api '/google-apps-script/v1/processes:listScriptProcesses?scriptId={scriptId}'
 ```
 
 ### Run Function
 ```bash
-POST /google-apps-script/v1/scripts/{scriptId}:run
-Content-Type: application/json
-
+maton api -X POST '/google-apps-script/v1/scripts/{scriptId}:run' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"function": "myFunction", "parameters": ["arg1"], "devMode": false}
+EOF
 ```
 
 ## Notes

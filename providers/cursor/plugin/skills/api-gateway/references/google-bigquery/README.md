@@ -15,24 +15,24 @@
 
 ### List Projects
 ```bash
-GET /google-bigquery/bigquery/v2/projects
+maton api '/google-bigquery/bigquery/v2/projects'
 ```
 
 ### List Datasets
 ```bash
-GET /google-bigquery/bigquery/v2/projects/{projectId}/datasets
+maton api '/google-bigquery/bigquery/v2/projects/{projectId}/datasets'
 ```
 
 ### Get Dataset
 ```bash
-GET /google-bigquery/bigquery/v2/projects/{projectId}/datasets/{datasetId}
+maton api '/google-bigquery/bigquery/v2/projects/{projectId}/datasets/{datasetId}'
 ```
 
 ### Create Dataset
 ```bash
-POST /google-bigquery/bigquery/v2/projects/{projectId}/datasets
-Content-Type: application/json
-
+maton api -X POST '/google-bigquery/bigquery/v2/projects/{projectId}/datasets' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "datasetReference": {
     "datasetId": "my_dataset",
@@ -40,28 +40,29 @@ Content-Type: application/json
   },
   "location": "US"
 }
+EOF
 ```
 
 ### Delete Dataset
 ```bash
-DELETE /google-bigquery/bigquery/v2/projects/{projectId}/datasets/{datasetId}
+maton api -X DELETE '/google-bigquery/bigquery/v2/projects/{projectId}/datasets/{datasetId}'
 ```
 
 ### List Tables
 ```bash
-GET /google-bigquery/bigquery/v2/projects/{projectId}/datasets/{datasetId}/tables
+maton api '/google-bigquery/bigquery/v2/projects/{projectId}/datasets/{datasetId}/tables'
 ```
 
 ### Get Table
 ```bash
-GET /google-bigquery/bigquery/v2/projects/{projectId}/datasets/{datasetId}/tables/{tableId}
+maton api '/google-bigquery/bigquery/v2/projects/{projectId}/datasets/{datasetId}/tables/{tableId}'
 ```
 
 ### Create Table
 ```bash
-POST /google-bigquery/bigquery/v2/projects/{projectId}/datasets/{datasetId}/tables
-Content-Type: application/json
-
+maton api -X POST '/google-bigquery/bigquery/v2/projects/{projectId}/datasets/{datasetId}/tables' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "tableReference": {
     "projectId": "{projectId}",
@@ -75,42 +76,44 @@ Content-Type: application/json
     ]
   }
 }
+EOF
 ```
 
 ### Delete Table
 ```bash
-DELETE /google-bigquery/bigquery/v2/projects/{projectId}/datasets/{datasetId}/tables/{tableId}
+maton api -X DELETE '/google-bigquery/bigquery/v2/projects/{projectId}/datasets/{datasetId}/tables/{tableId}'
 ```
 
 ### List Table Data
 ```bash
-GET /google-bigquery/bigquery/v2/projects/{projectId}/datasets/{datasetId}/tables/{tableId}/data
+maton api '/google-bigquery/bigquery/v2/projects/{projectId}/datasets/{datasetId}/tables/{tableId}/data'
 ```
 
 ### Run Query (Synchronous)
 ```bash
-POST /google-bigquery/bigquery/v2/projects/{projectId}/queries
-Content-Type: application/json
-
+maton api -X POST '/google-bigquery/bigquery/v2/projects/{projectId}/queries' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "SELECT * FROM `dataset.table` LIMIT 10",
   "useLegacySql": false
 }
+EOF
 ```
 
 ### List Jobs
 ```bash
-GET /google-bigquery/bigquery/v2/projects/{projectId}/jobs
+maton api '/google-bigquery/bigquery/v2/projects/{projectId}/jobs'
 ```
 
 ### Get Job
 ```bash
-GET /google-bigquery/bigquery/v2/projects/{projectId}/jobs/{jobId}?location=US
+maton api '/google-bigquery/bigquery/v2/projects/{projectId}/jobs/{jobId}?location=US'
 ```
 
 ### Cancel Job
 ```bash
-POST /google-bigquery/bigquery/v2/projects/{projectId}/jobs/{jobId}/cancel?location=US
+maton api -X POST '/google-bigquery/bigquery/v2/projects/{projectId}/jobs/{jobId}/cancel?location=US'
 ```
 
 ## Query Examples

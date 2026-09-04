@@ -18,12 +18,13 @@
 
 ### Submit Request
 ```bash
-POST /fal-ai/fal-ai/{model-id}
-Content-Type: application/json
-
+maton api -X POST '/fal-ai/fal-ai/{model-id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "prompt": "model-specific parameters"
 }
+EOF
 ```
 
 **Response:**
@@ -40,17 +41,17 @@ Content-Type: application/json
 
 ### Check Status
 ```bash
-GET /fal-ai/fal-ai/{model-id}/requests/{request_id}/status
+maton api '/fal-ai/fal-ai/{model-id}/requests/{request_id}/status'
 ```
 
 ### Get Result
 ```bash
-GET /fal-ai/fal-ai/{model-id}/requests/{request_id}
+maton api '/fal-ai/fal-ai/{model-id}/requests/{request_id}'
 ```
 
 ### Cancel Request
 ```bash
-PUT /fal-ai/fal-ai/{model-id}/requests/{request_id}/cancel
+maton api -X PUT '/fal-ai/fal-ai/{model-id}/requests/{request_id}/cancel'
 ```
 
 ## Popular Models

@@ -17,66 +17,66 @@
 
 #### Get User Info
 ```bash
-GET /jotform/user
+maton api '/jotform/user'
 ```
 
 #### Get User Forms
 ```bash
-GET /jotform/user/forms?limit=20&offset=0
+maton api '/jotform/user/forms?limit=20&offset=0'
 ```
 
 #### Get User Submissions
 ```bash
-GET /jotform/user/submissions?limit=20&offset=0
+maton api '/jotform/user/submissions?limit=20&offset=0'
 ```
 
 #### Get User Usage
 ```bash
-GET /jotform/user/usage
+maton api '/jotform/user/usage'
 ```
 
 #### Get User History
 ```bash
-GET /jotform/user/history?limit=20
+maton api '/jotform/user/history?limit=20'
 ```
 
 ### Forms
 
 #### Get Form
 ```bash
-GET /jotform/form/{formId}
+maton api '/jotform/form/{formId}'
 ```
 
 #### Get Form Questions
 ```bash
-GET /jotform/form/{formId}/questions
+maton api '/jotform/form/{formId}/questions'
 ```
 
 #### Get Form Properties
 ```bash
-GET /jotform/form/{formId}/properties
+maton api '/jotform/form/{formId}/properties'
 ```
 
 #### Get Form Submissions
 ```bash
-GET /jotform/form/{formId}/submissions?limit=20&offset=0
+maton api '/jotform/form/{formId}/submissions?limit=20&offset=0'
 ```
 
 With filter:
 ```bash
-GET /jotform/form/{formId}/submissions?filter={"created_at:gt":"2024-01-01"}
+maton api '/jotform/form/{formId}/submissions?filter={"created_at:gt":"2024-01-01"}'
 ```
 
 #### Get Form Files
 ```bash
-GET /jotform/form/{formId}/files
+maton api '/jotform/form/{formId}/files'
 ```
 
 #### Create Form
 ```bash
-POST /jotform/user/forms
-Content-Type: application/json
-
+maton api -X POST '/jotform/user/forms' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "properties": {
     "title": "Contact Form"
@@ -94,60 +94,63 @@ Content-Type: application/json
     }
   }
 }
+EOF
 ```
 
 #### Delete Form
 ```bash
-DELETE /jotform/form/{formId}
+maton api -X DELETE '/jotform/form/{formId}'
 ```
 
 ### Submissions
 
 #### Get Submission
 ```bash
-GET /jotform/submission/{submissionId}
+maton api '/jotform/submission/{submissionId}'
 ```
 
 #### Update Submission
 ```bash
-POST /jotform/submission/{submissionId}
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X POST '/jotform/submission/{submissionId}' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 submission[3][first]=John&submission[3][last]=Doe
+EOF
 ```
 
 Note: Use question IDs from the form questions endpoint. The submission field format is `submission[questionId][subfield]=value`.
 
 #### Delete Submission
 ```bash
-DELETE /jotform/submission/{submissionId}
+maton api -X DELETE '/jotform/submission/{submissionId}'
 ```
 
 ### Reports
 
 #### Get Form Reports
 ```bash
-GET /jotform/form/{formId}/reports
+maton api '/jotform/form/{formId}/reports'
 ```
 
 ### Webhooks
 
 #### Get Form Webhooks
 ```bash
-GET /jotform/form/{formId}/webhooks
+maton api '/jotform/form/{formId}/webhooks'
 ```
 
 #### Create Webhook
 ```bash
-POST /jotform/form/{formId}/webhooks
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X POST '/jotform/form/{formId}/webhooks' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 webhookURL=https://example.com/webhook
+EOF
 ```
 
 #### Delete Webhook
 ```bash
-DELETE /jotform/form/{formId}/webhooks/{webhookIndex}
+maton api -X DELETE '/jotform/form/{formId}/webhooks/{webhookIndex}'
 ```
 
 ## Question Types

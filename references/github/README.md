@@ -17,7 +17,7 @@ GitHub API does not use a version prefix in paths. Versioning is handled via the
 
 ### Get Authenticated User
 ```bash
-GET /github/user
+maton api '/github/user'
 ```
 
 Example:
@@ -28,12 +28,12 @@ maton github whoami
 
 ### Get User by Username
 ```bash
-GET /github/users/{username}
+maton api '/github/users/{username}'
 ```
 
 ### List User Repositories
 ```bash
-GET /github/user/repos?per_page=30&sort=updated
+maton api '/github/user/repos?per_page=30&sort=updated'
 ```
 
 Example:
@@ -44,7 +44,7 @@ maton github repo list --sort updated
 
 ### List Organization Repositories
 ```bash
-GET /github/orgs/{org}/repos?per_page=30
+maton api '/github/orgs/{org}/repos?per_page=30'
 ```
 
 Example:
@@ -55,7 +55,7 @@ maton github repo list {org}
 
 ### Get Repository
 ```bash
-GET /github/repos/{owner}/{repo}
+maton api '/github/repos/{owner}/{repo}'
 ```
 
 Example:
@@ -66,15 +66,16 @@ maton github repo view --repo {owner}/{repo}
 
 ### Create Repository (User)
 ```bash
-POST /github/user/repos
-Content-Type: application/json
-
+maton api -X POST '/github/user/repos' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "my-new-repo",
   "description": "A new repository",
   "private": true,
   "auto_init": true
 }
+EOF
 ```
 
 Example:
@@ -85,13 +86,14 @@ maton github repo create my-new-repo --description "A new repository" --visibili
 
 ### Create Repository (Organization)
 ```bash
-POST /github/orgs/{org}/repos
-Content-Type: application/json
-
+maton api -X POST '/github/orgs/{org}/repos' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "my-new-repo",
   "private": true
 }
+EOF
 ```
 
 Example:
@@ -102,13 +104,14 @@ maton github repo create {org}/my-new-repo --visibility private
 
 ### Update Repository
 ```bash
-PATCH /github/repos/{owner}/{repo}
-Content-Type: application/json
-
+maton api -X PATCH '/github/repos/{owner}/{repo}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "description": "Updated description",
   "has_issues": true
 }
+EOF
 ```
 
 Example:
@@ -119,70 +122,72 @@ maton github repo edit --repo {owner}/{repo} --description "Updated description"
 
 ### List Repository Contents
 ```bash
-GET /github/repos/{owner}/{repo}/contents/{path}
+maton api '/github/repos/{owner}/{repo}/contents/{path}'
 ```
 
 ### Get File Contents
 ```bash
-GET /github/repos/{owner}/{repo}/contents/{path}?ref={branch}
+maton api '/github/repos/{owner}/{repo}/contents/{path}?ref={branch}'
 ```
 
 ### Create or Update File
 ```bash
-PUT /github/repos/{owner}/{repo}/contents/{path}
-Content-Type: application/json
-
+maton api -X PUT '/github/repos/{owner}/{repo}/contents/{path}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "message": "Create new file",
   "content": "SGVsbG8gV29ybGQh",
   "branch": "main"
 }
+EOF
 ```
 
 Note: `content` must be Base64 encoded.
 
 ### List Branches
 ```bash
-GET /github/repos/{owner}/{repo}/branches?per_page=30
+maton api '/github/repos/{owner}/{repo}/branches?per_page=30'
 ```
 
 ### Get Branch
 ```bash
-GET /github/repos/{owner}/{repo}/branches/{branch}
+maton api '/github/repos/{owner}/{repo}/branches/{branch}'
 ```
 
 ### Merge Branches
 ```bash
-POST /github/repos/{owner}/{repo}/merges
-Content-Type: application/json
-
+maton api -X POST '/github/repos/{owner}/{repo}/merges' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "base": "main",
   "head": "feature-branch",
   "commit_message": "Merge feature branch"
 }
+EOF
 ```
 
 ### List Commits
 ```bash
-GET /github/repos/{owner}/{repo}/commits?per_page=30
+maton api '/github/repos/{owner}/{repo}/commits?per_page=30'
 ```
 
 Query parameters: `sha`, `path`, `author`, `committer`, `since`, `until`, `per_page`, `page`
 
 ### Get Commit
 ```bash
-GET /github/repos/{owner}/{repo}/commits/{ref}
+maton api '/github/repos/{owner}/{repo}/commits/{ref}'
 ```
 
 ### Compare Two Commits
 ```bash
-GET /github/repos/{owner}/{repo}/compare/{base}...{head}
+maton api '/github/repos/{owner}/{repo}/compare/{base}...{head}'
 ```
 
 ### List Repository Issues
 ```bash
-GET /github/repos/{owner}/{repo}/issues?state=open&per_page=30
+maton api '/github/repos/{owner}/{repo}/issues?state=open&per_page=30'
 ```
 
 Query parameters: `state` (open, closed, all), `labels`, `assignee`, `creator`, `mentioned`, `sort`, `direction`, `since`, `per_page`, `page`
@@ -195,7 +200,7 @@ maton github issue list --repo {owner}/{repo} --state open
 
 ### Get Issue
 ```bash
-GET /github/repos/{owner}/{repo}/issues/{issue_number}
+maton api '/github/repos/{owner}/{repo}/issues/{issue_number}'
 ```
 
 Example:
@@ -206,15 +211,16 @@ maton github issue view {issue_number} --repo {owner}/{repo}
 
 ### Create Issue
 ```bash
-POST /github/repos/{owner}/{repo}/issues
-Content-Type: application/json
-
+maton api -X POST '/github/repos/{owner}/{repo}/issues' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "title": "Found a bug",
   "body": "Bug description here",
   "labels": ["bug"],
   "assignees": ["username"]
 }
+EOF
 ```
 
 Example:
@@ -225,13 +231,14 @@ maton github issue create --repo {owner}/{repo} --title "Found a bug" --body "Bu
 
 ### Update / Close Issue
 ```bash
-PATCH /github/repos/{owner}/{repo}/issues/{issue_number}
-Content-Type: application/json
-
+maton api -X PATCH '/github/repos/{owner}/{repo}/issues/{issue_number}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "state": "closed",
   "state_reason": "completed"
 }
+EOF
 ```
 
 Example:
@@ -242,7 +249,7 @@ maton github issue close {issue_number} --repo {owner}/{repo} --reason completed
 
 ### List Issue Comments
 ```bash
-GET /github/repos/{owner}/{repo}/issues/{issue_number}/comments?per_page=30
+maton api '/github/repos/{owner}/{repo}/issues/{issue_number}/comments?per_page=30'
 ```
 
 Example:
@@ -253,12 +260,13 @@ maton github issue view {issue_number} --repo {owner}/{repo} --comments
 
 ### Create Issue Comment
 ```bash
-POST /github/repos/{owner}/{repo}/issues/{issue_number}/comments
-Content-Type: application/json
-
+maton api -X POST '/github/repos/{owner}/{repo}/issues/{issue_number}/comments' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "body": "This is a comment"
 }
+EOF
 ```
 
 Example:
@@ -269,7 +277,7 @@ maton github issue comment {issue_number} --repo {owner}/{repo} --body "This is 
 
 ### List Labels
 ```bash
-GET /github/repos/{owner}/{repo}/labels?per_page=30
+maton api '/github/repos/{owner}/{repo}/labels?per_page=30'
 ```
 
 Example:
@@ -280,14 +288,15 @@ maton github label list --repo {owner}/{repo}
 
 ### Create Label
 ```bash
-POST /github/repos/{owner}/{repo}/labels
-Content-Type: application/json
-
+maton api -X POST '/github/repos/{owner}/{repo}/labels' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "priority:high",
   "color": "ff0000",
   "description": "High priority issues"
 }
+EOF
 ```
 
 Example:
@@ -298,7 +307,7 @@ maton github label create "priority:high" --repo {owner}/{repo} --color ff0000 -
 
 ### List Pull Requests
 ```bash
-GET /github/repos/{owner}/{repo}/pulls?state=open&per_page=30
+maton api '/github/repos/{owner}/{repo}/pulls?state=open&per_page=30'
 ```
 
 Query parameters: `state` (open, closed, all), `head`, `base`, `sort`, `direction`, `per_page`, `page`
@@ -311,7 +320,7 @@ maton github pr list --repo {owner}/{repo} --state open
 
 ### Get Pull Request
 ```bash
-GET /github/repos/{owner}/{repo}/pulls/{pull_number}
+maton api '/github/repos/{owner}/{repo}/pulls/{pull_number}'
 ```
 
 Example:
@@ -322,9 +331,9 @@ maton github pr view {pull_number} --repo {owner}/{repo}
 
 ### Create Pull Request
 ```bash
-POST /github/repos/{owner}/{repo}/pulls
-Content-Type: application/json
-
+maton api -X POST '/github/repos/{owner}/{repo}/pulls' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "title": "New feature",
   "body": "Description of changes",
@@ -332,6 +341,7 @@ Content-Type: application/json
   "base": "main",
   "draft": false
 }
+EOF
 ```
 
 Example:
@@ -342,7 +352,7 @@ maton github pr create --repo {owner}/{repo} --base main --head feature-branch -
 
 ### List Pull Request Files
 ```bash
-GET /github/repos/{owner}/{repo}/pulls/{pull_number}/files?per_page=30
+maton api '/github/repos/{owner}/{repo}/pulls/{pull_number}/files?per_page=30'
 ```
 
 Example:
@@ -353,13 +363,14 @@ maton github pr diff {pull_number} --repo {owner}/{repo}
 
 ### Merge Pull Request
 ```bash
-PUT /github/repos/{owner}/{repo}/pulls/{pull_number}/merge
-Content-Type: application/json
-
+maton api -X PUT '/github/repos/{owner}/{repo}/pulls/{pull_number}/merge' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "commit_title": "Merge pull request",
   "merge_method": "squash"
 }
+EOF
 ```
 
 Merge methods: `merge`, `squash`, `rebase`.
@@ -372,13 +383,14 @@ maton github pr merge {pull_number} --repo {owner}/{repo} --squash --delete-bran
 
 ### Create Pull Request Review
 ```bash
-POST /github/repos/{owner}/{repo}/pulls/{pull_number}/reviews
-Content-Type: application/json
-
+maton api -X POST '/github/repos/{owner}/{repo}/pulls/{pull_number}/reviews' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "body": "Looks good!",
   "event": "APPROVE"
 }
+EOF
 ```
 
 Events: `APPROVE`, `REQUEST_CHANGES`, `COMMENT`.
@@ -393,7 +405,7 @@ Note: GitHub does not allow approving your own pull requests; `--approve` return
 
 ### Search Repositories
 ```bash
-GET /github/search/repositories?q={query}&per_page=30
+maton api '/github/search/repositories?q={query}&per_page=30'
 ```
 
 Example:
@@ -404,7 +416,7 @@ maton github repo search tetris --language python
 
 ### Search Issues
 ```bash
-GET /github/search/issues?q={query}&per_page=30
+maton api '/github/search/issues?q={query}&per_page=30'
 ```
 
 Example:
@@ -415,21 +427,21 @@ maton github issue search "bug" --state open
 
 ### Search Code
 ```bash
-GET /github/search/code?q={query}&per_page=30
+maton api '/github/search/code?q={query}&per_page=30'
 ```
 
 Note: Code search may timeout (`408`) on broad queries. Always scope with `repo:`, `org:`, `user:`, or `extension:`.
 
 ### List User Organizations
 ```bash
-GET /github/user/orgs?per_page=30
+maton api '/github/user/orgs?per_page=30'
 ```
 
 Note: Requires `read:org` scope.
 
 ### Get Rate Limit
 ```bash
-GET /github/rate_limit
+maton api '/github/rate_limit'
 ```
 
 ## Pagination

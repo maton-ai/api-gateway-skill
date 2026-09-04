@@ -15,47 +15,48 @@
 
 ### List Sites
 ```bash
-GET /google-search-console/webmasters/v3/sites
+maton api '/google-search-console/webmasters/v3/sites'
 ```
 
 ### Get Site
 ```bash
-GET /google-search-console/webmasters/v3/sites/{siteUrl}
+maton api '/google-search-console/webmasters/v3/sites/{siteUrl}'
 ```
 
 Note: Site URL must be URL-encoded (e.g., `https%3A%2F%2Fexample.com%2F`)
 
 ### Search Analytics Query
 ```bash
-POST /google-search-console/webmasters/v3/sites/{siteUrl}/searchAnalytics/query
-Content-Type: application/json
-
+maton api -X POST '/google-search-console/webmasters/v3/sites/{siteUrl}/searchAnalytics/query' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "startDate": "2024-01-01",
   "endDate": "2024-01-31",
   "dimensions": ["query"],
   "rowLimit": 100
 }
+EOF
 ```
 
 ### List Sitemaps
 ```bash
-GET /google-search-console/webmasters/v3/sites/{siteUrl}/sitemaps
+maton api '/google-search-console/webmasters/v3/sites/{siteUrl}/sitemaps'
 ```
 
 ### Get Sitemap
 ```bash
-GET /google-search-console/webmasters/v3/sites/{siteUrl}/sitemaps/{feedpath}
+maton api '/google-search-console/webmasters/v3/sites/{siteUrl}/sitemaps/{feedpath}'
 ```
 
 ### Submit Sitemap
 ```bash
-PUT /google-search-console/webmasters/v3/sites/{siteUrl}/sitemaps/{feedpath}
+maton api -X PUT '/google-search-console/webmasters/v3/sites/{siteUrl}/sitemaps/{feedpath}'
 ```
 
 ### Delete Sitemap
 ```bash
-DELETE /google-search-console/webmasters/v3/sites/{siteUrl}/sitemaps/{feedpath}
+maton api -X DELETE '/google-search-console/webmasters/v3/sites/{siteUrl}/sitemaps/{feedpath}'
 ```
 
 ## Search Analytics Query Examples

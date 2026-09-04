@@ -15,7 +15,7 @@
 
 ### List Messages
 ```bash
-GET /google-mail/gmail/v1/users/me/messages?maxResults=10
+maton api '/google-mail/gmail/v1/users/me/messages?maxResults=10'
 ```
 
 Example:
@@ -26,7 +26,7 @@ maton google-mail message list -L 10
 
 With query filter:
 ```bash
-GET /google-mail/gmail/v1/users/me/messages?q=is:unread&maxResults=10
+maton api '/google-mail/gmail/v1/users/me/messages?q=is:unread&maxResults=10'
 ```
 
 Example:
@@ -37,7 +37,7 @@ maton google-mail message list --query 'is:unread' -L 10
 
 ### Get Message
 ```bash
-GET /google-mail/gmail/v1/users/me/messages/{messageId}
+maton api '/google-mail/gmail/v1/users/me/messages/{messageId}'
 ```
 
 Example:
@@ -48,7 +48,7 @@ maton google-mail message view {messageId} --headers
 
 With metadata only:
 ```bash
-GET /google-mail/gmail/v1/users/me/messages/{messageId}?format=metadata&metadataHeaders=From&metadataHeaders=Subject&metadataHeaders=Date
+maton api '/google-mail/gmail/v1/users/me/messages/{messageId}?format=metadata&metadataHeaders=From&metadataHeaders=Subject&metadataHeaders=Date'
 ```
 
 Example:
@@ -59,12 +59,13 @@ maton google-mail message view {messageId} --fetch-format metadata --metadata-he
 
 ### Send Message
 ```bash
-POST /google-mail/gmail/v1/users/me/messages/send
-Content-Type: application/json
-
+maton api -X POST '/google-mail/gmail/v1/users/me/messages/send' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "raw": "BASE64_ENCODED_EMAIL"
 }
+EOF
 ```
 
 Example:
@@ -91,7 +92,7 @@ maton google-mail message forward {messageId} --to dave@example.com --body 'FYI'
 
 ### List Labels
 ```bash
-GET /google-mail/gmail/v1/users/me/labels
+maton api '/google-mail/gmail/v1/users/me/labels'
 ```
 
 Example:
@@ -102,7 +103,7 @@ maton google-mail label list
 
 ### List Threads
 ```bash
-GET /google-mail/gmail/v1/users/me/threads?maxResults=10
+maton api '/google-mail/gmail/v1/users/me/threads?maxResults=10'
 ```
 
 Example:
@@ -113,7 +114,7 @@ maton google-mail thread list -L 10
 
 ### Get Thread
 ```bash
-GET /google-mail/gmail/v1/users/me/threads/{threadId}
+maton api '/google-mail/gmail/v1/users/me/threads/{threadId}'
 ```
 
 Example:
@@ -124,13 +125,14 @@ maton google-mail thread view {threadId}
 
 ### Modify Message Labels
 ```bash
-POST /google-mail/gmail/v1/users/me/messages/{messageId}/modify
-Content-Type: application/json
-
+maton api -X POST '/google-mail/gmail/v1/users/me/messages/{messageId}/modify' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "addLabelIds": ["STARRED"],
   "removeLabelIds": ["UNREAD"]
 }
+EOF
 ```
 
 Example:
@@ -141,7 +143,7 @@ maton google-mail message modify {messageId} --add-label STARRED --remove-label 
 
 ### Trash Message
 ```bash
-POST /google-mail/gmail/v1/users/me/messages/{messageId}/trash
+maton api -X POST '/google-mail/gmail/v1/users/me/messages/{messageId}/trash'
 ```
 
 Example:
@@ -152,14 +154,15 @@ maton google-mail message trash {messageId}
 
 ### Create Draft
 ```bash
-POST /google-mail/gmail/v1/users/me/drafts
-Content-Type: application/json
-
+maton api -X POST '/google-mail/gmail/v1/users/me/drafts' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "message": {
     "raw": "BASE64URL_ENCODED_EMAIL"
   }
 }
+EOF
 ```
 
 Example:
@@ -170,24 +173,26 @@ maton google-mail draft create --to alice@example.com --subject 'Hello' --body '
 
 ### Update Draft
 ```bash
-PUT /google-mail/gmail/v1/users/me/drafts/{draftId}
-Content-Type: application/json
-
+maton api -X PUT '/google-mail/gmail/v1/users/me/drafts/{draftId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "message": {
     "raw": "BASE64URL_ENCODED_EMAIL"
   }
 }
+EOF
 ```
 
 ### Send Draft
 ```bash
-POST /google-mail/gmail/v1/users/me/drafts/send
-Content-Type: application/json
-
+maton api -X POST '/google-mail/gmail/v1/users/me/drafts/send' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "id": "{draftId}"
 }
+EOF
 ```
 
 Example:
@@ -198,7 +203,7 @@ maton google-mail draft send {draftId}
 
 ### Get Profile
 ```bash
-GET /google-mail/gmail/v1/users/me/profile
+maton api '/google-mail/gmail/v1/users/me/profile'
 ```
 
 ## Query Operators

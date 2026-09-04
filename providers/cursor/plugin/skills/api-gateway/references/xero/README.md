@@ -21,19 +21,19 @@ The router automatically injects the `Xero-Tenant-Id` header from your connectio
 
 #### List Contacts
 ```bash
-GET /xero/api.xro/2.0/Contacts
+maton api '/xero/api.xro/2.0/Contacts'
 ```
 
 #### Get Contact
 ```bash
-GET /xero/api.xro/2.0/Contacts/{contactId}
+maton api '/xero/api.xro/2.0/Contacts/{contactId}'
 ```
 
 #### Create Contact
 ```bash
-POST /xero/api.xro/2.0/Contacts
-Content-Type: application/json
-
+maton api -X POST '/xero/api.xro/2.0/Contacts' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "Contacts": [{
     "Name": "John Doe",
@@ -41,25 +41,26 @@ Content-Type: application/json
     "Phones": [{"PhoneType": "DEFAULT", "PhoneNumber": "555-1234"}]
   }]
 }
+EOF
 ```
 
 ### Invoices
 
 #### List Invoices
 ```bash
-GET /xero/api.xro/2.0/Invoices
+maton api '/xero/api.xro/2.0/Invoices'
 ```
 
 #### Get Invoice
 ```bash
-GET /xero/api.xro/2.0/Invoices/{invoiceId}
+maton api '/xero/api.xro/2.0/Invoices/{invoiceId}'
 ```
 
 #### Create Invoice
 ```bash
-POST /xero/api.xro/2.0/Invoices
-Content-Type: application/json
-
+maton api -X POST '/xero/api.xro/2.0/Invoices' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "Invoices": [{
     "Type": "ACCREC",
@@ -72,86 +73,87 @@ Content-Type: application/json
     }]
   }]
 }
+EOF
 ```
 
 ### Accounts
 
 #### List Accounts
 ```bash
-GET /xero/api.xro/2.0/Accounts
+maton api '/xero/api.xro/2.0/Accounts'
 ```
 
 ### Items
 
 #### List Items
 ```bash
-GET /xero/api.xro/2.0/Items
+maton api '/xero/api.xro/2.0/Items'
 ```
 
 ### Payments
 
 #### List Payments
 ```bash
-GET /xero/api.xro/2.0/Payments
+maton api '/xero/api.xro/2.0/Payments'
 ```
 
 ### Bank Transactions
 
 #### List Bank Transactions
 ```bash
-GET /xero/api.xro/2.0/BankTransactions
+maton api '/xero/api.xro/2.0/BankTransactions'
 ```
 
 ### Reports
 
 #### Profit and Loss
 ```bash
-GET /xero/api.xro/2.0/Reports/ProfitAndLoss?fromDate=2024-01-01&toDate=2024-12-31
+maton api '/xero/api.xro/2.0/Reports/ProfitAndLoss?fromDate=2024-01-01&toDate=2024-12-31'
 ```
 
 #### Balance Sheet
 ```bash
-GET /xero/api.xro/2.0/Reports/BalanceSheet?date=2024-12-31
+maton api '/xero/api.xro/2.0/Reports/BalanceSheet?date=2024-12-31'
 ```
 
 #### Trial Balance
 ```bash
-GET /xero/api.xro/2.0/Reports/TrialBalance?date=2024-12-31
+maton api '/xero/api.xro/2.0/Reports/TrialBalance?date=2024-12-31'
 ```
 
 ### Currencies
 
 #### List Currencies
 ```bash
-GET /xero/api.xro/2.0/Currencies
+maton api '/xero/api.xro/2.0/Currencies'
 ```
 
 ### Tax Rates
 
 #### List Tax Rates
 ```bash
-GET /xero/api.xro/2.0/TaxRates
+maton api '/xero/api.xro/2.0/TaxRates'
 ```
 
 ### Credit Notes
 
 #### List Credit Notes
 ```bash
-GET /xero/api.xro/2.0/CreditNotes
+maton api '/xero/api.xro/2.0/CreditNotes'
 ```
 
 ### Purchase Orders
 
 #### List Purchase Orders
 ```bash
-GET /xero/api.xro/2.0/PurchaseOrders
+maton api '/xero/api.xro/2.0/PurchaseOrders'
 ```
 
 ### Organisation
 
 #### Get Organisation
 ```bash
-GET /xero/api.xro/2.0/Organisation
+maton api '/xero/api.xro/2.0/Organisation'
 ```
 
 ## Invoice Types

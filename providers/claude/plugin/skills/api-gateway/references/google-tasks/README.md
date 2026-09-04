@@ -17,7 +17,7 @@
 
 #### List Task Lists
 ```bash
-GET /google-tasks/tasks/v1/users/@me/lists
+maton api '/google-tasks/tasks/v1/users/@me/lists'
 ```
 
 Example:
@@ -28,12 +28,12 @@ maton google-tasks tasklist list
 
 With pagination:
 ```bash
-GET /google-tasks/tasks/v1/users/@me/lists?maxResults=20
+maton api '/google-tasks/tasks/v1/users/@me/lists?maxResults=20'
 ```
 
 #### Get Task List
 ```bash
-GET /google-tasks/tasks/v1/users/@me/lists/{tasklistId}
+maton api '/google-tasks/tasks/v1/users/@me/lists/{tasklistId}'
 ```
 
 Example:
@@ -44,12 +44,13 @@ maton google-tasks tasklist view <tasklistId>
 
 #### Create Task List
 ```bash
-POST /google-tasks/tasks/v1/users/@me/lists
-Content-Type: application/json
-
+maton api -X POST '/google-tasks/tasks/v1/users/@me/lists' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "title": "New Task List"
 }
+EOF
 ```
 
 Example:
@@ -60,12 +61,13 @@ maton google-tasks tasklist create --title 'New Task List'
 
 #### Update Task List
 ```bash
-PATCH /google-tasks/tasks/v1/users/@me/lists/{tasklistId}
-Content-Type: application/json
-
+maton api -X PATCH '/google-tasks/tasks/v1/users/@me/lists/{tasklistId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "title": "Updated Title"
 }
+EOF
 ```
 
 Example:
@@ -76,7 +78,7 @@ maton google-tasks tasklist update <tasklistId> --title 'Updated Title'
 
 #### Delete Task List
 ```bash
-DELETE /google-tasks/tasks/v1/users/@me/lists/{tasklistId}
+maton api -X DELETE '/google-tasks/tasks/v1/users/@me/lists/{tasklistId}'
 ```
 
 Example:
@@ -89,7 +91,7 @@ maton google-tasks tasklist delete <tasklistId>
 
 #### List Tasks
 ```bash
-GET /google-tasks/tasks/v1/lists/{tasklistId}/tasks
+maton api '/google-tasks/tasks/v1/lists/{tasklistId}/tasks'
 ```
 
 Example:
@@ -100,7 +102,7 @@ maton google-tasks task list -l <tasklistId>
 
 With filters:
 ```bash
-GET /google-tasks/tasks/v1/lists/{tasklistId}/tasks?showCompleted=true&showHidden=true&maxResults=50
+maton api '/google-tasks/tasks/v1/lists/{tasklistId}/tasks?showCompleted=true&showHidden=true&maxResults=50'
 ```
 
 Example:
@@ -111,12 +113,12 @@ maton google-tasks task list -l <tasklistId> --show-completed
 
 With date filters:
 ```bash
-GET /google-tasks/tasks/v1/lists/{tasklistId}/tasks?dueMin=2026-01-01T00:00:00Z&dueMax=2026-12-31T23:59:59Z
+maton api '/google-tasks/tasks/v1/lists/{tasklistId}/tasks?dueMin=2026-01-01T00:00:00Z&dueMax=2026-12-31T23:59:59Z'
 ```
 
 #### Get Task
 ```bash
-GET /google-tasks/tasks/v1/lists/{tasklistId}/tasks/{taskId}
+maton api '/google-tasks/tasks/v1/lists/{tasklistId}/tasks/{taskId}'
 ```
 
 Example:
@@ -127,14 +129,15 @@ maton google-tasks task view <taskId> -l <tasklistId>
 
 #### Create Task
 ```bash
-POST /google-tasks/tasks/v1/lists/{tasklistId}/tasks
-Content-Type: application/json
-
+maton api -X POST '/google-tasks/tasks/v1/lists/{tasklistId}/tasks' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "title": "New Task",
   "notes": "Task description",
   "due": "2026-03-01T00:00:00.000Z"
 }
+EOF
 ```
 
 Example:
@@ -145,23 +148,25 @@ maton google-tasks task create -l <tasklistId> --title 'New Task' --notes 'Task 
 
 Create subtask:
 ```bash
-POST /google-tasks/tasks/v1/lists/{tasklistId}/tasks?parent={parentTaskId}
-Content-Type: application/json
-
+maton api -X POST '/google-tasks/tasks/v1/lists/{tasklistId}/tasks?parent={parentTaskId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "title": "Subtask"
 }
+EOF
 ```
 
 #### Update Task (partial)
 ```bash
-PATCH /google-tasks/tasks/v1/lists/{tasklistId}/tasks/{taskId}
-Content-Type: application/json
-
+maton api -X PATCH '/google-tasks/tasks/v1/lists/{tasklistId}/tasks/{taskId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "title": "Updated Title",
   "status": "completed"
 }
+EOF
 ```
 
 Example:
@@ -172,14 +177,15 @@ maton google-tasks task update <taskId> -l <tasklistId> --title 'Updated Title' 
 
 #### Update Task (full replace)
 ```bash
-PUT /google-tasks/tasks/v1/lists/{tasklistId}/tasks/{taskId}
-Content-Type: application/json
-
+maton api -X PUT '/google-tasks/tasks/v1/lists/{tasklistId}/tasks/{taskId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "title": "Replaced Task",
   "notes": "New notes",
   "status": "needsAction"
 }
+EOF
 ```
 
 Example:
@@ -190,7 +196,7 @@ maton google-tasks task update <taskId> -l <tasklistId> --title 'Replaced Task' 
 
 #### Delete Task
 ```bash
-DELETE /google-tasks/tasks/v1/lists/{tasklistId}/tasks/{taskId}
+maton api -X DELETE '/google-tasks/tasks/v1/lists/{tasklistId}/tasks/{taskId}'
 ```
 
 Example:
@@ -201,7 +207,7 @@ maton google-tasks task delete <taskId> -l <tasklistId>
 
 #### Move Task
 ```bash
-POST /google-tasks/tasks/v1/lists/{tasklistId}/tasks/{taskId}/move?previous={previousTaskId}
+maton api -X POST '/google-tasks/tasks/v1/lists/{tasklistId}/tasks/{taskId}/move?previous={previousTaskId}'
 ```
 
 Example:
@@ -212,12 +218,12 @@ maton google-tasks task move <taskId> -l <tasklistId> --previous <siblingTaskId>
 
 Make subtask:
 ```bash
-POST /google-tasks/tasks/v1/lists/{tasklistId}/tasks/{taskId}/move?parent={parentTaskId}
+maton api -X POST '/google-tasks/tasks/v1/lists/{tasklistId}/tasks/{taskId}/move?parent={parentTaskId}'
 ```
 
 #### Clear Completed Tasks
 ```bash
-POST /google-tasks/tasks/v1/lists/{tasklistId}/clear
+maton api -X POST '/google-tasks/tasks/v1/lists/{tasklistId}/clear'
 ```
 
 Example:

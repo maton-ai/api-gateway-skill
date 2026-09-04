@@ -15,143 +15,149 @@
 
 ### Get Current User
 ```bash
-GET /motion/v1/users/me
+maton api '/motion/v1/users/me'
 ```
 
 ### List Workspaces
 ```bash
-GET /motion/v1/workspaces
+maton api '/motion/v1/workspaces'
 ```
 
 ### List Tasks
 ```bash
-GET /motion/v1/tasks
-GET /motion/v1/tasks?workspaceId={workspaceId}
-GET /motion/v1/tasks?projectId={projectId}
+maton api '/motion/v1/tasks'
+maton api '/motion/v1/tasks?workspaceId={workspaceId}'
+maton api '/motion/v1/tasks?projectId={projectId}'
 ```
 
 ### Get Task
 ```bash
-GET /motion/v1/tasks/{taskId}
+maton api '/motion/v1/tasks/{taskId}'
 ```
 
 ### Create Task
 ```bash
-POST /motion/v1/tasks
-Content-Type: application/json
-
+maton api -X POST '/motion/v1/tasks' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Task name",
   "workspaceId": "ws_xxx",
   "priority": "HIGH",
   "duration": 30
 }
+EOF
 ```
 
 ### Update Task
 ```bash
-PATCH /motion/v1/tasks/{taskId}
-Content-Type: application/json
-
+maton api -X PATCH '/motion/v1/tasks/{taskId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Updated name",
   "priority": "LOW"
 }
+EOF
 ```
 
 ### Delete Task
 ```bash
-DELETE /motion/v1/tasks/{taskId}
+maton api -X DELETE '/motion/v1/tasks/{taskId}'
 ```
 
 ### Move Task
 ```bash
-POST /motion/v1/tasks/{taskId}/move
-Content-Type: application/json
-
+maton api -X POST '/motion/v1/tasks/{taskId}/move' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "workspaceId": "ws_new"
 }
+EOF
 ```
 
 ### Unassign Task
 ```bash
-POST /motion/v1/tasks/{taskId}/unassign
+maton api -X POST '/motion/v1/tasks/{taskId}/unassign'
 ```
 
 ### List Projects
 ```bash
-GET /motion/v1/projects?workspaceId={workspaceId}
+maton api '/motion/v1/projects?workspaceId={workspaceId}'
 ```
 
 ### Get Project
 ```bash
-GET /motion/v1/projects/{projectId}
+maton api '/motion/v1/projects/{projectId}'
 ```
 
 ### Create Project
 ```bash
-POST /motion/v1/projects
-Content-Type: application/json
-
+maton api -X POST '/motion/v1/projects' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Project name",
   "workspaceId": "ws_xxx",
   "priority": "HIGH"
 }
+EOF
 ```
 
 ### List Users
 ```bash
-GET /motion/v1/users?workspaceId={workspaceId}
+maton api '/motion/v1/users?workspaceId={workspaceId}'
 ```
 
 ### List Comments
 ```bash
-GET /motion/v1/comments?taskId={taskId}
+maton api '/motion/v1/comments?taskId={taskId}'
 ```
 
 ### Create Comment
 ```bash
-POST /motion/v1/comments
-Content-Type: application/json
-
+maton api -X POST '/motion/v1/comments' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "taskId": "tk_xxx",
   "content": "Comment text"
 }
+EOF
 ```
 
 ### List Recurring Tasks
 ```bash
-GET /motion/v1/recurring-tasks?workspaceId={workspaceId}
+maton api '/motion/v1/recurring-tasks?workspaceId={workspaceId}'
 ```
 
 ### Create Recurring Task
 ```bash
-POST /motion/v1/recurring-tasks
-Content-Type: application/json
-
+maton api -X POST '/motion/v1/recurring-tasks' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Weekly review",
   "workspaceId": "ws_xxx",
   "frequency": "weekly"
 }
+EOF
 ```
 
 ### Delete Recurring Task
 ```bash
-DELETE /motion/v1/recurring-tasks/{recurringTaskId}
+maton api -X DELETE '/motion/v1/recurring-tasks/{recurringTaskId}'
 ```
 
 ### List Schedules
 ```bash
-GET /motion/v1/schedules
+maton api '/motion/v1/schedules'
 ```
 
 ### List Statuses
 ```bash
-GET /motion/v1/statuses?workspaceId={workspaceId}
+maton api '/motion/v1/statuses?workspaceId={workspaceId}'
 ```
 
 ## Notes

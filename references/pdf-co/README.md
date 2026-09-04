@@ -23,171 +23,184 @@
 ### PDF Information
 
 ```bash
-POST /pdf-co/v1/pdf/info
-Content-Type: application/json
-
+maton api -X POST '/pdf-co/v1/pdf/info' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "url": "https://example.com/document.pdf"
 }
+EOF
 ```
 
 ### Convert PDF to Text
 
 ```bash
-POST /pdf-co/v1/pdf/convert/to/text
-Content-Type: application/json
-
+maton api -X POST '/pdf-co/v1/pdf/convert/to/text' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "url": "https://example.com/document.pdf",
   "pages": "0-",
   "inline": true
 }
+EOF
 ```
 
 ### Convert PDF to CSV
 
 ```bash
-POST /pdf-co/v1/pdf/convert/to/csv
-Content-Type: application/json
-
+maton api -X POST '/pdf-co/v1/pdf/convert/to/csv' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "url": "https://example.com/document.pdf",
   "pages": "0-",
   "inline": true
 }
+EOF
 ```
 
 ### Convert PDF to JSON
 
 ```bash
-POST /pdf-co/v1/pdf/convert/to/json
-Content-Type: application/json
-
+maton api -X POST '/pdf-co/v1/pdf/convert/to/json' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "url": "https://example.com/document.pdf",
   "inline": true
 }
+EOF
 ```
 
 ### Convert PDF to HTML
 
 ```bash
-POST /pdf-co/v1/pdf/convert/to/html
-Content-Type: application/json
-
+maton api -X POST '/pdf-co/v1/pdf/convert/to/html' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "url": "https://example.com/document.pdf",
   "name": "output.html"
 }
+EOF
 ```
 
 ### Convert PDF to XLSX (Excel)
 
 ```bash
-POST /pdf-co/v1/pdf/convert/to/xlsx
-Content-Type: application/json
-
+maton api -X POST '/pdf-co/v1/pdf/convert/to/xlsx' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "url": "https://example.com/document.pdf",
   "name": "output.xlsx"
 }
+EOF
 ```
 
 ### Convert PDF to PNG
 
 ```bash
-POST /pdf-co/v1/pdf/convert/to/png
-Content-Type: application/json
-
+maton api -X POST '/pdf-co/v1/pdf/convert/to/png' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "url": "https://example.com/document.pdf",
   "pages": "0",
   "name": "page.png"
 }
+EOF
 ```
 
 ### Convert PDF to JPG
 
 ```bash
-POST /pdf-co/v1/pdf/convert/to/jpg
-Content-Type: application/json
-
+maton api -X POST '/pdf-co/v1/pdf/convert/to/jpg' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "url": "https://example.com/document.pdf",
   "pages": "0",
   "name": "page.jpg"
 }
+EOF
 ```
 
 ### Convert HTML to PDF
 
 ```bash
-POST /pdf-co/v1/pdf/convert/from/html
-Content-Type: application/json
-
+maton api -X POST '/pdf-co/v1/pdf/convert/from/html' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "html": "<html><body><h1>Hello World</h1></body></html>",
   "name": "output.pdf",
   "paperSize": "Letter",
   "orientation": "Portrait"
 }
+EOF
 ```
 
 ### Convert URL to PDF
 
 ```bash
-POST /pdf-co/v1/pdf/convert/from/url
-Content-Type: application/json
-
+maton api -X POST '/pdf-co/v1/pdf/convert/from/url' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "url": "https://example.com",
   "name": "webpage.pdf"
 }
+EOF
 ```
 
 ### Merge PDFs
 
 ```bash
-POST /pdf-co/v1/pdf/merge
-Content-Type: application/json
-
+maton api -X POST '/pdf-co/v1/pdf/merge' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "url": "https://example.com/doc1.pdf,https://example.com/doc2.pdf",
   "name": "merged.pdf"
 }
+EOF
 ```
 
 ### Split PDF
 
 ```bash
-POST /pdf-co/v1/pdf/split
-Content-Type: application/json
-
+maton api -X POST '/pdf-co/v1/pdf/split' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "url": "https://example.com/document.pdf",
   "pages": "1-3,4-6,7-"
 }
+EOF
 ```
 
 ### Delete Pages
 
 ```bash
-POST /pdf-co/v1/pdf/edit/delete-pages
-Content-Type: application/json
-
+maton api -X POST '/pdf-co/v1/pdf/edit/delete-pages' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "url": "https://example.com/document.pdf",
   "pages": "2,4,6"
 }
+EOF
 ```
 
 
 ### Add Text and Images
 
 ```bash
-POST /pdf-co/v1/pdf/edit/add
-Content-Type: application/json
-
+maton api -X POST '/pdf-co/v1/pdf/edit/add' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "url": "https://example.com/document.pdf",
   "name": "annotated.pdf",
@@ -201,115 +214,125 @@ Content-Type: application/json
     }
   ]
 }
+EOF
 ```
 
 ### Search and Replace Text
 
 ```bash
-POST /pdf-co/v1/pdf/edit/replace-text
-Content-Type: application/json
-
+maton api -X POST '/pdf-co/v1/pdf/edit/replace-text' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "url": "https://example.com/document.pdf",
   "searchString": "old text",
   "replaceString": "new text"
 }
+EOF
 ```
 
 ### Search and Delete Text
 
 ```bash
-POST /pdf-co/v1/pdf/edit/delete-text
-Content-Type: application/json
-
+maton api -X POST '/pdf-co/v1/pdf/edit/delete-text' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "url": "https://example.com/document.pdf",
   "searchString": "text to remove"
 }
+EOF
 ```
 
 ### Add Password
 
 ```bash
-POST /pdf-co/v1/pdf/security/add
-Content-Type: application/json
-
+maton api -X POST '/pdf-co/v1/pdf/security/add' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "url": "https://example.com/document.pdf",
   "ownerPassword": "owner123",
   "userPassword": "user456"
 }
+EOF
 ```
 
 ### Remove Password
 
 ```bash
-POST /pdf-co/v1/pdf/security/remove
-Content-Type: application/json
-
+maton api -X POST '/pdf-co/v1/pdf/security/remove' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "url": "https://example.com/document.pdf",
   "password": "currentpassword"
 }
+EOF
 ```
 
 ### AI Invoice Parser
 
 ```bash
-POST /pdf-co/v1/ai-invoice-parser
-Content-Type: application/json
-
+maton api -X POST '/pdf-co/v1/ai-invoice-parser' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "url": "https://example.com/invoice.pdf"
 }
+EOF
 ```
 
 ### Document Parser
 
 ```bash
-POST /pdf-co/v1/pdf/documentparser
-Content-Type: application/json
-
+maton api -X POST '/pdf-co/v1/pdf/documentparser' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "url": "https://example.com/document.pdf",
   "templateId": "your-template-id"
 }
+EOF
 ```
 
 ### Generate Barcode
 
 ```bash
-POST /pdf-co/v1/barcode/generate
-Content-Type: application/json
-
+maton api -X POST '/pdf-co/v1/barcode/generate' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "value": "1234567890",
   "type": "QRCode",
   "name": "barcode.png"
 }
+EOF
 ```
 
 ### Read Barcode
 
 ```bash
-POST /pdf-co/v1/barcode/read/from/url
-Content-Type: application/json
-
+maton api -X POST '/pdf-co/v1/barcode/read/from/url' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "url": "https://example.com/barcode.png",
   "types": "QRCode,Code128,Code39,EAN13,UPCA"
 }
+EOF
 ```
 
 ### Check Async Job Status
 
 ```bash
-POST /pdf-co/v1/job/check
-Content-Type: application/json
-
+maton api -X POST '/pdf-co/v1/job/check' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "jobId": "abc123"
 }
+EOF
 ```
 
 ## Notes

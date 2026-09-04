@@ -19,127 +19,133 @@
 
 #### List Accounts
 ```bash
-GET /twilio/2010-04-01/Accounts.json
+maton api '/twilio/2010-04-01/Accounts.json'
 ```
 
 #### Get Account
 ```bash
-GET /twilio/2010-04-01/Accounts/{AccountSid}.json
+maton api '/twilio/2010-04-01/Accounts/{AccountSid}.json'
 ```
 
 ### Messages (SMS/MMS)
 
 #### List Messages
 ```bash
-GET /twilio/2010-04-01/Accounts/{AccountSid}/Messages.json
+maton api '/twilio/2010-04-01/Accounts/{AccountSid}/Messages.json'
 ```
 
 #### Send Message
 ```bash
-POST /twilio/2010-04-01/Accounts/{AccountSid}/Messages.json
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X POST '/twilio/2010-04-01/Accounts/{AccountSid}/Messages.json' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 To=+15559876543&From=+15551234567&Body=Hello%20from%20Twilio!
+EOF
 ```
 
 #### Get Message
 ```bash
-GET /twilio/2010-04-01/Accounts/{AccountSid}/Messages/{MessageSid}.json
+maton api '/twilio/2010-04-01/Accounts/{AccountSid}/Messages/{MessageSid}.json'
 ```
 
 #### Delete Message
 ```bash
-DELETE /twilio/2010-04-01/Accounts/{AccountSid}/Messages/{MessageSid}.json
+maton api -X DELETE '/twilio/2010-04-01/Accounts/{AccountSid}/Messages/{MessageSid}.json'
 ```
 
 ### Calls (Voice)
 
 #### List Calls
 ```bash
-GET /twilio/2010-04-01/Accounts/{AccountSid}/Calls.json
+maton api '/twilio/2010-04-01/Accounts/{AccountSid}/Calls.json'
 ```
 
 #### Make Call
 ```bash
-POST /twilio/2010-04-01/Accounts/{AccountSid}/Calls.json
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X POST '/twilio/2010-04-01/Accounts/{AccountSid}/Calls.json' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 To=+15559876543&From=+15551234567&Url=https://example.com/twiml
+EOF
 ```
 
 #### Get Call
 ```bash
-GET /twilio/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}.json
+maton api '/twilio/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}.json'
 ```
 
 #### End Call
 ```bash
-POST /twilio/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}.json
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X POST '/twilio/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}.json' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 Status=completed
+EOF
 ```
 
 ### Phone Numbers
 
 #### List Incoming Phone Numbers
 ```bash
-GET /twilio/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers.json
+maton api '/twilio/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers.json'
 ```
 
 #### Get Phone Number
 ```bash
-GET /twilio/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{PhoneNumberSid}.json
+maton api '/twilio/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{PhoneNumberSid}.json'
 ```
 
 #### Update Phone Number
 ```bash
-POST /twilio/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{PhoneNumberSid}.json
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X POST '/twilio/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{PhoneNumberSid}.json' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 FriendlyName=Updated%20Name
+EOF
 ```
 
 ### Applications
 
 #### List Applications
 ```bash
-GET /twilio/2010-04-01/Accounts/{AccountSid}/Applications.json
+maton api '/twilio/2010-04-01/Accounts/{AccountSid}/Applications.json'
 ```
 
 #### Create Application
 ```bash
-POST /twilio/2010-04-01/Accounts/{AccountSid}/Applications.json
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X POST '/twilio/2010-04-01/Accounts/{AccountSid}/Applications.json' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 FriendlyName=My%20App&VoiceUrl=https://example.com/voice
+EOF
 ```
 
 #### Delete Application
 ```bash
-DELETE /twilio/2010-04-01/Accounts/{AccountSid}/Applications/{ApplicationSid}.json
+maton api -X DELETE '/twilio/2010-04-01/Accounts/{AccountSid}/Applications/{ApplicationSid}.json'
 ```
 
 ### Queues
 
 #### List Queues
 ```bash
-GET /twilio/2010-04-01/Accounts/{AccountSid}/Queues.json
+maton api '/twilio/2010-04-01/Accounts/{AccountSid}/Queues.json'
 ```
 
 #### Create Queue
 ```bash
-POST /twilio/2010-04-01/Accounts/{AccountSid}/Queues.json
-Content-Type: application/x-www-form-urlencoded
-
+maton api -X POST '/twilio/2010-04-01/Accounts/{AccountSid}/Queues.json' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --input - <<'EOF'
 FriendlyName=Support%20Queue&MaxSize=100
+EOF
 ```
 
 ### Usage Records
 
 #### List Usage Records
 ```bash
-GET /twilio/2010-04-01/Accounts/{AccountSid}/Usage/Records.json
+maton api '/twilio/2010-04-01/Accounts/{AccountSid}/Usage/Records.json'
 ```
 
 ## Pagination
@@ -147,7 +153,7 @@ GET /twilio/2010-04-01/Accounts/{AccountSid}/Usage/Records.json
 Uses page-based pagination:
 
 ```bash
-GET /twilio/2010-04-01/Accounts/{AccountSid}/Messages.json?PageSize=50&Page=0
+maton api '/twilio/2010-04-01/Accounts/{AccountSid}/Messages.json?PageSize=50&Page=0'
 ```
 
 **Parameters:**

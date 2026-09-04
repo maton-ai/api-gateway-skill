@@ -24,26 +24,28 @@
 Perform AI-powered web search.
 
 ```bash
-POST /tavily/search
-Content-Type: application/json
-
+maton api -X POST '/tavily/search' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "latest AI news",
   "max_results": 5
 }
+EOF
 ```
 
 With answer generation:
 ```bash
-POST /tavily/search
-Content-Type: application/json
-
+maton api -X POST '/tavily/search' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": "What is machine learning?",
   "max_results": 5,
   "include_answer": true,
   "search_depth": "advanced"
 }
+EOF
 ```
 
 ### Extract
@@ -51,13 +53,14 @@ Content-Type: application/json
 Extract content from URLs.
 
 ```bash
-POST /tavily/extract
-Content-Type: application/json
-
+maton api -X POST '/tavily/extract' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "urls": ["https://example.com/article"],
   "format": "markdown"
 }
+EOF
 ```
 
 ### Map
@@ -65,14 +68,15 @@ Content-Type: application/json
 Discover URLs from a website.
 
 ```bash
-POST /tavily/map
-Content-Type: application/json
-
+maton api -X POST '/tavily/map' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "url": "https://example.com",
   "limit": 20,
   "max_depth": 2
 }
+EOF
 ```
 
 ### Crawl
@@ -80,34 +84,36 @@ Content-Type: application/json
 Crawl a website and extract content.
 
 ```bash
-POST /tavily/crawl
-Content-Type: application/json
-
+maton api -X POST '/tavily/crawl' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "url": "https://example.com",
   "limit": 10,
   "max_depth": 2
 }
+EOF
 ```
 
 ### Research Tasks
 
 #### Create Research Task
 ```bash
-POST /tavily/research
-Content-Type: application/json
-
+maton api -X POST '/tavily/research' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "input": "What are the latest developments in AI?",
   "model": "mini"
 }
+EOF
 ```
 
 Models: `mini` (fast), `pro` (comprehensive), `auto` (default)
 
 #### Get Research Task
 ```bash
-GET /tavily/research/{request_id}
+maton api '/tavily/research/{request_id}'
 ```
 
 ## Search Parameters

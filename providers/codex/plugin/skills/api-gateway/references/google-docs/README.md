@@ -15,7 +15,7 @@
 
 ### Get Document
 ```bash
-GET /google-docs/v1/documents/{documentId}
+maton api '/google-docs/v1/documents/{documentId}'
 ```
 
 Example:
@@ -27,12 +27,13 @@ maton google-docs document view DOC_ID --json     # full document payload (body,
 
 ### Create Document
 ```bash
-POST /google-docs/v1/documents
-Content-Type: application/json
-
+maton api -X POST '/google-docs/v1/documents' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "title": "New Document"
 }
+EOF
 ```
 
 Example:
@@ -43,9 +44,9 @@ maton google-docs document create --title 'New Document'
 
 ### Batch Update Document
 ```bash
-POST /google-docs/v1/documents/{documentId}:batchUpdate
-Content-Type: application/json
-
+maton api -X POST '/google-docs/v1/documents/{documentId}:batchUpdate' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "requests": [
     {
@@ -56,6 +57,7 @@ Content-Type: application/json
     }
   ]
 }
+EOF
 ```
 
 Example:

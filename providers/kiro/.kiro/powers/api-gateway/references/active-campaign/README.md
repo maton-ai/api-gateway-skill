@@ -17,19 +17,19 @@
 
 #### List Contacts
 ```bash
-GET /active-campaign/api/3/contacts
+maton api '/active-campaign/api/3/contacts'
 ```
 
 #### Get Contact
 ```bash
-GET /active-campaign/api/3/contacts/{contactId}
+maton api '/active-campaign/api/3/contacts/{contactId}'
 ```
 
 #### Create Contact
 ```bash
-POST /active-campaign/api/3/contacts
-Content-Type: application/json
-
+maton api -X POST '/active-campaign/api/3/contacts' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "contact": {
     "email": "user@example.com",
@@ -37,82 +37,85 @@ Content-Type: application/json
     "lastName": "Doe"
   }
 }
+EOF
 ```
 
 #### Update Contact
 ```bash
-PUT /active-campaign/api/3/contacts/{contactId}
+maton api -X PUT '/active-campaign/api/3/contacts/{contactId}'
 ```
 
 #### Delete Contact
 ```bash
-DELETE /active-campaign/api/3/contacts/{contactId}
+maton api -X DELETE '/active-campaign/api/3/contacts/{contactId}'
 ```
 
 ### Tags
 
 #### List Tags
 ```bash
-GET /active-campaign/api/3/tags
+maton api '/active-campaign/api/3/tags'
 ```
 
 #### Create Tag
 ```bash
-POST /active-campaign/api/3/tags
-Content-Type: application/json
-
+maton api -X POST '/active-campaign/api/3/tags' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "tag": {
     "tag": "Tag Name",
     "tagType": "contact"
   }
 }
+EOF
 ```
 
 ### Contact Tags
 
 #### Add Tag to Contact
 ```bash
-POST /active-campaign/api/3/contactTags
-Content-Type: application/json
-
+maton api -X POST '/active-campaign/api/3/contactTags' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "contactTag": {
     "contact": "1",
     "tag": "1"
   }
 }
+EOF
 ```
 
 #### Remove Tag from Contact
 ```bash
-DELETE /active-campaign/api/3/contactTags/{contactTagId}
+maton api -X DELETE '/active-campaign/api/3/contactTags/{contactTagId}'
 ```
 
 ### Lists
 
 #### List All Lists
 ```bash
-GET /active-campaign/api/3/lists
+maton api '/active-campaign/api/3/lists'
 ```
 
 #### Create List
 ```bash
-POST /active-campaign/api/3/lists
+maton api -X POST '/active-campaign/api/3/lists'
 ```
 
 ### Deals
 
 #### List Deals
 ```bash
-GET /active-campaign/api/3/deals
+maton api '/active-campaign/api/3/deals'
 ```
 
 #### Create Deal
 ```bash
-POST /active-campaign/api/3/deals
-Content-Type: application/json
-
+maton api -X POST '/active-campaign/api/3/deals' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "deal": {
     "title": "New Deal",
@@ -122,67 +125,68 @@ Content-Type: application/json
     "stage": "1"
   }
 }
+EOF
 ```
 
 ### Deal Stages & Pipelines
 
 #### List Deal Stages
 ```bash
-GET /active-campaign/api/3/dealStages
+maton api '/active-campaign/api/3/dealStages'
 ```
 
 #### List Pipelines (Deal Groups)
 ```bash
-GET /active-campaign/api/3/dealGroups
+maton api '/active-campaign/api/3/dealGroups'
 ```
 
 ### Automations
 
 #### List Automations
 ```bash
-GET /active-campaign/api/3/automations
+maton api '/active-campaign/api/3/automations'
 ```
 
 ### Campaigns
 
 #### List Campaigns
 ```bash
-GET /active-campaign/api/3/campaigns
+maton api '/active-campaign/api/3/campaigns'
 ```
 
 ### Users
 
 #### List Users
 ```bash
-GET /active-campaign/api/3/users
+maton api '/active-campaign/api/3/users'
 ```
 
 ### Accounts
 
 #### List Accounts
 ```bash
-GET /active-campaign/api/3/accounts
+maton api '/active-campaign/api/3/accounts'
 ```
 
 ### Custom Fields
 
 #### List Fields
 ```bash
-GET /active-campaign/api/3/fields
+maton api '/active-campaign/api/3/fields'
 ```
 
 ### Notes
 
 #### List Notes
 ```bash
-GET /active-campaign/api/3/notes
+maton api '/active-campaign/api/3/notes'
 ```
 
 ### Webhooks
 
 #### List Webhooks
 ```bash
-GET /active-campaign/api/3/webhooks
+maton api '/active-campaign/api/3/webhooks'
 ```
 
 ## Pagination
@@ -190,7 +194,7 @@ GET /active-campaign/api/3/webhooks
 Uses offset-based pagination:
 
 ```bash
-GET /active-campaign/api/3/contacts?limit=20&offset=0
+maton api '/active-campaign/api/3/contacts?limit=20&offset=0'
 ```
 
 **Parameters:**

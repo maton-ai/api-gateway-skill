@@ -19,22 +19,23 @@
 
 ### Generate Meme
 ```bash
-POST /memelord/api/v1/ai-meme
-Content-Type: application/json
-
+maton api -X POST '/memelord/api/v1/ai-meme' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "prompt": "when the code finally compiles",
   "count": 3,
   "category": "trending",
   "include_nsfw": false
 }
+EOF
 ```
 
 ### Edit Meme
 ```bash
-POST /memelord/api/v1/ai-meme/edit
-Content-Type: application/json
-
+maton api -X POST '/memelord/api/v1/ai-meme/edit' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "instruction": "make it about debugging instead",
   "template_id": "success-kid-001",
@@ -43,35 +44,38 @@ Content-Type: application/json
     "bottom_text": "On the first try"
   }
 }
+EOF
 ```
 
 ### Generate Video Meme
 ```bash
-POST /memelord/api/v1/ai-video-meme
-Content-Type: application/json
-
+maton api -X POST '/memelord/api/v1/ai-video-meme' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "prompt": "explaining my code to a rubber duck",
   "count": 2,
   "webhookUrl": "https://your-server.com/webhook"
 }
+EOF
 ```
 
 ### Edit Video Meme
 ```bash
-POST /memelord/api/v1/ai-video-meme/edit
-Content-Type: application/json
-
+maton api -X POST '/memelord/api/v1/ai-video-meme/edit' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "instruction": "make it more dramatic",
   "template_id": "abc-123",
   "caption": "When the tests pass locally"
 }
+EOF
 ```
 
 ### Check Video Render Status
 ```bash
-GET /memelord/api/video/render/remote?jobId={job_id}
+maton api '/memelord/api/video/render/remote?jobId={job_id}'
 ```
 
 ## Notes

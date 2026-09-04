@@ -15,7 +15,7 @@
 
 ### Get All Lists (Audiences)
 ```bash
-GET /mailchimp/3.0/lists
+maton api '/mailchimp/3.0/lists'
 ```
 
 Query parameters:
@@ -24,14 +24,14 @@ Query parameters:
 
 ### Get a List
 ```bash
-GET /mailchimp/3.0/lists/{list_id}
+maton api '/mailchimp/3.0/lists/{list_id}'
 ```
 
 ### Create a List
 ```bash
-POST /mailchimp/3.0/lists
-Content-Type: application/json
-
+maton api -X POST '/mailchimp/3.0/lists' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Newsletter",
   "contact": {
@@ -51,18 +51,19 @@ Content-Type: application/json
   },
   "email_type_option": true
 }
+EOF
 ```
 
 ### Get List Members
 ```bash
-GET /mailchimp/3.0/lists/{list_id}/members?status=subscribed&count=50
+maton api '/mailchimp/3.0/lists/{list_id}/members?status=subscribed&count=50'
 ```
 
 ### Add a Member
 ```bash
-POST /mailchimp/3.0/lists/{list_id}/members
-Content-Type: application/json
-
+maton api -X POST '/mailchimp/3.0/lists/{list_id}/members' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "email_address": "newuser@example.com",
   "status": "subscribed",
@@ -71,26 +72,28 @@ Content-Type: application/json
     "LNAME": "Smith"
   }
 }
+EOF
 ```
 
 ### Update a Member
 ```bash
-PATCH /mailchimp/3.0/lists/{list_id}/members/{subscriber_hash}
-Content-Type: application/json
-
+maton api -X PATCH '/mailchimp/3.0/lists/{list_id}/members/{subscriber_hash}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "merge_fields": {
     "FNAME": "Jane",
     "LNAME": "Doe"
   }
 }
+EOF
 ```
 
 ### Add or Update a Member (Upsert)
 ```bash
-PUT /mailchimp/3.0/lists/{list_id}/members/{subscriber_hash}
-Content-Type: application/json
-
+maton api -X PUT '/mailchimp/3.0/lists/{list_id}/members/{subscriber_hash}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "email_address": "user@example.com",
   "status_if_new": "subscribed",
@@ -99,41 +102,43 @@ Content-Type: application/json
     "LNAME": "Smith"
   }
 }
+EOF
 ```
 
 ### Delete a Member
 ```bash
-DELETE /mailchimp/3.0/lists/{list_id}/members/{subscriber_hash}
+maton api -X DELETE '/mailchimp/3.0/lists/{list_id}/members/{subscriber_hash}'
 ```
 
 ### Add or Remove Tags
 ```bash
-POST /mailchimp/3.0/lists/{list_id}/members/{subscriber_hash}/tags
-Content-Type: application/json
-
+maton api -X POST '/mailchimp/3.0/lists/{list_id}/members/{subscriber_hash}/tags' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "tags": [
     {"name": "VIP", "status": "active"},
     {"name": "Old Tag", "status": "inactive"}
   ]
 }
+EOF
 ```
 
 ### Get Segments
 ```bash
-GET /mailchimp/3.0/lists/{list_id}/segments
+maton api '/mailchimp/3.0/lists/{list_id}/segments'
 ```
 
 ### Get All Campaigns
 ```bash
-GET /mailchimp/3.0/campaigns?status=sent&count=20
+maton api '/mailchimp/3.0/campaigns?status=sent&count=20'
 ```
 
 ### Create a Campaign
 ```bash
-POST /mailchimp/3.0/campaigns
-Content-Type: application/json
-
+maton api -X POST '/mailchimp/3.0/campaigns' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "type": "regular",
   "recipients": {
@@ -145,57 +150,60 @@ Content-Type: application/json
     "reply_to": "hello@acme.com"
   }
 }
+EOF
 ```
 
 ### Set Campaign Content
 ```bash
-PUT /mailchimp/3.0/campaigns/{campaign_id}/content
-Content-Type: application/json
-
+maton api -X PUT '/mailchimp/3.0/campaigns/{campaign_id}/content' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "html": "<html><body><h1>Hello!</h1><p>Newsletter content here.</p></body></html>",
   "plain_text": "Hello! Newsletter content here."
 }
+EOF
 ```
 
 ### Send a Campaign
 ```bash
-POST /mailchimp/3.0/campaigns/{campaign_id}/actions/send
+maton api -X POST '/mailchimp/3.0/campaigns/{campaign_id}/actions/send'
 ```
 
 ### Schedule a Campaign
 ```bash
-POST /mailchimp/3.0/campaigns/{campaign_id}/actions/schedule
-Content-Type: application/json
-
+maton api -X POST '/mailchimp/3.0/campaigns/{campaign_id}/actions/schedule' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "schedule_time": "2025-03-01T10:00:00+00:00"
 }
+EOF
 ```
 
 ### Get All Templates
 ```bash
-GET /mailchimp/3.0/templates?type=user
+maton api '/mailchimp/3.0/templates?type=user'
 ```
 
 ### Get All Automations
 ```bash
-GET /mailchimp/3.0/automations
+maton api '/mailchimp/3.0/automations'
 ```
 
 ### Start an Automation
 ```bash
-POST /mailchimp/3.0/automations/{workflow_id}/actions/start-all-emails
+maton api -X POST '/mailchimp/3.0/automations/{workflow_id}/actions/start-all-emails'
 ```
 
 ### Get Campaign Reports
 ```bash
-GET /mailchimp/3.0/reports?count=20
+maton api '/mailchimp/3.0/reports?count=20'
 ```
 
 ### Get Campaign Report
 ```bash
-GET /mailchimp/3.0/reports/{campaign_id}
+maton api '/mailchimp/3.0/reports/{campaign_id}'
 ```
 
 ## Notes

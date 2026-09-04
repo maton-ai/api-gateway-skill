@@ -15,197 +15,203 @@
 
 ### List Spaces
 ```bash
-GET /wrike/api/v4/spaces
+maton api '/wrike/api/v4/spaces'
 ```
 
 ### Get Space
 ```bash
-GET /wrike/api/v4/spaces/{spaceId}
+maton api '/wrike/api/v4/spaces/{spaceId}'
 ```
 
 ### Get Folder Tree
 ```bash
-GET /wrike/api/v4/folders
+maton api '/wrike/api/v4/folders'
 ```
 
 ### Get Folders in Space
 ```bash
-GET /wrike/api/v4/spaces/{spaceId}/folders
+maton api '/wrike/api/v4/spaces/{spaceId}/folders'
 ```
 
 ### Get Folder
 ```bash
-GET /wrike/api/v4/folders/{folderId}
+maton api '/wrike/api/v4/folders/{folderId}'
 ```
 
 ### Create Folder
 ```bash
-POST /wrike/api/v4/folders/{parentFolderId}/folders
-Content-Type: application/json
-
+maton api -X POST '/wrike/api/v4/folders/{parentFolderId}/folders' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "title": "New Folder"
 }
+EOF
 ```
 
 ### List Tasks
 ```bash
-GET /wrike/api/v4/tasks
-GET /wrike/api/v4/folders/{folderId}/tasks
-GET /wrike/api/v4/spaces/{spaceId}/tasks
+maton api '/wrike/api/v4/tasks'
+maton api '/wrike/api/v4/folders/{folderId}/tasks'
+maton api '/wrike/api/v4/spaces/{spaceId}/tasks'
 ```
 
 ### Get Task
 ```bash
-GET /wrike/api/v4/tasks/{taskId}
-GET /wrike/api/v4/tasks/{taskId},{taskId},... (up to 100 IDs)
+maton api '/wrike/api/v4/tasks/{taskId}'
+maton api '/wrike/api/v4/tasks/{taskId},{taskId},...'  # (up to 100 IDs)
 ```
 
 ### Create Task
 ```bash
-POST /wrike/api/v4/folders/{folderId}/tasks
-Content-Type: application/json
-
+maton api -X POST '/wrike/api/v4/folders/{folderId}/tasks' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "title": "New Task",
   "description": "Task description",
   "importance": "Normal"
 }
+EOF
 ```
 
 ### Update Task
 ```bash
-PUT /wrike/api/v4/tasks/{taskId}
-Content-Type: application/json
-
+maton api -X PUT '/wrike/api/v4/tasks/{taskId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "title": "Updated Title",
   "importance": "High"
 }
+EOF
 ```
 
 ### Delete Task
 ```bash
-DELETE /wrike/api/v4/tasks/{taskId}
+maton api -X DELETE '/wrike/api/v4/tasks/{taskId}'
 ```
 
 ### List Comments
 ```bash
-GET /wrike/api/v4/comments
-GET /wrike/api/v4/tasks/{taskId}/comments
-GET /wrike/api/v4/folders/{folderId}/comments
+maton api '/wrike/api/v4/comments'
+maton api '/wrike/api/v4/tasks/{taskId}/comments'
+maton api '/wrike/api/v4/folders/{folderId}/comments'
 ```
 
 ### Create Comment
 ```bash
-POST /wrike/api/v4/tasks/{taskId}/comments
-Content-Type: application/json
-
+maton api -X POST '/wrike/api/v4/tasks/{taskId}/comments' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "text": "Comment text"
 }
+EOF
 ```
 
 ### List Attachments
 ```bash
-GET /wrike/api/v4/attachments
-GET /wrike/api/v4/tasks/{taskId}/attachments
+maton api '/wrike/api/v4/attachments'
+maton api '/wrike/api/v4/tasks/{taskId}/attachments'
 ```
 
 ### Download Attachment
 ```bash
-GET /wrike/api/v4/attachments/{attachmentId}/download
+maton api '/wrike/api/v4/attachments/{attachmentId}/download'
 ```
 
 ### List Contacts
 ```bash
-GET /wrike/api/v4/contacts
+maton api '/wrike/api/v4/contacts'
 ```
 
 ### List Groups
 ```bash
-GET /wrike/api/v4/groups
+maton api '/wrike/api/v4/groups'
 ```
 
 ### Create Group
 ```bash
-POST /wrike/api/v4/groups
-Content-Type: application/json
-
+maton api -X POST '/wrike/api/v4/groups' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "title": "New Group",
   "members": ["contactId"]
 }
+EOF
 ```
 
 ### List Workflows
 ```bash
-GET /wrike/api/v4/workflows
+maton api '/wrike/api/v4/workflows'
 ```
 
 ### List Custom Fields
 ```bash
-GET /wrike/api/v4/customfields
-GET /wrike/api/v4/spaces/{spaceId}/customfields
+maton api '/wrike/api/v4/customfields'
+maton api '/wrike/api/v4/spaces/{spaceId}/customfields'
 ```
 
 ### List Timelogs
 ```bash
-GET /wrike/api/v4/timelogs
-GET /wrike/api/v4/tasks/{taskId}/timelogs
+maton api '/wrike/api/v4/timelogs'
+maton api '/wrike/api/v4/tasks/{taskId}/timelogs'
 ```
 
 ### Create Timelog
 ```bash
-POST /wrike/api/v4/tasks/{taskId}/timelogs
-Content-Type: application/json
-
+maton api -X POST '/wrike/api/v4/tasks/{taskId}/timelogs' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "hours": 2,
   "trackedDate": "2026-03-10",
   "comment": "Work description"
 }
+EOF
 ```
 
 ### List Dependencies
 ```bash
-GET /wrike/api/v4/tasks/{taskId}/dependencies
+maton api '/wrike/api/v4/tasks/{taskId}/dependencies'
 ```
 
 ### List Approvals
 ```bash
-GET /wrike/api/v4/approvals
-GET /wrike/api/v4/tasks/{taskId}/approvals
+maton api '/wrike/api/v4/approvals'
+maton api '/wrike/api/v4/tasks/{taskId}/approvals'
 ```
 
 ### List Invitations
 ```bash
-GET /wrike/api/v4/invitations
+maton api '/wrike/api/v4/invitations'
 ```
 
 ### List Work Schedules
 ```bash
-GET /wrike/api/v4/workschedules
+maton api '/wrike/api/v4/workschedules'
 ```
 
 ### Get User (Admin)
 ```bash
-GET /wrike/api/v4/users/{userId}
+maton api '/wrike/api/v4/users/{userId}'
 ```
 
 ### List Access Roles (Admin)
 ```bash
-GET /wrike/api/v4/access_roles
+maton api '/wrike/api/v4/access_roles'
 ```
 
 ### Get Audit Log (Admin)
 ```bash
-GET /wrike/api/v4/audit_log
+maton api '/wrike/api/v4/audit_log'
 ```
 
 ### Get Data Export (Admin)
 ```bash
-GET /wrike/api/v4/data_export
+maton api '/wrike/api/v4/data_export'
 ```
 
 ## Response Format

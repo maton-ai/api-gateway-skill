@@ -36,31 +36,33 @@
 ### Parse Document
 
 ```bash
-POST /reducto/parse
-Content-Type: application/json
-
+maton api -X POST '/reducto/parse' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "document_url": "https://example.com/document.pdf"
 }
+EOF
 ```
 
 ### Parse Document (Async)
 
 ```bash
-POST /reducto/parse_async
-Content-Type: application/json
-
+maton api -X POST '/reducto/parse_async' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "document_url": "https://example.com/document.pdf"
 }
+EOF
 ```
 
 ### Extract Data
 
 ```bash
-POST /reducto/extract
-Content-Type: application/json
-
+maton api -X POST '/reducto/extract' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "document_url": "https://example.com/document.pdf",
   "schema": {
@@ -71,59 +73,63 @@ Content-Type: application/json
     }
   }
 }
+EOF
 ```
 
 ### Split Document
 
 ```bash
-POST /reducto/split
-Content-Type: application/json
-
+maton api -X POST '/reducto/split' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "document_url": "https://example.com/document.pdf",
   "split_description": [
     {"name": "section1", "description": "First section"}
   ]
 }
+EOF
 ```
 
 ### Edit Document
 
 ```bash
-POST /reducto/edit
-Content-Type: application/json
-
+maton api -X POST '/reducto/edit' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "document_url": "https://example.com/form.pdf",
   "edit_instructions": "Fill the name field with 'John Doe'"
 }
+EOF
 ```
 
 ### Upload File
 
 ```bash
-POST /reducto/upload
-Content-Type: application/json
-
+maton api -X POST '/reducto/upload' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {}
+EOF
 ```
 
 ### List Jobs
 
 ```bash
-GET /reducto/jobs
+maton api '/reducto/jobs'
 ```
 
 ### Get Job Status
 
 ```bash
-GET /reducto/job/{job_id}
+maton api '/reducto/job/{job_id}'
 ```
 
 ### Get Version
 
 ```bash
-GET /reducto/version
+maton api '/reducto/version'
 ```
 
 ## Job Status Values

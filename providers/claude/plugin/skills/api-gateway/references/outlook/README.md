@@ -19,7 +19,7 @@ This file documents Outlook route shapes. For any non-read endpoint below, first
 
 ### User Profile
 ```bash
-GET /outlook/v1.0/me
+maton api '/outlook/v1.0/me'
 ```
 
 Example:
@@ -32,7 +32,7 @@ maton outlook whoami
 
 #### List Mail Folders
 ```bash
-GET /outlook/v1.0/me/mailFolders
+maton api '/outlook/v1.0/me/mailFolders'
 ```
 
 Well-known folder names: `Inbox`, `Drafts`, `SentItems`, `DeletedItems`, `Archive`, `JunkEmail`
@@ -45,7 +45,7 @@ maton outlook folder list
 
 #### Get Mail Folder
 ```bash
-GET /outlook/v1.0/me/mailFolders/{folderId}
+maton api '/outlook/v1.0/me/mailFolders/{folderId}'
 ```
 
 Example:
@@ -56,12 +56,13 @@ maton outlook folder view {folderId}
 
 #### Create Mail Folder
 ```bash
-POST /outlook/v1.0/me/mailFolders
-Content-Type: application/json
-
+maton api -X POST '/outlook/v1.0/me/mailFolders' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "displayName": "My Folder"
 }
+EOF
 ```
 
 Example:
@@ -74,7 +75,7 @@ maton outlook folder create --name "My Folder"
 
 #### List Messages
 ```bash
-GET /outlook/v1.0/me/messages
+maton api '/outlook/v1.0/me/messages'
 ```
 
 Example:
@@ -85,7 +86,7 @@ maton outlook message list
 
 From specific folder:
 ```bash
-GET /outlook/v1.0/me/mailFolders/Inbox/messages
+maton api '/outlook/v1.0/me/mailFolders/Inbox/messages'
 ```
 
 Example:
@@ -96,7 +97,7 @@ maton outlook message list --folder Inbox
 
 With filter:
 ```bash
-GET /outlook/v1.0/me/messages?$filter=isRead eq false&$top=10
+maton api '/outlook/v1.0/me/messages?$filter=isRead%20eq%20false&$top=10'
 ```
 
 Example:
@@ -107,7 +108,7 @@ maton outlook message list --filter "isRead eq false" --top 10
 
 #### Get Message
 ```bash
-GET /outlook/v1.0/me/messages/{messageId}
+maton api '/outlook/v1.0/me/messages/{messageId}'
 ```
 
 Example:
@@ -118,9 +119,9 @@ maton outlook message view {messageId}
 
 #### Send Message
 ```bash
-POST /outlook/v1.0/me/sendMail
-Content-Type: application/json
-
+maton api -X POST '/outlook/v1.0/me/sendMail' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "message": {
     "subject": "Hello",
@@ -138,6 +139,7 @@ Content-Type: application/json
   },
   "saveToSentItems": true
 }
+EOF
 ```
 
 Example:
@@ -148,9 +150,9 @@ maton outlook message send --to recipient@example.com --subject "Hello" --body "
 
 #### Create Draft
 ```bash
-POST /outlook/v1.0/me/messages
-Content-Type: application/json
-
+maton api -X POST '/outlook/v1.0/me/messages' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "subject": "Hello",
   "body": {
@@ -165,6 +167,7 @@ Content-Type: application/json
     }
   ]
 }
+EOF
 ```
 
 Example:
@@ -175,7 +178,7 @@ maton outlook message draft --to recipient@example.com --subject "Hello" --body 
 
 #### Send Existing Draft
 ```bash
-POST /outlook/v1.0/me/messages/{messageId}/send
+maton api -X POST '/outlook/v1.0/me/messages/{messageId}/send'
 ```
 
 Example:
@@ -186,12 +189,13 @@ maton outlook message send {messageId}
 
 #### Update Message (Mark as Read)
 ```bash
-PATCH /outlook/v1.0/me/messages/{messageId}
-Content-Type: application/json
-
+maton api -X PATCH '/outlook/v1.0/me/messages/{messageId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "isRead": true
 }
+EOF
 ```
 
 Example:
@@ -202,7 +206,7 @@ maton outlook message update {messageId} --read
 
 #### Delete Message
 ```bash
-DELETE /outlook/v1.0/me/messages/{messageId}
+maton api -X DELETE '/outlook/v1.0/me/messages/{messageId}'
 ```
 
 Example:
@@ -213,12 +217,13 @@ maton outlook message delete {messageId}
 
 #### Move Message
 ```bash
-POST /outlook/v1.0/me/messages/{messageId}/move
-Content-Type: application/json
-
+maton api -X POST '/outlook/v1.0/me/messages/{messageId}/move' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "destinationId": "{folderId}"
 }
+EOF
 ```
 
 Example:
@@ -239,7 +244,7 @@ maton outlook message search "quarterly report"
 
 #### List Calendars
 ```bash
-GET /outlook/v1.0/me/calendars
+maton api '/outlook/v1.0/me/calendars'
 ```
 
 Example:
@@ -250,7 +255,7 @@ maton outlook calendar list
 
 #### List Events
 ```bash
-GET /outlook/v1.0/me/calendar/events
+maton api '/outlook/v1.0/me/calendar/events'
 ```
 
 Example:
@@ -261,7 +266,7 @@ maton outlook event list
 
 With filter:
 ```bash
-GET /outlook/v1.0/me/calendar/events?$filter=start/dateTime ge '2024-01-01'&$top=10
+maton api "/outlook/v1.0/me/calendar/events?\$filter=start/dateTime%20ge%20'2024-01-01'&\$top=10"
 ```
 
 Example:
@@ -272,7 +277,7 @@ maton outlook event list --filter "start/dateTime ge '2024-01-01'" --top 10
 
 #### Get Event
 ```bash
-GET /outlook/v1.0/me/events/{eventId}
+maton api '/outlook/v1.0/me/events/{eventId}'
 ```
 
 Example:
@@ -283,9 +288,9 @@ maton outlook event view {eventId}
 
 #### Create Event
 ```bash
-POST /outlook/v1.0/me/calendar/events
-Content-Type: application/json
-
+maton api -X POST '/outlook/v1.0/me/calendar/events' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "subject": "Meeting",
   "start": {
@@ -305,6 +310,7 @@ Content-Type: application/json
     }
   ]
 }
+EOF
 ```
 
 Example:
@@ -315,7 +321,7 @@ maton outlook event create --subject "Meeting" --start 2024-01-15T10:00:00 --end
 
 #### Delete Event
 ```bash
-DELETE /outlook/v1.0/me/events/{eventId}
+maton api -X DELETE '/outlook/v1.0/me/events/{eventId}'
 ```
 
 Example:
@@ -328,7 +334,7 @@ maton outlook event delete {eventId}
 
 #### List Contacts
 ```bash
-GET /outlook/v1.0/me/contacts
+maton api '/outlook/v1.0/me/contacts'
 ```
 
 Example:
@@ -339,9 +345,9 @@ maton outlook contact list
 
 #### Create Contact
 ```bash
-POST /outlook/v1.0/me/contacts
-Content-Type: application/json
-
+maton api -X POST '/outlook/v1.0/me/contacts' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "givenName": "John",
   "surname": "Doe",
@@ -351,6 +357,7 @@ Content-Type: application/json
     }
   ]
 }
+EOF
 ```
 
 Example:
@@ -361,7 +368,7 @@ maton outlook contact create --given-name John --surname Doe --email john.doe@ex
 
 #### Delete Contact
 ```bash
-DELETE /outlook/v1.0/me/contacts/{contactId}
+maton api -X DELETE '/outlook/v1.0/me/contacts/{contactId}'
 ```
 
 Example:

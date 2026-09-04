@@ -15,112 +15,117 @@
 
 ### List Projects
 ```bash
-GET /firebase/v1beta1/projects
+maton api '/firebase/v1beta1/projects'
 ```
 
 ### Get Project
 ```bash
-GET /firebase/v1beta1/projects/{projectId}
+maton api '/firebase/v1beta1/projects/{projectId}'
 ```
 
 ### Update Project
 ```bash
-PATCH /firebase/v1beta1/projects/{projectId}
-Content-Type: application/json
-
+maton api -X PATCH '/firebase/v1beta1/projects/{projectId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "displayName": "Updated Project Name"
 }
+EOF
 ```
 
 ### List Available Projects
 ```bash
-GET /firebase/v1beta1/availableProjects
+maton api '/firebase/v1beta1/availableProjects'
 ```
 
 ### Add Firebase to Project
 ```bash
-POST /firebase/v1beta1/projects/{projectId}:addFirebase
-Content-Type: application/json
-
+maton api -X POST '/firebase/v1beta1/projects/{projectId}:addFirebase' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {}
+EOF
 ```
 
 ### Get Admin SDK Config
 ```bash
-GET /firebase/v1beta1/projects/{projectId}/adminSdkConfig
+maton api '/firebase/v1beta1/projects/{projectId}/adminSdkConfig'
 ```
 
 ### List Web Apps
 ```bash
-GET /firebase/v1beta1/projects/{projectId}/webApps
+maton api '/firebase/v1beta1/projects/{projectId}/webApps'
 ```
 
 ### Get Web App
 ```bash
-GET /firebase/v1beta1/projects/{projectId}/webApps/{appId}
+maton api '/firebase/v1beta1/projects/{projectId}/webApps/{appId}'
 ```
 
 ### Create Web App
 ```bash
-POST /firebase/v1beta1/projects/{projectId}/webApps
-Content-Type: application/json
-
+maton api -X POST '/firebase/v1beta1/projects/{projectId}/webApps' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "displayName": "My Web App"
 }
+EOF
 ```
 
 ### Get Web App Config
 ```bash
-GET /firebase/v1beta1/projects/{projectId}/webApps/{appId}/config
+maton api '/firebase/v1beta1/projects/{projectId}/webApps/{appId}/config'
 ```
 
 ### List Android Apps
 ```bash
-GET /firebase/v1beta1/projects/{projectId}/androidApps
+maton api '/firebase/v1beta1/projects/{projectId}/androidApps'
 ```
 
 ### Create Android App
 ```bash
-POST /firebase/v1beta1/projects/{projectId}/androidApps
-Content-Type: application/json
-
+maton api -X POST '/firebase/v1beta1/projects/{projectId}/androidApps' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "displayName": "My Android App",
   "packageName": "com.example.myapp"
 }
+EOF
 ```
 
 ### Get Android App Config
 ```bash
-GET /firebase/v1beta1/projects/{projectId}/androidApps/{appId}/config
+maton api '/firebase/v1beta1/projects/{projectId}/androidApps/{appId}/config'
 ```
 
 ### List iOS Apps
 ```bash
-GET /firebase/v1beta1/projects/{projectId}/iosApps
+maton api '/firebase/v1beta1/projects/{projectId}/iosApps'
 ```
 
 ### Create iOS App
 ```bash
-POST /firebase/v1beta1/projects/{projectId}/iosApps
-Content-Type: application/json
-
+maton api -X POST '/firebase/v1beta1/projects/{projectId}/iosApps' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "displayName": "My iOS App",
   "bundleId": "com.example.myapp"
 }
+EOF
 ```
 
 ### Get iOS App Config
 ```bash
-GET /firebase/v1beta1/projects/{projectId}/iosApps/{appId}/config
+maton api '/firebase/v1beta1/projects/{projectId}/iosApps/{appId}/config'
 ```
 
 ### Check Operation Status
 ```bash
-GET /firebase/v1beta1/operations/{operationId}
+maton api '/firebase/v1beta1/operations/{operationId}'
 ```
 
 ## Notes

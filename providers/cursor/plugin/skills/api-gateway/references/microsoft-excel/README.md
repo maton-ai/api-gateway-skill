@@ -18,145 +18,151 @@
 
 #### Get Drive Info
 ```bash
-GET /microsoft-excel/v1.0/me/drive
+maton api '/microsoft-excel/v1.0/me/drive'
 ```
 
 #### List Root Files
 ```bash
-GET /microsoft-excel/v1.0/me/drive/root/children
+maton api '/microsoft-excel/v1.0/me/drive/root/children'
 ```
 
 #### Search Files
 ```bash
-GET /microsoft-excel/v1.0/me/drive/root/search(q='.xlsx')
+maton api "/microsoft-excel/v1.0/me/drive/root/search(q='.xlsx')"
 ```
 
 ### Session Management
 
 #### Create Session
 ```bash
-POST /microsoft-excel/v1.0/me/drive/root:/{path}:/workbook/createSession
-Content-Type: application/json
-
+maton api -X POST '/microsoft-excel/v1.0/me/drive/root:/{path}:/workbook/createSession' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "persistChanges": true
 }
+EOF
 ```
 
 ### Worksheet Operations
 
 #### List Worksheets
 ```bash
-GET /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets
+maton api '/microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets'
 ```
 
 #### Create Worksheet
 ```bash
-POST /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets
-Content-Type: application/json
-
+maton api -X POST '/microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "NewSheet"
 }
+EOF
 ```
 
 #### Delete Worksheet
 ```bash
-DELETE /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets('{id}')
+maton api -X DELETE "/microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets('{id}')"
 ```
 
 ### Range Operations
 
 #### Get Range
 ```bash
-GET /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets('Sheet1')/range(address='A1:B2')
+maton api "/microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets('Sheet1')/range(address='A1:B2')"
 ```
 
 #### Update Range
 ```bash
-PATCH /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets('Sheet1')/range(address='A1:B2')
-Content-Type: application/json
-
+maton api -X PATCH "/microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets('Sheet1')/range(address='A1:B2')" \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "values": [
     ["Value1", "Value2"],
     [100, 200]
   ]
 }
+EOF
 ```
 
 #### Get Used Range
 ```bash
-GET /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets('Sheet1')/usedRange
+maton api "/microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets('Sheet1')/usedRange"
 ```
 
 ### Table Operations
 
 #### List Tables
 ```bash
-GET /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets('Sheet1')/tables
+maton api "/microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets('Sheet1')/tables"
 ```
 
 #### Create Table
 ```bash
-POST /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets('Sheet1')/tables/add
-Content-Type: application/json
-
+maton api -X POST "/microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets('Sheet1')/tables/add" \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "address": "A1:C4",
   "hasHeaders": true
 }
+EOF
 ```
 
 #### Get Table Rows
 ```bash
-GET /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/tables('Table1')/rows
+maton api "/microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/tables('Table1')/rows"
 ```
 
 #### Add Table Row
 ```bash
-POST /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/tables('Table1')/rows
-Content-Type: application/json
-
+maton api -X POST "/microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/tables('Table1')/rows" \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "values": [["Data1", "Data2", "Data3"]]
 }
+EOF
 ```
 
 #### Delete Table Row
 ```bash
-DELETE /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/tables('Table1')/rows/itemAt(index=0)
+maton api -X DELETE "/microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/tables('Table1')/rows/itemAt(index=0)"
 ```
 
 #### Get Table Columns
 ```bash
-GET /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/tables('Table1')/columns
+maton api "/microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/tables('Table1')/columns"
 ```
 
 ### Named Items
 
 #### List Named Items
 ```bash
-GET /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/names
+maton api '/microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/names'
 ```
 
 ### Charts
 
 #### List Charts
 ```bash
-GET /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets('Sheet1')/charts
+maton api "/microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets('Sheet1')/charts"
 ```
 
 #### Add Chart
 ```bash
-POST /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets('Sheet1')/charts/add
-Content-Type: application/json
-
+maton api -X POST "/microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets('Sheet1')/charts/add" \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "type": "ColumnClustered",
   "sourceData": "A1:C4",
   "seriesBy": "Auto"
 }
+EOF
 ```
 
 ## Notes

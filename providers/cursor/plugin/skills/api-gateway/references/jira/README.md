@@ -10,7 +10,7 @@
 Jira Cloud requires a cloud ID in the API path. First, get accessible resources:
 
 ```bash
-GET /jira/oauth/token/accessible-resources
+maton api '/jira/oauth/token/accessible-resources'
 ```
 
 Example:
@@ -39,7 +39,7 @@ Response:
 
 ### List Projects
 ```bash
-GET /jira/ex/jira/{cloudId}/rest/api/3/project
+maton api '/jira/ex/jira/{cloudId}/rest/api/3/project'
 ```
 
 Example:
@@ -50,7 +50,7 @@ maton jira project list --cloud-id abc-123
 
 ### Get Project
 ```bash
-GET /jira/ex/jira/{cloudId}/rest/api/3/project/{projectKeyOrId}
+maton api '/jira/ex/jira/{cloudId}/rest/api/3/project/{projectKeyOrId}'
 ```
 
 Example:
@@ -63,7 +63,7 @@ maton jira project view PROJ --cloud-id abc-123
 Note: The old `/search` endpoint is deprecated. Use `/search/jql` with a bounded query.
 
 ```bash
-GET /jira/ex/jira/{cloudId}/rest/api/3/search/jql?jql=project%3DKEY%20order%20by%20created%20DESC&maxResults=20&fields=summary,status,assignee,created,priority
+maton api '/jira/ex/jira/{cloudId}/rest/api/3/search/jql?jql=project%3DKEY%20order%20by%20created%20DESC&maxResults=20&fields=summary,status,assignee,created,priority'
 ```
 
 Example:
@@ -74,7 +74,7 @@ maton jira issue search 'project = PROJ order by created DESC' --cloud-id abc-12
 
 ### Get Issue
 ```bash
-GET /jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}
+maton api '/jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}'
 ```
 
 Example:
@@ -85,9 +85,9 @@ maton jira issue view PROJ-123 --cloud-id abc-123
 
 ### Create Issue
 ```bash
-POST /jira/ex/jira/{cloudId}/rest/api/3/issue
-Content-Type: application/json
-
+maton api -X POST '/jira/ex/jira/{cloudId}/rest/api/3/issue' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "fields": {
     "project": {"key": "PROJ"},
@@ -95,6 +95,7 @@ Content-Type: application/json
     "issuetype": {"name": "Task"}
   }
 }
+EOF
 ```
 
 Example:
@@ -105,14 +106,15 @@ maton jira issue create --cloud-id abc-123 --project PROJ --summary 'Issue summa
 
 ### Update Issue
 ```bash
-PUT /jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}
-Content-Type: application/json
-
+maton api -X PUT '/jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "fields": {
     "summary": "Updated summary"
   }
 }
+EOF
 ```
 
 Example:
@@ -123,7 +125,7 @@ maton jira issue update PROJ-123 --cloud-id abc-123 --summary 'Updated summary'
 
 ### Delete Issue
 ```bash
-DELETE /jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}
+maton api -X DELETE '/jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}'
 ```
 
 Example:
@@ -134,12 +136,13 @@ maton jira issue delete PROJ-123 --cloud-id abc-123
 
 ### Assign Issue
 ```bash
-PUT /jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}/assignee
-Content-Type: application/json
-
+maton api -X PUT '/jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}/assignee' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "accountId": "712020:5aff718e-6fe0-4548-82f4-f44ec481e5e7"
 }
+EOF
 ```
 
 Example:
@@ -150,7 +153,7 @@ maton jira issue update PROJ-123 --cloud-id abc-123 --assignee 712020:5aff718e-6
 
 ### Get Transitions
 ```bash
-GET /jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}/transitions
+maton api '/jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}/transitions'
 ```
 
 Example:
@@ -161,12 +164,13 @@ maton jira transition list PROJ-123 --cloud-id abc-123
 
 ### Transition Issue (change status)
 ```bash
-POST /jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}/transitions
-Content-Type: application/json
-
+maton api -X POST '/jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}/transitions' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "transition": {"id": "31"}
 }
+EOF
 ```
 
 Example:
@@ -177,9 +181,9 @@ maton jira transition apply PROJ-123 --cloud-id abc-123 --id 31
 
 ### Add Comment
 ```bash
-POST /jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}/comment
-Content-Type: application/json
-
+maton api -X POST '/jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}/comment' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "body": {
     "type": "doc",
@@ -187,6 +191,7 @@ Content-Type: application/json
     "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Comment text"}]}]
   }
 }
+EOF
 ```
 
 Example:
@@ -197,7 +202,7 @@ maton jira comment add PROJ-123 --cloud-id abc-123 --body 'Comment text'
 
 ### Get Comments
 ```bash
-GET /jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}/comment
+maton api '/jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}/comment'
 ```
 
 Example:
@@ -210,7 +215,7 @@ maton jira comment list PROJ-123 --cloud-id abc-123
 
 #### Get Current User
 ```bash
-GET /jira/ex/jira/{cloudId}/rest/api/3/myself
+maton api '/jira/ex/jira/{cloudId}/rest/api/3/myself'
 ```
 
 Example:
@@ -221,7 +226,7 @@ maton jira whoami --cloud-id abc-123
 
 #### Search Users
 ```bash
-GET /jira/ex/jira/{cloudId}/rest/api/3/user/search?query=john
+maton api '/jira/ex/jira/{cloudId}/rest/api/3/user/search?query=john'
 ```
 
 Example:
@@ -234,7 +239,7 @@ maton jira user search john --cloud-id abc-123
 
 #### List Issue Types
 ```bash
-GET /jira/ex/jira/{cloudId}/rest/api/3/issuetype
+maton api '/jira/ex/jira/{cloudId}/rest/api/3/issuetype'
 ```
 
 Example:
@@ -245,7 +250,7 @@ maton jira issuetype list --cloud-id abc-123
 
 #### List Priorities
 ```bash
-GET /jira/ex/jira/{cloudId}/rest/api/3/priority
+maton api '/jira/ex/jira/{cloudId}/rest/api/3/priority'
 ```
 
 Example:
@@ -256,7 +261,7 @@ maton jira priority list --cloud-id abc-123
 
 #### List Statuses
 ```bash
-GET /jira/ex/jira/{cloudId}/rest/api/3/status
+maton api '/jira/ex/jira/{cloudId}/rest/api/3/status'
 ```
 
 Example:
@@ -267,7 +272,7 @@ maton jira status list --cloud-id abc-123
 
 #### List Fields
 ```bash
-GET /jira/ex/jira/{cloudId}/rest/api/3/field
+maton api '/jira/ex/jira/{cloudId}/rest/api/3/field'
 ```
 
 ## Notes

@@ -15,88 +15,92 @@
 
 ### Get Current Merchant
 ```bash
-GET /squareup/v2/merchants/me
+maton api '/squareup/v2/merchants/me'
 ```
 
 ## Locations
 
 ### List Locations
 ```bash
-GET /squareup/v2/locations
+maton api '/squareup/v2/locations'
 ```
 
 ### Get Location
 ```bash
-GET /squareup/v2/locations/{location_id}
+maton api '/squareup/v2/locations/{location_id}'
 ```
 
 ### Create Location
 ```bash
-POST /squareup/v2/locations
-Content-Type: application/json
-
+maton api -X POST '/squareup/v2/locations' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "location": {
     "name": "New Location",
     "address": {...}
   }
 }
+EOF
 ```
 
 ### Update Location
 ```bash
-PUT /squareup/v2/locations/{location_id}
-Content-Type: application/json
-
+maton api -X PUT '/squareup/v2/locations/{location_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "location": {"name": "Updated Name"}
 }
+EOF
 ```
 
 ## Customers
 
 ### List Customers
 ```bash
-GET /squareup/v2/customers
+maton api '/squareup/v2/customers'
 ```
 
 ### Get Customer
 ```bash
-GET /squareup/v2/customers/{customer_id}
+maton api '/squareup/v2/customers/{customer_id}'
 ```
 
 ### Create Customer
 ```bash
-POST /squareup/v2/customers
-Content-Type: application/json
-
+maton api -X POST '/squareup/v2/customers' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "given_name": "John",
   "family_name": "Doe",
   "email_address": "john@example.com"
 }
+EOF
 ```
 
 ### Update Customer
 ```bash
-PUT /squareup/v2/customers/{customer_id}
-Content-Type: application/json
-
+maton api -X PUT '/squareup/v2/customers/{customer_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "given_name": "Jane"
 }
+EOF
 ```
 
 ### Delete Customer
 ```bash
-DELETE /squareup/v2/customers/{customer_id}
+maton api -X DELETE '/squareup/v2/customers/{customer_id}'
 ```
 
 ### Search Customers
 ```bash
-POST /squareup/v2/customers/search
-Content-Type: application/json
-
+maton api -X POST '/squareup/v2/customers/search' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": {
     "filter": {
@@ -105,75 +109,78 @@ Content-Type: application/json
   },
   "limit": 10
 }
+EOF
 ```
 
 ## Payments
 
 ### List Payments
 ```bash
-GET /squareup/v2/payments
-GET /squareup/v2/payments?location_id={location_id}&begin_time=2026-01-01T00:00:00Z
+maton api '/squareup/v2/payments'
+maton api '/squareup/v2/payments?location_id={location_id}&begin_time=2026-01-01T00:00:00Z'
 ```
 
 ### Get Payment
 ```bash
-GET /squareup/v2/payments/{payment_id}
+maton api '/squareup/v2/payments/{payment_id}'
 ```
 
 ### Create Payment
 ```bash
-POST /squareup/v2/payments
-Content-Type: application/json
-
+maton api -X POST '/squareup/v2/payments' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "source_id": "cnon:card-nonce-ok",
   "idempotency_key": "unique-key",
   "amount_money": {"amount": 1000, "currency": "USD"},
   "location_id": "{location_id}"
 }
+EOF
 ```
 
 ### Complete Payment
 ```bash
-POST /squareup/v2/payments/{payment_id}/complete
+maton api -X POST '/squareup/v2/payments/{payment_id}/complete'
 ```
 
 ### Cancel Payment
 ```bash
-POST /squareup/v2/payments/{payment_id}/cancel
+maton api -X POST '/squareup/v2/payments/{payment_id}/cancel'
 ```
 
 ## Refunds
 
 ### List Refunds
 ```bash
-GET /squareup/v2/refunds
+maton api '/squareup/v2/refunds'
 ```
 
 ### Get Refund
 ```bash
-GET /squareup/v2/refunds/{refund_id}
+maton api '/squareup/v2/refunds/{refund_id}'
 ```
 
 ### Create Refund
 ```bash
-POST /squareup/v2/refunds
-Content-Type: application/json
-
+maton api -X POST '/squareup/v2/refunds' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "idempotency_key": "unique-key",
   "payment_id": "{payment_id}",
   "amount_money": {"amount": 500, "currency": "USD"}
 }
+EOF
 ```
 
 ## Orders
 
 ### Create Order
 ```bash
-POST /squareup/v2/orders
-Content-Type: application/json
-
+maton api -X POST '/squareup/v2/orders' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "order": {
     "location_id": "{location_id}",
@@ -187,29 +194,31 @@ Content-Type: application/json
   },
   "idempotency_key": "unique-key"
 }
+EOF
 ```
 
 ### Get Order
 ```bash
-GET /squareup/v2/orders/{order_id}
+maton api '/squareup/v2/orders/{order_id}'
 ```
 
 ### Search Orders
 ```bash
-POST /squareup/v2/orders/search
-Content-Type: application/json
-
+maton api -X POST '/squareup/v2/orders/search' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "location_ids": ["{location_id}"],
   "limit": 10
 }
+EOF
 ```
 
 ### Update Order
 ```bash
-PUT /squareup/v2/orders/{order_id}
-Content-Type: application/json
-
+maton api -X PUT '/squareup/v2/orders/{order_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "order": {
     "location_id": "{location_id}",
@@ -217,37 +226,39 @@ Content-Type: application/json
   },
   "idempotency_key": "unique-key"
 }
+EOF
 ```
 
 ### Pay Order
 ```bash
-POST /squareup/v2/orders/{order_id}/pay
-Content-Type: application/json
-
+maton api -X POST '/squareup/v2/orders/{order_id}/pay' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "idempotency_key": "unique-key",
   "payment_ids": ["{payment_id}"]
 }
+EOF
 ```
 
 ## Catalog
 
 ### List Catalog
 ```bash
-GET /squareup/v2/catalog/list
-GET /squareup/v2/catalog/list?types=ITEM,CATEGORY
+maton api '/squareup/v2/catalog/list'
+maton api '/squareup/v2/catalog/list?types=ITEM,CATEGORY'
 ```
 
 ### Get Catalog Object
 ```bash
-GET /squareup/v2/catalog/object/{object_id}
+maton api '/squareup/v2/catalog/object/{object_id}'
 ```
 
 ### Upsert Catalog Object
 ```bash
-POST /squareup/v2/catalog/object
-Content-Type: application/json
-
+maton api -X POST '/squareup/v2/catalog/object' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "idempotency_key": "unique-key",
   "object": {
@@ -269,59 +280,62 @@ Content-Type: application/json
     }
   }
 }
+EOF
 ```
 
 ### Delete Catalog Object
 ```bash
-DELETE /squareup/v2/catalog/object/{object_id}
+maton api -X DELETE '/squareup/v2/catalog/object/{object_id}'
 ```
 
 ### Search Catalog
 ```bash
-POST /squareup/v2/catalog/search
-Content-Type: application/json
-
+maton api -X POST '/squareup/v2/catalog/search' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "object_types": ["ITEM"],
   "query": {
     "text_query": {"keywords": ["coffee"]}
   }
 }
+EOF
 ```
 
 ### Get Catalog Info
 ```bash
-GET /squareup/v2/catalog/info
+maton api '/squareup/v2/catalog/info'
 ```
 
 ### Batch Upsert
 ```bash
-POST /squareup/v2/catalog/batch-upsert
-Content-Type: application/json
-
+maton api -X POST '/squareup/v2/catalog/batch-upsert' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "idempotency_key": "unique-key",
   "batches": [{"objects": [...]}]
 }
+EOF
 ```
 
 ## Invoices
 
 ### List Invoices
 ```bash
-GET /squareup/v2/invoices?location_id={location_id}
+maton api '/squareup/v2/invoices?location_id={location_id}'
 ```
 
 ### Get Invoice
 ```bash
-GET /squareup/v2/invoices/{invoice_id}
+maton api '/squareup/v2/invoices/{invoice_id}'
 ```
 
 ### Create Invoice
 ```bash
-POST /squareup/v2/invoices
-Content-Type: application/json
-
+maton api -X POST '/squareup/v2/invoices' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "invoice": {
     "location_id": "{location_id}",
@@ -333,47 +347,51 @@ Content-Type: application/json
   },
   "idempotency_key": "unique-key"
 }
+EOF
 ```
 
 ### Update Invoice
 ```bash
-PUT /squareup/v2/invoices/{invoice_id}
-Content-Type: application/json
-
+maton api -X PUT '/squareup/v2/invoices/{invoice_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "invoice": {"version": 1},
   "idempotency_key": "unique-key"
 }
+EOF
 ```
 
 ### Publish Invoice
 ```bash
-POST /squareup/v2/invoices/{invoice_id}/publish
-Content-Type: application/json
-
+maton api -X POST '/squareup/v2/invoices/{invoice_id}/publish' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"version": 1, "idempotency_key": "unique-key"}
+EOF
 ```
 
 ### Cancel Invoice
 ```bash
-POST /squareup/v2/invoices/{invoice_id}/cancel
-Content-Type: application/json
-
+maton api -X POST '/squareup/v2/invoices/{invoice_id}/cancel' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {"version": 1}
+EOF
 ```
 
 ### Delete Invoice
 ```bash
-DELETE /squareup/v2/invoices/{invoice_id}
+maton api -X DELETE '/squareup/v2/invoices/{invoice_id}'
 ```
 
 ## Team Members
 
 ### Search Team Members
 ```bash
-POST /squareup/v2/team-members/search
-Content-Type: application/json
-
+maton api -X POST '/squareup/v2/team-members/search' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": {
     "filter": {
@@ -382,54 +400,57 @@ Content-Type: application/json
     }
   }
 }
+EOF
 ```
 
 ### Get Team Member
 ```bash
-GET /squareup/v2/team-members/{team_member_id}
+maton api '/squareup/v2/team-members/{team_member_id}'
 ```
 
 ### Update Team Member
 ```bash
-PUT /squareup/v2/team-members/{team_member_id}
-Content-Type: application/json
-
+maton api -X PUT '/squareup/v2/team-members/{team_member_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "team_member": {
     "given_name": "Updated Name"
   }
 }
+EOF
 ```
 
 ## Loyalty
 
 ### List Loyalty Programs
 ```bash
-GET /squareup/v2/loyalty/programs
+maton api '/squareup/v2/loyalty/programs'
 ```
 
 ### Get Loyalty Program
 ```bash
-GET /squareup/v2/loyalty/programs/{program_id}
+maton api '/squareup/v2/loyalty/programs/{program_id}'
 ```
 
 ### Search Loyalty Accounts
 ```bash
-POST /squareup/v2/loyalty/accounts/search
-Content-Type: application/json
-
+maton api -X POST '/squareup/v2/loyalty/accounts/search' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": {
     "customer_ids": ["{customer_id}"]
   }
 }
+EOF
 ```
 
 ### Create Loyalty Account
 ```bash
-POST /squareup/v2/loyalty/accounts
-Content-Type: application/json
-
+maton api -X POST '/squareup/v2/loyalty/accounts' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "loyalty_account": {
     "program_id": "{program_id}",
@@ -437,25 +458,26 @@ Content-Type: application/json
   },
   "idempotency_key": "unique-key"
 }
+EOF
 ```
 
 ## Payment Links (Online Checkout)
 
 ### List Payment Links
 ```bash
-GET /squareup/v2/online-checkout/payment-links
+maton api '/squareup/v2/online-checkout/payment-links'
 ```
 
 ### Get Payment Link
 ```bash
-GET /squareup/v2/online-checkout/payment-links/{id}
+maton api '/squareup/v2/online-checkout/payment-links/{id}'
 ```
 
 ### Create Payment Link
 ```bash
-POST /squareup/v2/online-checkout/payment-links
-Content-Type: application/json
-
+maton api -X POST '/squareup/v2/online-checkout/payment-links' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "idempotency_key": "unique-key",
   "quick_pay": {
@@ -464,41 +486,43 @@ Content-Type: application/json
     "location_id": "{location_id}"
   }
 }
+EOF
 ```
 
 ### Update Payment Link
 ```bash
-PUT /squareup/v2/online-checkout/payment-links/{id}
-Content-Type: application/json
-
+maton api -X PUT '/squareup/v2/online-checkout/payment-links/{id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "payment_link": {"version": 1}
 }
+EOF
 ```
 
 ### Delete Payment Link
 ```bash
-DELETE /squareup/v2/online-checkout/payment-links/{id}
+maton api -X DELETE '/squareup/v2/online-checkout/payment-links/{id}'
 ```
 
 ## Cards
 
 ### List Cards
 ```bash
-GET /squareup/v2/cards
-GET /squareup/v2/cards?customer_id={customer_id}
+maton api '/squareup/v2/cards'
+maton api '/squareup/v2/cards?customer_id={customer_id}'
 ```
 
 ### Get Card
 ```bash
-GET /squareup/v2/cards/{card_id}
+maton api '/squareup/v2/cards/{card_id}'
 ```
 
 ### Create Card
 ```bash
-POST /squareup/v2/cards
-Content-Type: application/json
-
+maton api -X POST '/squareup/v2/cards' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "idempotency_key": "unique-key",
   "source_id": "cnon:card-nonce-ok",
@@ -506,55 +530,56 @@ Content-Type: application/json
     "customer_id": "{customer_id}"
   }
 }
+EOF
 ```
 
 ### Disable Card
 ```bash
-POST /squareup/v2/cards/{card_id}/disable
+maton api -X POST '/squareup/v2/cards/{card_id}/disable'
 ```
 
 ## Payouts
 
 ### List Payouts
 ```bash
-GET /squareup/v2/payouts
-GET /squareup/v2/payouts?location_id={location_id}
+maton api '/squareup/v2/payouts'
+maton api '/squareup/v2/payouts?location_id={location_id}'
 ```
 
 ### Get Payout
 ```bash
-GET /squareup/v2/payouts/{payout_id}
+maton api '/squareup/v2/payouts/{payout_id}'
 ```
 
 ### List Payout Entries
 ```bash
-GET /squareup/v2/payouts/{payout_id}/payout-entries
+maton api '/squareup/v2/payouts/{payout_id}/payout-entries'
 ```
 
 ## Bank Accounts
 
 ### List Bank Accounts
 ```bash
-GET /squareup/v2/bank-accounts
+maton api '/squareup/v2/bank-accounts'
 ```
 
 ### Get Bank Account
 ```bash
-GET /squareup/v2/bank-accounts/{bank_account_id}
+maton api '/squareup/v2/bank-accounts/{bank_account_id}'
 ```
 
 ## Terminal
 
 ### List Terminal Checkouts
 ```bash
-GET /squareup/v2/terminals/checkouts
+maton api '/squareup/v2/terminals/checkouts'
 ```
 
 ### Create Terminal Checkout
 ```bash
-POST /squareup/v2/terminals/checkouts
-Content-Type: application/json
-
+maton api -X POST '/squareup/v2/terminals/checkouts' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "idempotency_key": "unique-key",
   "checkout": {
@@ -562,13 +587,14 @@ Content-Type: application/json
     "device_options": {"device_id": "{device_id}"}
   }
 }
+EOF
 ```
 
 ### Search Terminal Checkouts
 ```bash
-POST /squareup/v2/terminals/checkouts/search
-Content-Type: application/json
-
+maton api -X POST '/squareup/v2/terminals/checkouts/search' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "query": {
     "filter": {
@@ -576,6 +602,7 @@ Content-Type: application/json
     }
   }
 }
+EOF
 ```
 
 ## Notes

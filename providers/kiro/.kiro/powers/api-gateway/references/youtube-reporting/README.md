@@ -15,58 +15,59 @@
 
 ### List Report Types
 ```bash
-GET /youtube-reporting/v1/reportTypes
+maton api '/youtube-reporting/v1/reportTypes'
 ```
 
 With pagination:
 ```bash
-GET /youtube-reporting/v1/reportTypes?pageSize=10&pageToken={nextPageToken}
+maton api '/youtube-reporting/v1/reportTypes?pageSize=10&pageToken={nextPageToken}'
 ```
 
 ### List Jobs
 ```bash
-GET /youtube-reporting/v1/jobs
+maton api '/youtube-reporting/v1/jobs'
 ```
 
 Include system-managed:
 ```bash
-GET /youtube-reporting/v1/jobs?includeSystemManaged=true
+maton api '/youtube-reporting/v1/jobs?includeSystemManaged=true'
 ```
 
 ### Get Job
 ```bash
-GET /youtube-reporting/v1/jobs/{jobId}
+maton api '/youtube-reporting/v1/jobs/{jobId}'
 ```
 
 ### Create Job
 ```bash
-POST /youtube-reporting/v1/jobs
-Content-Type: application/json
-
+maton api -X POST '/youtube-reporting/v1/jobs' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "reportTypeId": "channel_basic_a3",
   "name": "Daily User Activity"
 }
+EOF
 ```
 
 ### Delete Job
 ```bash
-DELETE /youtube-reporting/v1/jobs/{jobId}
+maton api -X DELETE '/youtube-reporting/v1/jobs/{jobId}'
 ```
 
 ### List Reports for a Job
 ```bash
-GET /youtube-reporting/v1/jobs/{jobId}/reports
+maton api '/youtube-reporting/v1/jobs/{jobId}/reports'
 ```
 
 With date filters:
 ```bash
-GET /youtube-reporting/v1/jobs/{jobId}/reports?startTimeAtOrAfter=2025-04-01T00:00:00Z&startTimeBefore=2025-05-01T00:00:00Z
+maton api '/youtube-reporting/v1/jobs/{jobId}/reports?startTimeAtOrAfter=2025-04-01T00:00:00Z&startTimeBefore=2025-05-01T00:00:00Z'
 ```
 
 ### Get Report
 ```bash
-GET /youtube-reporting/v1/jobs/{jobId}/reports/{reportId}
+maton api '/youtube-reporting/v1/jobs/{jobId}/reports/{reportId}'
 ```
 
 ## Notes

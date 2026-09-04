@@ -17,15 +17,15 @@
 
 ```bash
 # List items
-GET /zoho-inventory/inventory/v1/items
+maton api '/zoho-inventory/inventory/v1/items'
 
 # Get item
-GET /zoho-inventory/inventory/v1/items/{item_id}
+maton api '/zoho-inventory/inventory/v1/items/{item_id}'
 
 # Create item
-POST /zoho-inventory/inventory/v1/items
-Content-Type: application/json
-
+maton api -X POST '/zoho-inventory/inventory/v1/items' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Widget",
   "rate": 25.00,
@@ -35,151 +35,153 @@ Content-Type: application/json
   "product_type": "goods",
   "unit": "pcs"
 }
+EOF
 
 # Update item
-PUT /zoho-inventory/inventory/v1/items/{item_id}
+maton api -X PUT '/zoho-inventory/inventory/v1/items/{item_id}'
 
 # Delete item
-DELETE /zoho-inventory/inventory/v1/items/{item_id}
+maton api -X DELETE '/zoho-inventory/inventory/v1/items/{item_id}'
 
 # Mark as active/inactive
-POST /zoho-inventory/inventory/v1/items/{item_id}/active
-POST /zoho-inventory/inventory/v1/items/{item_id}/inactive
+maton api -X POST '/zoho-inventory/inventory/v1/items/{item_id}/active'
+maton api -X POST '/zoho-inventory/inventory/v1/items/{item_id}/inactive'
 ```
 
 ### Contacts
 
 ```bash
 # List contacts
-GET /zoho-inventory/inventory/v1/contacts
+maton api '/zoho-inventory/inventory/v1/contacts'
 
 # Get contact
-GET /zoho-inventory/inventory/v1/contacts/{contact_id}
+maton api '/zoho-inventory/inventory/v1/contacts/{contact_id}'
 
 # Create contact
-POST /zoho-inventory/inventory/v1/contacts
-Content-Type: application/json
-
+maton api -X POST '/zoho-inventory/inventory/v1/contacts' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "contact_name": "Customer Name",
   "contact_type": "customer"
 }
+EOF
 
 # Update contact
-PUT /zoho-inventory/inventory/v1/contacts/{contact_id}
+maton api -X PUT '/zoho-inventory/inventory/v1/contacts/{contact_id}'
 
 # Delete contact
-DELETE /zoho-inventory/inventory/v1/contacts/{contact_id}
+maton api -X DELETE '/zoho-inventory/inventory/v1/contacts/{contact_id}'
 ```
 
 ### Sales Orders
 
 ```bash
 # List sales orders
-GET /zoho-inventory/inventory/v1/salesorders
+maton api '/zoho-inventory/inventory/v1/salesorders'
 
 # Get sales order
-GET /zoho-inventory/inventory/v1/salesorders/{salesorder_id}
+maton api '/zoho-inventory/inventory/v1/salesorders/{salesorder_id}'
 
 # Create sales order
-POST /zoho-inventory/inventory/v1/salesorders
+maton api -X POST '/zoho-inventory/inventory/v1/salesorders'
 
 # Update sales order
-PUT /zoho-inventory/inventory/v1/salesorders/{salesorder_id}
+maton api -X PUT '/zoho-inventory/inventory/v1/salesorders/{salesorder_id}'
 
 # Delete sales order
-DELETE /zoho-inventory/inventory/v1/salesorders/{salesorder_id}
+maton api -X DELETE '/zoho-inventory/inventory/v1/salesorders/{salesorder_id}'
 
 # Status actions
-POST /zoho-inventory/inventory/v1/salesorders/{salesorder_id}/status/confirmed
-POST /zoho-inventory/inventory/v1/salesorders/{salesorder_id}/status/void
+maton api -X POST '/zoho-inventory/inventory/v1/salesorders/{salesorder_id}/status/confirmed'
+maton api -X POST '/zoho-inventory/inventory/v1/salesorders/{salesorder_id}/status/void'
 ```
 
 ### Invoices
 
 ```bash
 # List invoices
-GET /zoho-inventory/inventory/v1/invoices
+maton api '/zoho-inventory/inventory/v1/invoices'
 
 # Get invoice
-GET /zoho-inventory/inventory/v1/invoices/{invoice_id}
+maton api '/zoho-inventory/inventory/v1/invoices/{invoice_id}'
 
 # Create invoice
-POST /zoho-inventory/inventory/v1/invoices
+maton api -X POST '/zoho-inventory/inventory/v1/invoices'
 
 # Update invoice
-PUT /zoho-inventory/inventory/v1/invoices/{invoice_id}
+maton api -X PUT '/zoho-inventory/inventory/v1/invoices/{invoice_id}'
 
 # Delete invoice
-DELETE /zoho-inventory/inventory/v1/invoices/{invoice_id}
+maton api -X DELETE '/zoho-inventory/inventory/v1/invoices/{invoice_id}'
 
 # Status actions
-POST /zoho-inventory/inventory/v1/invoices/{invoice_id}/status/sent
-POST /zoho-inventory/inventory/v1/invoices/{invoice_id}/status/draft
-POST /zoho-inventory/inventory/v1/invoices/{invoice_id}/status/void
+maton api -X POST '/zoho-inventory/inventory/v1/invoices/{invoice_id}/status/sent'
+maton api -X POST '/zoho-inventory/inventory/v1/invoices/{invoice_id}/status/draft'
+maton api -X POST '/zoho-inventory/inventory/v1/invoices/{invoice_id}/status/void'
 
 # Email
-POST /zoho-inventory/inventory/v1/invoices/{invoice_id}/email
+maton api -X POST '/zoho-inventory/inventory/v1/invoices/{invoice_id}/email'
 ```
 
 ### Purchase Orders
 
 ```bash
 # List purchase orders
-GET /zoho-inventory/inventory/v1/purchaseorders
+maton api '/zoho-inventory/inventory/v1/purchaseorders'
 
 # Create purchase order
-POST /zoho-inventory/inventory/v1/purchaseorders
+maton api -X POST '/zoho-inventory/inventory/v1/purchaseorders'
 
 # Update purchase order
-PUT /zoho-inventory/inventory/v1/purchaseorders/{purchaseorder_id}
+maton api -X PUT '/zoho-inventory/inventory/v1/purchaseorders/{purchaseorder_id}'
 
 # Delete purchase order
-DELETE /zoho-inventory/inventory/v1/purchaseorders/{purchaseorder_id}
+maton api -X DELETE '/zoho-inventory/inventory/v1/purchaseorders/{purchaseorder_id}'
 
 # Status actions
-POST /zoho-inventory/inventory/v1/purchaseorders/{purchaseorder_id}/status/issued
-POST /zoho-inventory/inventory/v1/purchaseorders/{purchaseorder_id}/status/cancelled
+maton api -X POST '/zoho-inventory/inventory/v1/purchaseorders/{purchaseorder_id}/status/issued'
+maton api -X POST '/zoho-inventory/inventory/v1/purchaseorders/{purchaseorder_id}/status/cancelled'
 ```
 
 ### Bills
 
 ```bash
 # List bills
-GET /zoho-inventory/inventory/v1/bills
+maton api '/zoho-inventory/inventory/v1/bills'
 
 # Create bill
-POST /zoho-inventory/inventory/v1/bills
+maton api -X POST '/zoho-inventory/inventory/v1/bills'
 
 # Update bill
-PUT /zoho-inventory/inventory/v1/bills/{bill_id}
+maton api -X PUT '/zoho-inventory/inventory/v1/bills/{bill_id}'
 
 # Delete bill
-DELETE /zoho-inventory/inventory/v1/bills/{bill_id}
+maton api -X DELETE '/zoho-inventory/inventory/v1/bills/{bill_id}'
 
 # Status actions
-POST /zoho-inventory/inventory/v1/bills/{bill_id}/status/open
-POST /zoho-inventory/inventory/v1/bills/{bill_id}/status/void
+maton api -X POST '/zoho-inventory/inventory/v1/bills/{bill_id}/status/open'
+maton api -X POST '/zoho-inventory/inventory/v1/bills/{bill_id}/status/void'
 ```
 
 ### Item Groups
 
 ```bash
-GET /zoho-inventory/inventory/v1/itemgroups
-GET /zoho-inventory/inventory/v1/itemgroups/{itemgroup_id}
-POST /zoho-inventory/inventory/v1/itemgroups
-PUT /zoho-inventory/inventory/v1/itemgroups/{itemgroup_id}
-DELETE /zoho-inventory/inventory/v1/itemgroups/{itemgroup_id}
+maton api '/zoho-inventory/inventory/v1/itemgroups'
+maton api '/zoho-inventory/inventory/v1/itemgroups/{itemgroup_id}'
+maton api -X POST '/zoho-inventory/inventory/v1/itemgroups'
+maton api -X PUT '/zoho-inventory/inventory/v1/itemgroups/{itemgroup_id}'
+maton api -X DELETE '/zoho-inventory/inventory/v1/itemgroups/{itemgroup_id}'
 ```
 
 ### Shipment Orders
 
 ```bash
-POST /zoho-inventory/inventory/v1/shipmentorders
-GET /zoho-inventory/inventory/v1/shipmentorders/{shipmentorder_id}
-PUT /zoho-inventory/inventory/v1/shipmentorders/{shipmentorder_id}
-DELETE /zoho-inventory/inventory/v1/shipmentorders/{shipmentorder_id}
-POST /zoho-inventory/inventory/v1/shipmentorders/{shipmentorder_id}/status/delivered
+maton api -X POST '/zoho-inventory/inventory/v1/shipmentorders'
+maton api '/zoho-inventory/inventory/v1/shipmentorders/{shipmentorder_id}'
+maton api -X PUT '/zoho-inventory/inventory/v1/shipmentorders/{shipmentorder_id}'
+maton api -X DELETE '/zoho-inventory/inventory/v1/shipmentorders/{shipmentorder_id}'
+maton api -X POST '/zoho-inventory/inventory/v1/shipmentorders/{shipmentorder_id}/status/delivered'
 ```
 
 ## Available Modules

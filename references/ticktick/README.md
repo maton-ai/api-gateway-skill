@@ -15,44 +15,45 @@
 
 ### List Projects
 ```bash
-GET /ticktick/open/v1/project
+maton api '/ticktick/open/v1/project'
 ```
 
 ### Get Project with Tasks
 ```bash
-GET /ticktick/open/v1/project/{projectId}/data
+maton api '/ticktick/open/v1/project/{projectId}/data'
 ```
 
 Returns project details along with tasks and columns.
 
 ### Create Project
 ```bash
-POST /ticktick/open/v1/project
-Content-Type: application/json
-
+maton api -X POST '/ticktick/open/v1/project' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "My Project",
   "viewMode": "list"
 }
+EOF
 ```
 
 **viewMode options:** `list`, `kanban`, `timeline`
 
 ### Delete Project
 ```bash
-DELETE /ticktick/open/v1/project/{projectId}
+maton api -X DELETE '/ticktick/open/v1/project/{projectId}'
 ```
 
 ### Get Task
 ```bash
-GET /ticktick/open/v1/project/{projectId}/task/{taskId}
+maton api '/ticktick/open/v1/project/{projectId}/task/{taskId}'
 ```
 
 ### Create Task
 ```bash
-POST /ticktick/open/v1/task
-Content-Type: application/json
-
+maton api -X POST '/ticktick/open/v1/task' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "title": "New task",
   "projectId": "PROJECT_ID",
@@ -61,31 +62,33 @@ Content-Type: application/json
   "dueDate": "2026-02-15T10:00:00+0000",
   "isAllDay": false
 }
+EOF
 ```
 
 **Priority values:** 0=None, 1=Low, 3=Medium, 5=High
 
 ### Update Task
 ```bash
-POST /ticktick/open/v1/task/{taskId}
-Content-Type: application/json
-
+maton api -X POST '/ticktick/open/v1/task/{taskId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "id": "TASK_ID",
   "projectId": "PROJECT_ID",
   "title": "Updated title",
   "priority": 1
 }
+EOF
 ```
 
 ### Complete Task
 ```bash
-POST /ticktick/open/v1/project/{projectId}/task/{taskId}/complete
+maton api -X POST '/ticktick/open/v1/project/{projectId}/task/{taskId}/complete'
 ```
 
 ### Delete Task
 ```bash
-DELETE /ticktick/open/v1/project/{projectId}/task/{taskId}
+maton api -X DELETE '/ticktick/open/v1/project/{projectId}/task/{taskId}'
 ```
 
 ## Task Fields

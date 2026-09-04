@@ -17,165 +17,178 @@
 
 #### Search People
 ```bash
-POST /apollo/v1/mixed_people/api_search
-Content-Type: application/json
-
+maton api -X POST '/apollo/v1/mixed_people/api_search' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "q_organization_name": "Google",
   "page": 1,
   "per_page": 25
 }
+EOF
 ```
 
 #### Get Person
 ```bash
-GET /apollo/v1/people/{personId}
+maton api '/apollo/v1/people/{personId}'
 ```
 
 #### Enrich Person
 ```bash
-POST /apollo/v1/people/match
-Content-Type: application/json
-
+maton api -X POST '/apollo/v1/people/match' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "email": "john@example.com"
 }
+EOF
 ```
 
 Or by LinkedIn:
 ```bash
-POST /apollo/v1/people/match
-Content-Type: application/json
-
+maton api -X POST '/apollo/v1/people/match' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "linkedin_url": "https://linkedin.com/in/johndoe"
 }
+EOF
 ```
 
 ### Organizations
 
 #### Search Organizations
 ```bash
-POST /apollo/v1/organizations/search
-Content-Type: application/json
-
+maton api -X POST '/apollo/v1/organizations/search' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "q_organization_name": "Google",
   "page": 1,
   "per_page": 25
 }
+EOF
 ```
 
 #### Enrich Organization
 ```bash
-POST /apollo/v1/organizations/enrich
-Content-Type: application/json
-
+maton api -X POST '/apollo/v1/organizations/enrich' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "domain": "google.com"
 }
+EOF
 ```
 
 ### Contacts
 
 #### Search Contacts
 ```bash
-POST /apollo/v1/contacts/search
-Content-Type: application/json
-
+maton api -X POST '/apollo/v1/contacts/search' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "page": 1,
   "per_page": 25
 }
+EOF
 ```
 
 #### Create Contact
 ```bash
-POST /apollo/v1/contacts
-Content-Type: application/json
-
+maton api -X POST '/apollo/v1/contacts' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "first_name": "John",
   "last_name": "Doe",
   "email": "john@example.com",
   "organization_name": "Acme Corp"
 }
+EOF
 ```
 
 #### Update Contact
 ```bash
-PUT /apollo/v1/contacts/{contactId}
-Content-Type: application/json
-
+maton api -X PUT '/apollo/v1/contacts/{contactId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "first_name": "Jane"
 }
+EOF
 ```
 
 ### Accounts
 
 #### Search Accounts
 ```bash
-POST /apollo/v1/accounts/search
-Content-Type: application/json
-
+maton api -X POST '/apollo/v1/accounts/search' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "page": 1,
   "per_page": 25
 }
+EOF
 ```
 
 #### Create Account
 ```bash
-POST /apollo/v1/accounts
-Content-Type: application/json
-
+maton api -X POST '/apollo/v1/accounts' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Acme Corp",
   "domain": "acme.com"
 }
+EOF
 ```
 
 ### Sequences
 
 #### Search Sequences
 ```bash
-POST /apollo/v1/emailer_campaigns/search
-Content-Type: application/json
-
+maton api -X POST '/apollo/v1/emailer_campaigns/search' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "page": 1,
   "per_page": 25
 }
+EOF
 ```
 
 #### Add Contact to Sequence
 ```bash
-POST /apollo/v1/emailer_campaigns/{campaignId}/add_contact_ids
-Content-Type: application/json
-
+maton api -X POST '/apollo/v1/emailer_campaigns/{campaignId}/add_contact_ids' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "contact_ids": ["contact_id_1", "contact_id_2"]
 }
+EOF
 ```
 
 ### Email
 
 #### Search Email Messages
 ```bash
-POST /apollo/v1/emailer_messages/search
-Content-Type: application/json
-
+maton api -X POST '/apollo/v1/emailer_messages/search' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "contact_id": "{contactId}"
 }
+EOF
 ```
 
 ### Labels
 
 #### List Labels
 ```bash
-GET /apollo/v1/labels
+maton api '/apollo/v1/labels'
 ```
 
 ## Search Filters

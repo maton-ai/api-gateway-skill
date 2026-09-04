@@ -15,39 +15,39 @@
 
 ### List Records
 ```bash
-GET /airtable/v0/{baseId}/{tableIdOrName}?maxRecords=100
+maton api '/airtable/v0/{baseId}/{tableIdOrName}?maxRecords=100'
 ```
 
 With view:
 ```bash
-GET /airtable/v0/{baseId}/{tableIdOrName}?view=Grid%20view&maxRecords=100
+maton api '/airtable/v0/{baseId}/{tableIdOrName}?view=Grid%20view&maxRecords=100'
 ```
 
 With filter formula:
 ```bash
-GET /airtable/v0/{baseId}/{tableIdOrName}?filterByFormula={Status}='Active'
+maton api "/airtable/v0/{baseId}/{tableIdOrName}?filterByFormula={Status}='Active'"
 ```
 
 With field selection:
 ```bash
-GET /airtable/v0/{baseId}/{tableIdOrName}?fields[]=Name&fields[]=Status&fields[]=Email
+maton api '/airtable/v0/{baseId}/{tableIdOrName}?fields[]=Name&fields[]=Status&fields[]=Email'
 ```
 
 With sorting:
 ```bash
-GET /airtable/v0/{baseId}/{tableIdOrName}?sort[0][field]=Created&sort[0][direction]=desc
+maton api '/airtable/v0/{baseId}/{tableIdOrName}?sort[0][field]=Created&sort[0][direction]=desc'
 ```
 
 ### Get Record
 ```bash
-GET /airtable/v0/{baseId}/{tableIdOrName}/{recordId}
+maton api '/airtable/v0/{baseId}/{tableIdOrName}/{recordId}'
 ```
 
 ### Create Records
 ```bash
-POST /airtable/v0/{baseId}/{tableIdOrName}
-Content-Type: application/json
-
+maton api -X POST '/airtable/v0/{baseId}/{tableIdOrName}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "records": [
     {
@@ -59,13 +59,14 @@ Content-Type: application/json
     }
   ]
 }
+EOF
 ```
 
 ### Update Records (PATCH - partial update)
 ```bash
-PATCH /airtable/v0/{baseId}/{tableIdOrName}
-Content-Type: application/json
-
+maton api -X PATCH '/airtable/v0/{baseId}/{tableIdOrName}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "records": [
     {
@@ -76,13 +77,14 @@ Content-Type: application/json
     }
   ]
 }
+EOF
 ```
 
 ### Update Records (PUT - full replace)
 ```bash
-PUT /airtable/v0/{baseId}/{tableIdOrName}
-Content-Type: application/json
-
+maton api -X PUT '/airtable/v0/{baseId}/{tableIdOrName}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "records": [
     {
@@ -94,21 +96,22 @@ Content-Type: application/json
     }
   ]
 }
+EOF
 ```
 
 ### Delete Records
 ```bash
-DELETE /airtable/v0/{baseId}/{tableIdOrName}?records[]=recXXXXX&records[]=recYYYYY
+maton api -X DELETE '/airtable/v0/{baseId}/{tableIdOrName}?records[]=recXXXXX&records[]=recYYYYY'
 ```
 
 ### List Bases
 ```bash
-GET /airtable/v0/meta/bases
+maton api '/airtable/v0/meta/bases'
 ```
 
 ### Get Base Schema
 ```bash
-GET /airtable/v0/meta/bases/{baseId}/tables
+maton api '/airtable/v0/meta/bases/{baseId}/tables'
 ```
 
 ## Pagination
@@ -128,7 +131,7 @@ Response includes `offset` when more records exist:
 
 Use offset for next page:
 ```bash
-GET /airtable/v0/{baseId}/{tableIdOrName}?pageSize=50&offset=itrXXXXXXXXXXX
+maton api '/airtable/v0/{baseId}/{tableIdOrName}?pageSize=50&offset=itrXXXXXXXXXXX'
 ```
 
 ## Notes

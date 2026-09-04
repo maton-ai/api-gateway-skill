@@ -16,145 +16,152 @@
 ### Account
 
 ```bash
-GET /brevo/v3/account
+maton api '/brevo/v3/account'
 ```
 
 ### Contacts
 
 #### List Contacts
 ```bash
-GET /brevo/v3/contacts?limit=50&offset=0
+maton api '/brevo/v3/contacts?limit=50&offset=0'
 ```
 
 #### Get Contact
 ```bash
-GET /brevo/v3/contacts/{identifier}
+maton api '/brevo/v3/contacts/{identifier}'
 ```
 
 #### Create Contact
 ```bash
-POST /brevo/v3/contacts
-Content-Type: application/json
-
+maton api -X POST '/brevo/v3/contacts' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "email": "contact@example.com",
   "attributes": {"FIRSTNAME": "John", "LASTNAME": "Doe"},
   "listIds": [2]
 }
+EOF
 ```
 
 #### Update Contact
 ```bash
-PUT /brevo/v3/contacts/{identifier}
-Content-Type: application/json
-
+maton api -X PUT '/brevo/v3/contacts/{identifier}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "attributes": {"FIRSTNAME": "Updated"}
 }
+EOF
 ```
 
 #### Delete Contact
 ```bash
-DELETE /brevo/v3/contacts/{identifier}
+maton api -X DELETE '/brevo/v3/contacts/{identifier}'
 ```
 
 ### Lists
 
 #### List All Lists
 ```bash
-GET /brevo/v3/contacts/lists
+maton api '/brevo/v3/contacts/lists'
 ```
 
 #### Create List
 ```bash
-POST /brevo/v3/contacts/lists
-Content-Type: application/json
-
+maton api -X POST '/brevo/v3/contacts/lists' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "New List",
   "folderId": 1
 }
+EOF
 ```
 
 #### Add Contacts to List
 ```bash
-POST /brevo/v3/contacts/lists/{listId}/contacts/add
-Content-Type: application/json
-
+maton api -X POST '/brevo/v3/contacts/lists/{listId}/contacts/add' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "emails": ["contact@example.com"]
 }
+EOF
 ```
 
 ### Folders
 
 #### List Folders
 ```bash
-GET /brevo/v3/contacts/folders
+maton api '/brevo/v3/contacts/folders'
 ```
 
 #### Create Folder
 ```bash
-POST /brevo/v3/contacts/folders
-Content-Type: application/json
-
+maton api -X POST '/brevo/v3/contacts/folders' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "New Folder"
 }
+EOF
 ```
 
 ### Transactional Emails
 
 #### Send Email
 ```bash
-POST /brevo/v3/smtp/email
-Content-Type: application/json
-
+maton api -X POST '/brevo/v3/smtp/email' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "sender": {"name": "John", "email": "john@example.com"},
   "to": [{"email": "recipient@example.com", "name": "Jane"}],
   "subject": "Hello!",
   "htmlContent": "<html><body><h1>Hi!</h1></body></html>"
 }
+EOF
 ```
 
 #### Get Email Statistics
 ```bash
-GET /brevo/v3/smtp/statistics/events?limit=50
+maton api '/brevo/v3/smtp/statistics/events?limit=50'
 ```
 
 ### Email Templates
 
 #### List Templates
 ```bash
-GET /brevo/v3/smtp/templates
+maton api '/brevo/v3/smtp/templates'
 ```
 
 #### Create Template
 ```bash
-POST /brevo/v3/smtp/templates
-Content-Type: application/json
-
+maton api -X POST '/brevo/v3/smtp/templates' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "sender": {"name": "Company", "email": "noreply@company.com"},
   "templateName": "Welcome Email",
   "subject": "Welcome {{params.name}}!",
   "htmlContent": "<html><body><h1>Hello {{params.name}}!</h1></body></html>"
 }
+EOF
 ```
 
 ### Email Campaigns
 
 #### List Campaigns
 ```bash
-GET /brevo/v3/emailCampaigns
+maton api '/brevo/v3/emailCampaigns'
 ```
 
 #### Create Campaign
 ```bash
-POST /brevo/v3/emailCampaigns
-Content-Type: application/json
-
+maton api -X POST '/brevo/v3/emailCampaigns' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Newsletter",
   "subject": "Monthly Update",
@@ -162,36 +169,38 @@ Content-Type: application/json
   "htmlContent": "<html><body><h1>News</h1></body></html>",
   "recipients": {"listIds": [2]}
 }
+EOF
 ```
 
 #### Send Campaign
 ```bash
-POST /brevo/v3/emailCampaigns/{campaignId}/sendNow
+maton api -X POST '/brevo/v3/emailCampaigns/{campaignId}/sendNow'
 ```
 
 ### Senders
 
 #### List Senders
 ```bash
-GET /brevo/v3/senders
+maton api '/brevo/v3/senders'
 ```
 
 #### Create Sender
 ```bash
-POST /brevo/v3/senders
-Content-Type: application/json
-
+maton api -X POST '/brevo/v3/senders' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Marketing",
   "email": "marketing@company.com"
 }
+EOF
 ```
 
 ### Attributes
 
 #### List Attributes
 ```bash
-GET /brevo/v3/contacts/attributes
+maton api '/brevo/v3/contacts/attributes'
 ```
 
 ## Pagination
@@ -199,7 +208,7 @@ GET /brevo/v3/contacts/attributes
 Brevo uses offset-based pagination:
 
 ```bash
-GET /brevo/v3/contacts?limit=50&offset=0
+maton api '/brevo/v3/contacts?limit=50&offset=0'
 ```
 
 **Parameters:**

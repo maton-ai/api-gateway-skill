@@ -33,155 +33,162 @@
 
 #### List Portals
 ```bash
-GET /zoho-projects/api/v3/portals
+maton api '/zoho-projects/api/v3/portals'
 ```
 
 ### Projects
 
 #### List Projects
 ```bash
-GET /zoho-projects/api/v3/portal/{portal_id}/projects
+maton api '/zoho-projects/api/v3/portal/{portal_id}/projects'
 ```
 
 #### Get Project
 ```bash
-GET /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}
+maton api '/zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}'
 ```
 
 #### Create Project
 ```bash
-POST /zoho-projects/api/v3/portal/{portal_id}/projects
-Content-Type: application/json
-
+maton api -X POST '/zoho-projects/api/v3/portal/{portal_id}/projects' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "New Project",
   "description": "Project description"
 }
+EOF
 ```
 
 #### Update Project
 ```bash
-PATCH /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}
-Content-Type: application/json
-
+maton api -X PATCH '/zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Updated Name"
 }
+EOF
 ```
 
 #### Delete Project
 ```bash
-DELETE /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}
+maton api -X DELETE '/zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}'
 ```
 
 ### Tasks
 
 #### List Tasks
 ```bash
-GET /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasks
+maton api '/zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasks'
 ```
 
 #### Get Task
 ```bash
-GET /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasks/{task_id}
+maton api '/zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasks/{task_id}'
 ```
 
 #### Create Task
 ```bash
-POST /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasks
-Content-Type: application/json
-
+maton api -X POST '/zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasks' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "New Task",
   "priority": "high"
 }
+EOF
 ```
 
 #### Update Task
 ```bash
-PATCH /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasks/{task_id}
-Content-Type: application/json
-
+maton api -X PATCH '/zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasks/{task_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Updated Name",
   "priority": "medium"
 }
+EOF
 ```
 
 #### Delete Task
 ```bash
-DELETE /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasks/{task_id}
+maton api -X DELETE '/zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasks/{task_id}'
 ```
 
 ### Task Comments
 
 #### List Comments
 ```bash
-GET /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasks/{task_id}/comments
+maton api '/zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasks/{task_id}/comments'
 ```
 
 #### Add Comment
 ```bash
-POST /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasks/{task_id}/comments
-Content-Type: application/json
-
+maton api -X POST '/zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasks/{task_id}/comments' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "comment": "Comment text"
 }
+EOF
 ```
 
 Note: The field name is `comment`, not `content`.
 
 #### Delete Comment
 ```bash
-DELETE /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasks/{task_id}/comments/{comment_id}
+maton api -X DELETE '/zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasks/{task_id}/comments/{comment_id}'
 ```
 
 ### Tasklists
 
 #### List Tasklists
 ```bash
-GET /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasklists
+maton api '/zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasklists'
 ```
 
 #### Create Tasklist
 ```bash
-POST /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasklists
-Content-Type: application/json
-
+maton api -X POST '/zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasklists' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "New Tasklist",
   "flag": "internal"
 }
+EOF
 ```
 
 #### Update Tasklist
 ```bash
-PATCH /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasklists/{tasklist_id}
-Content-Type: application/json
-
+maton api -X PATCH '/zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasklists/{tasklist_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Updated Name"
 }
+EOF
 ```
 
 #### Delete Tasklist
 ```bash
-DELETE /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasklists/{tasklist_id}
+maton api -X DELETE '/zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasklists/{tasklist_id}'
 ```
 
 ### Milestones
 
 #### List Milestones
 ```bash
-GET /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/milestones
+maton api '/zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/milestones'
 ```
 
 #### Create Milestone
 ```bash
-POST /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/milestones
-Content-Type: application/json
-
+maton api -X POST '/zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/milestones' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Phase 1",
   "start_date": "06-01-2026",
@@ -189,37 +196,39 @@ Content-Type: application/json
   "flag": "internal",
   "owner_zpuid": "{user_zpuid}"
 }
+EOF
 ```
 
 Required fields: `name`, `start_date`, `end_date`, `flag`, `owner_zpuid`
 
 #### Update Milestone
 ```bash
-PATCH /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/milestones/{milestone_id}
-Content-Type: application/json
-
+maton api -X PATCH '/zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/milestones/{milestone_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Updated Phase"
 }
+EOF
 ```
 
 #### Delete Milestone
 ```bash
-DELETE /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/milestones/{milestone_id}
+maton api -X DELETE '/zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/milestones/{milestone_id}'
 ```
 
 ### Users
 
 #### List Users
 ```bash
-GET /zoho-projects/api/v3/portal/{portal_id}/users
+maton api '/zoho-projects/api/v3/portal/{portal_id}/users'
 ```
 
 ## Pagination
 
 Page-based pagination with `page` and `per_page` parameters:
 ```bash
-GET /zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasks?page=1&per_page=50
+maton api '/zoho-projects/api/v3/portal/{portal_id}/projects/{project_id}/tasks?page=1&per_page=50'
 ```
 
 Response includes `page_info`:

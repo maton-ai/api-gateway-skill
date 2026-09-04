@@ -17,32 +17,32 @@ Sentry API uses version `0` prefix in all paths.
 
 ### List Organizations
 ```bash
-GET /sentry/api/0/organizations/
+maton api '/sentry/api/0/organizations/'
 ```
 
 ### Retrieve Organization
 ```bash
-GET /sentry/api/0/organizations/{organization_slug}/
+maton api '/sentry/api/0/organizations/{organization_slug}/'
 ```
 
 ### List Organization Projects
 ```bash
-GET /sentry/api/0/organizations/{organization_slug}/projects/
+maton api '/sentry/api/0/organizations/{organization_slug}/projects/'
 ```
 
 ### List Organization Members
 ```bash
-GET /sentry/api/0/organizations/{organization_slug}/members/
+maton api '/sentry/api/0/organizations/{organization_slug}/members/'
 ```
 
 ### Retrieve Project
 ```bash
-GET /sentry/api/0/projects/{organization_slug}/{project_slug}/
+maton api '/sentry/api/0/projects/{organization_slug}/{project_slug}/'
 ```
 
 ### List Project Issues
 ```bash
-GET /sentry/api/0/projects/{organization_slug}/{project_slug}/issues/
+maton api '/sentry/api/0/projects/{organization_slug}/{project_slug}/issues/'
 ```
 
 Query parameters:
@@ -52,91 +52,95 @@ Query parameters:
 
 ### List Organization Issues
 ```bash
-GET /sentry/api/0/organizations/{organization_slug}/issues/
+maton api '/sentry/api/0/organizations/{organization_slug}/issues/'
 ```
 
 ### Retrieve Issue
 ```bash
-GET /sentry/api/0/issues/{issue_id}/
+maton api '/sentry/api/0/issues/{issue_id}/'
 ```
 
 ### Update Issue
 ```bash
-PUT /sentry/api/0/issues/{issue_id}/
-Content-Type: application/json
-
+maton api -X PUT '/sentry/api/0/issues/{issue_id}/' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "status": "resolved"
 }
+EOF
 ```
 
 Status values: `resolved`, `unresolved`, `ignored`
 
 ### Delete Issue
 ```bash
-DELETE /sentry/api/0/issues/{issue_id}/
+maton api -X DELETE '/sentry/api/0/issues/{issue_id}/'
 ```
 
 ### List Issue Events
 ```bash
-GET /sentry/api/0/issues/{issue_id}/events/
+maton api '/sentry/api/0/issues/{issue_id}/events/'
 ```
 
 ### List Project Events
 ```bash
-GET /sentry/api/0/projects/{organization_slug}/{project_slug}/events/
+maton api '/sentry/api/0/projects/{organization_slug}/{project_slug}/events/'
 ```
 
 ### List Organization Teams
 ```bash
-GET /sentry/api/0/organizations/{organization_slug}/teams/
+maton api '/sentry/api/0/organizations/{organization_slug}/teams/'
 ```
 
 ### Create Team
 ```bash
-POST /sentry/api/0/organizations/{organization_slug}/teams/
-Content-Type: application/json
-
+maton api -X POST '/sentry/api/0/organizations/{organization_slug}/teams/' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "New Team",
   "slug": "new-team"
 }
+EOF
 ```
 
 ### Retrieve Team
 ```bash
-GET /sentry/api/0/teams/{organization_slug}/{team_slug}/
+maton api '/sentry/api/0/teams/{organization_slug}/{team_slug}/'
 ```
 
 ### List Organization Releases
 ```bash
-GET /sentry/api/0/organizations/{organization_slug}/releases/
+maton api '/sentry/api/0/organizations/{organization_slug}/releases/'
 ```
 
 ### Create Release
 ```bash
-POST /sentry/api/0/organizations/{organization_slug}/releases/
-Content-Type: application/json
-
+maton api -X POST '/sentry/api/0/organizations/{organization_slug}/releases/' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "version": "1.0.0",
   "projects": ["project-slug"]
 }
+EOF
 ```
 
 ### Retrieve Release
 ```bash
-GET /sentry/api/0/organizations/{organization_slug}/releases/{version}/
+maton api '/sentry/api/0/organizations/{organization_slug}/releases/{version}/'
 ```
 
 ### Create Deploy
 ```bash
-POST /sentry/api/0/organizations/{organization_slug}/releases/{version}/deploys/
-Content-Type: application/json
-
+maton api -X POST '/sentry/api/0/organizations/{organization_slug}/releases/{version}/deploys/' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "environment": "production"
 }
+EOF
 ```
 
 ## Notes

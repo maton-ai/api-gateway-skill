@@ -17,22 +17,22 @@ Note: All Eventbrite API paths should end with a trailing slash.
 
 ### Get Current User
 ```bash
-GET /eventbrite/v3/users/me/
+maton api '/eventbrite/v3/users/me/'
 ```
 
 ### List User Organizations
 ```bash
-GET /eventbrite/v3/users/me/organizations/
+maton api '/eventbrite/v3/users/me/organizations/'
 ```
 
 ### List User Orders
 ```bash
-GET /eventbrite/v3/users/me/orders/
+maton api '/eventbrite/v3/users/me/orders/'
 ```
 
 ### List Organization Events
 ```bash
-GET /eventbrite/v3/organizations/{organization_id}/events/
+maton api '/eventbrite/v3/organizations/{organization_id}/events/'
 ```
 
 Query parameters:
@@ -42,9 +42,9 @@ Query parameters:
 
 ### Create Event
 ```bash
-POST /eventbrite/v3/organizations/{organization_id}/events/
-Content-Type: application/json
-
+maton api -X POST '/eventbrite/v3/organizations/{organization_id}/events/' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "event": {
     "name": {"html": "My Event"},
@@ -53,50 +53,52 @@ Content-Type: application/json
     "currency": "USD"
   }
 }
+EOF
 ```
 
 ### Get Event
 ```bash
-GET /eventbrite/v3/events/{event_id}/
+maton api '/eventbrite/v3/events/{event_id}/'
 ```
 
 ### Update Event
 ```bash
-POST /eventbrite/v3/events/{event_id}/
-Content-Type: application/json
-
+maton api -X POST '/eventbrite/v3/events/{event_id}/' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "event": {
     "name": {"html": "Updated Name"}
   }
 }
+EOF
 ```
 
 ### Publish Event
 ```bash
-POST /eventbrite/v3/events/{event_id}/publish/
+maton api -X POST '/eventbrite/v3/events/{event_id}/publish/'
 ```
 
 ### Cancel Event
 ```bash
-POST /eventbrite/v3/events/{event_id}/cancel/
+maton api -X POST '/eventbrite/v3/events/{event_id}/cancel/'
 ```
 
 ### Delete Event
 ```bash
-DELETE /eventbrite/v3/events/{event_id}/
+maton api -X DELETE '/eventbrite/v3/events/{event_id}/'
 ```
 
 ### List Ticket Classes
 ```bash
-GET /eventbrite/v3/events/{event_id}/ticket_classes/
+maton api '/eventbrite/v3/events/{event_id}/ticket_classes/'
 ```
 
 ### Create Ticket Class
 ```bash
-POST /eventbrite/v3/events/{event_id}/ticket_classes/
-Content-Type: application/json
-
+maton api -X POST '/eventbrite/v3/events/{event_id}/ticket_classes/' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "ticket_class": {
     "name": "General Admission",
@@ -104,33 +106,34 @@ Content-Type: application/json
     "cost": "USD,2500"
   }
 }
+EOF
 ```
 
 ### List Event Attendees
 ```bash
-GET /eventbrite/v3/events/{event_id}/attendees/
+maton api '/eventbrite/v3/events/{event_id}/attendees/'
 ```
 
 ### List Event Orders
 ```bash
-GET /eventbrite/v3/events/{event_id}/orders/
+maton api '/eventbrite/v3/events/{event_id}/orders/'
 ```
 
 ### Get Order
 ```bash
-GET /eventbrite/v3/orders/{order_id}/
+maton api '/eventbrite/v3/orders/{order_id}/'
 ```
 
 ### List Organization Venues
 ```bash
-GET /eventbrite/v3/organizations/{organization_id}/venues/
+maton api '/eventbrite/v3/organizations/{organization_id}/venues/'
 ```
 
 ### Create Venue
 ```bash
-POST /eventbrite/v3/organizations/{organization_id}/venues/
-Content-Type: application/json
-
+maton api -X POST '/eventbrite/v3/organizations/{organization_id}/venues/' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "venue": {
     "name": "Conference Center",
@@ -143,41 +146,42 @@ Content-Type: application/json
     }
   }
 }
+EOF
 ```
 
 ### Get Venue
 ```bash
-GET /eventbrite/v3/venues/{venue_id}/
+maton api '/eventbrite/v3/venues/{venue_id}/'
 ```
 
 ### List Categories
 ```bash
-GET /eventbrite/v3/categories/
+maton api '/eventbrite/v3/categories/'
 ```
 
 ### Get Category
 ```bash
-GET /eventbrite/v3/categories/{category_id}/
+maton api '/eventbrite/v3/categories/{category_id}/'
 ```
 
 ### List Subcategories
 ```bash
-GET /eventbrite/v3/subcategories/
+maton api '/eventbrite/v3/subcategories/'
 ```
 
 ### List Formats
 ```bash
-GET /eventbrite/v3/formats/
+maton api '/eventbrite/v3/formats/'
 ```
 
 ### List Countries
 ```bash
-GET /eventbrite/v3/system/countries/
+maton api '/eventbrite/v3/system/countries/'
 ```
 
 ### List Regions
 ```bash
-GET /eventbrite/v3/system/regions/
+maton api '/eventbrite/v3/system/regions/'
 ```
 
 ## Expansions
@@ -185,7 +189,7 @@ GET /eventbrite/v3/system/regions/
 Include related data with the `expand` parameter:
 
 ```bash
-GET /eventbrite/v3/events/{event_id}/?expand=venue,ticket_classes,category
+maton api '/eventbrite/v3/events/{event_id}/?expand=venue,ticket_classes,category'
 ```
 
 Available expansions: `venue`, `ticket_classes`, `category`, `subcategory`, `format`, `organizer`
@@ -195,8 +199,8 @@ Available expansions: `venue`, `ticket_classes`, `category`, `subcategory`, `for
 Use `continuation` token for pagination:
 
 ```bash
-GET /eventbrite/v3/organizations/{org_id}/events/?page_size=50
-GET /eventbrite/v3/organizations/{org_id}/events/?continuation=eyJwYWdlIjogMn0
+maton api '/eventbrite/v3/organizations/{org_id}/events/?page_size=50'
+maton api '/eventbrite/v3/organizations/{org_id}/events/?continuation=eyJwYWdlIjogMn0'
 ```
 
 ## Notes

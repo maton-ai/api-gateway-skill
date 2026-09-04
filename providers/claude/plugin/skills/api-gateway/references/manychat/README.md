@@ -17,154 +17,162 @@
 
 #### Get Page Info
 ```bash
-GET /manychat/fb/page/getInfo
+maton api '/manychat/fb/page/getInfo'
 ```
 
 #### List Tags
 ```bash
-GET /manychat/fb/page/getTags
+maton api '/manychat/fb/page/getTags'
 ```
 
 #### Create Tag
 ```bash
-POST /manychat/fb/page/createTag
-Content-Type: application/json
-
+maton api -X POST '/manychat/fb/page/createTag' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "New Tag"
 }
+EOF
 ```
 
 #### Remove Tag
 ```bash
-POST /manychat/fb/page/removeTag
-Content-Type: application/json
-
+maton api -X POST '/manychat/fb/page/removeTag' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "tag_id": 123
 }
+EOF
 ```
 
 #### List Custom Fields
 ```bash
-GET /manychat/fb/page/getCustomFields
+maton api '/manychat/fb/page/getCustomFields'
 ```
 
 #### Create Custom Field
 ```bash
-POST /manychat/fb/page/createCustomField
-Content-Type: application/json
-
+maton api -X POST '/manychat/fb/page/createCustomField' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "caption": "Phone Number",
   "type": "text",
   "description": "Customer phone number"
 }
+EOF
 ```
 
 #### List Bot Fields
 ```bash
-GET /manychat/fb/page/getBotFields
+maton api '/manychat/fb/page/getBotFields'
 ```
 
 #### Set Bot Field
 ```bash
-POST /manychat/fb/page/setBotField
-Content-Type: application/json
-
+maton api -X POST '/manychat/fb/page/setBotField' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "field_id": 123,
   "field_value": 42
 }
+EOF
 ```
 
 #### List Flows
 ```bash
-GET /manychat/fb/page/getFlows
+maton api '/manychat/fb/page/getFlows'
 ```
 
 #### List Growth Tools
 ```bash
-GET /manychat/fb/page/getGrowthTools
+maton api '/manychat/fb/page/getGrowthTools'
 ```
 
 #### List OTN Topics
 ```bash
-GET /manychat/fb/page/getOtnTopics
+maton api '/manychat/fb/page/getOtnTopics'
 ```
 
 ### Subscriber Operations
 
 #### Get Subscriber Info
 ```bash
-GET /manychat/fb/subscriber/getInfo?subscriber_id=123456789
+maton api '/manychat/fb/subscriber/getInfo?subscriber_id=123456789'
 ```
 
 #### Find Subscriber by Name
 ```bash
-GET /manychat/fb/subscriber/findByName?name=John%20Doe
+maton api '/manychat/fb/subscriber/findByName?name=John%20Doe'
 ```
 
 #### Find Subscriber by Email/Phone
 ```bash
-GET /manychat/fb/subscriber/findBySystemField?email=john@example.com
+maton api '/manychat/fb/subscriber/findBySystemField?email=john@example.com'
 ```
 
 #### Create Subscriber
 ```bash
-POST /manychat/fb/subscriber/createSubscriber
-Content-Type: application/json
-
+maton api -X POST '/manychat/fb/subscriber/createSubscriber' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "first_name": "John",
   "last_name": "Doe",
   "phone": "+1234567890",
   "email": "john@example.com"
 }
+EOF
 ```
 
 #### Update Subscriber
 ```bash
-POST /manychat/fb/subscriber/updateSubscriber
-Content-Type: application/json
-
+maton api -X POST '/manychat/fb/subscriber/updateSubscriber' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "subscriber_id": 123456789,
   "first_name": "John",
   "last_name": "Smith"
 }
+EOF
 ```
 
 #### Add Tag to Subscriber
 ```bash
-POST /manychat/fb/subscriber/addTag
-Content-Type: application/json
-
+maton api -X POST '/manychat/fb/subscriber/addTag' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "subscriber_id": 123456789,
   "tag_id": 1
 }
+EOF
 ```
 
 #### Set Custom Field
 ```bash
-POST /manychat/fb/subscriber/setCustomField
-Content-Type: application/json
-
+maton api -X POST '/manychat/fb/subscriber/setCustomField' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "subscriber_id": 123456789,
   "field_id": 1,
   "field_value": "value"
 }
+EOF
 ```
 
 ### Sending Operations
 
 #### Send Content
 ```bash
-POST /manychat/fb/sending/sendContent
-Content-Type: application/json
-
+maton api -X POST '/manychat/fb/sending/sendContent' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "subscriber_id": 123456789,
   "data": {
@@ -176,17 +184,19 @@ Content-Type: application/json
     }
   }
 }
+EOF
 ```
 
 #### Send Flow
 ```bash
-POST /manychat/fb/sending/sendFlow
-Content-Type: application/json
-
+maton api -X POST '/manychat/fb/sending/sendFlow' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "subscriber_id": 123456789,
   "flow_ns": "content123456"
 }
+EOF
 ```
 
 ## Rate Limits

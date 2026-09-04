@@ -19,56 +19,61 @@ All requests are POST with JSON body.
 
 ### List Datasets
 ```bash
-POST /kaggle/v1/datasets.DatasetApiService/ListDatasets
-Content-Type: application/json
-
+maton api -X POST '/kaggle/v1/datasets.DatasetApiService/ListDatasets' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {}
+EOF
 ```
 
 Optional parameters: `search`, `user`, `pageSize`, `pageToken`
 
 ### Get Dataset
 ```bash
-POST /kaggle/v1/datasets.DatasetApiService/GetDataset
-Content-Type: application/json
-
+maton api -X POST '/kaggle/v1/datasets.DatasetApiService/GetDataset' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "ownerSlug": "username",
   "datasetSlug": "dataset-name"
 }
+EOF
 ```
 
 ### List Dataset Files
 ```bash
-POST /kaggle/v1/datasets.DatasetApiService/ListDatasetFiles
-Content-Type: application/json
-
+maton api -X POST '/kaggle/v1/datasets.DatasetApiService/ListDatasetFiles' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "ownerSlug": "username",
   "datasetSlug": "dataset-name"
 }
+EOF
 ```
 
 ### Get Dataset Metadata
 ```bash
-POST /kaggle/v1/datasets.DatasetApiService/GetDatasetMetadata
-Content-Type: application/json
-
+maton api -X POST '/kaggle/v1/datasets.DatasetApiService/GetDatasetMetadata' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "ownerSlug": "username",
   "datasetSlug": "dataset-name"
 }
+EOF
 ```
 
 ### Download Dataset
 ```bash
-POST /kaggle/v1/datasets.DatasetApiService/DownloadDataset
-Content-Type: application/json
-
+maton api -X POST '/kaggle/v1/datasets.DatasetApiService/DownloadDataset' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "ownerSlug": "username",
   "datasetSlug": "dataset-name"
 }
+EOF
 ```
 
 Returns binary ZIP file.
@@ -77,33 +82,36 @@ Returns binary ZIP file.
 
 ### List Models
 ```bash
-POST /kaggle/v1/models.ModelApiService/ListModels
-Content-Type: application/json
-
+maton api -X POST '/kaggle/v1/models.ModelApiService/ListModels' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {}
+EOF
 ```
 
 Optional parameters: `owner`, `search`, `pageSize`
 
 ### Get Model
 ```bash
-POST /kaggle/v1/models.ModelApiService/GetModel
-Content-Type: application/json
-
+maton api -X POST '/kaggle/v1/models.ModelApiService/GetModel' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "ownerSlug": "google",
   "modelSlug": "gemma"
 }
+EOF
 ```
 
 ## Competitions
 
 ### List Competitions
 ```bash
-POST /kaggle/v1/competitions.CompetitionApiService/ListCompetitions
-Content-Type: application/json
-
+maton api -X POST '/kaggle/v1/competitions.CompetitionApiService/ListCompetitions' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {}
+EOF
 ```
 
 Optional parameters: `search`, `category`, `pageSize`
@@ -112,23 +120,25 @@ Optional parameters: `search`, `category`, `pageSize`
 
 ### List Kernels
 ```bash
-POST /kaggle/v1/kernels.KernelsApiService/ListKernels
-Content-Type: application/json
-
+maton api -X POST '/kaggle/v1/kernels.KernelsApiService/ListKernels' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {}
+EOF
 ```
 
 Optional parameters: `search`, `user`, `language`, `pageSize`
 
 ### Get Kernel
 ```bash
-POST /kaggle/v1/kernels.KernelsApiService/GetKernel
-Content-Type: application/json
-
+maton api -X POST '/kaggle/v1/kernels.KernelsApiService/GetKernel' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "userName": "username",
   "kernelSlug": "kernel-slug"
 }
+EOF
 ```
 
 ## Notes

@@ -15,12 +15,12 @@
 
 ### Get Account Details
 ```bash
-GET /getresponse/v3/accounts
+maton api '/getresponse/v3/accounts'
 ```
 
 ### List Campaigns
 ```bash
-GET /getresponse/v3/campaigns
+maton api '/getresponse/v3/campaigns'
 ```
 
 Query parameters:
@@ -29,22 +29,23 @@ Query parameters:
 
 ### Get Campaign
 ```bash
-GET /getresponse/v3/campaigns/{campaignId}
+maton api '/getresponse/v3/campaigns/{campaignId}'
 ```
 
 ### Create Campaign
 ```bash
-POST /getresponse/v3/campaigns
-Content-Type: application/json
-
+maton api -X POST '/getresponse/v3/campaigns' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "My Campaign"
 }
+EOF
 ```
 
 ### List Contacts
 ```bash
-GET /getresponse/v3/contacts?page=1&perPage=100
+maton api '/getresponse/v3/contacts?page=1&perPage=100'
 ```
 
 Query parameters:
@@ -54,14 +55,14 @@ Query parameters:
 
 ### Get Contact
 ```bash
-GET /getresponse/v3/contacts/{contactId}
+maton api '/getresponse/v3/contacts/{contactId}'
 ```
 
 ### Create Contact
 ```bash
-POST /getresponse/v3/contacts
-Content-Type: application/json
-
+maton api -X POST '/getresponse/v3/contacts' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "email": "user@example.com",
   "name": "John Doe",
@@ -69,58 +70,61 @@ Content-Type: application/json
     "campaignId": "abc123"
   }
 }
+EOF
 ```
 
 ### Update Contact
 ```bash
-POST /getresponse/v3/contacts/{contactId}
-Content-Type: application/json
-
+maton api -X POST '/getresponse/v3/contacts/{contactId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "Jane Doe"
 }
+EOF
 ```
 
 ### Delete Contact
 ```bash
-DELETE /getresponse/v3/contacts/{contactId}
+maton api -X DELETE '/getresponse/v3/contacts/{contactId}'
 ```
 
 ### List Custom Fields
 ```bash
-GET /getresponse/v3/custom-fields
+maton api '/getresponse/v3/custom-fields'
 ```
 
 ### List Tags
 ```bash
-GET /getresponse/v3/tags
+maton api '/getresponse/v3/tags'
 ```
 
 ### Create Tag
 ```bash
-POST /getresponse/v3/tags
-Content-Type: application/json
-
+maton api -X POST '/getresponse/v3/tags' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "name": "VIP Customer"
 }
+EOF
 ```
 
 ### List Segments
 ```bash
-GET /getresponse/v3/search-contacts
+maton api '/getresponse/v3/search-contacts'
 ```
 
 ### Get Contacts from Segment
 ```bash
-GET /getresponse/v3/search-contacts/{searchContactId}/contacts
+maton api '/getresponse/v3/search-contacts/{searchContactId}/contacts'
 ```
 
 ### Send Newsletter
 ```bash
-POST /getresponse/v3/newsletters
-Content-Type: application/json
-
+maton api -X POST '/getresponse/v3/newsletters' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "subject": "Newsletter Subject",
   "name": "Internal Name",
@@ -133,16 +137,17 @@ Content-Type: application/json
   },
   "sendOn": "2026-02-15T10:00:00Z"
 }
+EOF
 ```
 
 ### List Autoresponders
 ```bash
-GET /getresponse/v3/autoresponders
+maton api '/getresponse/v3/autoresponders'
 ```
 
 ### List From Fields
 ```bash
-GET /getresponse/v3/from-fields
+maton api '/getresponse/v3/from-fields'
 ```
 
 ## Notes

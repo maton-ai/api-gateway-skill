@@ -15,7 +15,7 @@
 
 ### Get Current User
 ```bash
-GET /asana/api/1.0/users/me
+maton api '/asana/api/1.0/users/me'
 ```
 
 Example:
@@ -26,7 +26,7 @@ maton asana whoami
 
 ### List Workspaces
 ```bash
-GET /asana/api/1.0/workspaces
+maton api '/asana/api/1.0/workspaces'
 ```
 
 Example:
@@ -37,7 +37,7 @@ maton asana workspace list
 
 ### Get a Workspace
 ```bash
-GET /asana/api/1.0/workspaces/{workspace_gid}
+maton api '/asana/api/1.0/workspaces/{workspace_gid}'
 ```
 
 Example:
@@ -48,7 +48,7 @@ maton asana workspace view {workspace_gid}
 
 ### List Tasks
 ```bash
-GET /asana/api/1.0/tasks?project=PROJECT_GID&opt_fields=name,completed,due_on
+maton api '/asana/api/1.0/tasks?project=PROJECT_GID&opt_fields=name,completed,due_on'
 ```
 
 Example:
@@ -59,7 +59,7 @@ maton asana task list --project PROJECT_GID --opt-fields name,completed,due_on
 
 ### Get a Task
 ```bash
-GET /asana/api/1.0/tasks/{task_gid}
+maton api '/asana/api/1.0/tasks/{task_gid}'
 ```
 
 Example:
@@ -70,9 +70,9 @@ maton asana task view {task_gid}
 
 ### Create a Task
 ```bash
-POST /asana/api/1.0/tasks
-Content-Type: application/json
-
+maton api -X POST '/asana/api/1.0/tasks' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": {
     "name": "New task",
@@ -82,6 +82,7 @@ Content-Type: application/json
     "notes": "Task description"
   }
 }
+EOF
 ```
 
 Example:
@@ -92,14 +93,15 @@ maton asana task create --name 'New task' --projects PROJECT_GID --assignee USER
 
 ### Update a Task
 ```bash
-PUT /asana/api/1.0/tasks/{task_gid}
-Content-Type: application/json
-
+maton api -X PUT '/asana/api/1.0/tasks/{task_gid}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": {
     "completed": true
   }
 }
+EOF
 ```
 
 Example:
@@ -110,7 +112,7 @@ maton asana task update {task_gid} --completed
 
 ### Delete a Task
 ```bash
-DELETE /asana/api/1.0/tasks/{task_gid}
+maton api -X DELETE '/asana/api/1.0/tasks/{task_gid}'
 ```
 
 Example:
@@ -121,7 +123,7 @@ maton asana task delete {task_gid}
 
 ### Get Subtasks
 ```bash
-GET /asana/api/1.0/tasks/{task_gid}/subtasks
+maton api '/asana/api/1.0/tasks/{task_gid}/subtasks'
 ```
 
 Example:
@@ -132,14 +134,15 @@ maton asana task list --parent {task_gid}
 
 ### Create Subtask
 ```bash
-POST /asana/api/1.0/tasks/{task_gid}/subtasks
-Content-Type: application/json
-
+maton api -X POST '/asana/api/1.0/tasks/{task_gid}/subtasks' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": {
     "name": "Subtask name"
   }
 }
+EOF
 ```
 
 Example:
@@ -153,7 +156,7 @@ maton asana task create --name 'Subtask name' --parent {task_gid}
 **Note:** Requires an Asana Premium subscription.
 
 ```bash
-GET /asana/api/1.0/workspaces/{workspace_gid}/tasks/search?text=...&completed=false
+maton api '/asana/api/1.0/workspaces/{workspace_gid}/tasks/search?text=...&completed=false'
 ```
 
 Example:
@@ -164,7 +167,7 @@ maton asana task search -w {workspace_gid} --text 'quarterly report' --completed
 
 ### List Projects
 ```bash
-GET /asana/api/1.0/projects?workspace=WORKSPACE_GID&opt_fields=name,owner,due_date
+maton api '/asana/api/1.0/projects?workspace=WORKSPACE_GID&opt_fields=name,owner,due_date'
 ```
 
 Example:
@@ -175,7 +178,7 @@ maton asana project list --workspace WORKSPACE_GID --opt-fields name,owner,due_d
 
 ### Get a Project
 ```bash
-GET /asana/api/1.0/projects/{project_gid}
+maton api '/asana/api/1.0/projects/{project_gid}'
 ```
 
 Example:
@@ -186,15 +189,16 @@ maton asana project view {project_gid}
 
 ### Create a Project
 ```bash
-POST /asana/api/1.0/projects
-Content-Type: application/json
-
+maton api -X POST '/asana/api/1.0/projects' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": {
     "name": "New Project",
     "workspace": "WORKSPACE_GID"
   }
 }
+EOF
 ```
 
 Example:
@@ -205,7 +209,7 @@ maton asana project create --workspace WORKSPACE_GID --name 'New Project' --note
 
 ### Update a Project
 ```bash
-PUT /asana/api/1.0/projects/{project_gid}
+maton api -X PUT '/asana/api/1.0/projects/{project_gid}'
 ```
 
 Example:
@@ -216,7 +220,7 @@ maton asana project update {project_gid} --name 'Updated Name'
 
 ### Delete a Project
 ```bash
-DELETE /asana/api/1.0/projects/{project_gid}
+maton api -X DELETE '/asana/api/1.0/projects/{project_gid}'
 ```
 
 Example:
@@ -227,14 +231,14 @@ maton asana project delete {project_gid}
 
 ### List Users in Workspace
 ```bash
-GET /asana/api/1.0/workspaces/{workspace_gid}/users?opt_fields=name,email
+maton api '/asana/api/1.0/workspaces/{workspace_gid}/users?opt_fields=name,email'
 ```
 
 ### Create Webhook
 ```bash
-POST /asana/api/1.0/webhooks
-Content-Type: application/json
-
+maton api -X POST '/asana/api/1.0/webhooks' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "data": {
     "resource": "PROJECT_OR_TASK_GID",
@@ -248,11 +252,12 @@ Content-Type: application/json
     ]
   }
 }
+EOF
 ```
 
 ### Delete Webhook
 ```bash
-DELETE /asana/api/1.0/webhooks/{webhook_gid}
+maton api -X DELETE '/asana/api/1.0/webhooks/{webhook_gid}'
 ```
 
 ## Pagination

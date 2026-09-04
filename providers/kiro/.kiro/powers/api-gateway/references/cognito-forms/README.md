@@ -17,31 +17,31 @@
 
 #### List Forms
 ```bash
-GET /cognito-forms/api/forms
+maton api '/cognito-forms/api/forms'
 ```
 
 #### Get Form
 ```bash
-GET /cognito-forms/api/forms/{formId}
+maton api '/cognito-forms/api/forms/{formId}'
 ```
 
 ### Entries
 
 #### List Entries
 ```bash
-GET /cognito-forms/api/forms/{formId}/entries
+maton api '/cognito-forms/api/forms/{formId}/entries'
 ```
 
 #### Get Entry
 ```bash
-GET /cognito-forms/api/forms/{formId}/entries/{entryId}
+maton api '/cognito-forms/api/forms/{formId}/entries/{entryId}'
 ```
 
 #### Create Entry
 ```bash
-POST /cognito-forms/api/forms/{formId}/entries
-Content-Type: application/json
-
+maton api -X POST '/cognito-forms/api/forms/{formId}/entries' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "Name": {
     "First": "John",
@@ -49,13 +49,14 @@ Content-Type: application/json
   },
   "Email": "john.doe@example.com"
 }
+EOF
 ```
 
 #### Update Entry
 ```bash
-PUT /cognito-forms/api/forms/{formId}/entries/{entryId}
-Content-Type: application/json
-
+maton api -X PUT '/cognito-forms/api/forms/{formId}/entries/{entryId}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "Name": {
     "First": "Jane",
@@ -63,39 +64,41 @@ Content-Type: application/json
   },
   "Email": "jane.doe@example.com"
 }
+EOF
 ```
 
 #### Delete Entry
 ```bash
-DELETE /cognito-forms/api/forms/{formId}/entries/{entryId}
+maton api -X DELETE '/cognito-forms/api/forms/{formId}/entries/{entryId}'
 ```
 
 ### Documents
 
 #### Get Document
 ```bash
-GET /cognito-forms/api/forms/{formId}/entries/{entryId}/documents/{templateNumber}
+maton api '/cognito-forms/api/forms/{formId}/entries/{entryId}/documents/{templateNumber}'
 ```
 
 ### Files
 
 #### Get File
 ```bash
-GET /cognito-forms/api/files/{fileId}
+maton api '/cognito-forms/api/files/{fileId}'
 ```
 
 ### Form Availability
 
 #### Set Form Availability
 ```bash
-PUT /cognito-forms/api/forms/{formId}/availability
-Content-Type: application/json
-
+maton api -X PUT '/cognito-forms/api/forms/{formId}/availability' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "start": "2026-03-01T00:00:00Z",
   "end": "2026-03-31T23:59:59Z",
   "message": "This form is currently unavailable."
 }
+EOF
 ```
 
 ## Field Types

@@ -27,43 +27,43 @@ User-Agent: Maton/1.0
 
 #### List Teams
 ```bash
-GET /clickfunnels/api/v2/teams
+maton api '/clickfunnels/api/v2/teams'
 ```
 
 #### Get Team
 ```bash
-GET /clickfunnels/api/v2/teams/{team_id}
+maton api '/clickfunnels/api/v2/teams/{team_id}'
 ```
 
 ### Workspaces
 
 #### List Workspaces
 ```bash
-GET /clickfunnels/api/v2/teams/{team_id}/workspaces
+maton api '/clickfunnels/api/v2/teams/{team_id}/workspaces'
 ```
 
 #### Get Workspace
 ```bash
-GET /clickfunnels/api/v2/workspaces/{workspace_id}
+maton api '/clickfunnels/api/v2/workspaces/{workspace_id}'
 ```
 
 ### Contacts
 
 #### List Contacts
 ```bash
-GET /clickfunnels/api/v2/workspaces/{workspace_id}/contacts
+maton api '/clickfunnels/api/v2/workspaces/{workspace_id}/contacts'
 ```
 
 #### Get Contact
 ```bash
-GET /clickfunnels/api/v2/contacts/{contact_id}
+maton api '/clickfunnels/api/v2/contacts/{contact_id}'
 ```
 
 #### Create Contact
 ```bash
-POST /clickfunnels/api/v2/workspaces/{workspace_id}/contacts
-Content-Type: application/json
-
+maton api -X POST '/clickfunnels/api/v2/workspaces/{workspace_id}/contacts' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "contact": {
     "email_address": "user@example.com",
@@ -71,131 +71,134 @@ Content-Type: application/json
     "last_name": "Doe"
   }
 }
+EOF
 ```
 
 #### Update Contact
 ```bash
-PUT /clickfunnels/api/v2/contacts/{contact_id}
-Content-Type: application/json
-
+maton api -X PUT '/clickfunnels/api/v2/contacts/{contact_id}' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "contact": {
     "first_name": "Updated"
   }
 }
+EOF
 ```
 
 #### Delete Contact
 ```bash
-DELETE /clickfunnels/api/v2/contacts/{contact_id}
+maton api -X DELETE '/clickfunnels/api/v2/contacts/{contact_id}'
 ```
 
 #### Upsert Contact
 ```bash
-POST /clickfunnels/api/v2/workspaces/{workspace_id}/contacts/upsert
+maton api -X POST '/clickfunnels/api/v2/workspaces/{workspace_id}/contacts/upsert'
 ```
 
 ### Products
 
 #### List Products
 ```bash
-GET /clickfunnels/api/v2/workspaces/{workspace_id}/products
+maton api '/clickfunnels/api/v2/workspaces/{workspace_id}/products'
 ```
 
 #### Get Product
 ```bash
-GET /clickfunnels/api/v2/products/{product_id}
+maton api '/clickfunnels/api/v2/products/{product_id}'
 ```
 
 #### Create Product
 ```bash
-POST /clickfunnels/api/v2/workspaces/{workspace_id}/products
-Content-Type: application/json
-
+maton api -X POST '/clickfunnels/api/v2/workspaces/{workspace_id}/products' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "product": {
     "name": "New Product",
     "visible_in_store": true
   }
 }
+EOF
 ```
 
 #### Archive/Unarchive Product
 ```bash
-POST /clickfunnels/api/v2/products/{product_id}/archive
-POST /clickfunnels/api/v2/products/{product_id}/unarchive
+maton api -X POST '/clickfunnels/api/v2/products/{product_id}/archive'
+maton api -X POST '/clickfunnels/api/v2/products/{product_id}/unarchive'
 ```
 
 ### Orders
 
 #### List Orders
 ```bash
-GET /clickfunnels/api/v2/workspaces/{workspace_id}/orders
+maton api '/clickfunnels/api/v2/workspaces/{workspace_id}/orders'
 ```
 
 #### Get Order
 ```bash
-GET /clickfunnels/api/v2/orders/{order_id}
+maton api '/clickfunnels/api/v2/orders/{order_id}'
 ```
 
 ### Fulfillments
 
 #### List Fulfillments
 ```bash
-GET /clickfunnels/api/v2/workspaces/{workspace_id}/fulfillments
+maton api '/clickfunnels/api/v2/workspaces/{workspace_id}/fulfillments'
 ```
 
 #### Create Fulfillment
 ```bash
-POST /clickfunnels/api/v2/workspaces/{workspace_id}/fulfillments
+maton api -X POST '/clickfunnels/api/v2/workspaces/{workspace_id}/fulfillments'
 ```
 
 #### Cancel Fulfillment
 ```bash
-POST /clickfunnels/api/v2/fulfillments/{fulfillment_id}/cancel
+maton api -X POST '/clickfunnels/api/v2/fulfillments/{fulfillment_id}/cancel'
 ```
 
 ### Courses & Enrollments
 
 #### List Courses
 ```bash
-GET /clickfunnels/api/v2/workspaces/{workspace_id}/courses
+maton api '/clickfunnels/api/v2/workspaces/{workspace_id}/courses'
 ```
 
 #### List Enrollments
 ```bash
-GET /clickfunnels/api/v2/courses/{course_id}/enrollments
+maton api '/clickfunnels/api/v2/courses/{course_id}/enrollments'
 ```
 
 #### Create Enrollment
 ```bash
-POST /clickfunnels/api/v2/courses/{course_id}/enrollments
+maton api -X POST '/clickfunnels/api/v2/courses/{course_id}/enrollments'
 ```
 
 ### Forms & Submissions
 
 #### List Forms
 ```bash
-GET /clickfunnels/api/v2/workspaces/{workspace_id}/forms
+maton api '/clickfunnels/api/v2/workspaces/{workspace_id}/forms'
 ```
 
 #### List Submissions
 ```bash
-GET /clickfunnels/api/v2/forms/{form_id}/submissions
+maton api '/clickfunnels/api/v2/forms/{form_id}/submissions'
 ```
 
 ### Webhooks
 
 #### List Webhook Endpoints
 ```bash
-GET /clickfunnels/api/v2/workspaces/{workspace_id}/webhooks/outgoing/endpoints
+maton api '/clickfunnels/api/v2/workspaces/{workspace_id}/webhooks/outgoing/endpoints'
 ```
 
 #### Create Webhook Endpoint
 ```bash
-POST /clickfunnels/api/v2/workspaces/{workspace_id}/webhooks/outgoing/endpoints
-Content-Type: application/json
-
+maton api -X POST '/clickfunnels/api/v2/workspaces/{workspace_id}/webhooks/outgoing/endpoints' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "webhooks_outgoing_endpoint": {
     "url": "https://example.com/webhook",
@@ -203,30 +206,32 @@ Content-Type: application/json
     "event_type_ids": ["contact.created"]
   }
 }
+EOF
 ```
 
 #### Delete Webhook Endpoint
 ```bash
-DELETE /clickfunnels/api/v2/webhooks/outgoing/endpoints/{endpoint_id}
+maton api -X DELETE '/clickfunnels/api/v2/webhooks/outgoing/endpoints/{endpoint_id}'
 ```
 
 ### Images
 
 #### List Images
 ```bash
-GET /clickfunnels/api/v2/workspaces/{workspace_id}/images
+maton api '/clickfunnels/api/v2/workspaces/{workspace_id}/images'
 ```
 
 #### Upload Image via URL
 ```bash
-POST /clickfunnels/api/v2/workspaces/{workspace_id}/images
-Content-Type: application/json
-
+maton api -X POST '/clickfunnels/api/v2/workspaces/{workspace_id}/images' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
 {
   "image": {
     "upload_source_url": "https://example.com/image.png"
   }
 }
+EOF
 ```
 
 ## Pagination
@@ -235,10 +240,10 @@ Cursor-based pagination with 20 items per page:
 
 ```bash
 # First page
-GET /clickfunnels/api/v2/workspaces/{workspace_id}/contacts
+maton api '/clickfunnels/api/v2/workspaces/{workspace_id}/contacts'
 
 # Next page (use ID from Pagination-Next header)
-GET /clickfunnels/api/v2/workspaces/{workspace_id}/contacts?after=1087091674
+maton api '/clickfunnels/api/v2/workspaces/{workspace_id}/contacts?after=1087091674'
 ```
 
 Response headers:
@@ -249,13 +254,13 @@ Response headers:
 
 ```bash
 # Single filter
-GET /clickfunnels/api/v2/workspaces/{workspace_id}/contacts?filter[email_address]=user@example.com
+maton api '/clickfunnels/api/v2/workspaces/{workspace_id}/contacts?filter[email_address]=user@example.com'
 
 # Multiple values (OR)
-GET /clickfunnels/api/v2/workspaces/{workspace_id}/contacts?filter[email_address]=a@example.com,b@example.com
+maton api '/clickfunnels/api/v2/workspaces/{workspace_id}/contacts?filter[email_address]=a@example.com,b@example.com'
 
 # Multiple filters (AND)
-GET /clickfunnels/api/v2/workspaces/{workspace_id}/contacts?filter[email_address]=user@example.com&filter[id]=123
+maton api '/clickfunnels/api/v2/workspaces/{workspace_id}/contacts?filter[email_address]=user@example.com&filter[id]=123'
 ```
 
 ## Notes
