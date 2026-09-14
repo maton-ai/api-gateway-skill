@@ -1,88 +1,89 @@
-# Google Calendar Routing Reference
+# Google Calendar
 
-> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../SKILL.md#security--permissions) for full security policy.
+## API Reference
+
+> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../../SKILL.md#security--permissions) for full security policy.
 
 **App name:** `google-calendar`
-**Base URL proxied:** `www.googleapis.com`
+**Upstream base URL:** `www.googleapis.com`
 
-## API Path Pattern
+Replace the upstream base URL with the app name. Everything after the base URL including query strings is kept as-is. Any account-specific part of the base URL and the API credentials are stored in the Maton connection, and the gateway injects both so requests never carry them. For example:
 
-```
-/google-calendar/calendar/v3/{endpoint}
-```
+- Upstream: `https://www.googleapis.com/calendar/v3/users/me/calendarList`
+- Gateway: `https://api.maton.ai/google-calendar/calendar/v3/users/me/calendarList`
 
-## Common Endpoints
+### Calendars API
 
-### List Calendars
-```bash
-maton api '/google-calendar/calendar/v3/users/me/calendarList'
-```
-
-Example:
+#### List Calendars
 
 ```bash
 maton google-calendar calendar list
 ```
 
-### Get Calendar
+Or with `maton api`:
+
+```bash
+maton api '/google-calendar/calendar/v3/users/me/calendarList'
+```
+
+#### Get Calendar
+
+```bash
+maton google-calendar calendar get primary
+```
+
+Or with `maton api`:
+
 ```bash
 maton api '/google-calendar/calendar/v3/calendars/{calendarId}'
 ```
 
-Use `primary` for the user's primary calendar.
+**Note:** `{calendarId}` is a placeholder. Replace it with a real value before sending the request.
 
-Example:
+### Events API
 
-```bash
-maton google-calendar calendar view primary
-```
+#### List Events
 
-### List Events
 ```bash
 maton api '/google-calendar/calendar/v3/calendars/primary/events?maxResults=10&orderBy=startTime&singleEvents=true'
 ```
 
-Example:
+With time bounds:
 
 ```bash
-maton google-calendar event list -c primary -L 10
+maton google-calendar event list -c team@example.com --time-min 2026-06-17T00:00:00Z --time-max 2026-06-18T00:00:00Z
 ```
 
-With time bounds:
+Or with `maton api`:
+
 ```bash
 maton api '/google-calendar/calendar/v3/calendars/primary/events?timeMin=2024-01-01T00:00:00Z&timeMax=2024-12-31T23:59:59Z&singleEvents=true&orderBy=startTime'
 ```
 
-Example:
+#### Get Event
 
 ```bash
-maton google-calendar event list -c primary --time-min 2024-01-01T00:00:00Z --time-max 2024-12-31T23:59:59Z
+maton google-calendar event get {eventId}
 ```
 
-### Today's Agenda
+Or with `maton api`:
 
-Example:
-
-```bash
-maton google-calendar agenda --today
-```
-
-### Get Event
 ```bash
 maton api '/google-calendar/calendar/v3/calendars/primary/events/{eventId}'
 ```
 
-Example:
+**Note:** `{eventId}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Create Event
 
 ```bash
-maton google-calendar event view EVENT_ID
+maton google-calendar event create --summary 'Team Meeting' --description 'Weekly sync' --start 2024-01-15T10:00:00-08:00 --end 2024-01-15T11:00:00-08:00 --attendee attendee@example.com
 ```
 
-### Insert Event
+Or with `maton api`:
+
 ```bash
-maton api -X POST '/google-calendar/calendar/v3/calendars/primary/events' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
+maton api -X POST '/google-calendar/calendar/v3/calendars/primary/events' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "summary": "Team Meeting",
   "description": "Weekly sync",
@@ -98,124 +99,136 @@ maton api -X POST '/google-calendar/calendar/v3/calendars/primary/events' \
     {"email": "attendee@example.com"}
   ]
 }
-EOF
+JSON
 ```
 
-Example:
+#### Create All-Day Event
 
 ```bash
-maton google-calendar event create --summary 'Team Meeting' --description 'Weekly sync' --start 2024-01-15T10:00:00-08:00 --end 2024-01-15T11:00:00-08:00 --attendee attendee@example.com
-```
-
-All-day event:
-```bash
-maton api -X POST '/google-calendar/calendar/v3/calendars/primary/events' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
+maton api -X POST '/google-calendar/calendar/v3/calendars/primary/events' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "summary": "All Day Event",
   "start": {"date": "2024-01-15"},
   "end": {"date": "2024-01-16"}
 }
-EOF
+JSON
 ```
 
-### Update Event
+#### Update Event
+
 ```bash
-maton api -X PUT '/google-calendar/calendar/v3/calendars/primary/events/{eventId}' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
+maton google-calendar event update {eventId} --summary 'Updated Meeting Title' --start 2024-01-15T10:00:00Z --end 2024-01-15T11:00:00Z
+```
+
+Or with `maton api`:
+
+```bash
+maton api -X PUT '/google-calendar/calendar/v3/calendars/primary/events/{eventId}' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "summary": "Updated Meeting Title",
   "start": {"dateTime": "2024-01-15T10:00:00Z"},
   "end": {"dateTime": "2024-01-15T11:00:00Z"}
 }
-EOF
+JSON
 ```
 
-Example:
+**Note:** `{eventId}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Patch Event
 
 ```bash
-maton google-calendar event update EVENT_ID --summary 'Updated Meeting Title' --start 2024-01-15T10:00:00Z --end 2024-01-15T11:00:00Z
+maton google-calendar event update {eventId} --summary 'New Title Only'
 ```
 
-### Patch Event (partial update)
+Or with `maton api`:
+
 ```bash
-maton api -X PATCH '/google-calendar/calendar/v3/calendars/primary/events/{eventId}' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
+maton api -X PATCH '/google-calendar/calendar/v3/calendars/primary/events/{eventId}' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "summary": "New Title Only"
 }
-EOF
+JSON
 ```
 
-Example:
+**Note:** `{eventId}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Delete Event
 
 ```bash
-maton google-calendar event update EVENT_ID --summary 'New Title Only'
+maton google-calendar event delete {eventId}
 ```
 
-### Delete Event
-```bash
-maton api -X DELETE '/google-calendar/calendar/v3/calendars/primary/events/{eventId}'
-```
-
-Example:
+Or with `maton api`:
 
 ```bash
-maton google-calendar event delete EVENT_ID
+maton api '/google-calendar/calendar/v3/calendars/primary/events/{eventId}' -X DELETE
 ```
 
-### Quick Add Event (natural language)
-```bash
-maton api -X POST '/google-calendar/calendar/v3/calendars/primary/events/quickAdd?text=Meeting+with+John+tomorrow+at+3pm'
-```
+**Note:** `{eventId}` is a placeholder. Replace it with a real value before sending the request.
 
-Example:
+#### Quick Add Event
 
 ```bash
 maton google-calendar event quick-add --text 'Meeting with John tomorrow at 3pm'
 ```
 
-### Free/Busy Query
+Or with `maton api`:
+
 ```bash
-maton api -X POST '/google-calendar/calendar/v3/freeBusy' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
-{
-  "timeMin": "2024-01-15T00:00:00Z",
-  "timeMax": "2024-01-16T00:00:00Z",
-  "items": [{"id": "primary"}]
-}
-EOF
+maton api -X POST '/google-calendar/calendar/v3/calendars/primary/events/quickAdd?text=Meeting+with+John+tomorrow+at+3pm'
 ```
 
-Example:
+### Free/Busy API
+
+#### Query Free/Busy
 
 ```bash
 maton google-calendar freebusy query --time-min 2024-01-15T00:00:00Z --time-max 2024-01-16T00:00:00Z
 ```
 
-## Pagination
+Or with `maton api`:
 
-Google Calendar uses token-based pagination. The CLI handles this automatically with `--paginate`:
+```bash
+maton api -X POST '/google-calendar/calendar/v3/freeBusy' -H 'Content-Type: application/json' --input - <<'JSON'
+{
+  "timeMin": "2024-01-15T00:00:00Z",
+  "timeMax": "2024-01-16T00:00:00Z",
+  "items": [{"id": "primary"}]
+}
+JSON
+```
+
+### Pagination
+
+Google Calendar uses token-based pagination. The CLI automatically paginates with '--paginate'.
 
 ```bash
 maton google-calendar event list --paginate
 ```
 
-## Notes
+### Examples
 
-- Authentication is automatic - the router injects the OAuth token
+```bash
+# Show today's agenda (defaults to primary calendar when -c is omitted)
+maton google-calendar agenda --today
+
+# Filter with jq
+maton google-calendar event list --json --jq '.items[] | {summary: .summary, start: .start.dateTime}'
+
+# Extract specific fields
+maton google-calendar calendar list --json --jq '.items[].summary'
+```
+
+### Notes
+
 - Use `primary` as calendarId for the user's main calendar
-- Times must be in RFC3339 format (e.g., `2026-01-15T10:00:00Z`)
+- Times must be in RFC3339 format (e.g., `2024-01-15T10:00:00Z`)
 - For recurring events, use `singleEvents=true` to expand instances
 - `orderBy=startTime` requires `singleEvents=true`
 
-## Resources
+### Resources
 
-- [API Overview](https://developers.google.com/calendar/api/v3/reference)
+- [Google Calendar API Overview](https://developers.google.com/calendar/api/v3/reference)
 - [List Calendars](https://developers.google.com/workspace/calendar/api/v3/reference/calendarList/list)
 - [Get Calendar](https://developers.google.com/workspace/calendar/api/v3/reference/calendarList/get)
 - [List Events](https://developers.google.com/workspace/calendar/api/v3/reference/events/list)

@@ -10,11 +10,17 @@
 
 ## Event Types
 
-- [`charge.succeeded`](#chargesucceeded)
-- [`invoice.paid`](#invoicepaid)
-- [`subscription.created`](#subscriptioncreated)
-- [`subscription.canceled`](#subscriptioncanceled)
-- [`invoice.payment_failed`](#invoicepayment_failed)
+The heading is the Maton event type — the value to pass to `--event-type`. For the two subscription events it is **not** the same string as Stripe's own event name, which appears in the payload's `type` field. Subscribe with the left column; match on the right column when inspecting a payload.
+
+| `--event-type` | Stripe `type` in the payload |
+|----------------|------------------------------|
+| [`charge.succeeded`](#chargesucceeded) | `charge.succeeded` |
+| [`invoice.paid`](#invoicepaid) | `invoice.paid` |
+| [`subscription.created`](#subscriptioncreated) | `customer.subscription.created` |
+| [`subscription.canceled`](#subscriptioncanceled) | `customer.subscription.deleted` |
+| [`invoice.payment_failed`](#invoicepayment_failed) | `invoice.payment_failed` |
+
+Do not pass a Stripe-native name such as `customer.subscription.created` to `--event-type`, and do not filter a `body_template` or handler on `subscription.canceled` — the payload will never contain that string.
 
 ---
 
@@ -310,6 +316,8 @@
 
 ## `subscription.created`
 
+Stripe sends this as `customer.subscription.created`; the payload's `type` field reads that, not `subscription.created`.
+
 ### Sample Payload
 
 ```json
@@ -451,6 +459,8 @@
 ---
 
 ## `subscription.canceled`
+
+Stripe sends this as `customer.subscription.deleted`; the payload's `type` field reads that, not `subscription.canceled`. Cancellation and deletion are the same Stripe event — a subscription that ends is emitted as `deleted`.
 
 ### Sample Payload
 

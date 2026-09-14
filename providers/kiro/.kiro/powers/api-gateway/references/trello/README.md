@@ -1,301 +1,632 @@
-# Trello Routing Reference
+# Trello
 
-> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../SKILL.md#security--permissions) for full security policy.
+## API Reference
+
+> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../../SKILL.md#security--permissions) for full security policy.
 
 **App name:** `trello`
-**Base URL proxied:** `api.trello.com`
+**Upstream base URL:** `api.trello.com`
 
-## API Path Pattern
+Replace the upstream base URL with the app name. Everything after the base URL including query strings is kept as-is. Any account-specific part of the base URL and the API credentials are stored in the Maton connection, and the gateway injects both so requests never carry them. For example:
 
-```
-/trello/1/{resource}
-```
+- Upstream: `https://api.trello.com/1/members/me`
+- Gateway: `https://api.maton.ai/trello/1/members/me`
 
-## Common Endpoints
+### Members API
 
-### Get Current Member
-```bash
-maton api '/trello/1/members/me'
-```
-
-Example:
+#### Get Current Member
 
 ```bash
 maton trello whoami
 ```
 
-### Get Member's Boards
+Or with `maton api`:
+
 ```bash
-maton api '/trello/1/members/me/boards?filter=open'
+maton api '/trello/1/members/me'
 ```
 
-Example:
+#### Get Member
+
+```bash
+maton trello member get {id}
+```
+
+Or with `maton api`:
+
+```bash
+maton api '/trello/1/members/{id}'
+```
+
+**Note:** `{id}` is a placeholder. Replace it with a real value before sending the request. `me`, a username, or a member ID all work.
+
+#### Get Member's Boards
 
 ```bash
 maton trello board list --filter open
 ```
 
-### Get Board
+Or with `maton api`:
+
+```bash
+maton api '/trello/1/members/me/boards?filter=open'
+```
+
+**Query parameters:**
+- `filter` - Filter boards: `all`, `open`, `closed`, `members`, `organization`, `starred`
+- `fields` - Comma-separated fields to include
+
+### Boards API
+
+#### Get Board
+
+```bash
+maton trello board get {id} --lists open --cards open
+```
+
+Or with `maton api`:
+
 ```bash
 maton api '/trello/1/boards/{id}?lists=open&cards=open'
 ```
 
-Example:
+**Note:** `{id}` is a placeholder. Replace it with a real value before sending the request.
+
+**Query parameters:**
+- `fields` - Comma-separated fields
+- `lists` - Include lists: `all`, `open`, `closed`, `none`
+- `cards` - Include cards: `all`, `open`, `closed`, `none`
+- `members` - Include members: `all`, `none`
+
+#### Create Board
 
 ```bash
-maton trello board view {id} --lists open --cards open
+maton trello board create --name 'Project Alpha' --desc 'Main project board' --permission private
 ```
 
-### Create Board
+Or with `maton api`:
+
 ```bash
-maton api -X POST '/trello/1/boards' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
+maton api -X POST '/trello/1/boards' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "name": "Project Alpha",
   "desc": "Main project board",
   "defaultLists": false,
   "prefs_permissionLevel": "private"
 }
-EOF
+JSON
 ```
 
-Example:
+#### Update Board
 
 ```bash
-maton trello board create --name 'Project Alpha' --desc 'Main project board' --permission private
+maton trello board update {id} --name 'Project Alpha - Updated' --desc 'Updated description'
 ```
 
-### Get Board Lists
+Or with `maton api`:
+
 ```bash
-maton api '/trello/1/boards/{id}/lists?filter=open'
+maton api -X PUT '/trello/1/boards/{id}' -H 'Content-Type: application/json' --input - <<'JSON'
+{
+  "name": "Project Alpha - Updated",
+  "desc": "Updated description"
+}
+JSON
 ```
 
-Example:
+**Note:** `{id}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Delete Board
+
+```bash
+maton trello board delete {id}
+```
+
+Or with `maton api`:
+
+```bash
+maton api '/trello/1/boards/{id}' -X DELETE
+```
+
+**Note:** `{id}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Get Board Lists
 
 ```bash
 maton trello list list --board {id} --filter open
 ```
 
-### Get Board Cards
+Or with `maton api`:
+
 ```bash
-maton api '/trello/1/boards/{id}/cards'
+maton api '/trello/1/boards/{id}/lists?filter=open'
 ```
 
-Example:
+**Note:** `{id}` is a placeholder. Replace it with a real value before sending the request.
+
+**Query parameters:**
+- `filter` - Filter: `all`, `open`, `closed`, `none`
+
+#### Get Board Cards
 
 ```bash
 maton trello card list --board {id}
 ```
 
-### Create List
+Or with `maton api`:
+
 ```bash
-maton api -X POST '/trello/1/lists' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
+maton api '/trello/1/boards/{id}/cards'
+```
+
+**Note:** `{id}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Get Board Members
+
+```bash
+maton trello member list --board {id}
+```
+
+Or with `maton api`:
+
+```bash
+maton api '/trello/1/boards/{id}/members'
+```
+
+**Note:** `{id}` is a placeholder. Replace it with a real value before sending the request.
+
+### Lists API
+
+#### Get List
+
+```bash
+maton trello list get {id}
+```
+
+Or with `maton api`:
+
+```bash
+maton api '/trello/1/lists/{id}'
+```
+
+**Note:** `{id}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Create List
+
+```bash
+maton trello list create --board {boardId} --name 'To Do' --pos top
+```
+
+Or with `maton api`:
+
+```bash
+maton api -X POST '/trello/1/lists' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "name": "To Do",
-  "idBoard": "BOARD_ID",
+  "idBoard": "{boardId}",
   "pos": "top"
 }
-EOF
+JSON
 ```
 
-Example:
+**Note:** `{boardId}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Update List
 
 ```bash
-maton trello list create --board BOARD_ID --name 'To Do' --pos top
+maton trello list update {id} --name 'In Progress'
 ```
 
-### Get Cards in List
+Or with `maton api`:
+
 ```bash
-maton api '/trello/1/lists/{id}/cards'
+maton api -X PUT '/trello/1/lists/{id}' -H 'Content-Type: application/json' --input - <<'JSON'
+{
+  "name": "In Progress"
+}
+JSON
 ```
 
-Example:
+**Note:** `{id}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Archive List
+
+```bash
+maton trello list update {id} --closed
+```
+
+Or with `maton api`:
+
+```bash
+maton api -X PUT '/trello/1/lists/{id}/closed' -H 'Content-Type: application/json' --input - <<'JSON'
+{
+  "value": true
+}
+JSON
+```
+
+**Note:** `{id}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Get Cards in List
 
 ```bash
 maton trello card list --list {id}
 ```
 
-### Get Card
+Or with `maton api`:
+
+```bash
+maton api '/trello/1/lists/{id}/cards'
+```
+
+**Note:** `{id}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Move All Cards in List
+
+```bash
+maton trello card move --from-list {id} --to-list {targetListId} --to-board {boardId}
+```
+
+Or with `maton api`:
+
+```bash
+maton api -X POST '/trello/1/lists/{id}/moveAllCards' -H 'Content-Type: application/json' --input - <<'JSON'
+{
+  "idBoard": "{boardId}",
+  "idList": "{targetListId}"
+}
+JSON
+```
+
+**Note:** `{id}`, `{targetListId}` and `{boardId}` are placeholders. Replace each of them with real values before sending the request.
+
+### Cards API
+
+#### Get Card
+
+```bash
+maton trello card get {id} --members --checklists all
+```
+
+Or with `maton api`:
+
 ```bash
 maton api '/trello/1/cards/{id}?members=true&checklists=all'
 ```
 
-Example:
+**Note:** `{id}` is a placeholder. Replace it with a real value before sending the request.
+
+**Query parameters:**
+- `fields` - Comma-separated fields
+- `members` - Include members (true/false)
+- `checklists` - Include checklists: `all`, `none`
+- `attachments` - Include attachments (true/false)
+
+#### Create Card
 
 ```bash
-maton trello card view {id} --members --checklists all
+maton trello card create --list {listId} --name 'Implement feature X' --desc 'Description of the task' --due 2025-03-30T12:00:00.000Z --member-ids {memberId} --label-ids {labelId}
 ```
 
-### Create Card
+Or with `maton api`:
+
 ```bash
-maton api -X POST '/trello/1/cards' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
+maton api -X POST '/trello/1/cards' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "name": "Implement feature X",
   "desc": "Description of the task",
-  "idList": "LIST_ID",
+  "idList": "{listId}",
   "pos": "bottom",
   "due": "2025-03-30T12:00:00.000Z",
-  "idMembers": ["MEMBER_ID"],
-  "idLabels": ["LABEL_ID"]
+  "idMembers": ["{memberId}"],
+  "idLabels": ["{labelId}"]
 }
-EOF
+JSON
 ```
 
-Example:
+**Note:** `{listId}`, `{memberId}` and `{labelId}` are placeholders. Replace each of them with real values before sending the request.
 
-```bash
-maton trello card create --list LIST_ID --name 'Implement feature X' --desc 'Description of the task' --due 2025-03-30T12:00:00.000Z --member-ids MEMBER_ID --label-ids LABEL_ID
-```
-
-### Update Card
-```bash
-maton api -X PUT '/trello/1/cards/{id}' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
-{
-  "name": "Updated card name",
-  "desc": "Updated description",
-  "due": "2025-04-15T12:00:00.000Z"
-}
-EOF
-```
-
-Example:
+#### Update Card
 
 ```bash
 maton trello card update {id} --name 'Updated card name' --desc 'Updated description' --due 2025-04-15T12:00:00.000Z
 ```
 
-### Move Card to List
+Or with `maton api`:
+
 ```bash
-maton api -X PUT '/trello/1/cards/{id}' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
+maton api -X PUT '/trello/1/cards/{id}' -H 'Content-Type: application/json' --input - <<'JSON'
 {
-  "idList": "NEW_LIST_ID",
+  "name": "Updated card name",
+  "desc": "Updated description",
+  "due": "2025-04-15T12:00:00.000Z"
+}
+JSON
+```
+
+**Note:** `{id}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Move Card to List
+
+```bash
+maton trello card update {id} --list {newListId}
+```
+
+Or with `maton api`:
+
+```bash
+maton api -X PUT '/trello/1/cards/{id}' -H 'Content-Type: application/json' --input - <<'JSON'
+{
+  "idList": "{newListId}",
   "pos": "top"
 }
-EOF
+JSON
 ```
 
-Example:
+**Note:** `{id}` and `{newListId}` are placeholders. Replace each of them with real values before sending the request.
 
-```bash
-maton trello card update {id} --list NEW_LIST_ID
-```
-
-### Delete Card
-```bash
-maton api -X DELETE '/trello/1/cards/{id}'
-```
-
-Example:
+#### Delete Card
 
 ```bash
 maton trello card delete {id}
 ```
 
-### Add Comment to Card
+Or with `maton api`:
+
 ```bash
-maton api -X POST '/trello/1/cards/{id}/actions/comments' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
-{
-  "text": "This is a comment"
-}
-EOF
+maton api '/trello/1/cards/{id}' -X DELETE
 ```
 
-Example:
+**Note:** `{id}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Add Comment to Card
 
 ```bash
 maton trello card comment {id} --text 'This is a comment'
 ```
 
-### Create Checklist
+Or with `maton api`:
+
 ```bash
-maton api -X POST '/trello/1/checklists' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
+maton api -X POST '/trello/1/cards/{id}/actions/comments' -H 'Content-Type: application/json' --input - <<'JSON'
 {
-  "idCard": "CARD_ID",
+  "text": "This is a comment"
+}
+JSON
+```
+
+**Note:** `{id}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Add Member to Card
+
+```bash
+maton trello card assign {id} --member {memberId}
+```
+
+Or with `maton api`:
+
+```bash
+maton api -X POST '/trello/1/cards/{id}/idMembers' -H 'Content-Type: application/json' --input - <<'JSON'
+{
+  "value": "{memberId}"
+}
+JSON
+```
+
+**Note:** `{id}` and `{memberId}` are placeholders. Replace each of them with real values before sending the request.
+
+#### Remove Member from Card
+
+```bash
+maton trello card unassign {id} --member {idMember}
+```
+
+Or with `maton api`:
+
+```bash
+maton api '/trello/1/cards/{id}/idMembers/{idMember}' -X DELETE
+```
+
+**Note:** `{id}` and `{idMember}` are placeholders. Replace each of them with real values before sending the request.
+
+#### Add Label to Card
+
+```bash
+maton trello card label {id} --label {labelId}
+```
+
+Or with `maton api`:
+
+```bash
+maton api -X POST '/trello/1/cards/{id}/idLabels' -H 'Content-Type: application/json' --input - <<'JSON'
+{
+  "value": "{labelId}"
+}
+JSON
+```
+
+**Note:** `{id}` and `{labelId}` are placeholders. Replace each of them with real values before sending the request.
+
+### Checklists API
+
+#### Get Checklist
+
+```bash
+maton trello checklist get {id}
+```
+
+Or with `maton api`:
+
+```bash
+maton api '/trello/1/checklists/{id}'
+```
+
+**Note:** `{id}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Create Checklist
+
+```bash
+maton trello checklist create --card {cardId} --name 'Task Checklist'
+```
+
+Or with `maton api`:
+
+```bash
+maton api -X POST '/trello/1/checklists' -H 'Content-Type: application/json' --input - <<'JSON'
+{
+  "idCard": "{cardId}",
   "name": "Task Checklist"
 }
-EOF
+JSON
 ```
 
-Example:
+**Note:** `{cardId}` is a placeholder. Replace it with a real value before sending the request.
 
-```bash
-maton trello checklist create --card CARD_ID --name 'Task Checklist'
-```
-
-### Create Checklist Item
-```bash
-maton api -X POST '/trello/1/checklists/{id}/checkItems' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
-{
-  "name": "Subtask 1",
-  "pos": "bottom",
-  "checked": false
-}
-EOF
-```
-
-Example:
+#### Create Checklist Item
 
 ```bash
 maton trello checkitem create --checklist {id} --name 'Subtask 1' --pos bottom
 ```
 
-### Get Board Labels
+Or with `maton api`:
+
 ```bash
-maton api '/trello/1/boards/{id}/labels'
+maton api -X POST '/trello/1/checklists/{id}/checkItems' -H 'Content-Type: application/json' --input - <<'JSON'
+{
+  "name": "Subtask 1",
+  "pos": "bottom",
+  "checked": false
+}
+JSON
 ```
 
-Example:
+**Note:** `{id}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Update Checklist Item
+
+```bash
+maton trello checkitem update {checkItemId} --card {cardId} --state complete
+```
+
+Or with `maton api`:
+
+```bash
+maton api -X PUT '/trello/1/cards/{cardId}/checkItem/{checkItemId}' -H 'Content-Type: application/json' --input - <<'JSON'
+{
+  "state": "complete"
+}
+JSON
+```
+
+**Note:** `{cardId}` and `{checkItemId}` are placeholders. Replace each of them with real values before sending the request.
+
+#### Delete Checklist
+
+```bash
+maton trello checklist delete {id}
+```
+
+Or with `maton api`:
+
+```bash
+maton api '/trello/1/checklists/{id}' -X DELETE
+```
+
+**Note:** `{id}` is a placeholder. Replace it with a real value before sending the request.
+
+### Labels API
+
+#### Get Board Labels
 
 ```bash
 maton trello label list --board {id}
 ```
 
-### Create Label
+Or with `maton api`:
+
 ```bash
-maton api -X POST '/trello/1/labels' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
+maton api '/trello/1/boards/{id}/labels'
+```
+
+**Note:** `{id}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Create Label
+
+```bash
+maton trello label create --board {boardId} --name 'High Priority' --color red
+```
+
+Or with `maton api`:
+
+```bash
+maton api -X POST '/trello/1/labels' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "name": "High Priority",
   "color": "red",
-  "idBoard": "BOARD_ID"
+  "idBoard": "{boardId}"
 }
-EOF
+JSON
 ```
 
-Example:
+**Note:** `{boardId}` is a placeholder. Replace it with a real value before sending the request.
+
+**Note:** Colors are `yellow`, `purple`, `blue`, `red`, `green`, `orange`, `black`, `sky`, `pink`, `lime`, or `null` (no color).
+
+#### Update Label
 
 ```bash
-maton trello label create --board BOARD_ID --name 'High Priority' --color red
+maton trello label update {id} --name Critical --color red
 ```
 
-### Search
+Or with `maton api`:
+
 ```bash
-maton api '/trello/1/search?query=keyword&modelTypes=cards,boards'
+maton api -X PUT '/trello/1/labels/{id}' -H 'Content-Type: application/json' --input - <<'JSON'
+{
+  "name": "Critical",
+  "color": "red"
+}
+JSON
 ```
 
-Example:
+**Note:** `{id}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Delete Label
+
+```bash
+maton trello label delete {id}
+```
+
+Or with `maton api`:
+
+```bash
+maton api '/trello/1/labels/{id}' -X DELETE
+```
+
+**Note:** `{id}` is a placeholder. Replace it with a real value before sending the request.
+
+### Search API
+
+#### Search
 
 ```bash
 maton trello search --query keyword --models cards,boards
 ```
 
-## Notes
+Or with `maton api`:
+
+```bash
+maton api '/trello/1/search?query=keyword&modelTypes=cards,boards'
+```
+
+**Query parameters:**
+- `query` - Search query (required)
+- `modelTypes` - Comma-separated: `actions`, `boards`, `cards`, `members`, `organizations`
+- `board_fields` - Fields to return for boards
+- `card_fields` - Fields to return for cards
+- `cards_limit` - Max cards to return (1-1000)
+
+### Notes
 
 - IDs are 24-character alphanumeric strings
 - Use `me` to reference the authenticated user
@@ -305,7 +636,7 @@ maton trello search --query keyword --models cards,boards
 - Use `fields` parameter to limit returned data and improve performance
 - Archived items can be retrieved with `filter=closed`
 
-## Resources
+### Resources
 
 - [Trello API Overview](https://developer.atlassian.com/cloud/trello/rest/api-group-actions/)
 - [Boards](https://developer.atlassian.com/cloud/trello/rest/api-group-boards/)

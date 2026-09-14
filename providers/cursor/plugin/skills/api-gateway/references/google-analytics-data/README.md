@@ -1,19 +1,21 @@
-# Google Analytics Data Routing Reference
+# Google Analytics Data
 
-> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../SKILL.md#security--permissions) for full security policy.
+## API Reference
+
+> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../../SKILL.md#security--permissions) for full security policy.
 
 **App name:** `google-analytics-data`
-**Base URL proxied:** `analyticsdata.googleapis.com`
+**Upstream base URL:** `analyticsdata.googleapis.com`
 
-## API Path Pattern
+Replace the upstream base URL with the app name. Everything after the base URL including query strings is kept as-is. Any account-specific part of the base URL and the API credentials are stored in the Maton connection, and the gateway injects both so requests never carry them. For example:
 
-```
-/google-analytics-data/v1beta/{endpoint}
-```
+- Upstream: `https://analyticsdata.googleapis.com/v1beta/properties/{propertyId}:runReport`
+- Gateway: `https://api.maton.ai/google-analytics-data/v1beta/properties/{propertyId}:runReport`
 
-## Common Endpoints
+### Reports API
 
-### Run Report
+#### Run Report
+
 ```bash
 maton api -X POST '/google-analytics-data/v1beta/properties/{propertyId}:runReport' \
   -H 'Content-Type: application/json' \
@@ -26,7 +28,10 @@ maton api -X POST '/google-analytics-data/v1beta/properties/{propertyId}:runRepo
 EOF
 ```
 
-### Run Realtime Report
+**Note:** `{propertyId}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Run Realtime Report
+
 ```bash
 maton api -X POST '/google-analytics-data/v1beta/properties/{propertyId}:runRealtimeReport' \
   -H 'Content-Type: application/json' \
@@ -38,7 +43,10 @@ maton api -X POST '/google-analytics-data/v1beta/properties/{propertyId}:runReal
 EOF
 ```
 
-### Batch Run Reports
+**Note:** `{propertyId}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Batch Run Reports
+
 ```bash
 maton api -X POST '/google-analytics-data/v1beta/properties/{propertyId}:batchRunReports' \
   -H 'Content-Type: application/json' \
@@ -60,14 +68,20 @@ maton api -X POST '/google-analytics-data/v1beta/properties/{propertyId}:batchRu
 EOF
 ```
 
-### Get Metadata (available dimensions/metrics)
+**Note:** `{propertyId}` is a placeholder. Replace it with a real value before sending the request.
+
+### Metadata API
+
 ```bash
 maton api '/google-analytics-data/v1beta/properties/{propertyId}/metadata'
 ```
 
-## Common Report Examples
+**Note:** `{propertyId}` is a placeholder. Replace it with a real value before sending the request.
 
-### Page Views by Page
+### Common Report Examples
+
+#### Page Views by Page
+
 ```json
 {
   "dateRanges": [{"startDate": "30daysAgo", "endDate": "today"}],
@@ -78,7 +92,8 @@ maton api '/google-analytics-data/v1beta/properties/{propertyId}/metadata'
 }
 ```
 
-### Users by Country
+#### Users by Country
+
 ```json
 {
   "dateRanges": [{"startDate": "30daysAgo", "endDate": "today"}],
@@ -88,7 +103,8 @@ maton api '/google-analytics-data/v1beta/properties/{propertyId}/metadata'
 }
 ```
 
-### Traffic Sources
+#### Traffic Sources
+
 ```json
 {
   "dateRanges": [{"startDate": "30daysAgo", "endDate": "today"}],
@@ -97,7 +113,8 @@ maton api '/google-analytics-data/v1beta/properties/{propertyId}/metadata'
 }
 ```
 
-### Device Breakdown
+#### Device Breakdown
+
 ```json
 {
   "dateRanges": [{"startDate": "7daysAgo", "endDate": "today"}],
@@ -106,7 +123,8 @@ maton api '/google-analytics-data/v1beta/properties/{propertyId}/metadata'
 }
 ```
 
-### Daily Sessions Trend
+#### Daily Sessions Trend
+
 ```json
 {
   "dateRanges": [{"startDate": "30daysAgo", "endDate": "today"}],
@@ -116,7 +134,7 @@ maton api '/google-analytics-data/v1beta/properties/{propertyId}/metadata'
 }
 ```
 
-## Common Dimensions
+### Common Dimensions
 
 - `date`, `dateHour`, `dateHourMinute`
 - `country`, `city`, `region`
@@ -125,7 +143,7 @@ maton api '/google-analytics-data/v1beta/properties/{propertyId}/metadata'
 - `sessionSource`, `sessionMedium`, `sessionCampaignName`
 - `eventName`
 
-## Common Metrics
+### Common Metrics
 
 - `activeUsers`, `newUsers`, `totalUsers`
 - `sessions`, `sessionsPerUser`
@@ -133,24 +151,25 @@ maton api '/google-analytics-data/v1beta/properties/{propertyId}/metadata'
 - `bounceRate`, `averageSessionDuration`
 - `conversions`, `eventCount`
 
-## Date Formats
+### Date Formats
 
 - Relative: `today`, `yesterday`, `7daysAgo`, `30daysAgo`
 - Absolute: `2026-01-01`
 
-## Notes
+### Notes
 
-- Authentication is automatic - the router injects the OAuth token
+- **Automatic auth means reports run against the user's live Google Analytics properties**, including any the connected Google user can reach on behalf of clients or other teams. Confirm the property ID with the user before reporting, and treat returned rows as real visitor data - user IDs, locations, and device details are personal data, so summarize rather than dumping raw rows.
 - Property IDs are numeric (e.g., `521310447` from URL `p521310447`)
 - GA4 properties only (Universal Analytics not supported)
 - Use metadata endpoint to discover available dimensions/metrics
 - Results are paginated with `limit` and `offset`
 - This API is for running reports only - listing properties requires the Admin API
 
-## Resources
+### Resources
 
-- [API Overview](https://developers.google.com/analytics/devguides/reporting/data/v1)
+- [Google Analytics Data API Overview](https://developers.google.com/analytics/devguides/reporting/data/v1)
 - [Run Report](https://developers.google.com/analytics/devguides/reporting/data/v1/rest/v1beta/properties/runReport)
 - [Run Realtime Report](https://developers.google.com/analytics/devguides/reporting/data/v1/rest/v1beta/properties/runRealtimeReport)
 - [Batch Run Reports](https://developers.google.com/analytics/devguides/reporting/data/v1/rest/v1beta/properties/batchRunReports)
 - [Get Metadata](https://developers.google.com/analytics/devguides/reporting/data/v1/rest/v1beta/properties/getMetadata)
+- [Maton CLI Manual](https://cli.maton.ai/manual)

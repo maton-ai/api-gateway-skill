@@ -1,127 +1,196 @@
-# Outlook Routing Reference
+# Outlook
 
-> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../SKILL.md#security--permissions) for full security policy.
+## API Reference
+
+> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../../SKILL.md#security--permissions) for full security policy.
 
 **App name:** `outlook`
-**Service API host:** `graph.microsoft.com`
+**Upstream base URL:** `graph.microsoft.com`
 
-## API Path Pattern
+Replace the upstream base URL with the app name. Everything after the base URL including query strings is kept as-is. Any account-specific part of the base URL and the API credentials are stored in the Maton connection, and the gateway injects both so requests never carry them. For example:
 
-```
-/outlook/v1.0/me/{resource}
-```
+- Upstream: `https://graph.microsoft.com/v1.0/me`
+- Gateway: `https://api.maton.ai/outlook/v1.0/me`
 
-## Review Requirements
+**Important:** This file documents Outlook route shapes. For any non-read endpoint below, first retrieve the target item where possible, verify the connected mailbox, and confirm the exact recipient, resource, payload, and expected result with the user. Prefer draft and read-before-change workflows.
 
-This file documents Outlook route shapes. For any non-read endpoint below, first retrieve the target item where possible, verify the connected mailbox, and confirm the exact recipient, resource, payload, and expected result with the user. Prefer draft and read-before-change workflows.
+### User Profile API
 
-## Common Endpoints
-
-### User Profile
-```bash
-maton api '/outlook/v1.0/me'
-```
-
-Example:
+#### Get User Profile
 
 ```bash
 maton outlook whoami
 ```
 
-### Mail Folders
+Or with `maton api`:
 
-#### List Mail Folders
 ```bash
-maton api '/outlook/v1.0/me/mailFolders'
+maton api '/outlook/v1.0/me'
 ```
 
-Well-known folder names: `Inbox`, `Drafts`, `SentItems`, `DeletedItems`, `Archive`, `JunkEmail`
+### Mail Folders API
 
-Example:
+#### List Mail Folders
 
 ```bash
 maton outlook folder list
 ```
 
+Or with `maton api`:
+
+```bash
+maton api '/outlook/v1.0/me/mailFolders'
+```
+
+**Note:** Well-known folder names: `Inbox`, `Drafts`, `SentItems`, `DeletedItems`, `Archive`, `JunkEmail`.
+
 #### Get Mail Folder
+
+```bash
+maton outlook folder get {folderId}
+```
+
+Or with `maton api`:
+
 ```bash
 maton api '/outlook/v1.0/me/mailFolders/{folderId}'
 ```
 
-Example:
-
-```bash
-maton outlook folder view {folderId}
-```
+**Note:** `{folderId}` is a placeholder. Replace it with a real value before sending the request.
 
 #### Create Mail Folder
-```bash
-maton api -X POST '/outlook/v1.0/me/mailFolders' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
-{
-  "displayName": "My Folder"
-}
-EOF
-```
-
-Example:
 
 ```bash
 maton outlook folder create --name "My Folder"
 ```
 
-### Messages
+Or with `maton api`:
 
-#### List Messages
 ```bash
-maton api '/outlook/v1.0/me/messages'
+maton api -X POST '/outlook/v1.0/me/mailFolders' -H 'Content-Type: application/json' --input - <<'JSON'
+{
+  "displayName": "My Folder"
+}
+JSON
 ```
 
-Example:
+#### Delete Mail Folder
+
+```bash
+maton outlook folder delete {folderId}
+```
+
+Or with `maton api`:
+
+```bash
+maton api '/outlook/v1.0/me/mailFolders/{folderId}' -X DELETE
+```
+
+**Note:** `{folderId}` is a placeholder. Replace it with a real value before sending the request.
+
+#### List Child Folders
+
+```bash
+maton outlook folder list --parent {folderId}
+```
+
+Or with `maton api`:
+
+```bash
+maton api '/outlook/v1.0/me/mailFolders/{folderId}/childFolders'
+```
+
+**Note:** `{folderId}` is a placeholder. Replace it with a real value before sending the request.
+
+### Messages API
+
+#### List Messages
 
 ```bash
 maton outlook message list
 ```
 
-From specific folder:
+Or with `maton api`:
+
 ```bash
-maton api '/outlook/v1.0/me/mailFolders/Inbox/messages'
+maton api '/outlook/v1.0/me/messages'
 ```
 
-Example:
+**From a specific folder:**
 
 ```bash
 maton outlook message list --folder Inbox
 ```
 
-With filter:
+Or with `maton api`:
+
 ```bash
-maton api '/outlook/v1.0/me/messages?$filter=isRead%20eq%20false&$top=10'
+maton api '/outlook/v1.0/me/mailFolders/Inbox/messages'
 ```
 
-Example:
+**With a filter:**
 
 ```bash
 maton outlook message list --filter "isRead eq false" --top 10
 ```
 
+Or with `maton api`:
+
+```bash
+maton api '/outlook/v1.0/me/messages?$filter=isRead%20eq%20false&$top=10'
+```
+
 #### Get Message
+
+```bash
+maton outlook message get {messageId}
+```
+
+Or with `maton api`:
+
 ```bash
 maton api '/outlook/v1.0/me/messages/{messageId}'
 ```
 
-Example:
+**Note:** `{messageId}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Create Draft
 
 ```bash
-maton outlook message view {messageId}
+maton outlook message draft --to recipient@example.com --subject "Hello" --body "This is the email body."
+```
+
+Or with `maton api`:
+
+```bash
+maton api -X POST '/outlook/v1.0/me/messages' -H 'Content-Type: application/json' --input - <<'JSON'
+{
+  "subject": "Hello",
+  "body": {
+    "contentType": "Text",
+    "content": "This is the email body."
+  },
+  "toRecipients": [
+    {
+      "emailAddress": {
+        "address": "recipient@example.com"
+      }
+    }
+  ]
+}
+JSON
 ```
 
 #### Send Message
+
 ```bash
-maton api -X POST '/outlook/v1.0/me/sendMail' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
+maton outlook message send --to recipient@example.com --subject "Hello" --body "This is the email body."
+```
+
+Or with `maton api`:
+
+```bash
+maton api -X POST '/outlook/v1.0/me/sendMail' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "message": {
     "subject": "Hello",
@@ -139,158 +208,147 @@ maton api -X POST '/outlook/v1.0/me/sendMail' \
   },
   "saveToSentItems": true
 }
-EOF
-```
-
-Example:
-
-```bash
-maton outlook message send --to recipient@example.com --subject "Hello" --body "This is the email body."
-```
-
-#### Create Draft
-```bash
-maton api -X POST '/outlook/v1.0/me/messages' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
-{
-  "subject": "Hello",
-  "body": {
-    "contentType": "Text",
-    "content": "This is the email body."
-  },
-  "toRecipients": [
-    {
-      "emailAddress": {
-        "address": "recipient@example.com"
-      }
-    }
-  ]
-}
-EOF
-```
-
-Example:
-
-```bash
-maton outlook message draft --to recipient@example.com --subject "Hello" --body "This is the email body."
+JSON
 ```
 
 #### Send Existing Draft
-```bash
-maton api -X POST '/outlook/v1.0/me/messages/{messageId}/send'
-```
-
-Example:
 
 ```bash
 maton outlook message send {messageId}
 ```
 
-#### Update Message (Mark as Read)
+Or with `maton api`:
+
 ```bash
-maton api -X PATCH '/outlook/v1.0/me/messages/{messageId}' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
-{
-  "isRead": true
-}
-EOF
+maton api -X POST '/outlook/v1.0/me/messages/{messageId}/send'
 ```
 
-Example:
+**Note:** `{messageId}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Update Message (Mark as Read)
 
 ```bash
 maton outlook message update {messageId} --read
 ```
 
-#### Delete Message
+Or with `maton api`:
+
 ```bash
-maton api -X DELETE '/outlook/v1.0/me/messages/{messageId}'
+maton api -X PATCH '/outlook/v1.0/me/messages/{messageId}' -H 'Content-Type: application/json' --input - <<'JSON'
+{
+  "isRead": true
+}
+JSON
 ```
 
-Example:
+**Note:** `{messageId}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Delete Message
 
 ```bash
 maton outlook message delete {messageId}
 ```
 
-#### Move Message
+Or with `maton api`:
+
 ```bash
-maton api -X POST '/outlook/v1.0/me/messages/{messageId}/move' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
-{
-  "destinationId": "{folderId}"
-}
-EOF
+maton api '/outlook/v1.0/me/messages/{messageId}' -X DELETE
 ```
 
-Example:
+**Note:** `{messageId}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Move Message
 
 ```bash
 maton outlook message move {messageId} --to {folderId}
 ```
 
-#### Search Messages
+Or with `maton api`:
 
-Example:
+```bash
+maton api -X POST '/outlook/v1.0/me/messages/{messageId}/move' -H 'Content-Type: application/json' --input - <<'JSON'
+{
+  "destinationId": "{folderId}"
+}
+JSON
+```
+
+**Note:** `{messageId}` and `{folderId}` are placeholders. Replace each of them with real values before sending the request.
+
+#### Search Messages
 
 ```bash
 maton outlook message search "quarterly report"
 ```
 
-### Calendar
+Or with `maton api`:
 
-#### List Calendars
 ```bash
-maton api '/outlook/v1.0/me/calendars'
+maton api '/outlook/v1.0/me/messages?$search=%22quarterly%20report%22'
 ```
 
-Example:
+### Calendar API
+
+#### List Calendars
 
 ```bash
 maton outlook calendar list
 ```
 
-#### List Events
+Or with `maton api`:
+
 ```bash
-maton api '/outlook/v1.0/me/calendar/events'
+maton api '/outlook/v1.0/me/calendars'
 ```
 
-Example:
+#### List Events
 
 ```bash
 maton outlook event list
 ```
 
-With filter:
+Or with `maton api`:
+
 ```bash
-maton api "/outlook/v1.0/me/calendar/events?\$filter=start/dateTime%20ge%20'2024-01-01'&\$top=10"
+maton api '/outlook/v1.0/me/calendar/events'
 ```
 
-Example:
+**With a filter:**
 
 ```bash
 maton outlook event list --filter "start/dateTime ge '2024-01-01'" --top 10
 ```
 
+Or with `maton api`:
+
+```bash
+maton api "/outlook/v1.0/me/calendar/events?\$filter=start/dateTime%20ge%20'2024-01-01'&\$top=10"
+```
+
 #### Get Event
+
+```bash
+maton outlook event get {eventId}
+```
+
+Or with `maton api`:
+
 ```bash
 maton api '/outlook/v1.0/me/events/{eventId}'
 ```
 
-Example:
-
-```bash
-maton outlook event view {eventId}
-```
+**Note:** `{eventId}` is a placeholder. Replace it with a real value before sending the request.
 
 #### Create Event
+
 ```bash
-maton api -X POST '/outlook/v1.0/me/calendar/events' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
+maton outlook event create --subject "Meeting" --start 2024-01-15T10:00:00 --end 2024-01-15T11:00:00 --timezone UTC --attendees attendee@example.com
+```
+
+Or with `maton api`:
+
+```bash
+maton api -X POST '/outlook/v1.0/me/calendar/events' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "subject": "Meeting",
   "start": {
@@ -310,44 +368,61 @@ maton api -X POST '/outlook/v1.0/me/calendar/events' \
     }
   ]
 }
-EOF
-```
-
-Example:
-
-```bash
-maton outlook event create --subject "Meeting" --start 2024-01-15T10:00:00 --end 2024-01-15T11:00:00 --timezone UTC --attendees attendee@example.com
+JSON
 ```
 
 #### Delete Event
-```bash
-maton api -X DELETE '/outlook/v1.0/me/events/{eventId}'
-```
-
-Example:
 
 ```bash
 maton outlook event delete {eventId}
 ```
 
-### Contacts
+Or with `maton api`:
 
-#### List Contacts
 ```bash
-maton api '/outlook/v1.0/me/contacts'
+maton api '/outlook/v1.0/me/events/{eventId}' -X DELETE
 ```
 
-Example:
+**Note:** `{eventId}` is a placeholder. Replace it with a real value before sending the request.
+
+### Contacts API
+
+#### List Contacts
 
 ```bash
 maton outlook contact list
 ```
 
-#### Create Contact
+Or with `maton api`:
+
 ```bash
-maton api -X POST '/outlook/v1.0/me/contacts' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
+maton api '/outlook/v1.0/me/contacts'
+```
+
+#### Get Contact
+
+```bash
+maton outlook contact get {contactId}
+```
+
+Or with `maton api`:
+
+```bash
+maton api '/outlook/v1.0/me/contacts/{contactId}'
+```
+
+**Note:** `{contactId}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Create Contact
+
+```bash
+maton outlook contact create --given-name John --surname Doe --email john.doe@example.com
+```
+
+Or with `maton api`:
+
+```bash
+maton api -X POST '/outlook/v1.0/me/contacts' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "givenName": "John",
   "surname": "Doe",
@@ -357,27 +432,24 @@ maton api -X POST '/outlook/v1.0/me/contacts' \
     }
   ]
 }
-EOF
-```
-
-Example:
-
-```bash
-maton outlook contact create --given-name John --surname Doe --email john.doe@example.com
+JSON
 ```
 
 #### Delete Contact
-```bash
-maton api -X DELETE '/outlook/v1.0/me/contacts/{contactId}'
-```
-
-Example:
 
 ```bash
 maton outlook contact delete {contactId}
 ```
 
-## OData Query Parameters
+Or with `maton api`:
+
+```bash
+maton api '/outlook/v1.0/me/contacts/{contactId}' -X DELETE
+```
+
+**Note:** `{contactId}` is a placeholder. Replace it with a real value before sending the request.
+
+### OData Query parameters
 
 - `$top=10` - Limit results
 - `$skip=20` - Skip results (pagination)
@@ -386,7 +458,7 @@ maton outlook contact delete {contactId}
 - `$orderby=receivedDateTime desc` - Sort results
 - `$search="keyword"` - Search content
 
-## Security & Review Requirements
+### Security & Review Requirements
 
 - **Outbound mail requires review.** Before delivery, confirm the exact recipients, subject, and body content with the user.
 - **Removal actions require review.** Always retrieve and display the target resource first so the user can verify before confirming.
@@ -394,7 +466,7 @@ maton outlook contact delete {contactId}
 - **Moving messages** changes folder location — confirm the destination folder with the user.
 - All write operations (send, delete, move, create events/contacts) require explicit user confirmation with specific resource details (message subject, event title, contact name).
 
-## Pagination
+### Pagination
 
 Outlook uses cursor-based pagination via `@odata.nextLink`. The CLI handles this automatically with `--paginate`:
 
@@ -402,18 +474,18 @@ Outlook uses cursor-based pagination via `@odata.nextLink`. The CLI handles this
 maton outlook message list --folder Inbox --paginate
 ```
 
-## Notes
+### Notes
 
 - Use `me` as the user identifier for the authenticated user
 - Message body content types: `Text` or `HTML`
 - Well-known folder names work as folder IDs: `Inbox`, `Drafts`, `SentItems`, etc.
 - Calendar events use ISO 8601 datetime format
 
-## Resources
+### Resources
 
 - [Microsoft Graph API Overview](https://learn.microsoft.com/en-us/graph/api/overview)
 - [Mail API](https://learn.microsoft.com/en-us/graph/api/resources/mail-api-overview)
 - [Calendar API](https://learn.microsoft.com/en-us/graph/api/resources/calendar)
 - [Contacts API](https://learn.microsoft.com/en-us/graph/api/resources/contact)
-- [Query Parameters](https://learn.microsoft.com/en-us/graph/query-parameters)
+- [Query parameters](https://learn.microsoft.com/en-us/graph/query-parameters)
 - [Maton CLI Manual](https://cli.maton.ai/manual)

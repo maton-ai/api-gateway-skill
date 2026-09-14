@@ -1,17 +1,26 @@
 {
   "name": "change_backlog_folder",
-  "description": "Change the folder for backlog tasks",
+  "description": "Change the folder for backlog tasks\n\nWARNING: this modifies the user's task organisation — it moves the named backlog tasks into a different folder, which changes where they appear for anyone sharing that backlog. Confirm the exact tasks and the destination folder with the user before calling it, and never infer either from earlier API output.",
   "inputSchema": {
     "type": "object",
     "properties": {
       "taskIds": {
         "oneOf": [
-          { "type": "string" },
-          { "type": "array", "items": { "type": "string" } }
+          {
+            "type": "string"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
         ],
         "description": "Task ID or array of task IDs"
       }
     },
-    "required": ["taskIds"]
+    "required": [
+      "taskIds"
+    ]
   }
 }

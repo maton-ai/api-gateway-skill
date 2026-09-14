@@ -1,37 +1,15 @@
-# Notion MCP Routing Reference
-
-> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../SKILL.md#security--permissions) for full security policy.
-
-**App name:** `notion`
-**Base URL proxied:** `mcp.notion.com`
-
-## Request Headers
-
-MCP requests use the `Mcp-Session-Id` header for session management. If not specified, the gateway initializes a new session and returns the session ID in the `Mcp-Session-Id` response header. You can include this session ID in subsequent requests to reuse the same session.
-
-## Connection Management
-
-An MCP connection is created like any other, with `--method MCP`.
-
-### List Connections
-
-```bash
-maton connection list notion --method MCP --status ACTIVE
-```
-
-### Create Connection
-
-```bash
-maton connection create notion --method MCP
-```
-
-## API Path Pattern
-
-```
-/notion/{tool-name}
-```
+# Notion MCP
 
 ## MCP Reference
+
+> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../../SKILL.md#security--permissions) for full security policy.
+
+**App name:** `notion`
+**Upstream base URL:** `mcp.notion.com` (MCP server)
+
+This app is reached over MCP, so there is no upstream REST path to rewrite. Each MCP tool is a `POST` to the app name followed by the tool name; the arguments go in the JSON body. The API credentials are stored in the Maton connection, and the gateway injects them so requests never carry them. For example: `https://api.maton.ai/notion/notion-search`
+
+**Important:** MCP requests use the `Mcp-Session-Id` header for session management. If not specified, the gateway initializes a new session and returns the session ID in the `Mcp-Session-Id` response header. You can include this session ID in subsequent requests to reuse the same session.
 
 All MCP tools use `POST` method:
 
@@ -50,9 +28,9 @@ All MCP tools use `POST` method:
 | `notion-get-teams` | List workspace teams | [schema](schemas/notion-get-teams.json) |
 | `notion-get-users` | List workspace users | [schema](schemas/notion-get-users.json) |
 
-## Common Endpoints
+### Common Tools
 
-### Search
+#### Search Tool
 
 Search for pages and databases:
 ```bash
@@ -109,7 +87,7 @@ maton api -X POST '/notion/notion-search' \
 EOF
 ```
 
-### Fetch Content
+#### Fetch Content Tool
 
 Fetch page by URL:
 ```bash
@@ -169,7 +147,7 @@ maton api -X POST '/notion/notion-fetch' \
 EOF
 ```
 
-### Create Pages
+#### Create Pages Tool
 
 Create a simple page:
 ```bash
@@ -239,7 +217,7 @@ maton api -X POST '/notion/notion-create-pages' \
 EOF
 ```
 
-### Update Page
+#### Update Page Tool
 
 Update properties:
 ```bash
@@ -311,7 +289,7 @@ maton api -X POST '/notion/notion-update-page' \
 EOF
 ```
 
-### Move Pages
+#### Move Pages Tool
 
 Move to page:
 ```bash
@@ -368,7 +346,7 @@ maton api -X POST '/notion/notion-move-pages' \
 EOF
 ```
 
-### Duplicate Page
+#### Duplicate Page Tool
 
 ```bash
 maton api -X POST '/notion/notion-duplicate-page' \
@@ -393,7 +371,7 @@ EOF
 }
 ```
 
-### Create Database
+#### Create Database Tool
 
 Create with SQL DDL schema:
 ```bash
@@ -420,7 +398,7 @@ EOF
 }
 ```
 
-### Update Data Source
+#### Update Data Source Tool
 
 ```bash
 maton api -X POST '/notion/notion-update-data-source' \
@@ -446,7 +424,7 @@ EOF
 }
 ```
 
-### Get Comments
+#### Get Comments Tool
 
 ```bash
 maton api -X POST '/notion/notion-get-comments' \
@@ -471,7 +449,7 @@ EOF
 }
 ```
 
-### Create Comment
+#### Create Comment Tool
 
 ```bash
 maton api -X POST '/notion/notion-create-comment' \
@@ -504,8 +482,7 @@ EOF
 }
 ```
 
-
-### List Teams
+#### List Teams Tool
 
 ```bash
 maton api -X POST '/notion/notion-get-teams' \
@@ -528,7 +505,7 @@ EOF
 }
 ```
 
-### List Users
+#### List Users Tool
 
 ```bash
 maton api -X POST '/notion/notion-get-users' \
@@ -551,7 +528,7 @@ EOF
 }
 ```
 
-## Property Types
+### Property Types
 
 When creating or updating pages in databases:
 
@@ -571,7 +548,37 @@ When creating or updating pages in databases:
 
 **Note:** Properties named "id" or "url" must be prefixed with `userDefined:` (e.g., `"userDefined:URL"`).
 
-## Notes
+### Response Format
+
+All MCP tool responses wrap content in a `content` array of typed blocks alongside an `isError` flag. The `text` field is often JSON-stringified data that has to be parsed:
+
+```json
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"results\":[...],\"type\":\"workspace_search\"}"
+    }
+  ],
+  "isError": false
+}
+```
+
+Tool-level failures return HTTP 200 with `isError` set to `true` and the message in the same `content` array, so check `isError` rather than the HTTP status:
+
+```json
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "<error message>"
+    }
+  ],
+  "isError": true
+}
+```
+
+### Notes
 
 - All IDs are UUIDs (with or without hyphens)
 - Use `notion-fetch` to get page/database structure before creating or updating
@@ -579,9 +586,10 @@ When creating or updating pages in databases:
 - If multiple Notion connections exist, specify which to use with `Maton-Connection` header
 - Session can be reused by passing the `Mcp-Session-Id` header from previous responses
 
-## Resources
+### Resources
 
 - [Notion MCP Overview](https://developers.notion.com/guides/mcp)
-- [MCP Supported Tools](https://developers.notion.com/guides/mcp/mcp-supported-tools)
+- [Notion MCP Supported Tools](https://developers.notion.com/guides/mcp/mcp-supported-tools)
 - [Maton Community](https://discord.com/invite/dBfFAcefs2)
 - [Maton Support](mailto:support@maton.ai)
+- [Maton CLI Manual](https://cli.maton.ai/manual)

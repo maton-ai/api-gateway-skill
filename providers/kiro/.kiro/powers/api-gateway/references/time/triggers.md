@@ -11,7 +11,7 @@
 ### Parameters
 
 - `cron_expression` (string, required): A standard 5-field cron expression (`minute hour day-of-month month day-of-week`). For example `0 9 * * *` fires daily at 9:00, `*/15 * * * *` every 15 minutes, and `0 9 * * 1-5` at 9:00 on weekdays.
-- `timezone` (string, optional, default `UTC`): IANA timezone name the cron expression is evaluated in (e.g. `America/Los_Angeles`).
+- `timezone` (string, required): IANA timezone name the cron expression is evaluated in (e.g. `America/Los_Angeles`, `UTC`).
 
 ### Sample Payload
 

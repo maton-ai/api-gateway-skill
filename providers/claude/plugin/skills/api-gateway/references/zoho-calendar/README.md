@@ -1,57 +1,279 @@
-# Zoho Calendar Routing Reference
+# Zoho Calendar
 
-> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../SKILL.md#security--permissions) for full security policy.
+## API Reference
+
+> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../../SKILL.md#security--permissions) for full security policy.
 
 **App name:** `zoho-calendar`
-**Base URL proxied:** `calendar.zoho.com`
+**Upstream base URL:** `calendar.zoho.com`
 
-## API Path Pattern
+Replace the upstream base URL with the app name. Everything after the base URL including query strings is kept as-is. Any account-specific part of the base URL and the API credentials are stored in the Maton connection, and the gateway injects both so requests never carry them. For example:
 
-```
-/zoho-calendar/api/v1/{resource}
-```
+- Upstream: `https://calendar.zoho.com/api/v1/calendars`
+- Gateway: `https://api.maton.ai/zoho-calendar/api/v1/calendars`
 
-## Common Endpoints
+### Calendars API
 
-### Calendars
+#### List Calendars
 
 ```bash
-# List calendars
 maton api '/zoho-calendar/api/v1/calendars'
-
-# Get calendar details
-maton api '/zoho-calendar/api/v1/calendars/{calendar_uid}'
-
-# Create calendar
-maton api -X POST '/zoho-calendar/api/v1/calendars?calendarData={json}'
-
-# Delete calendar
-maton api -X DELETE '/zoho-calendar/api/v1/calendars/{calendar_uid}'
 ```
 
-### Events
+**Response:**
+```json
+{
+  "calendars": [
+    {
+      "uid": "fda9b0b4ad834257b622cb3dc3555727",
+      "name": "My Calendar",
+      "color": "#8cbf40",
+      "textcolor": "#FFFFFF",
+      "timezone": "PST",
+      "isdefault": true,
+      "category": "own",
+      "privilege": "owner"
+    }
+  ]
+}
+```
+
+#### Create Calendar
 
 ```bash
-# List events (range required, max 31 days)
-maton api '/zoho-calendar/api/v1/calendars/{calendar_uid}/events?range={"start":"yyyyMMdd","end":"yyyyMMdd"}'
-
-# Get event details
-maton api '/zoho-calendar/api/v1/calendars/{calendar_uid}/events/{event_uid}'
-
-# Create event
-maton api -X POST '/zoho-calendar/api/v1/calendars/{calendar_uid}/events?eventdata={json}'
-
-# Update event (etag required in eventdata)
-maton api -X PUT '/zoho-calendar/api/v1/calendars/{calendar_uid}/events/{event_uid}?eventdata={json}'
-
-# Delete event (etag required as HEADER)
-maton api -X DELETE '/zoho-calendar/api/v1/calendars/{calendar_uid}/events/{event_uid}' \
-  -H 'etag: {etag_value}'
+maton api -X POST '/zoho-calendar/api/v1/calendars?calendarData={json}'
 ```
 
-## Event Data Format
+**Note:** `{json}` is a placeholder. Replace it with a real value before sending the request.
 
-### Create/Update Event
+**Request body:**
+- `name` (required) - Calendar name (max 50 characters)
+- `color` (required) - Hex color code (e.g., `#FF5733`)
+- `textcolor` (optional) - Text color hex code
+- `description` (optional) - Calendar description (max 1000 characters)
+- `timezone` (optional) - Calendar timezone
+- `include_infreebusy` (optional) - Show as Busy/Free (boolean)
+- `public` (optional) - Visibility level (`disable`, `freebusy`, or `view`)
+
+**Example:**
+
+```bash
+maton api -X POST '/zoho-calendar/api/v1/calendars?calendarData={urllib.parse.quote(json.dumps(calendarData))}'
+```
+
+**Response:**
+```json
+{
+  "calendars": [
+    {
+      "uid": "86fb9745076e4672ae4324f05e1f5393",
+      "name": "Work Calendar",
+      "color": "#FF5733",
+      "textcolor": "#FFFFFF"
+    }
+  ]
+}
+```
+
+#### Delete Calendar
+
+```bash
+maton api '/zoho-calendar/api/v1/calendars/{calendar_uid}' -X DELETE
+```
+
+**Note:** `{calendar_uid}` is a placeholder. Replace it with a real value before sending the request.
+
+**Response:**
+```json
+{
+  "calendars": [
+    {
+      "uid": "86fb9745076e4672ae4324f05e1f5393",
+      "calstatus": "deleted"
+    }
+  ]
+}
+```
+
+### Events API
+
+#### List Events
+
+```bash
+maton api '/zoho-calendar/api/v1/calendars/{calendar_uid}/events?range={json}'
+```
+
+**Note:** `{calendar_uid}` and `{json}` are placeholders. Replace each of them with real values before sending the request.
+
+**Query parameters:**
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `range` | JSON object | **Required.** Start and end dates in format `{"start":"yyyyMMdd","end":"yyyyMMdd"}`. Max 31-day span. |
+| `byinstance` | boolean | If true, recurring event instances are returned separately |
+| `timezone` | string | Timezone for datetime values |
+
+**Example:**
+
+```bash
+maton api '/zoho-calendar/api/v1/calendars/{calendar_uid}/events?range={urllib.parse.quote(range_param)}'
+```
+
+**Note:** `{calendar_uid}` is a placeholder. Replace it with a real value before sending the request.
+
+**Response:**
+```json
+{
+  "events": [
+    {
+      "uid": "c63e8b9fcb3e48c2a00b16729932d636@zoho.com",
+      "title": "Team Meeting",
+      "dateandtime": {
+        "timezone": "America/Los_Angeles",
+        "start": "20260206T100000-0800",
+        "end": "20260206T110000-0800"
+      },
+      "isallday": false,
+      "etag": "1770368451507",
+      "organizer": "user@example.com"
+    }
+  ]
+}
+```
+
+#### Get Event Details
+
+```bash
+maton api '/zoho-calendar/api/v1/calendars/{calendar_uid}/events/{event_uid}'
+```
+
+**Note:** `{calendar_uid}` and `{event_uid}` are placeholders. Replace each of them with real values before sending the request.
+
+**Example:**
+
+```bash
+maton api '/zoho-calendar/api/v1/calendars/fda9b0b4ad834257b622cb3dc3555727/events/c63e8b9fcb3e48c2a00b16729932d636@zoho.com'
+```
+
+#### Create Event
+
+```bash
+maton api -X POST '/zoho-calendar/api/v1/calendars/{calendar_uid}/events?eventdata={json}'
+```
+
+**Note:** `{calendar_uid}` and `{json}` are placeholders. Replace each of them with real values before sending the request.
+
+**Request body (in eventdata):**
+- `dateandtime` (required) - Object with `start`, `end`, and optionally `timezone`
+  - Format: `yyyyMMdd'T'HHmmss'Z'` (GMT) for timed events
+  - Format: `yyyyMMdd` for all-day events
+- `title` (optional) - Event name
+- `description` (optional) - Event details (max 10,000 characters)
+- `location` (optional) - Event location (max 255 characters)
+- `isallday` (optional) - Boolean for all-day events
+- `isprivate` (optional) - Boolean to hide details from non-delegates
+- `color` (optional) - Hex color code
+- `attendees` (optional) - Array of attendee objects
+- `reminders` (optional) - Array of reminder objects
+- `rrule` (optional) - Recurrence rule string (e.g., `FREQ=DAILY;COUNT=5`)
+
+**Example:**
+
+Zoho takes the event as URL-encoded JSON in the `eventdata` query parameter, so encode the payload first and pass it to `maton api`:
+
+```bash
+EVENTDATA='{"title":"Team Meeting","dateandtime":{"timezone":"America/Los_Angeles","start":"20260220T170000Z","end":"20260220T180000Z"},"description":"Weekly team sync","location":"Conference Room A"}'
+
+maton api -X POST "/zoho-calendar/api/v1/calendars/{calendar_uid}/events?eventdata=$(printf '%s' "$EVENTDATA" \
+  | python3 -c 'import sys,urllib.parse; print(urllib.parse.quote(sys.stdin.read()), end="")')"
+```
+
+**Note:** `{calendar_uid}` is a placeholder. Replace it with a real value before sending the request.
+
+**Response:**
+```json
+{
+  "events": [
+    {
+      "uid": "c63e8b9fcb3e48c2a00b16729932d636@zoho.com",
+      "title": "Team Meeting",
+      "dateandtime": {
+        "timezone": "America/Los_Angeles",
+        "start": "20260206T100000-0800",
+        "end": "20260206T110000-0800"
+      },
+      "etag": "1770368451507",
+      "estatus": "added"
+    }
+  ]
+}
+```
+
+#### Update Event
+
+```bash
+maton api -X PUT '/zoho-calendar/api/v1/calendars/{calendar_uid}/events/{event_uid}?eventdata={json}'
+```
+
+**Note:** `{calendar_uid}`, `{event_uid}` and `{json}` are placeholders. Replace each of them with real values before sending the request.
+
+**Request body (in eventdata):**
+- `dateandtime` (required) - Start and end times
+- `etag` (required) - Current etag value (from Get Event Details)
+- `title` (optional) - Event name
+- `description` (optional) - Event details (max 10,000 characters)
+- `location` (optional) - Event location (max 255 characters)
+- `isallday` (optional) - Boolean for all-day events
+- `isprivate` (optional) - Boolean to hide details from non-delegates
+- `color` (optional) - Hex color code
+- `attendees` (optional) - Array of attendee objects
+- `reminders` (optional) - Array of reminder objects
+- `rrule` (optional) - Recurrence rule string (e.g., `FREQ=DAILY;COUNT=5`)
+
+**Example:**
+
+```bash
+EVENTDATA='{"title":"Updated Team Meeting","dateandtime":{"timezone":"America/Los_Angeles","start":"20260220T180000Z","end":"20260220T190000Z"},"etag":1770368451507}'
+
+maton api -X PUT "/zoho-calendar/api/v1/calendars/{calendar_uid}/events/{event_uid}?eventdata=$(printf '%s' "$EVENTDATA" \
+  | python3 -c 'import sys,urllib.parse; print(urllib.parse.quote(sys.stdin.read()), end="")')"
+```
+
+**Note:** `{calendar_uid}` and `{event_uid}` are placeholders. Replace each of them with real values before sending the request.
+
+#### Delete Event
+
+```bash
+maton api '/zoho-calendar/api/v1/calendars/{calendar_uid}/events/{event_uid}' -X DELETE
+```
+
+**Note:** `{calendar_uid}` and `{event_uid}` are placeholders. Replace each of them with real values before sending the request.
+
+**Required Header:**
+- `etag` - Current etag value of the event
+
+**Example:**
+
+```bash
+maton api '/zoho-calendar/api/v1/calendars/fda9b0b4ad834257b622cb3dc3555727/events/c63e8b9fcb3e48c2a00b16729932d636@zoho.com' -X DELETE -H 'etag: 1770368451507'
+```
+
+**Response:**
+```json
+{
+  "events": [
+    {
+      "uid": "c63e8b9fcb3e48c2a00b16729932d636@zoho.com",
+      "estatus": "deleted",
+      "caluid": "fda9b0b4ad834257b622cb3dc3555727"
+    }
+  ]
+}
+```
+
+### Event Data Format
+
+#### Create/Update Event
 
 ```json
 {
@@ -81,7 +303,7 @@ maton api -X DELETE '/zoho-calendar/api/v1/calendars/{calendar_uid}/events/{even
 }
 ```
 
-### Update Event (etag required)
+#### Update Event (etag required)
 
 ```json
 {
@@ -91,7 +313,7 @@ maton api -X DELETE '/zoho-calendar/api/v1/calendars/{calendar_uid}/events/{even
 }
 ```
 
-## Calendar Data Format
+### Calendar Data Format
 
 ```json
 {
@@ -102,7 +324,7 @@ maton api -X DELETE '/zoho-calendar/api/v1/calendars/{calendar_uid}/events/{even
 }
 ```
 
-## Notes
+### Notes
 
 - Event and calendar data is passed as JSON in query parameters (`eventdata`, `calendarData`)
 - Date/time format: `yyyyMMdd'T'HHmmss'Z'` (GMT) for timed events, `yyyyMMdd` for all-day
@@ -113,8 +335,9 @@ maton api -X DELETE '/zoho-calendar/api/v1/calendars/{calendar_uid}/events/{even
 - Attendance: 0 (Non-participant), 1 (Required), 2 (Optional)
 - Reminder actions: `email`, `popup`, `notification`
 
-## Resources
+### Resources
 
 - [Zoho Calendar API Introduction](https://www.zoho.com/calendar/help/api/introduction.html)
-- [Zoho Calendar Events API](https://www.zoho.com/calendar/help/api/events-api.html)
-- [Zoho Calendar Calendars API](https://www.zoho.com/calendar/help/api/calendars-api.html)
+- [Events API](https://www.zoho.com/calendar/help/api/events-api.html)
+- [Calendars API](https://www.zoho.com/calendar/help/api/calendars-api.html)
+- [Maton CLI Manual](https://cli.maton.ai/manual)

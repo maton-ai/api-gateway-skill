@@ -1,37 +1,35 @@
-# QuickBooks Routing Reference
+# QuickBooks
 
-> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../SKILL.md#security--permissions) for full security policy.
+## API Reference
+
+> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../../SKILL.md#security--permissions) for full security policy.
 
 **App name:** `quickbooks`
-**Base URL proxied:** `quickbooks.api.intuit.com`
+**Upstream base URL:** `quickbooks.api.intuit.com`
 
-## Special Handling
+Replace the upstream base URL with the app name. Everything after the base URL including query strings is kept as-is. Any account-specific part of the base URL and the API credentials are stored in the Maton connection, and the gateway injects both so requests never carry them. For example:
 
-Use `:realmId` in the path and it will be automatically replaced with the connected company's realm ID.
+- Upstream: `https://quickbooks.api.intuit.com/v3/company/:realmId/companyinfo/:realmId`
+- Gateway: `https://api.maton.ai/quickbooks/v3/company/:realmId/companyinfo/:realmId`
 
-## API Path Pattern
-
-```
-/quickbooks/v3/company/:realmId/{endpoint}
-```
-
-## Common Endpoints
-
-### Company Info
+### Company Info API
 
 #### Get Company Info
+
 ```bash
 maton api '/quickbooks/v3/company/:realmId/companyinfo/:realmId'
 ```
 
 #### Get Preferences
+
 ```bash
 maton api '/quickbooks/v3/company/:realmId/preferences'
 ```
 
-### Customers
+### Customers API
 
 #### Query Customers
+
 ```bash
 maton api '/quickbooks/v3/company/:realmId/query?query=SELECT%20*%20FROM%20Customer%20MAXRESULTS%20100'
 ```
@@ -42,24 +40,43 @@ maton api '/quickbooks/v3/company/:realmId/query?query=SELECT%20*%20FROM%20Custo
 ```
 
 #### Get Customer
+
 ```bash
 maton api '/quickbooks/v3/company/:realmId/customer/{customerId}'
 ```
 
+**Note:** `{customerId}` is a placeholder. Replace it with a real value before sending the request.
+
 #### Create Customer
+
+A create carries no `Id` or `SyncToken` - those identify an existing record and belong to the update and deactivate calls below. `DisplayName` must be unique in the company file.
+
+```bash
+maton api -X POST '/quickbooks/v3/company/:realmId/customer' -H 'Content-Type: application/json' --input - <<'JSON'
+{
+  "DisplayName": "John Doe",
+  "PrimaryEmailAddr": {"Address": "john@example.com"}
+}
+JSON
+```
+
+#### Deactivate Customer (Soft Delete)
+
 ```bash
 maton api -X POST '/quickbooks/v3/company/:realmId/customer' \
   -H 'Content-Type: application/json' \
   --input - <<'EOF'
 {
+  "Id": "123",
+  "SyncToken": "1",
   "DisplayName": "John Doe",
-  "PrimaryEmailAddr": {"Address": "john@example.com"},
-  "PrimaryPhone": {"FreeFormNumber": "555-1234"}
+  "Active": false
 }
 EOF
 ```
 
 #### Update Customer
+
 Requires `Id` and `SyncToken` from previous GET:
 ```bash
 maton api -X POST '/quickbooks/v3/company/:realmId/customer' \
@@ -74,33 +91,24 @@ maton api -X POST '/quickbooks/v3/company/:realmId/customer' \
 EOF
 ```
 
-#### Deactivate Customer (Soft Delete)
-```bash
-maton api -X POST '/quickbooks/v3/company/:realmId/customer' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
-{
-  "Id": "123",
-  "SyncToken": "1",
-  "DisplayName": "John Doe",
-  "Active": false
-}
-EOF
-```
-
-### Vendors
+### Vendors API
 
 #### Query Vendors
+
 ```bash
 maton api '/quickbooks/v3/company/:realmId/query?query=SELECT%20*%20FROM%20Vendor%20MAXRESULTS%20100'
 ```
 
 #### Get Vendor
+
 ```bash
 maton api '/quickbooks/v3/company/:realmId/vendor/{vendorId}'
 ```
 
+**Note:** `{vendorId}` is a placeholder. Replace it with a real value before sending the request.
+
 #### Create Vendor
+
 ```bash
 maton api -X POST '/quickbooks/v3/company/:realmId/vendor' \
   -H 'Content-Type: application/json' \
@@ -112,19 +120,24 @@ maton api -X POST '/quickbooks/v3/company/:realmId/vendor' \
 EOF
 ```
 
-### Items (Products/Services)
+### Items API
 
 #### Query Items
+
 ```bash
 maton api '/quickbooks/v3/company/:realmId/query?query=SELECT%20*%20FROM%20Item%20MAXRESULTS%20100'
 ```
 
 #### Get Item
+
 ```bash
 maton api '/quickbooks/v3/company/:realmId/item/{itemId}'
 ```
 
+**Note:** `{itemId}` is a placeholder. Replace it with a real value before sending the request.
+
 #### Create Item
+
 ```bash
 maton api -X POST '/quickbooks/v3/company/:realmId/item' \
   -H 'Content-Type: application/json' \
@@ -137,88 +150,19 @@ maton api -X POST '/quickbooks/v3/company/:realmId/item' \
 EOF
 ```
 
-### Invoices
-
-#### Query Invoices
-```bash
-maton api '/quickbooks/v3/company/:realmId/query?query=SELECT%20*%20FROM%20Invoice%20MAXRESULTS%20100'
-```
-
-#### Get Invoice
-```bash
-maton api '/quickbooks/v3/company/:realmId/invoice/{invoiceId}'
-```
-
-#### Create Invoice
-```bash
-maton api -X POST '/quickbooks/v3/company/:realmId/invoice' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
-{
-  "CustomerRef": {"value": "123"},
-  "Line": [
-    {
-      "Amount": 100.00,
-      "DetailType": "SalesItemLineDetail",
-      "SalesItemLineDetail": {
-        "ItemRef": {"value": "1"},
-        "Qty": 1
-      }
-    }
-  ]
-}
-EOF
-```
-
-#### Void Invoice
-```bash
-maton api -X POST '/quickbooks/v3/company/:realmId/invoice?operation=void' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
-{
-  "Id": "123",
-  "SyncToken": "0"
-}
-EOF
-```
-
-#### Delete Invoice
-```bash
-maton api -X POST '/quickbooks/v3/company/:realmId/invoice?operation=delete' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
-{
-  "Id": "123",
-  "SyncToken": "0"
-}
-EOF
-```
-
-### Payments
+### Payments API
 
 #### Query Payments
+
 ```bash
 maton api '/quickbooks/v3/company/:realmId/query?query=SELECT%20*%20FROM%20Payment%20MAXRESULTS%20100'
 ```
 
 #### Create Payment
+
 Simple payment:
 ```bash
-maton api -X POST '/quickbooks/v3/company/:realmId/payment' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
-{
-  "CustomerRef": {"value": "123"},
-  "TotalAmt": 100.00
-}
-EOF
-```
-
-Payment linked to invoice:
-```bash
-maton api -X POST '/quickbooks/v3/company/:realmId/payment' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
+maton api -X POST '/quickbooks/v3/company/:realmId/payment' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "CustomerRef": {"value": "123"},
   "TotalAmt": 100.00,
@@ -229,17 +173,35 @@ maton api -X POST '/quickbooks/v3/company/:realmId/payment' \
     }
   ]
 }
-EOF
+JSON
 ```
 
-### Bills
+Payment linked to invoice:
+```bash
+maton api -X POST '/quickbooks/v3/company/:realmId/payment' -H 'Content-Type: application/json' --input - <<'JSON'
+{
+  "CustomerRef": {"value": "123"},
+  "TotalAmt": 100.00,
+  "Line": [
+    {
+      "Amount": 100.00,
+      "LinkedTxn": [{"TxnId": "456", "TxnType": "Invoice"}]
+    }
+  ]
+}
+JSON
+```
+
+### Bills API
 
 #### Query Bills
+
 ```bash
 maton api '/quickbooks/v3/company/:realmId/query?query=SELECT%20*%20FROM%20Bill%20MAXRESULTS%20100'
 ```
 
 #### Create Bill
+
 ```bash
 maton api -X POST '/quickbooks/v3/company/:realmId/bill' \
   -H 'Content-Type: application/json' \
@@ -259,9 +221,111 @@ maton api -X POST '/quickbooks/v3/company/:realmId/bill' \
 EOF
 ```
 
-### Bill Payments
+### Accounts API
+
+#### Query Accounts
+
+```bash
+maton api '/quickbooks/v3/company/:realmId/query?query=SELECT%20*%20FROM%20Account'
+```
+
+Filter by type:
+```bash
+maton api '/quickbooks/v3/company/:realmId/query?query=SELECT%20*%20FROM%20Account%20WHERE%20AccountType%20%3D%20%27Bank%27'
+```
+
+### Invoices API
+
+#### Query Invoices
+
+```bash
+maton api '/quickbooks/v3/company/:realmId/query?query=SELECT%20*%20FROM%20Invoice%20MAXRESULTS%20100'
+```
+
+#### Create Invoice
+
+```bash
+maton api -X POST '/quickbooks/v3/company/:realmId/invoice' -H 'Content-Type: application/json' --input - <<'JSON'
+{
+  "CustomerRef": {"value": "123"},
+  "Line": [
+    {
+      "Amount": 100.00,
+      "DetailType": "SalesItemLineDetail",
+      "SalesItemLineDetail": {
+        "ItemRef": {"value": "1"},
+        "Qty": 1
+      }
+    }
+  ]
+}
+JSON
+```
+
+#### Void Invoice
+
+```bash
+maton api -X POST '/quickbooks/v3/company/:realmId/invoice?operation=void' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
+{
+  "Id": "123",
+  "SyncToken": "0"
+}
+EOF
+```
+
+#### Delete Invoice
+
+```bash
+maton api -X POST '/quickbooks/v3/company/:realmId/invoice?operation=delete' -H 'Content-Type: application/json' --input - <<'JSON'
+{
+  "Id": "123",
+  "SyncToken": "0"
+}
+JSON
+```
+
+#### Get Invoice
+
+```bash
+maton api '/quickbooks/v3/company/:realmId/invoice/{invoiceId}'
+```
+
+**Note:** `{invoiceId}` is a placeholder. Replace it with a real value before sending the request.
+
+### Reports API
+
+#### Profit and Loss
+
+```bash
+maton api '/quickbooks/v3/company/:realmId/reports/ProfitAndLoss?start_date=2024-01-01&end_date=2024-12-31'
+```
+
+#### Balance Sheet
+
+```bash
+maton api '/quickbooks/v3/company/:realmId/reports/BalanceSheet?date=2024-12-31'
+```
+
+### Batch API
+
+Execute multiple queries in a single request:
+```bash
+maton api -X POST '/quickbooks/v3/company/:realmId/batch' -H 'Content-Type: application/json' --input - <<'JSON'
+{
+  "BatchItemRequest": [
+    {"bId": "1", "Query": "SELECT * FROM Customer MAXRESULTS 2"},
+    {"bId": "2", "Query": "SELECT * FROM Vendor MAXRESULTS 2"}
+  ]
+}
+JSON
+```
+
+### Bill Payments API
 
 #### Create Bill Payment
+
 ```bash
 maton api -X POST '/quickbooks/v3/company/:realmId/billpayment' \
   -H 'Content-Type: application/json' \
@@ -285,47 +349,11 @@ EOF
 
 **Note:** Use a Bank account (AccountType: "Bank") for `BankAccountRef`.
 
-### Accounts
+### Special Handling
 
-#### Query Accounts
-```bash
-maton api '/quickbooks/v3/company/:realmId/query?query=SELECT%20*%20FROM%20Account'
-```
+Use `:realmId` in the path and it will be automatically replaced with the connected company's realm ID.
 
-Filter by type:
-```bash
-maton api '/quickbooks/v3/company/:realmId/query?query=SELECT%20*%20FROM%20Account%20WHERE%20AccountType%20%3D%20%27Bank%27'
-```
-
-### Reports
-
-#### Profit and Loss
-```bash
-maton api '/quickbooks/v3/company/:realmId/reports/ProfitAndLoss?start_date=2024-01-01&end_date=2024-12-31'
-```
-
-#### Balance Sheet
-```bash
-maton api '/quickbooks/v3/company/:realmId/reports/BalanceSheet?date=2024-12-31'
-```
-
-### Batch Operations
-
-Execute multiple queries in a single request:
-```bash
-maton api -X POST '/quickbooks/v3/company/:realmId/batch' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
-{
-  "BatchItemRequest": [
-    {"bId": "1", "Query": "SELECT * FROM Customer MAXRESULTS 2"},
-    {"bId": "2", "Query": "SELECT * FROM Vendor MAXRESULTS 2"}
-  ]
-}
-EOF
-```
-
-## Query Language
+### Query Language
 
 QuickBooks uses a SQL-like query language:
 ```sql
@@ -334,7 +362,7 @@ SELECT * FROM Customer WHERE DisplayName LIKE 'John%' MAXRESULTS 100
 
 Operators: `=`, `LIKE`, `<`, `>`, `<=`, `>=`, `IN`
 
-## SyncToken for Updates
+### SyncToken for Updates
 
 All update operations require the current `SyncToken` from the entity. The SyncToken is incremented after each successful update.
 
@@ -342,14 +370,14 @@ All update operations require the current `SyncToken` from the entity. The SyncT
 2. Include `Id` and `SyncToken` in the POST body
 3. If the SyncToken doesn't match, the update fails (optimistic locking)
 
-## Void vs Delete
+### Void vs Delete
 
 - **Void**: Sets transaction amount to 0, adds "Voided" note, keeps record. Use for audit trail.
 - **Delete**: Permanently removes the transaction. Use `?operation=delete` query parameter.
 
 Both require `Id` and `SyncToken` in the request body.
 
-## Notes
+### Notes
 
 - `:realmId` is automatically replaced by the router
 - All queries must be URL-encoded
@@ -359,9 +387,9 @@ Both require `Id` and `SyncToken` in the request body.
 - Soft delete entities (Customer, Vendor, Item) by setting `Active: false`
 - Transactions (Invoice, Payment, Bill) can be voided or deleted
 
-## Resources
+### Resources
 
-- [API Overview](https://developer.intuit.com/app/developer/qbo/docs/get-started)
+- [QuickBooks API Overview](https://developer.intuit.com/app/developer/qbo/docs/get-started)
 - [Query Customers](https://developer.intuit.com/app/developer/qbo/docs/api/accounting/all-entities/customer#query-a-customer)
 - [Get Customer](https://developer.intuit.com/app/developer/qbo/docs/api/accounting/all-entities/customer#read-a-customer)
 - [Create Customer](https://developer.intuit.com/app/developer/qbo/docs/api/accounting/all-entities/customer#create-a-customer)
@@ -397,3 +425,4 @@ Both require `Id` and `SyncToken` in the request body.
 - [Profit and Loss Report](https://developer.intuit.com/app/developer/qbo/docs/api/accounting/report-entities/profitandloss)
 - [Balance Sheet Report](https://developer.intuit.com/app/developer/qbo/docs/api/accounting/report-entities/balancesheet)
 - [Query Reference](https://developer.intuit.com/app/developer/qbdesktop/docs/develop/exploring-the-quickbooks-desktop-sdk/query-requests-and-responses)
+- [Maton CLI Manual](https://cli.maton.ai/manual)

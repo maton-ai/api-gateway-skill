@@ -1,24 +1,20 @@
-# Notion Routing Reference
+# Notion
 
-> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../SKILL.md#security--permissions) for full security policy.
+## API Reference
+
+> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../../SKILL.md#security--permissions) for full security policy.
 
 **App name:** `notion`
-**Base URL proxied:** `api.notion.com`
+**Upstream base URL:** `api.notion.com`
 
-## Required Headers
+Replace the upstream base URL with the app name. Everything after the base URL including query strings is kept as-is. Any account-specific part of the base URL and the API credentials are stored in the Maton connection, and the gateway injects both so requests never carry them. For example:
 
-All Notion API requests require:
-```
-Notion-Version: 2025-09-03
-```
+- Upstream: `https://api.notion.com/v1/search`
+- Gateway: `https://api.maton.ai/notion/v1/search`
 
-## API Path Pattern
+**Important:** All requests require `Notion-Version` header.
 
-```
-/notion/v1/{endpoint}
-```
-
-## Key Concept: Databases vs Data Sources
+### Key Concept: Databases vs Data Sources
 
 In API version 2025-09-03, databases and data sources are separate concepts:
 
@@ -29,84 +25,70 @@ In API version 2025-09-03, databases and data sources are separate concepts:
 
 Most existing databases have one data source. Use `GET /databases/{id}` to get the `data_source_id`, then use `/data_sources/` endpoints for all operations.
 
-## Common Endpoints
+### Search API
 
-### Search
-
-Search for pages:
-```bash
-maton api -X POST '/notion/v1/search' \
-  -H 'Content-Type: application/json' \
-  -H 'Notion-Version: 2025-09-03' \
-  --input - <<'EOF'
-{
-  "query": "meeting notes",
-  "filter": {"property": "object", "value": "page"}
-}
-EOF
-```
-
-Example:
+#### Search Pages
 
 ```bash
 maton notion search 'meeting notes' --filter page
 ```
 
-Search for data sources:
+Or with `maton api`:
+
 ```bash
-maton api -X POST '/notion/v1/search' \
-  -H 'Content-Type: application/json' \
-  -H 'Notion-Version: 2025-09-03' \
-  --input - <<'EOF'
+maton api -X POST '/notion/v1/search' -H 'Notion-Version: 2025-09-03' -H 'Content-Type: application/json' --input - <<'JSON'
 {
-  "filter": {"property": "object", "value": "data_source"}
+  "query": "meeting notes",
+  "filter": {"property": "object", "value": "page"}
 }
-EOF
+JSON
 ```
 
-Example:
+#### Search Data Sources
 
 ```bash
 maton notion search --filter data_source
 ```
 
-With pagination:
+Or with `maton api`:
+
 ```bash
-maton api -X POST '/notion/v1/search' \
-  -H 'Content-Type: application/json' \
-  -H 'Notion-Version: 2025-09-03' \
-  --input - <<'EOF'
+maton api -X POST '/notion/v1/search' -H 'Notion-Version: 2025-09-03' -H 'Content-Type: application/json' --input - <<'JSON'
 {
-  "page_size": 10,
-  "start_cursor": "CURSOR_FROM_PREVIOUS_RESPONSE"
+  "filter": {"property": "object", "value": "data_source"}
 }
-EOF
+JSON
 ```
 
-### Data Sources
-
-Use data source endpoints for querying, getting schema, and updates.
+### Data Sources API
 
 #### Get Data Source
+
 ```bash
-maton api '/notion/v1/data_sources/{dataSourceId}' \
-  -H 'Notion-Version: 2025-09-03'
+maton notion data-source get {dataSourceId}
 ```
 
-Returns full schema with `properties` field.
-
-Example:
+Or with `maton api`:
 
 ```bash
-maton notion data-source view {dataSourceId}
+maton api '/notion/v1/data_sources/{dataSourceId}' -H 'Notion-Version: 2025-09-03'
 ```
 
-#### Query Data Source
+**Note:** `{dataSourceId}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Query Data Sources
+
 ```bash
-maton api -X POST '/notion/v1/data_sources/{dataSourceId}/query' \
-  -H 'Content-Type: application/json' \
-  -H 'Notion-Version: 2025-09-03' \
-  --input - <<'EOF'
+maton notion data-source query <dataSourceId> \
+  --filter '{"property":"Status","select":{"equals":"Active"}}' \
+  --sorts '[{"property":"Created","direction":"descending"}]' \
+  --page-size 100
+```
+
+Or with `maton api`:
+
+```bash
+maton api -X POST '/notion/v1/data_sources/{dataSourceId}/query' -H 'Notion-Version: 2025-09-03' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "filter": {
     "property": "Status",
@@ -117,113 +99,117 @@ maton api -X POST '/notion/v1/data_sources/{dataSourceId}/query' \
   ],
   "page_size": 100
 }
-EOF
+JSON
 ```
 
-Example:
+**Note:** `{dataSourceId}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Update Data Source
 
 ```bash
-maton notion data-source query {dataSourceId} \
-  --filter '{"property":"Status","select":{"equals":"Active"}}' \
-  --sorts '[{"property":"Created","direction":"descending"}]' \
-  --page-size 100
+maton notion data-source update <dataSourceId> \
+  --body '{"title":[{"type":"text","text":{"content":"Updated Title"}}],"properties":{"NewColumn":{"rich_text":{}}}}'
 ```
 
-#### Update Data Source (title, schema, properties)
+Or with `maton api`:
+
 ```bash
-maton api -X PATCH '/notion/v1/data_sources/{dataSourceId}' \
-  -H 'Content-Type: application/json' \
-  -H 'Notion-Version: 2025-09-03' \
-  --input - <<'EOF'
+maton api -X PATCH '/notion/v1/data_sources/{dataSourceId}' -H 'Notion-Version: 2025-09-03' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "title": [{"type": "text", "text": {"content": "Updated Title"}}],
   "properties": {
     "NewColumn": {"rich_text": {}}
   }
 }
-EOF
+JSON
 ```
 
-Example:
+**Note:** `{dataSourceId}` is a placeholder. Replace it with a real value before sending the request.
+
+### Databases API
+
+#### Get Database
 
 ```bash
-maton notion data-source update {dataSourceId} \
-  --body '{"title":[{"type":"text","text":{"content":"Updated Title"}}],"properties":{"NewColumn":{"rich_text":{}}}}'
+maton notion database get {databaseId}
 ```
 
-### Databases
-
-Database endpoints are only needed for **creating** databases and **discovering** data source IDs.
-
-#### Get Database (to find data_source_id)
-```bash
-maton api '/notion/v1/databases/{databaseId}' \
-  -H 'Notion-Version: 2025-09-03'
-```
-
-Response includes `data_sources` array:
-```json
-{
-  "id": "database-id",
-  "object": "database",
-  "data_sources": [{"id": "data-source-id", "name": "Database Name"}]
-}
-```
-
-**Note:** This endpoint returns `properties: null`. Use `GET /data_sources/{id}` to get the schema.
-
-Example:
+Or with `maton api`:
 
 ```bash
-maton notion database view {databaseId}
+maton api '/notion/v1/databases/{databaseId}' -H 'Notion-Version: 2025-09-03'
 ```
+
+**Note:** `{databaseId}` is a placeholder. Replace it with a real value before sending the request.
 
 #### Create Database
-```bash
-maton api -X POST '/notion/v1/databases' \
-  -H 'Content-Type: application/json' \
-  -H 'Notion-Version: 2025-09-03' \
-  --input - <<'EOF'
-{
-  "parent": {"type": "page_id", "page_id": "PARENT_PAGE_ID"},
-  "title": [{"type": "text", "text": {"content": "New Database"}}],
-  "properties": {
-    "Name": {"title": {}},
-    "Status": {"select": {"options": [{"name": "Active"}, {"name": "Done"}]}}
-  }
-}
-EOF
-```
-
-**Important:** Cannot create databases via `/data_sources` endpoint. In API version 2025-09-03, `POST /databases` only accepts the title property — define schema afterward with `PATCH /data_sources/{dataSourceId}`.
-
-Example:
 
 ```bash
 maton notion database create --parent-page PARENT_PAGE_ID --title 'New Database'
 ```
 
-### Pages
+Or with `maton api`:
 
-#### Get Page
 ```bash
-maton api '/notion/v1/pages/{pageId}' \
-  -H 'Notion-Version: 2025-09-03'
+maton api -X POST '/notion/v1/databases' -H 'Notion-Version: 2025-09-03' -H 'Content-Type: application/json' --input - <<'JSON'
+{
+  "parent": {"type": "page_id", "page_id": "PARENT_PAGE_ID"},
+  "title": [{"type": "text", "text": {"content": "New Database"}}],
+  "properties": {
+    "Name": {"title": {}}
+  }
+}
+JSON
 ```
 
-Example:
+In API version 2025-09-03, `POST /databases` only accepts the title property — any other entries in `properties` are silently dropped. To define a schema, follow up with `PATCH /data_sources/{dataSourceId}` (see [Update Data Source](#update-data-source)) using the `data_sources[0].id` returned by the create call.
+
+### Pages API
+
+#### Get Page
 
 ```bash
-maton notion page view {pageId}
+maton notion page get {pageId}
+```
+
+Or with `maton api`:
+
+```bash
+maton api '/notion/v1/pages/{pageId}' -H 'Notion-Version: 2025-09-03'
+```
+
+**Note:** `{pageId}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Create Page
+
+```bash
+maton notion page create --parent-page PARENT_PAGE_ID --title 'New Page'
+```
+
+Or with `maton api`:
+
+```bash
+maton api -X POST '/notion/v1/pages' -H 'Notion-Version: 2025-09-03' -H 'Content-Type: application/json' --input - <<'JSON'
+{
+  "parent": {"page_id": "PARENT_PAGE_ID"},
+  "properties": {
+    "title": {"title": [{"text": {"content": "New Page"}}]}
+  }
+}
+JSON
 ```
 
 #### Create Page in Data Source
-Use `data_source_id` (not `database_id`) as parent:
+
 ```bash
-maton api -X POST '/notion/v1/pages' \
-  -H 'Content-Type: application/json' \
-  -H 'Notion-Version: 2025-09-03' \
-  --input - <<'EOF'
+maton notion page create --data-source DATA_SOURCE_ID --title 'New Page' \
+  --properties '{"Status":{"select":{"name":"Active"}}}'
+```
+
+Or with `maton api`:
+
+```bash
+maton api -X POST '/notion/v1/pages' -H 'Notion-Version: 2025-09-03' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "parent": {"data_source_id": "DATA_SOURCE_ID"},
   "properties": {
@@ -231,101 +217,107 @@ maton api -X POST '/notion/v1/pages' \
     "Status": {"select": {"name": "Active"}}
   }
 }
-EOF
-```
-
-Example:
-
-```bash
-maton notion page create --data-source DATA_SOURCE_ID --title 'New Page' \
-  --properties '{"Status":{"select":{"name":"Active"}}}'
-```
-
-#### Create Child Page (under another page)
-```bash
-maton api -X POST '/notion/v1/pages' \
-  -H 'Content-Type: application/json' \
-  -H 'Notion-Version: 2025-09-03' \
-  --input - <<'EOF'
-{
-  "parent": {"page_id": "PARENT_PAGE_ID"},
-  "properties": {
-    "title": {"title": [{"text": {"content": "Child Page"}}]}
-  }
-}
-EOF
-```
-
-Example:
-
-```bash
-maton notion page create --parent-page PARENT_PAGE_ID --title 'Child Page'
+JSON
 ```
 
 #### Update Page Properties
-```bash
-maton api -X PATCH '/notion/v1/pages/{pageId}' \
-  -H 'Content-Type: application/json' \
-  -H 'Notion-Version: 2025-09-03' \
-  --input - <<'EOF'
-{
-  "properties": {
-    "Status": {"select": {"name": "Done"}}
-  }
-}
-EOF
-```
-
-Example:
 
 ```bash
 maton notion page update {pageId} --properties '{"Status":{"select":{"name":"Done"}}}'
 ```
 
-#### Archive Page
+Or with `maton api`:
+
 ```bash
-maton api -X PATCH '/notion/v1/pages/{pageId}' \
-  -H 'Content-Type: application/json' \
-  -H 'Notion-Version: 2025-09-03' \
-  --input - <<'EOF'
+maton api -X PATCH '/notion/v1/pages/{pageId}' -H 'Notion-Version: 2025-09-03' -H 'Content-Type: application/json' --input - <<'JSON'
 {
-  "archived": true
+  "properties": {
+    "Status": {"select": {"name": "Done"}}
+  }
 }
-EOF
+JSON
 ```
 
-Example:
+**Note:** `{pageId}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Update Page Icon
+
+```bash
+maton notion page update {pageId} --icon 🚀
+```
+
+Or with `maton api`:
+
+```bash
+maton api -X PATCH '/notion/v1/pages/{pageId}' -H 'Notion-Version: 2025-09-03' -H 'Content-Type: application/json' --input - <<'JSON'
+{
+  "icon": {"type": "emoji", "emoji": "🚀"}
+}
+JSON
+```
+
+**With an image URL:**
+
+```bash
+maton notion page update {pageId} --icon https://example.com/icon.png
+```
+
+**Note:** `{pageId}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Archive Page
 
 ```bash
 maton notion page archive {pageId}
 ```
 
-### Blocks
+Or with `maton api`:
 
-#### Get Block
 ```bash
-maton api '/notion/v1/blocks/{blockId}' \
-  -H 'Notion-Version: 2025-09-03'
+maton api -X PATCH '/notion/v1/pages/{pageId}' -H 'Notion-Version: 2025-09-03' -H 'Content-Type: application/json' --input - <<'JSON'
+{
+  "archived": true
+}
+JSON
 ```
+
+**Note:** `{pageId}` is a placeholder. Replace it with a real value before sending the request.
+
+### Blocks API
 
 #### Get Block Children
-```bash
-maton api '/notion/v1/blocks/{blockId}/children' \
-  -H 'Notion-Version: 2025-09-03'
-```
-
-Example:
 
 ```bash
 maton notion block children {blockId}
 ```
 
-#### Append Block Children
+Or with `maton api`:
+
 ```bash
-maton api -X PATCH '/notion/v1/blocks/{blockId}/children' \
-  -H 'Content-Type: application/json' \
-  -H 'Notion-Version: 2025-09-03' \
-  --input - <<'EOF'
+maton api '/notion/v1/blocks/{blockId}/children' -H 'Notion-Version: 2025-09-03'
+```
+
+**Note:** `{blockId}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Get Block
+
+```bash
+maton api '/notion/v1/blocks/{blockId}' \
+  -H 'Notion-Version: 2025-09-03'
+```
+
+**Note:** `{blockId}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Append Block Children
+
+```bash
+maton notion block append <blockId> \
+  --children '[{"object":"block","type":"paragraph","paragraph":{"rich_text":[{"type":"text","text":{"content":"New paragraph"}}]}}]'
+```
+
+Or with `maton api`:
+
+```bash
+maton api -X PATCH '/notion/v1/blocks/{blockId}/children' -H 'Notion-Version: 2025-09-03' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "children": [
     {
@@ -334,27 +326,16 @@ maton api -X PATCH '/notion/v1/blocks/{blockId}/children' \
       "paragraph": {
         "rich_text": [{"type": "text", "text": {"content": "New paragraph"}}]
       }
-    },
-    {
-      "object": "block",
-      "type": "heading_2",
-      "heading_2": {
-        "rich_text": [{"type": "text", "text": {"content": "Heading"}}]
-      }
     }
   ]
 }
-EOF
+JSON
 ```
 
-Example:
-
-```bash
-maton notion block append {blockId} \
-  --children '[{"object":"block","type":"paragraph","paragraph":{"rich_text":[{"type":"text","text":{"content":"New paragraph"}}]}}]'
-```
+**Note:** `{blockId}` is a placeholder. Replace it with a real value before sending the request.
 
 #### Update Block
+
 ```bash
 maton api -X PATCH '/notion/v1/blocks/{blockId}' \
   -H 'Content-Type: application/json' \
@@ -368,105 +349,109 @@ maton api -X PATCH '/notion/v1/blocks/{blockId}' \
 EOF
 ```
 
-#### Delete Block
-```bash
-maton api -X DELETE '/notion/v1/blocks/{blockId}' \
-  -H 'Notion-Version: 2025-09-03'
-```
+**Note:** `{blockId}` is a placeholder. Replace it with a real value before sending the request.
 
-Example:
+#### Delete Block
 
 ```bash
 maton notion block delete {blockId}
 ```
 
-### Users
+Or with `maton api`:
 
-> **Privacy — this is a workspace directory.** These endpoints enumerate every member and guest, returning names, email addresses, and avatars. The result is effectively an org roster: useful for resolving one person, but also a ready-made contact list.
-> - Query for the specific person the task needs (prefer Get User by ID, or filter the result) rather than listing everyone.
-> - Do not print the full member list into output, save it to a file, or forward it to any third-party host unless the user explicitly asked for a roster.
-> - Member email addresses are personal data — don't reuse them for outreach, enrichment, or any purpose outside the stated task.
-
-#### List Users
 ```bash
-maton api '/notion/v1/users' \
-  -H 'Notion-Version: 2025-09-03'
+maton api '/notion/v1/blocks/{blockId}' -X DELETE -H 'Notion-Version: 2025-09-03'
 ```
 
-Example:
+**Note:** `{blockId}` is a placeholder. Replace it with a real value before sending the request.
+
+### Users API
+
+#### List Users
 
 ```bash
 maton notion user list
 ```
 
-#### Get User by ID
+Or with `maton api`:
+
+```bash
+maton api '/notion/v1/users' -H 'Notion-Version: 2025-09-03'
+```
+
+#### Get User
+
 ```bash
 maton api '/notion/v1/users/{userId}' \
   -H 'Notion-Version: 2025-09-03'
 ```
 
-#### Get Current User (Bot)
-```bash
-maton api '/notion/v1/users/me' \
-  -H 'Notion-Version: 2025-09-03'
-```
+**Note:** `{userId}` is a placeholder. Replace it with a real value before sending the request.
 
-Example:
+#### Get Current User
 
 ```bash
 maton notion whoami
 ```
 
-## Filter Operators
+Or with `maton api`:
+
+```bash
+maton api '/notion/v1/users/me' -H 'Notion-Version: 2025-09-03'
+```
+
+### Filter Operators
 
 - `equals`, `does_not_equal`
 - `contains`, `does_not_contain`
 - `starts_with`, `ends_with`
 - `is_empty`, `is_not_empty`
-- `greater_than`, `less_than`, `greater_than_or_equal_to`, `less_than_or_equal_to`
+- `greater_than`, `less_than`
 
-## Block Types
+### Block Types
 
-Common block types for appending:
-- `paragraph` - Text paragraph
-- `heading_1`, `heading_2`, `heading_3` - Headings
-- `bulleted_list_item`, `numbered_list_item` - List items
-- `to_do` - Checkbox item
-- `code` - Code block
-- `quote` - Quote block
-- `divider` - Horizontal divider
+- `paragraph`, `heading_1`, `heading_2`, `heading_3`
+- `bulleted_list_item`, `numbered_list_item`
+- `to_do`, `code`, `quote`, `divider`
 
-## Migration from Older API Versions
+### Pagination
 
-| Old (2022-06-28) | New (2025-09-03) |
-|------------------|------------------|
-| `POST /databases/{id}/query` | `POST /data_sources/{id}/query` |
-| `GET /databases/{id}` for schema | `GET /data_sources/{id}` for schema |
-| `PATCH /databases/{id}` for schema | `PATCH /data_sources/{id}` for schema |
-| Parent: `{"database_id": "..."}` | Parent: `{"data_source_id": "..."}` |
-| Search filter: `"database"` | Search filter: `"data_source"` |
+Notion uses cursor-based pagination. The CLI automatically paginates with '--paginate'.
 
-## Pagination
-
-Notion uses cursor-based pagination. The CLI handles this automatically with `--paginate`:
+Example:
 
 ```bash
-maton notion data-source query {dataSourceId} --paginate
+maton notion data-source query <dataSourceId> --paginate
 ```
 
-For raw HTTP requests, pass the `next_cursor` from the previous response as `start_cursor` in the next request.
+### Examples
 
-## Notes
+```bash
+# Search for pages matching a query
+maton notion search 'roadmap'
 
-- Use `GET /databases/{id}` to discover `data_source_id`, then use `/data_sources/` for all operations
-- Creating databases still requires `POST /databases` endpoint
-- Parent objects for create database require `type` field: `{"type": "page_id", "page_id": "..."}`
+# View a specific page
+maton notion page get 0123456789abcdef0123456789abcdef
+
+# Query a data source with a filter
+maton notion data-source query <dataSourceId> --filter '{"property":"Status","select":{"equals":"Active"}}'
+
+# Filter with jq — e.g., only pages (responses are wrapped in {"results": [...]})
+# Note: --jq requires --json
+maton notion search 'roadmap' --json --jq '.results | map(select(.object == "page"))'
+```
+
+### Notes
+
 - All IDs are UUIDs (with or without hyphens)
+- Use `GET /databases/{id}` to discover `data_source_id`, then use `/data_sources/` for all operations
+- Creating databases requires `POST /databases` endpoint
+- Parent objects for create database require `type` field: `{"type": "page_id", "page_id": "..."}`
 - Delete blocks returns the block with `archived: true`
 
-## Resources
+### Resources
 
-- [API Introduction](https://developers.notion.com/reference/intro)
+- [Notion API Introduction](https://developers.notion.com/reference/intro)
 - [Search](https://developers.notion.com/reference/post-search.md)
 - [Query Database](https://developers.notion.com/reference/post-database-query.md)
 - [Get Database](https://developers.notion.com/reference/retrieve-a-database.md)

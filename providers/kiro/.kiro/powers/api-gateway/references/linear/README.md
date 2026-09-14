@@ -1,321 +1,327 @@
-# Linear Routing Reference
+# Linear
 
-> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../SKILL.md#security--permissions) for full security policy.
+## API Reference
+
+> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../../SKILL.md#security--permissions) for full security policy.
 
 **App name:** `linear`
-**Base URL proxied:** `api.linear.app`
+**Upstream base URL:** `api.linear.app`
 
-## API Type
+Replace the upstream base URL with the app name. Everything after the base URL including query strings is kept as-is. Any account-specific part of the base URL and the API credentials are stored in the Maton connection, and the gateway injects both so requests never carry them. For example:
 
-Linear uses a GraphQL API exclusively. All requests are POST requests to the `/graphql` endpoint.
+- Upstream: `https://api.linear.app/graphql`
+- Gateway: `https://api.maton.ai/linear/graphql`
 
-## API Path Pattern
+**Important:** Linear uses a GraphQL API. All operations are sent as POST requests with a JSON body containing the `query` field.
 
-```
-/linear/graphql
-```
+### User Info API
 
-All operations use POST with a JSON body containing the `query` field.
-
-## Common Operations
-
-### Get Current User (Viewer)
-```bash
-maton api -X POST '/linear/graphql' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
-{
-  "query": "{ viewer { id name email } }"
-}
-EOF
-```
-
-Example:
+#### Get Current User
 
 ```bash
 maton linear whoami
 ```
 
-### Get Organization
-```bash
-maton api -X POST '/linear/graphql' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
-{
-  "query": "{ organization { id name urlKey } }"
-}
-EOF
-```
-
-Example:
+Or with `maton api`:
 
 ```bash
-maton linear org view
+maton api -X POST '/linear/graphql' -H 'Content-Type: application/json' --input - <<'JSON'
+{"query": "{ viewer { id name email } }"}
+JSON
 ```
 
-### List Teams
+### Organization API
+
+#### Get Organization
+
 ```bash
-maton api -X POST '/linear/graphql' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
-{
-  "query": "{ teams { nodes { id name key } } }"
-}
-EOF
+maton linear org get
 ```
 
-Example:
+Or with `maton api`:
+
+```bash
+maton api -X POST '/linear/graphql' -H 'Content-Type: application/json' --input - <<'JSON'
+{"query": "{ organization { id name urlKey } }"}
+JSON
+```
+
+### Teams API
+
+#### List Teams
 
 ```bash
 maton linear team list
 ```
 
-### List Issues
-```bash
-maton api -X POST '/linear/graphql' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
-{
-  "query": "{ issues(first: 20) { nodes { id identifier title state { name } priority } pageInfo { hasNextPage endCursor } } }"
-}
-EOF
-```
-
-Example:
+Or with `maton api`:
 
 ```bash
-maton linear issue list -c ABC -L 20
+maton api -X POST '/linear/graphql' -H 'Content-Type: application/json' --input - <<'JSON'
+{"query": "{ teams { nodes { id name key } } }"}
+JSON
 ```
 
-### Get Issue by Identifier
-```bash
-maton api -X POST '/linear/graphql' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
-{
-  "query": "{ issue(id: \"MTN-527\") { id identifier title description state { name } priority assignee { name } team { key } createdAt } }"
-}
-EOF
-```
-
-Example:
+#### Get Team
 
 ```bash
-maton linear issue view MTN-527
+maton linear team get ABC
 ```
 
-### Filter Issues by State
-```bash
-maton api -X POST '/linear/graphql' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
-{
-  "query": "{ issues(first: 20, filter: { state: { type: { eq: \"started\" } } }) { nodes { id identifier title state { name } } } }"
-}
-EOF
-```
-
-Example:
+Or with `maton api`:
 
 ```bash
-maton linear issue list --state started -L 20
+maton api -X POST '/linear/graphql' -H 'Content-Type: application/json' --input - <<'JSON'
+{"query": "{ team(id: \"ABC\") { id name key issues { nodes { id identifier title } } } }"}
+JSON
 ```
 
-### Search Issues
-```bash
-maton api -X POST '/linear/graphql' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
-{
-  "query": "{ searchIssues(first: 20, term: \"search term\") { nodes { id identifier title } } }"
-}
-EOF
-```
+### Issues API
 
-Example:
+#### List Issues
 
 ```bash
-maton linear issue search 'search term' -L 20
+maton linear issue list -c ABC -L 10
 ```
 
-### Create Issue
-```bash
-maton api -X POST '/linear/graphql' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
-{
-  "query": "mutation { issueCreate(input: { teamId: \"TEAM_ID\", title: \"Issue title\", description: \"Description\" }) { success issue { id identifier title } } }"
-}
-EOF
-```
-
-Example:
+Or with `maton api`:
 
 ```bash
-maton linear issue create --team-id TEAM_ID -t 'Issue title'
+maton api -X POST '/linear/graphql' -H 'Content-Type: application/json' --input - <<'JSON'
+{"query": "{ issues(first: 10, filter: { team: { key: { eq: \"ABC\" } } }) { nodes { id identifier title state { name } priority createdAt } pageInfo { hasNextPage endCursor } } }"}
+JSON
 ```
 
-### Update Issue
-```bash
-maton api -X POST '/linear/graphql' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
-{
-  "query": "mutation { issueUpdate(id: \"ISSUE_ID\", input: { title: \"Updated title\", priority: 2 }) { success issue { id identifier title priority } } }"
-}
-EOF
-```
-
-Example:
+#### Get Issue by ID or Identifier
 
 ```bash
-maton linear issue update ISSUE_ID -t 'Updated title' --priority 2
+maton linear issue get ABC-123
 ```
 
-### Create Comment
-```bash
-maton api -X POST '/linear/graphql' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
-{
-  "query": "mutation { commentCreate(input: { issueId: \"ISSUE_ID\", body: \"Comment text\" }) { success comment { id body } } }"
-}
-EOF
-```
-
-Example:
+Or with `maton api`:
 
 ```bash
-maton linear comment create --issue ISSUE_ID -b 'Comment text'
+maton api -X POST '/linear/graphql' -H 'Content-Type: application/json' --input - <<'JSON'
+{"query": "{ issue(id: \"ABC-123\") { id identifier title description state { name } priority assignee { name } team { key name } createdAt updatedAt } }"}
+JSON
 ```
 
-### List Projects
+#### Filter Issues
+
+Filter by state type:
+
 ```bash
-maton api -X POST '/linear/graphql' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
-{
-  "query": "{ projects(first: 20) { nodes { id name state createdAt } } }"
-}
-EOF
+maton linear issue list --state started -L 10
 ```
 
-Example:
+Or with `maton api`:
+
+```bash
+maton api -X POST '/linear/graphql' -H 'Content-Type: application/json' --input - <<'JSON'
+{"query": "{ issues(first: 10, filter: { state: { type: { eq: \"started\" } } }) { nodes { id identifier title state { name type } } } }"}
+JSON
+```
+
+Filter by title:
+
+```bash
+maton linear issue list --title bug -L 10
+```
+
+Or with `maton api`:
+
+```bash
+maton api -X POST '/linear/graphql' -H 'Content-Type: application/json' --input - <<'JSON'
+{"query": "{ issues(first: 10, filter: { title: { containsIgnoreCase: \"bug\" } }) { nodes { id identifier title } } }"}
+JSON
+```
+
+#### Search Issues
+
+```bash
+maton linear issue search shopify -L 10
+```
+
+Or with `maton api`:
+
+```bash
+maton api -X POST '/linear/graphql' -H 'Content-Type: application/json' --input - <<'JSON'
+{"query": "{ searchIssues(first: 10, term: \"shopify\") { nodes { id identifier title } } }"}
+JSON
+```
+
+#### Create Issue
+
+```bash
+maton linear issue create --team-id TEAM_ID -t 'New issue title'
+```
+
+Or with `maton api`:
+
+```bash
+maton api -X POST '/linear/graphql' -H 'Content-Type: application/json' --input - <<'JSON'
+{"query": "mutation { issueCreate(input: { teamId: \"TEAM_ID\", title: \"New issue title\" }) { success issue { id identifier title state { name } } } }"}
+JSON
+```
+
+#### Update Issue
+
+```bash
+maton linear issue update ABC-123 -t 'Updated title' --priority 2
+```
+
+Or with `maton api`:
+
+```bash
+maton api -X POST '/linear/graphql' -H 'Content-Type: application/json' --input - <<'JSON'
+{"query": "mutation { issueUpdate(id: \"ABC-123\", input: { title: \"Updated title\", priority: 2 }) { success issue { id identifier title priority } } }"}
+JSON
+```
+
+### Projects API
+
+#### List Projects
 
 ```bash
 maton linear project list
 ```
 
-### List Labels
-```bash
-maton api -X POST '/linear/graphql' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
-{
-  "query": "{ issueLabels(first: 50) { nodes { id name color } } }"
-}
-EOF
-```
-
-Example:
+Or with `maton api`:
 
 ```bash
-maton linear label list
+maton api -X POST '/linear/graphql' -H 'Content-Type: application/json' --input - <<'JSON'
+{"query": "{ projects(first: 10) { nodes { id name state createdAt } } }"}
+JSON
 ```
 
-### List Workflow States
-```bash
-maton api -X POST '/linear/graphql' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
-{
-  "query": "{ workflowStates(first: 50) { nodes { id name type team { key } } } }"
-}
-EOF
-```
+### Cycles API
 
-Example:
-
-```bash
-maton linear state list
-```
-
-### List Users
-```bash
-maton api -X POST '/linear/graphql' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
-{
-  "query": "{ users(first: 50) { nodes { id name email active } } }"
-}
-EOF
-```
-
-Example:
-
-```bash
-maton linear user list
-```
-
-### List Cycles
-```bash
-maton api -X POST '/linear/graphql' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
-{
-  "query": "{ cycles(first: 20) { nodes { id name number startsAt endsAt } } }"
-}
-EOF
-```
-
-Example:
+#### List Cycles
 
 ```bash
 maton linear cycle list
 ```
 
-## Pagination
+Or with `maton api`:
 
-Linear uses Relay-style cursor-based pagination. The CLI handles this automatically with `--paginate`:
+```bash
+maton api -X POST '/linear/graphql' -H 'Content-Type: application/json' --input - <<'JSON'
+{"query": "{ cycles(first: 10) { nodes { id name number startsAt endsAt } } }"}
+JSON
+```
+
+### Labels API
+
+#### List Labels
+
+```bash
+maton linear label list
+```
+
+Or with `maton api`:
+
+```bash
+maton api -X POST '/linear/graphql' -H 'Content-Type: application/json' --input - <<'JSON'
+{"query": "{ issueLabels(first: 20) { nodes { id name color } } }"}
+JSON
+```
+
+### Workflow States API
+
+```bash
+maton linear state list
+```
+
+Or with `maton api`:
+
+```bash
+maton api -X POST '/linear/graphql' -H 'Content-Type: application/json' --input - <<'JSON'
+{"query": "{ workflowStates(first: 20) { nodes { id name type team { key } } } }"}
+JSON
+```
+
+### Users API
+
+```bash
+maton linear user list
+```
+
+Or with `maton api`:
+
+```bash
+maton api -X POST '/linear/graphql' -H 'Content-Type: application/json' --input - <<'JSON'
+{"query": "{ users(first: 20) { nodes { id name email active } } }"}
+JSON
+```
+
+### Comments API
+
+#### List Comments
+
+```bash
+maton linear comment list --issue ABC-123 -L 10
+```
+
+Or with `maton api`:
+
+```bash
+maton api -X POST '/linear/graphql' -H 'Content-Type: application/json' --input - <<'JSON'
+{"query": "{ issue(id: \"ABC-123\") { comments(first: 10) { nodes { id body createdAt user { name } } } } }"}
+JSON
+```
+
+#### Create Comment
+
+```bash
+maton linear comment create --issue ABC-123 -b 'Looking into this'
+```
+
+Or with `maton api`:
+
+```bash
+maton api -X POST '/linear/graphql' -H 'Content-Type: application/json' --input - <<'JSON'
+{"query": "mutation { commentCreate(input: { issueId: \"ABC-123\", body: \"Looking into this\" }) { success comment { id body } } }"}
+JSON
+```
+
+### Pagination
+
+Linear uses Relay-style cursor-based pagination. The CLI automatically paginates with '--paginate'.
 
 ```bash
 maton linear issue list -c ABC --paginate
 ```
 
-For raw GraphQL requests, supply an `after: "CURSOR_VALUE"` argument with the `endCursor` from the previous response's `pageInfo`:
+### Examples
 
 ```bash
-# First page
-maton api -X POST '/linear/graphql' \
-  --input - <<'EOF'
-{
-  "query": "{ issues(first: 20) { nodes { id identifier title } pageInfo { hasNextPage endCursor } } }"
-}
-EOF
+# List issues for a team
+maton linear issue list -c ABC -L 10
 
-# Next page
-maton api -X POST '/linear/graphql' \
-  --input - <<'EOF'
-{
-  "query": "{ issues(first: 20, after: \"CURSOR_VALUE\") { nodes { id identifier title } pageInfo { hasNextPage endCursor } } }"
-}
-EOF
+# View a specific issue
+maton linear issue get ABC-123
+
+# Create a new issue
+maton linear issue create --team-id TEAM_ID -t 'Fix login'
+
+# Add a comment
+maton linear comment create --issue ABC-123 -b 'Looking into this'
 ```
 
-## Notes
+### Notes
 
 - Linear uses GraphQL exclusively (no REST API)
-- Issue identifiers (e.g., `MTN-527`) can be used in place of UUIDs for the `id` parameter
+- Issue identifiers like `ABC-123` can be used in place of UUIDs for the `id` parameter
 - Priority values: 0 = No priority, 1 = Urgent, 2 = High, 3 = Medium, 4 = Low
 - Workflow state types: `backlog`, `unstarted`, `started`, `completed`, `canceled`
-- Some mutations (delete, create labels/projects) may require additional OAuth scopes
-- Use `searchIssues(term: "...")` for full-text search
-- Filter operators: `eq`, `neq`, `in`, `nin`, `containsIgnoreCase`, etc.
+- The GraphQL schema is introspectable at the `api.linear.app/graphql` endpoint
+- Use `searchIssues(term: "...")` for full-text search across issues
+- Some mutations (delete, create labels/projects) may require additional OAuth scopes. If you receive a scope error, contact Maton support at support@maton.ai with the specific operations/APIs you need and your use-case
 
-## Resources
+### Resources
 
 - [Linear API Overview](https://linear.app/developers)
-- [Linear GraphQL Getting Started](https://linear.app/developers/graphql)
-- [Linear GraphQL Schema (Apollo Studio)](https://studio.apollographql.com/public/Linear-API/schema/reference?variant=current)
+- [GraphQL Getting Started](https://linear.app/developers/graphql)
+- [GraphQL Schema (Apollo Studio)](https://studio.apollographql.com/public/Linear-API/schema/reference?variant=current)
 - [Linear API and Webhooks](https://linear.app/docs/api-and-webhooks)
 - [Maton CLI Manual](https://cli.maton.ai/manual)

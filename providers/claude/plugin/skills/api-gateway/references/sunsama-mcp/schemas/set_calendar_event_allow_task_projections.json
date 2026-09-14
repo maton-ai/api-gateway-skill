@@ -1,6 +1,6 @@
 {
   "name": "set_calendar_event_allow_task_projections",
-  "description": "Toggle whether tasks can be projected during this event",
+  "description": "Turn task projection on or off for one calendar event the user identified.\n\nWRITE — CONFIRM FIRST. This modifies a setting on a real calendar event. Name the event back to the user and confirm the direction of the change before calling; the event ID is opaque, so a wrong ID silently changes the wrong meeting. Do not toggle this to make another operation succeed, and do not change it across multiple events without approval for each.",
   "inputSchema": {
     "type": "object",
     "properties": {

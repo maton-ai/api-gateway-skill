@@ -1,25 +1,32 @@
-# Jira Routing Reference
+# Jira
 
-> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../SKILL.md#security--permissions) for full security policy.
+## API Reference
+
+> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../../SKILL.md#security--permissions) for full security policy.
 
 **App name:** `jira`
-**Base URL proxied:** `api.atlassian.com`
+**Upstream base URL:** `api.atlassian.com`
 
-## Getting Cloud ID
+Replace the upstream base URL with the app name. Everything after the base URL including query strings is kept as-is. Any account-specific part of the base URL and the API credentials are stored in the Maton connection, and the gateway injects both so requests never carry them. For example:
+
+- Upstream: `https://api.atlassian.com/oauth/token/accessible-resources`
+- Gateway: `https://api.maton.ai/jira/oauth/token/accessible-resources`
+
+### Getting Cloud ID
 
 Jira Cloud requires a cloud ID in the API path. First, get accessible resources:
-
-```bash
-maton api '/jira/oauth/token/accessible-resources'
-```
-
-Example:
 
 ```bash
 maton jira cloud list
 ```
 
-Response:
+Or with `maton api`:
+
+```bash
+maton api '/jira/oauth/token/accessible-resources'
+```
+
+**Response:**
 ```json
 [{
   "id": "62909843-b784-4c35-b770-e4e2a26f024b",
@@ -29,161 +36,256 @@ Response:
 }]
 ```
 
-## API Path Pattern
+### Projects API
 
+#### List Projects
+
+```bash
+maton jira project list --cloud-id {cloudId}
 ```
-/jira/ex/jira/{cloudId}/rest/api/3/{endpoint}
-```
 
-## Common Endpoints
+Or with `maton api`:
 
-### List Projects
 ```bash
 maton api '/jira/ex/jira/{cloudId}/rest/api/3/project'
 ```
 
-Example:
+**Note:** `{cloudId}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Get Project
 
 ```bash
-maton jira project list --cloud-id abc-123
+maton jira project get {projectKeyOrId} --cloud-id {cloudId}
 ```
 
-### Get Project
+Or with `maton api`:
+
 ```bash
 maton api '/jira/ex/jira/{cloudId}/rest/api/3/project/{projectKeyOrId}'
 ```
 
-Example:
+**Note:** `{cloudId}` and `{projectKeyOrId}` are placeholders. Replace each of them with real values before sending the request.
+
+### Metadata API
+
+#### List Fields
 
 ```bash
-maton jira project view PROJ --cloud-id abc-123
+maton api '/jira/ex/jira/{cloudId}/rest/api/3/field'
 ```
 
-### Search Issues (JQL)
-Note: The old `/search` endpoint is deprecated. Use `/search/jql` with a bounded query.
+**Note:** `{cloudId}` is a placeholder. Replace it with a real value before sending the request.
+
+#### List Issue Types
+
+```bash
+maton jira issuetype list --cloud-id {cloudId}
+```
+
+Or with `maton api`:
+
+```bash
+maton api '/jira/ex/jira/{cloudId}/rest/api/3/issuetype'
+```
+
+**Note:** `{cloudId}` is a placeholder. Replace it with a real value before sending the request.
+
+#### List Priorities
+
+```bash
+maton jira priority list --cloud-id {cloudId}
+```
+
+Or with `maton api`:
+
+```bash
+maton api '/jira/ex/jira/{cloudId}/rest/api/3/priority'
+```
+
+**Note:** `{cloudId}` is a placeholder. Replace it with a real value before sending the request.
+
+#### List Statuses
+
+```bash
+maton jira status list --cloud-id {cloudId}
+```
+
+Or with `maton api`:
+
+```bash
+maton api '/jira/ex/jira/{cloudId}/rest/api/3/status'
+```
+
+**Note:** `{cloudId}` is a placeholder. Replace it with a real value before sending the request.
+
+### Issues API
+
+#### Search Issues (JQL)
+
+```bash
+maton jira issue search 'project = PROJ order by created DESC' --cloud-id {cloudId} --limit 20 --fields summary,status,assignee
+```
+
+Or with `maton api`:
 
 ```bash
 maton api '/jira/ex/jira/{cloudId}/rest/api/3/search/jql?jql=project%3DKEY%20order%20by%20created%20DESC&maxResults=20&fields=summary,status,assignee,created,priority'
 ```
 
-Example:
+**Note:** `{cloudId}` is a placeholder. Replace it with a real value before sending the request.
+
+**Note:** The old `/search` endpoint is deprecated. Use `/search/jql` with a bounded query.
+
+#### Get Issue
 
 ```bash
-maton jira issue search 'project = PROJ order by created DESC' --cloud-id abc-123 --limit 20 --fields summary,status,assignee
+maton jira issue get {issueIdOrKey} --cloud-id {cloudId}
 ```
 
-### Get Issue
+Or with `maton api`:
+
 ```bash
 maton api '/jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}'
 ```
 
-Example:
+**Note:** `{cloudId}` and `{issueIdOrKey}` are placeholders. Replace each of them with real values before sending the request.
+
+#### Create Issue
 
 ```bash
-maton jira issue view PROJ-123 --cloud-id abc-123
+maton jira issue create --cloud-id {cloudId} --project PROJ --summary 'Fix login' --type Task
 ```
 
-### Create Issue
+Or with `maton api`:
+
 ```bash
-maton api -X POST '/jira/ex/jira/{cloudId}/rest/api/3/issue' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
+maton api -X POST '/jira/ex/jira/{cloudId}/rest/api/3/issue' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "fields": {
     "project": {"key": "PROJ"},
-    "summary": "Issue summary",
+    "summary": "Fix login",
     "issuetype": {"name": "Task"}
   }
 }
-EOF
+JSON
 ```
 
-Example:
+**Note:** `{cloudId}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Update Issue
 
 ```bash
-maton jira issue create --cloud-id abc-123 --project PROJ --summary 'Issue summary' --type Task
+maton jira issue update {issueIdOrKey} --cloud-id {cloudId} --summary 'Updated summary'
 ```
 
-### Update Issue
+Or with `maton api`:
+
 ```bash
-maton api -X PUT '/jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
+maton api -X PUT '/jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "fields": {
     "summary": "Updated summary"
   }
 }
-EOF
+JSON
 ```
 
-Example:
+**Note:** `{cloudId}` and `{issueIdOrKey}` are placeholders. Replace each of them with real values before sending the request.
+
+#### Delete Issue
 
 ```bash
-maton jira issue update PROJ-123 --cloud-id abc-123 --summary 'Updated summary'
+maton jira issue delete {issueIdOrKey} --cloud-id {cloudId}
 ```
 
-### Delete Issue
+Or with `maton api`:
+
 ```bash
-maton api -X DELETE '/jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}'
+maton api '/jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}' -X DELETE
 ```
 
-Example:
+**Note:** `{cloudId}` and `{issueIdOrKey}` are placeholders. Replace each of them with real values before sending the request.
+
+#### Assign Issue
 
 ```bash
-maton jira issue delete PROJ-123 --cloud-id abc-123
+maton jira issue update {issueIdOrKey} --cloud-id {cloudId} --assignee {accountId}
 ```
 
-### Assign Issue
+Or with `maton api`:
+
 ```bash
-maton api -X PUT '/jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}/assignee' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
+maton api -X PUT '/jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}/assignee' -H 'Content-Type: application/json' --input - <<'JSON'
 {
-  "accountId": "712020:5aff718e-6fe0-4548-82f4-f44ec481e5e7"
+  "accountId": "{accountId}"
 }
-EOF
+JSON
 ```
 
-Example:
+**Note:** `{cloudId}`, `{issueIdOrKey}` and `{accountId}` are placeholders. Replace each of them with real values before sending the request.
+
+**Note:** Use `--unassign` (CLI) or `"accountId": null` (API) to clear the assignee.
+
+### Transitions API
+
+#### Get Transitions
 
 ```bash
-maton jira issue update PROJ-123 --cloud-id abc-123 --assignee 712020:5aff718e-6fe0-4548-82f4-f44ec481e5e7
+maton jira transition list {issueIdOrKey} --cloud-id {cloudId}
 ```
 
-### Get Transitions
+Or with `maton api`:
+
 ```bash
 maton api '/jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}/transitions'
 ```
 
-Example:
+**Note:** `{cloudId}` and `{issueIdOrKey}` are placeholders. Replace each of them with real values before sending the request.
+
+#### Transition Issue (change status)
 
 ```bash
-maton jira transition list PROJ-123 --cloud-id abc-123
+maton jira transition apply {issueIdOrKey} --cloud-id {cloudId} --id 31
 ```
 
-### Transition Issue (change status)
+Or with `maton api`:
+
 ```bash
-maton api -X POST '/jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}/transitions' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
+maton api -X POST '/jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}/transitions' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "transition": {"id": "31"}
 }
-EOF
+JSON
 ```
 
-Example:
+**Note:** `{cloudId}` and `{issueIdOrKey}` are placeholders. Replace each of them with real values before sending the request.
+
+### Comments API
+
+#### Get Comments
 
 ```bash
-maton jira transition apply PROJ-123 --cloud-id abc-123 --id 31
+maton jira comment list {issueIdOrKey} --cloud-id {cloudId}
 ```
 
-### Add Comment
+Or with `maton api`:
+
 ```bash
-maton api -X POST '/jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}/comment' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
+maton api '/jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}/comment'
+```
+
+**Note:** `{cloudId}` and `{issueIdOrKey}` are placeholders. Replace each of them with real values before sending the request.
+
+#### Add Comment
+
+```bash
+maton jira comment add {issueIdOrKey} --cloud-id {cloudId} --body 'Comment text'
+```
+
+Or with `maton api`:
+
+```bash
+maton api -X POST '/jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}/comment' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "body": {
     "type": "doc",
@@ -191,91 +293,42 @@ maton api -X POST '/jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}/comme
     "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Comment text"}]}]
   }
 }
-EOF
+JSON
 ```
 
-Example:
+**Note:** `{cloudId}` and `{issueIdOrKey}` are placeholders. Replace each of them with real values before sending the request.
 
-```bash
-maton jira comment add PROJ-123 --cloud-id abc-123 --body 'Comment text'
-```
-
-### Get Comments
-```bash
-maton api '/jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}/comment'
-```
-
-Example:
-
-```bash
-maton jira comment list PROJ-123 --cloud-id abc-123
-```
-
-### Users
+### Users API
 
 #### Get Current User
+
+```bash
+maton jira whoami --cloud-id {cloudId}
+```
+
+Or with `maton api`:
+
 ```bash
 maton api '/jira/ex/jira/{cloudId}/rest/api/3/myself'
 ```
 
-Example:
-
-```bash
-maton jira whoami --cloud-id abc-123
-```
+**Note:** `{cloudId}` is a placeholder. Replace it with a real value before sending the request.
 
 #### Search Users
+
+```bash
+maton jira user search john --cloud-id {cloudId}
+```
+
+Or with `maton api`:
+
 ```bash
 maton api '/jira/ex/jira/{cloudId}/rest/api/3/user/search?query=john'
 ```
 
-Example:
+**Note:** `{cloudId}` is a placeholder. Replace it with a real value before sending the request.
 
-```bash
-maton jira user search john --cloud-id abc-123
-```
-
-### Metadata
-
-#### List Issue Types
-```bash
-maton api '/jira/ex/jira/{cloudId}/rest/api/3/issuetype'
-```
-
-Example:
-
-```bash
-maton jira issuetype list --cloud-id abc-123
-```
-
-#### List Priorities
-```bash
-maton api '/jira/ex/jira/{cloudId}/rest/api/3/priority'
-```
-
-Example:
-
-```bash
-maton jira priority list --cloud-id abc-123
-```
-
-#### List Statuses
-```bash
-maton api '/jira/ex/jira/{cloudId}/rest/api/3/status'
-```
-
-Example:
-
-```bash
-maton jira status list --cloud-id abc-123
-```
-
-#### List Fields
-```bash
-maton api '/jira/ex/jira/{cloudId}/rest/api/3/field'
-```
-
-## Notes
+### Notes
 
 - Always fetch cloud ID first using `/oauth/token/accessible-resources`
 - JQL queries must be bounded (e.g., `project=KEY`) - unbounded queries are rejected
@@ -283,9 +336,9 @@ maton api '/jira/ex/jira/{cloudId}/rest/api/3/field'
 - Update, Delete, Transition, and Assign endpoints return HTTP 204 (No Content) on success
 - Agile API (`/rest/agile/1.0/...`) requires additional OAuth scopes beyond the basic Jira scopes
 
-## Resources
+### Resources
 
-- [API Introduction](https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/)
+- [Jira API Introduction](https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/)
 - [Search Issues (JQL)](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-search/#api-rest-api-3-search-jql-get)
 - [Get Issue](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-get)
 - [Create Issue](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-post)

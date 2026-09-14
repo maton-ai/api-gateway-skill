@@ -1,31 +1,45 @@
-# Google Search Console Routing Reference
+# Google Search Console
 
-> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../SKILL.md#security--permissions) for full security policy.
+## API Reference
+
+> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../../SKILL.md#security--permissions) for full security policy.
 
 **App name:** `google-search-console`
-**Base URL proxied:** `www.googleapis.com`
+**Upstream base URL:** `www.googleapis.com`
 
-## API Path Pattern
+Replace the upstream base URL with the app name. Everything after the base URL including query strings is kept as-is. Any account-specific part of the base URL and the API credentials are stored in the Maton connection, and the gateway injects both so requests never carry them. For example:
 
-```
-/google-search-console/webmasters/v3/{endpoint}
-```
+- Upstream: `https://www.googleapis.com/webmasters/v3/sites`
+- Gateway: `https://api.maton.ai/google-search-console/webmasters/v3/sites`
 
-## Common Endpoints
+### Sites API
 
-### List Sites
+#### List Sites
+
 ```bash
 maton api '/google-search-console/webmasters/v3/sites'
+
+maton api '/google-search-console/webmasters/v3/sites/{siteUrl}'
 ```
 
-### Get Site
+**Note:** `{siteUrl}` is a placeholder. Replace it with a real value before sending the request.
+
+Note: Site URL must be URL-encoded (e.g., `https%3A%2F%2Fexample.com%2F`)
+
+#### Get Site
+
 ```bash
 maton api '/google-search-console/webmasters/v3/sites/{siteUrl}'
 ```
 
+**Note:** `{siteUrl}` is a placeholder. Replace it with a real value before sending the request.
+
 Note: Site URL must be URL-encoded (e.g., `https%3A%2F%2Fexample.com%2F`)
 
-### Search Analytics Query
+### Search API
+
+#### Search Analytics Query
+
 ```bash
 maton api -X POST '/google-search-console/webmasters/v3/sites/{siteUrl}/searchAnalytics/query' \
   -H 'Content-Type: application/json' \
@@ -39,29 +53,47 @@ maton api -X POST '/google-search-console/webmasters/v3/sites/{siteUrl}/searchAn
 EOF
 ```
 
-### List Sitemaps
+**Note:** `{siteUrl}` is a placeholder. Replace it with a real value before sending the request.
+
+### Sitemaps API
+
+#### List Sitemaps
+
 ```bash
 maton api '/google-search-console/webmasters/v3/sites/{siteUrl}/sitemaps'
+
 ```
 
-### Get Sitemap
+**Note:** `{siteUrl}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Get Sitemap
+
 ```bash
 maton api '/google-search-console/webmasters/v3/sites/{siteUrl}/sitemaps/{feedpath}'
 ```
 
-### Submit Sitemap
+**Note:** `{siteUrl}` and `{feedpath}` are placeholders. Replace each of them with real values before sending the request.
+
+#### Submit Sitemap
+
 ```bash
 maton api -X PUT '/google-search-console/webmasters/v3/sites/{siteUrl}/sitemaps/{feedpath}'
 ```
 
-### Delete Sitemap
+**Note:** `{siteUrl}` and `{feedpath}` are placeholders. Replace each of them with real values before sending the request.
+
+#### Delete Sitemap
+
 ```bash
-maton api -X DELETE '/google-search-console/webmasters/v3/sites/{siteUrl}/sitemaps/{feedpath}'
+maton api '/google-search-console/webmasters/v3/sites/{siteUrl}/sitemaps/{feedpath}' -X DELETE
 ```
 
-## Search Analytics Query Examples
+**Note:** `{siteUrl}` and `{feedpath}` are placeholders. Replace each of them with real values before sending the request.
 
-### Top Queries
+### Search Analytics Query Examples
+
+#### Top Queries
+
 ```json
 {
   "startDate": "2024-01-01",
@@ -72,7 +104,8 @@ maton api -X DELETE '/google-search-console/webmasters/v3/sites/{siteUrl}/sitema
 }
 ```
 
-### Top Pages
+#### Top Pages
+
 ```json
 {
   "startDate": "2024-01-01",
@@ -82,7 +115,8 @@ maton api -X DELETE '/google-search-console/webmasters/v3/sites/{siteUrl}/sitema
 }
 ```
 
-### Queries by Country
+#### Queries by Country
+
 ```json
 {
   "startDate": "2024-01-01",
@@ -92,7 +126,8 @@ maton api -X DELETE '/google-search-console/webmasters/v3/sites/{siteUrl}/sitema
 }
 ```
 
-### Device Breakdown
+#### Device Breakdown
+
 ```json
 {
   "startDate": "2024-01-01",
@@ -102,7 +137,8 @@ maton api -X DELETE '/google-search-console/webmasters/v3/sites/{siteUrl}/sitema
 }
 ```
 
-### Daily Performance
+#### Daily Performance
+
 ```json
 {
   "startDate": "2024-01-01",
@@ -112,7 +148,8 @@ maton api -X DELETE '/google-search-console/webmasters/v3/sites/{siteUrl}/sitema
 }
 ```
 
-### Filtered Query
+#### Filtered Query
+
 ```json
 {
   "startDate": "2024-01-01",
@@ -129,7 +166,8 @@ maton api -X DELETE '/google-search-console/webmasters/v3/sites/{siteUrl}/sitema
 }
 ```
 
-### Search Type Filter
+#### Search Type Filter
+
 ```json
 {
   "startDate": "2024-01-01",
@@ -140,7 +178,7 @@ maton api -X DELETE '/google-search-console/webmasters/v3/sites/{siteUrl}/sitema
 }
 ```
 
-## Dimensions
+### Dimensions
 
 - `query` - Search query
 - `page` - Page URL
@@ -149,14 +187,14 @@ maton api -X DELETE '/google-search-console/webmasters/v3/sites/{siteUrl}/sitema
 - `date` - Date in YYYY-MM-DD format
 - `searchAppearance` - Rich result types
 
-## Metrics (returned automatically)
+### Metrics (returned automatically)
 
 - `clicks` - Number of clicks
 - `impressions` - Number of impressions
 - `ctr` - Click-through rate
 - `position` - Average position
 
-## Filter Operators
+### Filter Operators
 
 - `equals`
 - `contains`
@@ -164,25 +202,24 @@ maton api -X DELETE '/google-search-console/webmasters/v3/sites/{siteUrl}/sitema
 - `includingRegex`
 - `excludingRegex`
 
-## Search Types
+### Search Types
 
 - `web` - Web search (default)
 - `image` - Image search
 - `video` - Video search
 - `news` - News search
 
-## Notes
+### Notes
 
-- Authentication is automatic - the router injects the OAuth token
 - Site URLs must be URL-encoded in the path (e.g., `sc-domain%3Aexample.com`)
 - Date range is limited to 16 months of data
 - Maximum 25,000 rows per request
 - Use `startRow` for pagination
 - Data has a 2-3 day delay
 
-## Resources
+### Resources
 
-- [API Reference](https://developers.google.com/webmaster-tools/v1/api_reference_index)
+- [Google Search Console API Reference](https://developers.google.com/webmaster-tools/v1/api_reference_index)
 - [List Sites](https://developers.google.com/webmaster-tools/v1/sites/list)
 - [Get Site](https://developers.google.com/webmaster-tools/v1/sites/get)
 - [Search Analytics Query](https://developers.google.com/webmaster-tools/v1/searchanalytics/query)
@@ -190,3 +227,4 @@ maton api -X DELETE '/google-search-console/webmasters/v3/sites/{siteUrl}/sitema
 - [Get Sitemap](https://developers.google.com/webmaster-tools/v1/sitemaps/get)
 - [Submit Sitemap](https://developers.google.com/webmaster-tools/v1/sitemaps/submit)
 - [Delete Sitemap](https://developers.google.com/webmaster-tools/v1/sitemaps/delete)
+- [Maton CLI Manual](https://cli.maton.ai/manual)

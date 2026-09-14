@@ -1,9 +1,8 @@
-# Granola MCP Routing Reference
+# Granola MCP
 
-> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../SKILL.md#security--permissions) for full security policy.
+## MCP Reference
 
-**App name:** `granola`
-**Base URL proxied:** `mcp.granola.ai`
+> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../../SKILL.md#security--permissions) for full security policy.
 
 > **Privacy — meeting notes are among the most sensitive data in this gateway.** Responses contain private notes, AI-generated summaries, decisions, action items, and participant names and email addresses. Meetings routinely cover compensation, personnel matters, legal exposure, unannounced plans, and customer confidences. Other attendees did not consent to their words being read by an agent or relayed onward.
 > - Retrieve only the meetings the task needs — a specific meeting or date range, not the full history.
@@ -12,29 +11,10 @@
 > - Treat participant names and emails as personal data: don't build contact lists from them or use them for anything outside the stated task.
 > - Before posting meeting content anywhere shared (Slack, docs, email, issue trackers), confirm with the user — attendees may not expect it to travel beyond the meeting.
 
-## Connection Management
+**App name:** `granola`
+**Upstream base URL:** `mcp.granola.ai` (MCP server)
 
-An MCP connection is created like any other, with `--method MCP`.
-
-### List Connections
-
-```bash
-maton connection list granola --method MCP --status ACTIVE
-```
-
-### Create Connection
-
-```bash
-maton connection create granola --method MCP
-```
-
-## API Path Pattern
-
-```
-/granola/{tool-name}
-```
-
-## MCP Reference
+This app is reached over MCP so there is no upstream REST path to rewrite. Each MCP tool is a `POST` to the app name followed by the tool name; the arguments go in the JSON body. The MCP credentials are stored in the Maton connection, and the gateway injects them so requests never carry them. For example: `https://api.maton.ai/granola/query_granola_meetings`
 
 All MCP tools use `POST` method:
 
@@ -45,11 +25,10 @@ All MCP tools use `POST` method:
 | `get_meetings` | Retrieve detailed content for specific meetings | [schema](schemas/get_meetings.json) |
 | `get_meeting_transcript` | Get raw transcript (paid tiers only) | [schema](schemas/get_meeting_transcript.json) |
 
-## Common Endpoints
+### Common Tools
 
-### Query Meetings
+#### Query Meetings Tool
 
-Chat with your meeting notes using natural language queries:
 ```bash
 maton api -X POST '/granola/query_granola_meetings' \
   -H 'Content-Type: application/json' \
@@ -79,9 +58,8 @@ EOF
 - "What did we discuss about the product launch?"
 - "Find all mentions of budget in my meetings"
 
-### List Meetings
+#### List Meetings Tool
 
-List your meetings with metadata including IDs, titles, dates, and attendees:
 ```bash
 maton api -X POST '/granola/list_meetings' \
   -H 'Content-Type: application/json' \
@@ -103,14 +81,8 @@ EOF
 }
 ```
 
-**Response fields in XML format:**
-- `meetings_data`: Container with `from`, `to` date range and `count`
-- `meeting`: Individual meeting with `id`, `title`, and `date` attributes
-- `known_participants`: List of attendees with name, role, company, and email
+#### Get Meetings Tool
 
-### Get Meetings
-
-Retrieve detailed content for specific meetings by ID:
 ```bash
 maton api -X POST '/granola/get_meetings' \
   -H 'Content-Type: application/json' \
@@ -134,14 +106,8 @@ EOF
 }
 ```
 
-**Response includes:**
-- Meeting metadata (id, title, date, participants)
-- `summary`: AI-generated meeting summary with key decisions and action items
-- Enhanced notes and private notes (when available)
+#### Get Meeting Transcript Tool
 
-### Get Meeting Transcript
-
-Retrieve the raw transcript for a specific meeting (paid tiers only):
 ```bash
 maton api -X POST '/granola/get_meeting_transcript' \
   -H 'Content-Type: application/json' \
@@ -178,7 +144,37 @@ EOF
 }
 ```
 
-## Notes
+### Response Format
+
+All MCP tool responses wrap content in a `content` array of typed blocks alongside an `isError` flag:
+
+```json
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "..."
+    }
+  ],
+  "isError": false
+}
+```
+
+Tool-level failures (for example requesting a transcript on a free tier) return HTTP 200 with `isError` set to `true` and the message in the same `content` array, so check `isError` rather than the HTTP status:
+
+```json
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "Transcripts are only available to paid Granola tiers"
+    }
+  ],
+  "isError": true
+}
+```
+
+### Notes
 
 - All IDs are UUIDs (with or without hyphens)
 - Users can only query their own meeting notes; shared notes from others are not accessible
@@ -188,9 +184,10 @@ EOF
 - Session can be reused by passing the `Mcp-Session-Id` header from previous responses
 - Rate limit: ~100 requests/minute
 
-## Resources
+### Resources
 
 - [Granola MCP Documentation](https://docs.granola.ai/help-center/sharing/integrations/mcp)
 - [Granola Help Center](https://docs.granola.ai)
 - [Maton Community](https://discord.com/invite/dBfFAcefs2)
 - [Maton Support](mailto:support@maton.ai)
+- [Maton CLI Manual](https://cli.maton.ai/manual)

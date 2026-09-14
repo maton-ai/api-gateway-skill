@@ -1,96 +1,152 @@
-# Google Sheets Routing Reference
+# Google Sheets
 
-> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../SKILL.md#security--permissions) for full security policy.
+## API Reference
+
+> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../../SKILL.md#security--permissions) for full security policy.
 
 **App name:** `google-sheets`
-**Base URL proxied:** `sheets.googleapis.com`
+**Upstream base URL:** `sheets.googleapis.com`
 
-## API Path Pattern
+Replace the upstream base URL with the app name. Everything after the base URL including query strings is kept as-is. Any account-specific part of the base URL and the API credentials are stored in the Maton connection, and the gateway injects both so requests never carry them. For example:
 
+- Upstream: `https://sheets.googleapis.com/v4/spreadsheets`
+- Gateway: `https://api.maton.ai/google-sheets/v4/spreadsheets`
+
+### Spreadsheets API
+
+#### Get Spreadsheet Metadata
+
+```bash
+maton google-sheets spreadsheet get {spreadsheetId}
 ```
-/google-sheets/v4/spreadsheets/{spreadsheetId}/{endpoint}
-```
 
-## Common Endpoints
+Or with `maton api`:
 
-### Get Spreadsheet Metadata
 ```bash
 maton api '/google-sheets/v4/spreadsheets/{spreadsheetId}'
 ```
 
-Example:
+**Note:** `{spreadsheetId}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Create Spreadsheet
 
 ```bash
-maton google-sheets spreadsheet view <spreadsheetId>
+maton google-sheets spreadsheet create --title 'New Spreadsheet' --sheet-title 'Sheet1'
 ```
 
-### Get Values
+Or with `maton api`:
+
+```bash
+maton api -X POST '/google-sheets/v4/spreadsheets' -H 'Content-Type: application/json' --input - <<'JSON'
+{
+  "properties": {"title": "New Spreadsheet"},
+  "sheets": [{"properties": {"title": "Sheet1"}}]
+}
+JSON
+```
+
+#### Batch Update Spreadsheet
+
+```bash
+maton google-sheets spreadsheet batch-update {spreadsheetId} --requests '[{"addSheet":{"properties":{"title":"New Sheet"}}}]'
+```
+
+Or with `maton api`:
+
+```bash
+maton api -X POST '/google-sheets/v4/spreadsheets/{spreadsheetId}:batchUpdate' -H 'Content-Type: application/json' --input - <<'JSON'
+{
+  "requests": [
+    {"addSheet": {"properties": {"title": "New Sheet"}}}
+  ]
+}
+JSON
+```
+
+**Note:** `{spreadsheetId}` is a placeholder. Replace it with a real value before sending the request.
+
+### Spreadsheet Values API
+
+#### Get Values
+
+```bash
+maton google-sheets values get {spreadsheetId} --range 'Sheet1!A1:D10'
+```
+
+Or with `maton api`:
+
 ```bash
 maton api '/google-sheets/v4/spreadsheets/{spreadsheetId}/values/{range}'
 ```
 
-Example:
+**Note:** `{spreadsheetId}` and `{range}` are placeholders. Replace each of them with real values before sending the request.
+
+#### Get Multiple Ranges
 
 ```bash
-maton google-sheets values get <spreadsheetId> --range 'Sheet1!A1:D10'
+maton google-sheets values batch-get {spreadsheetId} --range 'Sheet1!A1:B10,Sheet2!A1:C5'
 ```
 
-### Get Multiple Ranges
+Or with `maton api`:
+
 ```bash
 maton api '/google-sheets/v4/spreadsheets/{spreadsheetId}/values:batchGet?ranges=Sheet1!A1:B10&ranges=Sheet2!A1:C5'
 ```
 
-Example:
+**Note:** `{spreadsheetId}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Update Values
 
 ```bash
-maton google-sheets values batch-get <spreadsheetId> --range 'Sheet1!A1:B10,Sheet2!A1:C5'
+maton google-sheets values update {spreadsheetId} --range 'Sheet1!A1:C2' --json-values '[["A1","B1","C1"],["A2","B2","C2"]]'
 ```
 
-### Update Values
+Or with `maton api`:
+
 ```bash
-maton api -X PUT '/google-sheets/v4/spreadsheets/{spreadsheetId}/values/{range}?valueInputOption=USER_ENTERED' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
+maton api -X PUT '/google-sheets/v4/spreadsheets/{spreadsheetId}/values/{range}?valueInputOption=USER_ENTERED' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "values": [
     ["A1", "B1", "C1"],
     ["A2", "B2", "C2"]
   ]
 }
-EOF
+JSON
 ```
 
-Example:
+**Note:** `{spreadsheetId}` and `{range}` are placeholders. Replace each of them with real values before sending the request.
+
+#### Append Values
 
 ```bash
-maton google-sheets values update <spreadsheetId> --range 'Sheet1!A1:C2' --json-values '[["A1","B1","C1"],["A2","B2","C2"]]'
+maton google-sheets values append {spreadsheetId} --range 'Sheet1!A1' --json-values '[["New Row 1","Data","More Data"],["New Row 2","Data","More Data"]]'
 ```
 
-### Append Values
+Or with `maton api`:
+
 ```bash
-maton api -X POST '/google-sheets/v4/spreadsheets/{spreadsheetId}/values/{range}:append?valueInputOption=USER_ENTERED' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
+maton api -X POST '/google-sheets/v4/spreadsheets/{spreadsheetId}/values/{range}:append?valueInputOption=USER_ENTERED' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "values": [
     ["New Row 1", "Data", "More Data"],
     ["New Row 2", "Data", "More Data"]
   ]
 }
-EOF
+JSON
 ```
 
-Example:
+**Note:** `{spreadsheetId}` and `{range}` are placeholders. Replace each of them with real values before sending the request.
+
+#### Batch Update Values
 
 ```bash
-maton google-sheets values append <spreadsheetId> --range 'Sheet1!A1' --json-values '[["New Row 1","Data","More Data"],["New Row 2","Data","More Data"]]'
+maton google-sheets values batch-update {spreadsheetId} --data '[{"range":"Sheet1!A1:B2","values":[["A1","B1"],["A2","B2"]]},{"range":"Sheet1!D1:E2","values":[["D1","E1"],["D2","E2"]]}]'
 ```
 
-### Batch Update Values
+Or with `maton api`:
+
 ```bash
-maton api -X POST '/google-sheets/v4/spreadsheets/{spreadsheetId}/values:batchUpdate' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
+maton api -X POST '/google-sheets/v4/spreadsheets/{spreadsheetId}/values:batchUpdate' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "valueInputOption": "USER_ENTERED",
   "data": [
@@ -98,68 +154,31 @@ maton api -X POST '/google-sheets/v4/spreadsheets/{spreadsheetId}/values:batchUp
     {"range": "Sheet1!D1:E2", "values": [["D1", "E1"], ["D2", "E2"]]}
   ]
 }
-EOF
+JSON
 ```
 
-Example:
+**Note:** `{spreadsheetId}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Clear Values
 
 ```bash
-maton google-sheets values batch-update <spreadsheetId> --data '[{"range":"Sheet1!A1:B2","values":[["A1","B1"],["A2","B2"]]},{"range":"Sheet1!D1:E2","values":[["D1","E1"],["D2","E2"]]}]'
+maton google-sheets values clear {spreadsheetId} --range 'Sheet1!A1:D10'
 ```
 
-### Clear Values
+Or with `maton api`:
+
 ```bash
 maton api -X POST '/google-sheets/v4/spreadsheets/{spreadsheetId}/values/{range}:clear'
 ```
 
-Example:
+**Note:** `{spreadsheetId}` and `{range}` are placeholders. Replace each of them with real values before sending the request.
 
-```bash
-maton google-sheets values clear <spreadsheetId> --range 'Sheet1!A1:D10'
-```
-
-### Create Spreadsheet
-```bash
-maton api -X POST '/google-sheets/v4/spreadsheets' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
-{
-  "properties": {"title": "New Spreadsheet"},
-  "sheets": [{"properties": {"title": "Sheet1"}}]
-}
-EOF
-```
-
-Example:
-
-```bash
-maton google-sheets spreadsheet create --title 'New Spreadsheet' --sheet-title 'Sheet1'
-```
-
-### Batch Update (formatting, add sheets, etc.)
-```bash
-maton api -X POST '/google-sheets/v4/spreadsheets/{spreadsheetId}:batchUpdate' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
-{
-  "requests": [
-    {"addSheet": {"properties": {"title": "New Sheet"}}}
-  ]
-}
-EOF
-```
-
-Example:
-
-```bash
-maton google-sheets spreadsheet batch-update <spreadsheetId> --requests '[{"addSheet":{"properties":{"title":"New Sheet"}}}]'
-```
-
-## Common batchUpdate Requests
+### Common Batch Update Requests
 
 See [full list of request types](https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets/request).
 
-### Update Cells with Formatting
+#### Update Cells with Formatting
+
 ```json
 {
   "updateCells": {
@@ -172,7 +191,8 @@ See [full list of request types](https://developers.google.com/workspace/sheets/
 }
 ```
 
-### Format Header Row (Bold + Background Color)
+#### Format Header Row (Bold + Background Color)
+
 ```json
 {
   "repeatCell": {
@@ -188,7 +208,8 @@ See [full list of request types](https://developers.google.com/workspace/sheets/
 }
 ```
 
-### Auto-Resize Columns
+#### Auto-Resize Columns
+
 ```json
 {
   "autoResizeDimensions": {
@@ -197,7 +218,8 @@ See [full list of request types](https://developers.google.com/workspace/sheets/
 }
 ```
 
-### Rename Sheet
+#### Rename Sheet
+
 ```json
 {
   "updateSheetProperties": {
@@ -207,7 +229,8 @@ See [full list of request types](https://developers.google.com/workspace/sheets/
 }
 ```
 
-### Insert Rows/Columns
+#### Insert Rows/Columns
+
 ```json
 {
   "insertDimension": {
@@ -217,7 +240,8 @@ See [full list of request types](https://developers.google.com/workspace/sheets/
 }
 ```
 
-### Sort Range
+#### Sort Range
+
 ```json
 {
   "sortRange": {
@@ -227,7 +251,8 @@ See [full list of request types](https://developers.google.com/workspace/sheets/
 }
 ```
 
-### Add Conditional Formatting
+#### Add Conditional Formatting
+
 ```json
 {
   "addConditionalFormatRule": {
@@ -243,7 +268,8 @@ See [full list of request types](https://developers.google.com/workspace/sheets/
 }
 ```
 
-### Add Filter
+#### Add Filter
+
 ```json
 {
   "setBasicFilter": {
@@ -254,19 +280,20 @@ See [full list of request types](https://developers.google.com/workspace/sheets/
 }
 ```
 
-### Delete Sheet
+#### Delete Sheet
+
 ```json
 {
   "deleteSheet": {"sheetId": 123456789}
 }
 ```
 
-## Value Input Options
+### Value Input Options
 
 - `RAW` - Values are stored as-is
 - `USER_ENTERED` - Values are parsed as if typed into the UI (formulas executed, numbers parsed)
 
-## Range Notation
+### Range Notation
 
 - `Sheet1!A1:D10` - Specific range
 - `Sheet1!A:D` - Entire columns A through D
@@ -274,16 +301,15 @@ See [full list of request types](https://developers.google.com/workspace/sheets/
 - `Sheet1` - Entire sheet
 - `A1:D10` - Range in first sheet
 
-## Notes
+### Notes
 
-- Authentication is automatic - the router injects the OAuth token
 - Range in URL path must be URL-encoded (`!` → `%21`, `:` → `%3A`)
 - Use `valueInputOption=USER_ENTERED` to parse formulas and numbers
 - Delete spreadsheets via Google Drive API
 
-## Resources
+### Resources
 
-- [API Overview](https://developers.google.com/workspace/sheets/api/reference/rest)
+- [Google Sheets API Overview](https://developers.google.com/workspace/sheets/api/reference/rest)
 - [Get Spreadsheet](https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets/get)
 - [Create Spreadsheet](https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets/create)
 - [Batch Update](https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets/batchUpdate)

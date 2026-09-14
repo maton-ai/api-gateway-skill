@@ -1,39 +1,37 @@
-# Xero Routing Reference
+# Xero
 
-> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../SKILL.md#security--permissions) for full security policy.
+## API Reference
+
+> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../../SKILL.md#security--permissions) for full security policy.
 
 **App name:** `xero`
-**Base URL proxied:** `api.xero.com`
+**Upstream base URL:** `api.xero.com`
 
-## Automatic Tenant ID Injection
+Replace the upstream base URL with the app name. Everything after the base URL including query strings is kept as-is. Any account-specific part of the base URL and the API credentials are stored in the Maton connection, and the gateway injects both so requests never carry them. For example:
 
-The router automatically injects the `Xero-Tenant-Id` header from your connection config. You do not need to provide it manually.
+- Upstream: `https://api.xero.com/api.xro/2.0/Contacts`
+- Gateway: `https://api.maton.ai/xero/api.xro/2.0/Contacts`
 
-## API Path Pattern
-
-```
-/xero/api.xro/2.0/{endpoint}
-```
-
-## Common Endpoints
-
-### Contacts
+### Contacts API
 
 #### List Contacts
+
 ```bash
 maton api '/xero/api.xro/2.0/Contacts'
 ```
 
 #### Get Contact
+
 ```bash
 maton api '/xero/api.xro/2.0/Contacts/{contactId}'
 ```
 
+**Note:** `{contactId}` is a placeholder. Replace it with a real value before sending the request.
+
 #### Create Contact
+
 ```bash
-maton api -X POST '/xero/api.xro/2.0/Contacts' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
+maton api -X POST '/xero/api.xro/2.0/Contacts' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "Contacts": [{
     "Name": "John Doe",
@@ -41,26 +39,29 @@ maton api -X POST '/xero/api.xro/2.0/Contacts' \
     "Phones": [{"PhoneType": "DEFAULT", "PhoneNumber": "555-1234"}]
   }]
 }
-EOF
+JSON
 ```
 
-### Invoices
+### Invoices API
 
 #### List Invoices
+
 ```bash
 maton api '/xero/api.xro/2.0/Invoices'
 ```
 
 #### Get Invoice
+
 ```bash
 maton api '/xero/api.xro/2.0/Invoices/{invoiceId}'
 ```
 
+**Note:** `{invoiceId}` is a placeholder. Replace it with a real value before sending the request.
+
 #### Create Invoice
+
 ```bash
-maton api -X POST '/xero/api.xro/2.0/Invoices' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
+maton api -X POST '/xero/api.xro/2.0/Invoices' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "Invoices": [{
     "Type": "ACCREC",
@@ -73,95 +74,111 @@ maton api -X POST '/xero/api.xro/2.0/Invoices' \
     }]
   }]
 }
-EOF
+JSON
 ```
 
-### Accounts
+### Accounts API
 
 #### List Accounts
+
 ```bash
 maton api '/xero/api.xro/2.0/Accounts'
 ```
 
-### Items
+### Items API
 
 #### List Items
+
 ```bash
 maton api '/xero/api.xro/2.0/Items'
 ```
 
-### Payments
+### Payments API
 
 #### List Payments
+
 ```bash
 maton api '/xero/api.xro/2.0/Payments'
 ```
 
-### Bank Transactions
+### Bank Transactions API
 
 #### List Bank Transactions
+
 ```bash
 maton api '/xero/api.xro/2.0/BankTransactions'
 ```
 
-### Reports
+### Reports API
 
 #### Profit and Loss
+
 ```bash
 maton api '/xero/api.xro/2.0/Reports/ProfitAndLoss?fromDate=2024-01-01&toDate=2024-12-31'
 ```
 
 #### Balance Sheet
+
 ```bash
 maton api '/xero/api.xro/2.0/Reports/BalanceSheet?date=2024-12-31'
 ```
 
 #### Trial Balance
+
 ```bash
 maton api '/xero/api.xro/2.0/Reports/TrialBalance?date=2024-12-31'
 ```
 
-### Currencies
+### Currencies API
 
 #### List Currencies
+
 ```bash
 maton api '/xero/api.xro/2.0/Currencies'
 ```
 
-### Tax Rates
+### Tax Rates API
 
 #### List Tax Rates
+
 ```bash
 maton api '/xero/api.xro/2.0/TaxRates'
 ```
 
-### Credit Notes
+### Credit Notes API
 
 #### List Credit Notes
+
 ```bash
 maton api '/xero/api.xro/2.0/CreditNotes'
 ```
 
-### Purchase Orders
+### Purchase Orders API
 
 #### List Purchase Orders
+
 ```bash
 maton api '/xero/api.xro/2.0/PurchaseOrders'
 ```
 
-### Organisation
+### Organisation API
 
 #### Get Organisation
+
 ```bash
 maton api '/xero/api.xro/2.0/Organisation'
 ```
 
-## Invoice Types
+### Automatic Tenant ID Injection
+
+The router automatically injects the `Xero-Tenant-Id` header from your connection config. You do not need to provide it manually.
+
+### Invoice Types
 
 - `ACCREC` - Accounts Receivable (sales invoice)
 - `ACCPAY` - Accounts Payable (bill)
 
-## Notes
+### Notes
 
 - `Xero-Tenant-Id` header is automatically injected by the router
 - Dates are in `YYYY-MM-DD` format
@@ -170,9 +187,9 @@ maton api '/xero/api.xro/2.0/Organisation'
 - Draft invoices can be deleted by setting `Status` to `DELETED`
 - Use `where` query parameter for filtering (e.g., `where=Status=="VOIDED"`)
 
-## Resources
+### Resources
 
-- [API Overview](https://developer.xero.com/documentation/api/accounting/overview)
+- [Xero API Overview](https://developer.xero.com/documentation/api/accounting/overview)
 - [List Contacts](https://developer.xero.com/documentation/api/accounting/contacts#get-contacts)
 - [Get Contact](https://developer.xero.com/documentation/api/accounting/contacts#get-contacts)
 - [Create Contact](https://developer.xero.com/documentation/api/accounting/contacts#put-contacts)
@@ -205,3 +222,4 @@ maton api '/xero/api.xro/2.0/Organisation'
 - [Trial Balance Report](https://developer.xero.com/documentation/api/accounting/reports#trialbalance)
 - [Bank Summary Report](https://developer.xero.com/documentation/api/accounting/reports#banksummary)
 - [Get Organisation](https://developer.xero.com/documentation/api/accounting/organisation#get-organisation)
+- [Maton CLI Manual](https://cli.maton.ai/manual)

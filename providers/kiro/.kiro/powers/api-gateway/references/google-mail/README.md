@@ -1,212 +1,243 @@
-# Gmail Routing Reference
+# Gmail
 
-> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../SKILL.md#security--permissions) for full security policy.
+## API Reference
+
+> **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../../SKILL.md#security--permissions) for full security policy.
 
 **App name:** `google-mail`
-**Base URL proxied:** `gmail.googleapis.com`
+**Upstream base URL:** `gmail.googleapis.com`
 
-## API Path Pattern
+Replace the upstream base URL with the app name. Everything after the base URL including query strings is kept as-is. Any account-specific part of the base URL and the API credentials are stored in the Maton connection, and the gateway injects both so requests never carry them. For example:
 
-```
-/google-mail/gmail/v1/users/me/{endpoint}
-```
+- Upstream: `https://gmail.googleapis.com/gmail/v1/users/me/messages/send`
+- Gateway: `https://api.maton.ai/google-mail/gmail/v1/users/me/messages/send`
 
-## Common Endpoints
+### User Info API
 
-### List Messages
+#### Get Profile
+
 ```bash
-maton api '/google-mail/gmail/v1/users/me/messages?maxResults=10'
+maton google-mail whoami
 ```
 
-Example:
+Or with `maton api`:
+
+```bash
+maton api '/google-mail/gmail/v1/users/me/profile'
+```
+
+### Messages API
+
+#### List Messages
 
 ```bash
 maton google-mail message list -L 10
 ```
 
-With query filter:
+Or with `maton api`:
+
 ```bash
-maton api '/google-mail/gmail/v1/users/me/messages?q=is:unread&maxResults=10'
+maton api '/google-mail/gmail/v1/users/me/messages?maxResults=10'
 ```
 
-Example:
+**With a query filter:**
 
 ```bash
 maton google-mail message list --query 'is:unread' -L 10
 ```
 
-### Get Message
+Or with `maton api`:
+
+```bash
+maton api '/google-mail/gmail/v1/users/me/messages?q=is:unread&maxResults=10'
+```
+
+#### Get Message
+
+```bash
+maton google-mail message get {messageId} --headers
+```
+
+Or with `maton api`:
+
 ```bash
 maton api '/google-mail/gmail/v1/users/me/messages/{messageId}'
 ```
 
-Example:
+**Metadata only:**
 
 ```bash
-maton google-mail message view {messageId} --headers
+maton google-mail message get {messageId} --format metadata --metadata-header From,Subject,Date
 ```
 
-With metadata only:
+Or with `maton api`:
+
 ```bash
 maton api '/google-mail/gmail/v1/users/me/messages/{messageId}?format=metadata&metadataHeaders=From&metadataHeaders=Subject&metadataHeaders=Date'
 ```
 
-Example:
+**Note:** `{messageId}` is a placeholder. Replace it with a real value before sending the request.
 
-```bash
-maton google-mail message view {messageId} --fetch-format metadata --metadata-header From,Subject,Date
-```
-
-### Send Message
-```bash
-maton api -X POST '/google-mail/gmail/v1/users/me/messages/send' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
-{
-  "raw": "BASE64_ENCODED_EMAIL"
-}
-EOF
-```
-
-Example:
+#### Send Message
 
 ```bash
 maton google-mail message send --to alice@example.com --subject 'Hello' --body 'Hi there!'
 ```
 
-### Reply to Message
+Or with `maton api`:
 
-Example:
+```bash
+maton api -X POST '/google-mail/gmail/v1/users/me/messages/send' -H 'Content-Type: application/json' --input - <<'JSON'
+{
+  "raw": "{base64EncodedEmail}"
+}
+JSON
+```
+
+**Note:** `{base64EncodedEmail}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Reply to Message
 
 ```bash
 maton google-mail message reply {messageId} --body 'Thanks!'
 ```
 
-### Forward Message
+**Note:** `{messageId}` is a placeholder. Replace it with a real value before sending the request.
 
-Example:
+#### Forward Message
 
 ```bash
 maton google-mail message forward {messageId} --to dave@example.com --body 'FYI'
 ```
 
-### List Labels
-```bash
-maton api '/google-mail/gmail/v1/users/me/labels'
-```
+**Note:** `{messageId}` is a placeholder. Replace it with a real value before sending the request.
 
-Example:
+#### List Labels
 
 ```bash
 maton google-mail label list
 ```
 
-### List Threads
+Or with `maton api`:
+
 ```bash
-maton api '/google-mail/gmail/v1/users/me/threads?maxResults=10'
+maton api '/google-mail/gmail/v1/users/me/labels'
 ```
 
-Example:
+#### List Threads
 
 ```bash
 maton google-mail thread list -L 10
 ```
 
-### Get Thread
+Or with `maton api`:
+
+```bash
+maton api '/google-mail/gmail/v1/users/me/threads?maxResults=10'
+```
+
+#### Get Thread
+
+```bash
+maton google-mail thread get {threadId}
+```
+
+Or with `maton api`:
+
 ```bash
 maton api '/google-mail/gmail/v1/users/me/threads/{threadId}'
 ```
 
-Example:
+**Note:** `{threadId}` is a placeholder. Replace it with a real value before sending the request.
 
-```bash
-maton google-mail thread view {threadId}
-```
-
-### Modify Message Labels
-```bash
-maton api -X POST '/google-mail/gmail/v1/users/me/messages/{messageId}/modify' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
-{
-  "addLabelIds": ["STARRED"],
-  "removeLabelIds": ["UNREAD"]
-}
-EOF
-```
-
-Example:
+#### Modify Message Labels
 
 ```bash
 maton google-mail message modify {messageId} --add-label STARRED --remove-label UNREAD
 ```
 
-### Trash Message
+Or with `maton api`:
+
 ```bash
-maton api -X POST '/google-mail/gmail/v1/users/me/messages/{messageId}/trash'
+maton api -X POST '/google-mail/gmail/v1/users/me/messages/{messageId}/modify' -H 'Content-Type: application/json' --input - <<'JSON'
+{
+  "addLabelIds": ["STARRED"],
+  "removeLabelIds": ["UNREAD"]
+}
+JSON
 ```
 
-Example:
+**Note:** `{messageId}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Trash Message
 
 ```bash
 maton google-mail message trash {messageId}
 ```
 
-### Create Draft
+Or with `maton api`:
+
 ```bash
-maton api -X POST '/google-mail/gmail/v1/users/me/drafts' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
-{
-  "message": {
-    "raw": "BASE64URL_ENCODED_EMAIL"
-  }
-}
-EOF
+maton api -X POST '/google-mail/gmail/v1/users/me/messages/{messageId}/trash'
 ```
 
-Example:
+**Note:** `{messageId}` is a placeholder. Replace it with a real value before sending the request.
+
+### Drafts API
+
+#### Create Draft
 
 ```bash
 maton google-mail draft create --to alice@example.com --subject 'Hello' --body 'Draft content here'
 ```
 
-### Update Draft
+Or with `maton api`:
+
 ```bash
-maton api -X PUT '/google-mail/gmail/v1/users/me/drafts/{draftId}' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
+maton api -X POST '/google-mail/gmail/v1/users/me/drafts' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "message": {
-    "raw": "BASE64URL_ENCODED_EMAIL"
+    "raw": "{base64EncodedEmail}"
   }
 }
-EOF
+JSON
 ```
 
-### Send Draft
+**Note:** `{base64EncodedEmail}` is a placeholder. Replace it with a real value before sending the request.
+
+#### Update Draft
+
 ```bash
-maton api -X POST '/google-mail/gmail/v1/users/me/drafts/send' \
-  -H 'Content-Type: application/json' \
-  --input - <<'EOF'
+maton api -X PUT '/google-mail/gmail/v1/users/me/drafts/{draftId}' -H 'Content-Type: application/json' --input - <<'JSON'
 {
-  "id": "{draftId}"
+  "message": {
+    "raw": "{base64EncodedEmail}"
+  }
 }
-EOF
+JSON
 ```
 
-Example:
+**Note:** `{draftId}` and `{base64EncodedEmail}` are placeholders. Replace each of them with real values before sending the request.
+
+#### Send Draft
 
 ```bash
 maton google-mail draft send {draftId}
 ```
 
-### Get Profile
+Or with `maton api`:
+
 ```bash
-maton api '/google-mail/gmail/v1/users/me/profile'
+maton api -X POST '/google-mail/gmail/v1/users/me/drafts/send' -H 'Content-Type: application/json' --input - <<'JSON'
+{
+  "id": "{draftId}"
+}
+JSON
 ```
 
-## Query Operators
+**Note:** `{draftId}` is a placeholder. Replace it with a real value before sending the request.
+
+### Filtering
 
 Use in the `q` parameter:
 - `is:unread` - Unread messages
@@ -221,7 +252,7 @@ Use in the `q` parameter:
 - `older_than:1y` - Older than 1 year
 - `label:LABEL_NAME` - Has specific label
 
-## Pagination
+### Pagination
 
 Gmail uses `pageToken`-based pagination. The CLI handles this automatically with `--paginate`:
 
@@ -231,18 +262,27 @@ maton google-mail message list --query 'newer_than:7d' --paginate
 
 For raw HTTP requests, pass the `nextPageToken` from the previous response as the `pageToken` query parameter.
 
-## Notes
+### Examples
 
-- Authentication is automatic - the router injects the OAuth token
+```bash
+# List unread messages with full headers resolved
+maton google-mail message list --hydrate
+
+# Filter with jq — e.g. only message IDs from a specific sender
+maton google-mail message list -L 20 --query 'from:boss@example.com' --json --jq '.messages[].id'
+```
+
+### Notes
+
 - Use `me` as userId for the authenticated user
 - Message body is base64url encoded in the `raw` field (RFC 2822 format)
 - Common labels: `INBOX`, `SENT`, `DRAFT`, `STARRED`, `UNREAD`, `TRASH`, `SPAM`, `IMPORTANT`
 - Rate limit: ~10 requests/sec per account
 - Use `format=metadata` with `metadataHeaders` to fetch only headers and avoid downloading full message bodies
 
-## Resources
+### Resources
 
-- [API Overview](https://developers.google.com/gmail/api/reference/rest)
+- [Gmail API Overview](https://developers.google.com/gmail/api/reference/rest)
 - [List Messages](https://developers.google.com/gmail/api/reference/rest/v1/users.messages/list)
 - [Get Message](https://developers.google.com/gmail/api/reference/rest/v1/users.messages/get)
 - [Send Message](https://developers.google.com/gmail/api/reference/rest/v1/users.messages/send)
