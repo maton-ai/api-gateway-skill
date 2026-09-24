@@ -912,7 +912,7 @@ See [references/](references/) for detailed routing guides per provider:
 - [Google Meet](references/google-meet/README.md) - Spaces, conference records, participants
 - [Google Merchant](references/google-merchant/README.md) - Products, inventories, promotions, reports
 - [Google Play](references/google-play/README.md) - In-app products, subscriptions, reviews
-- [Google Search Console](references/google-search-console/README.md) - Search analytics, sitemaps
+- [Google Search Console](references/google-search-console/README.md) - Search analytics, sitemaps, URL inspection
 - [Google Sheets](references/google-sheets/README.md) - Values, ranges, formatting
 - [Google Slides](references/google-slides/README.md) - Presentations, slides, formatting
 - [Google Tag Manager](references/google-tag-manager/README.md) - Accounts, containers, tags, triggers, variables, versions

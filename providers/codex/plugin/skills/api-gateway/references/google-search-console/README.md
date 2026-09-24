@@ -5,7 +5,7 @@
 > **Safety:** All write operations (POST, PUT, PATCH, DELETE) require explicit user confirmation before execution. Verify the target resource and intended effect with the user first. See the main [SKILL.md](../../SKILL.md#security--permissions) for full security policy.
 
 **App name:** `google-search-console`
-**Upstream base URL:** `www.googleapis.com`
+**Upstream base URL:** `www.googleapis.com` (`webmasters/v3/*`) and `searchconsole.googleapis.com` (`v1/*`, e.g. URL Inspection); Maton picks the host from the path
 
 Replace the upstream base URL with the app name. Everything after the base URL including query strings is kept as-is. Any account-specific part of the base URL and the API credentials are stored in the Maton connection, and the gateway injects both so requests never carry them. For example:
 
@@ -89,6 +89,23 @@ maton api '/google-search-console/webmasters/v3/sites/{siteUrl}/sitemaps/{feedpa
 ```
 
 **Note:** `{siteUrl}` and `{feedpath}` are placeholders. Replace each of them with real values before sending the request.
+
+### URL Inspection API
+
+#### Inspect URL
+
+```bash
+maton api -X POST '/google-search-console/v1/urlInspection/index:inspect' \
+  -H 'Content-Type: application/json' \
+  --input - <<'EOF'
+{
+  "inspectionUrl": "https://example.com/page",
+  "siteUrl": "sc-domain:example.com"
+}
+EOF
+```
+
+**Note:** `siteUrl` goes in the body exactly as the property is listed (e.g. `sc-domain:example.com` or `https://example.com/`), not URL-encoded, and `inspectionUrl` must belong to that property. Google allows 2,000 inspections a day and 600 a minute per property.
 
 ### Search Analytics Query Examples
 
@@ -227,4 +244,5 @@ maton api '/google-search-console/webmasters/v3/sites/{siteUrl}/sitemaps/{feedpa
 - [Get Sitemap](https://developers.google.com/webmaster-tools/v1/sitemaps/get)
 - [Submit Sitemap](https://developers.google.com/webmaster-tools/v1/sitemaps/submit)
 - [Delete Sitemap](https://developers.google.com/webmaster-tools/v1/sitemaps/delete)
+- [URL Inspection](https://developers.google.com/webmaster-tools/v1/urlInspection.index/inspect)
 - [Maton CLI Manual](https://cli.maton.ai/manual)
