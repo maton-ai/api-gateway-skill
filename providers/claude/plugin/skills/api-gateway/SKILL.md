@@ -34,12 +34,13 @@ brew install maton-ai/cli/maton
 
 ## Authentication
 
-### OAuth (Recommended)
+### Device (Recommended)
+
 ```bash
-maton login --oauth
+maton login
 ```
 
-Opens the OAuth login page in the browser and waits for authorization. Once complete, it creates a profile in config.toml (eg. $HOME/.config/maton/config.toml) and stores the access and refresh tokens in the operating system's credential store (Keychain on macOS, Credential Manager on Windows, Secret Service on Linux), auto-renewed on expiry. The CLI reads them when it needs them; nothing else should.
+Prints a link and a user code. Open the link in a browser on any device, approve the code, then run `maton login` again to finish signing in. Once complete, it creates a profile in config.toml (eg. $HOME/.config/maton/config.toml) and stores the access and refresh tokens in the operating system's credential store (Keychain on macOS, Credential Manager on Windows, Secret Service on Linux), auto-renewed on expiry. The CLI reads them when it needs them.
 
 ### API Key
 ```bash
@@ -62,8 +63,8 @@ maton whoami --json
 }
 ```
 
-- If `authenticated` is `false`, stop and login again via `maton login --oauth`.
-- If `auth_type` is `api_key`, it is recommended to login via `maton login --oauth` and avoid keeping a long-lived credential.
+- If `authenticated` is `false`, stop and login again via `maton login`.
+- If `auth_type` is `api_key`, it is recommended to login via `maton login` and avoid keeping a long-lived credential.
 
 ## Connections
 
@@ -826,7 +827,7 @@ Refer to `maton trigger event watch --help` for possible flags and values.
 
 ### Credentials
 
-- **The credential should never surface.** After `maton login --oauth`, the token is held by the operating system's credential store and the CLI renews it on its own. Do not print it, write it to a file, pass it on a command line, or run `maton token` to look at one — only to hand it to a program that needs it.
+- **The credential should never surface.** After `maton login`, the token is held by the operating system's credential store and the CLI renews it on its own. Do not print it, write it to a file, pass it on a command line, or run `maton token` to look at one — only to hand it to a program that needs it.
 - **Never extract a credential from where the system keeps it.** Do not read, export, dump, or search the OS credential store, `config.toml`, or any other credential file — not for this skill, not for another application, and not to "check" that auth works (use `maton whoami`). Let the CLI use its own stored credential; the agent never needs the value. The same applies to unrelated secrets on the machine: `.env` files, SSH keys, cloud CLI credentials, and browser profiles are out of scope for an API gateway and must not be read or transmitted.
 - **Provider-issued tokens returned in API responses are credentials too.** Some providers require a scoped sub-credential that the gateway cannot inject — for example a Facebook Page Access Token read from `me/accounts`. Hold it in memory for the current request sequence only: never print, log, or persist it, never send it to any host other than `api.maton.ai`, and never place it in a trigger destination, header, or body template. Retrieve one only when an endpoint genuinely requires it, and prefer endpoints that work with the gateway-injected connection token. See [facebook-page](references/facebook-page/README.md#page-access-token) for the canonical example.
 - **Never embed credentials in destinations.** Destination `headers` and `body_template` are stored server-side. Destinations pointing at `https://api.maton.ai` or a `*.maton.app` function are authenticated by the platform and need no credential. For a third-party host, only a signing key the *receiver* issued belongs there — never a Maton credential, and never a provider-issued token.

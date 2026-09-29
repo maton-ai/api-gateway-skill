@@ -550,7 +550,7 @@ Response includes `next` and `previous` URLs:
 
 ### Notes
 
-- The Baserow connection authenticates with a Baserow database token (`--method API_KEY`), not Baserow OAuth. That is a separate layer from signing in to Maton: `maton login --oauth` authenticates the CLI to your Maton account either way, and the gateway holds the database token for you.
+- The Baserow connection authenticates with a Baserow database token (`--method API_KEY`), not Baserow OAuth. That is a separate layer from signing in to Maton: `maton login` authenticates the CLI to your Maton account either way, and the gateway holds the database token for you.
 - By default, fields are returned as `field_{id}` format; use `user_field_names=true` for human-readable names
 - Database tokens grant access only to database row endpoints
 - Row IDs are integers (not strings like Airtable's `recXXX` format)
