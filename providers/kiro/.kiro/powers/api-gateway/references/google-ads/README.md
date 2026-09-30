@@ -202,7 +202,7 @@ WHERE segments.date DURING LAST_7_DAYS
 
 ### Manager (MCC) Account Access
 
-When accessing a customer account through a Google Ads manager (MCC) account, pass the manager's customer ID via `--login-customer-id` (CLI) or the `login-customer-id` header (direct API). The customer ID in the path is still the client account being queried.
+When accessing a customer account through a Google Ads manager (MCC) account, pass the manager's customer ID via `--login-customer-id` (CLI) or the `login-customer-id` header (direct API). The customer ID in the path is still the client account being queried. Without the header, or with a manager that doesn't manage the client, Google returns 403 `USER_PERMISSION_DENIED`. `listAccessibleCustomers` lists only the accounts the connection can access directly, not the clients under a manager.
 
 ```bash
 # List campaigns in client account 1234567890 via manager 9876543210
