@@ -12,14 +12,14 @@ Replace the upstream base URL with the app name. Everything after the base URL i
 - Upstream: `https://api.linkedin.com/rest/me`
 - Gateway: `https://api.maton.ai/linkedin-community-management/rest/me`
 
-**Important:** All requests require `LinkedIn-Version` and `X-Restli-Protocol-Version` headers.
+**Important:** All requests require the `X-Restli-Protocol-Version` header, and take a `LinkedIn-Version` header (`YYYYMM`, e.g. `202606`). If you leave `LinkedIn-Version` out, Maton sends `202606`.
 
 ### User Info API
 
 #### Get Current Member
 
 ```bash
-maton api '/linkedin-community-management/rest/me' -H 'Linkedin-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
+maton api '/linkedin-community-management/rest/me' -H 'LinkedIn-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
 ```
 
 **Response:**
@@ -40,7 +40,7 @@ maton api '/linkedin-community-management/rest/me' -H 'Linkedin-Version: 202606'
 Look up a LinkedIn member's profile by their person ID. The person ID can be obtained from `/rest/me`, `organizationAcls`, post authors, or comment actors.
 
 ```bash
-maton api '/linkedin-community-management/rest/people/(id:{personId})' -H 'Linkedin-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
+maton api '/linkedin-community-management/rest/people/(id:{personId})' -H 'LinkedIn-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
 ```
 
 **Note:** `{personId}` is a placeholder. Replace it with a real value before sending the request.
@@ -76,7 +76,7 @@ maton api '/linkedin-community-management/rest/people/(id:{personId})' -H 'Linke
 You can request a single field with the `fields` query parameter:
 
 ```bash
-maton api '/linkedin-community-management/rest/people/(id:{personId})?fields=localizedHeadline' -H 'Linkedin-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
+maton api '/linkedin-community-management/rest/people/(id:{personId})?fields=localizedHeadline' -H 'LinkedIn-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
 ```
 
 **Note:**
@@ -91,7 +91,7 @@ maton api '/linkedin-community-management/rest/people/(id:{personId})?fields=loc
 #### Find Organization by Vanity Name
 
 ```bash
-maton api '/linkedin-community-management/rest/organizations?q=vanityName&vanityName={vanityName}' -H 'Linkedin-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
+maton api '/linkedin-community-management/rest/organizations?q=vanityName&vanityName={vanityName}' -H 'LinkedIn-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
 ```
 
 **Note:** `{vanityName}` is a placeholder. Replace it with a real value before sending the request.
@@ -99,7 +99,7 @@ maton api '/linkedin-community-management/rest/organizations?q=vanityName&vanity
 #### Get Organization by ID (Admin Required)
 
 ```bash
-maton api '/linkedin-community-management/rest/organizations/{organizationId}' -H 'Linkedin-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
+maton api '/linkedin-community-management/rest/organizations/{organizationId}' -H 'LinkedIn-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
 ```
 
 **Note:** `{organizationId}` is a placeholder. Replace it with a real value before sending the request.
@@ -107,7 +107,7 @@ maton api '/linkedin-community-management/rest/organizations/{organizationId}' -
 #### Get Organization Follower Count
 
 ```bash
-maton api '/linkedin-community-management/rest/networkSizes/urn%3Ali%3Aorganization%3A{orgId}?edgeType=COMPANY_FOLLOWED_BY_MEMBER' -H 'Linkedin-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
+maton api '/linkedin-community-management/rest/networkSizes/urn%3Ali%3Aorganization%3A{orgId}?edgeType=COMPANY_FOLLOWED_BY_MEMBER' -H 'LinkedIn-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
 ```
 
 **Response:**
@@ -120,13 +120,13 @@ maton api '/linkedin-community-management/rest/networkSizes/urn%3Ali%3Aorganizat
 #### Find Administered Organizations
 
 ```bash
-maton api '/linkedin-community-management/rest/organizationAcls?q=roleAssignee&role=ADMINISTRATOR&state=APPROVED' -H 'Linkedin-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
+maton api '/linkedin-community-management/rest/organizationAcls?q=roleAssignee&role=ADMINISTRATOR&state=APPROVED' -H 'LinkedIn-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
 ```
 
 #### Find Child Organizations (Brands)
 
 ```bash
-maton api '/linkedin-community-management/rest/organizations?q=parentOrganization&parent=urn%3Ali%3Aorganization%3A{orgId}' -H 'Linkedin-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
+maton api '/linkedin-community-management/rest/organizations?q=parentOrganization&parent=urn%3Ali%3Aorganization%3A{orgId}' -H 'LinkedIn-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
 ```
 
 ### Posts API
@@ -134,7 +134,7 @@ maton api '/linkedin-community-management/rest/organizations?q=parentOrganizatio
 #### Create Post
 
 ```bash
-maton api -X POST '/linkedin-community-management/rest/posts' -H 'Linkedin-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0' -H 'Content-Type: application/json' --input - <<'JSON'
+maton api -X POST '/linkedin-community-management/rest/posts' -H 'LinkedIn-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "author": "urn:li:organization:{orgId}",
   "commentary": "Your post text here",
@@ -159,7 +159,7 @@ Returns `201` with `x-restli-id` header containing the post URN (e.g., `urn:li:s
 #### Create Post with Media
 
 ```bash
-maton api -X POST '/linkedin-community-management/rest/posts' -H 'Linkedin-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0' -H 'Content-Type: application/json' --input - <<'JSON'
+maton api -X POST '/linkedin-community-management/rest/posts' -H 'LinkedIn-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "author": "urn:li:organization:{orgId}",
   "commentary": "Check out this video!",
@@ -186,7 +186,7 @@ JSON
 #### Create Article Post
 
 ```bash
-maton api -X POST '/linkedin-community-management/rest/posts' -H 'Linkedin-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0' -H 'Content-Type: application/json' --input - <<'JSON'
+maton api -X POST '/linkedin-community-management/rest/posts' -H 'LinkedIn-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "author": "urn:li:organization:{orgId}",
   "commentary": "Great article on AI",
@@ -215,7 +215,7 @@ JSON
 #### Get Post by URN
 
 ```bash
-maton api '/linkedin-community-management/rest/posts/{encoded_postUrn}' -H 'Linkedin-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
+maton api '/linkedin-community-management/rest/posts/{encoded_postUrn}' -H 'LinkedIn-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
 ```
 
 **Note:** `{encoded_postUrn}` is a placeholder. Replace it with a real value before sending the request.
@@ -225,7 +225,7 @@ maton api '/linkedin-community-management/rest/posts/{encoded_postUrn}' -H 'Link
 #### Find Posts by Author (Organization)
 
 ```bash
-maton api '/linkedin-community-management/rest/posts?author=urn%3Ali%3Aorganization%3A{orgId}&q=author&count=10&sortBy=LAST_MODIFIED' -H 'Linkedin-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0' -H 'X-RestLi-Method: FINDER'
+maton api '/linkedin-community-management/rest/posts?author=urn%3Ali%3Aorganization%3A{orgId}&q=author&count=10&sortBy=LAST_MODIFIED' -H 'LinkedIn-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0' -H 'X-RestLi-Method: FINDER'
 ```
 
 **Query parameters:**
@@ -241,7 +241,7 @@ maton api '/linkedin-community-management/rest/posts?author=urn%3Ali%3Aorganizat
 #### Update Post
 
 ```bash
-maton api -X POST '/linkedin-community-management/rest/posts/{encoded_postUrn}' -H 'Linkedin-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0' -H 'X-RestLi-Method: PARTIAL_UPDATE' -H 'Content-Type: application/json' --input - <<'JSON'
+maton api -X POST '/linkedin-community-management/rest/posts/{encoded_postUrn}' -H 'LinkedIn-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0' -H 'X-RestLi-Method: PARTIAL_UPDATE' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "patch": {
     "$set": {
@@ -259,7 +259,7 @@ Returns `204` on success. Only `commentary`, `contentCallToActionLabel`, `conten
 #### Delete Post
 
 ```bash
-maton api '/linkedin-community-management/rest/posts/{encoded_postUrn}' -X DELETE -H 'Linkedin-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0' -H 'X-RestLi-Method: DELETE'
+maton api '/linkedin-community-management/rest/posts/{encoded_postUrn}' -X DELETE -H 'LinkedIn-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0' -H 'X-RestLi-Method: DELETE'
 ```
 
 **Note:** `{encoded_postUrn}` is a placeholder. Replace it with a real value before sending the request.
@@ -269,7 +269,7 @@ Returns `204` on success.
 #### Reshare Post
 
 ```bash
-maton api -X POST '/linkedin-community-management/rest/posts' -H 'Linkedin-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0' -H 'Content-Type: application/json' --input - <<'JSON'
+maton api -X POST '/linkedin-community-management/rest/posts' -H 'LinkedIn-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "author": "urn:li:organization:{orgId}",
   "commentary": "Great insights!",
@@ -295,7 +295,7 @@ JSON
 #### Get Comments on Post
 
 ```bash
-maton api '/linkedin-community-management/rest/socialActions/{encoded_postUrn}/comments' -H 'Linkedin-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
+maton api '/linkedin-community-management/rest/socialActions/{encoded_postUrn}/comments' -H 'LinkedIn-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
 ```
 
 **Note:** `{encoded_postUrn}` is a placeholder. Replace it with a real value before sending the request.
@@ -303,7 +303,7 @@ maton api '/linkedin-community-management/rest/socialActions/{encoded_postUrn}/c
 #### Get Specific Comment
 
 ```bash
-maton api '/linkedin-community-management/rest/socialActions/{encoded_postUrn}/comments/{commentId}' -H 'Linkedin-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
+maton api '/linkedin-community-management/rest/socialActions/{encoded_postUrn}/comments/{commentId}' -H 'LinkedIn-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
 ```
 
 **Note:** `{encoded_postUrn}` and `{commentId}` are placeholders. Replace each of them with real values before sending the request.
@@ -311,7 +311,7 @@ maton api '/linkedin-community-management/rest/socialActions/{encoded_postUrn}/c
 #### Create Comment
 
 ```bash
-maton api -X POST '/linkedin-community-management/rest/socialActions/{encoded_postUrn}/comments' -H 'Linkedin-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0' -H 'Content-Type: application/json' --input - <<'JSON'
+maton api -X POST '/linkedin-community-management/rest/socialActions/{encoded_postUrn}/comments' -H 'LinkedIn-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "actor": "urn:li:organization:{orgId}",
   "object": "urn:li:activity:{activityId}",
@@ -329,7 +329,7 @@ Returns `201` with `x-restli-id` header containing the comment ID.
 #### Create Nested Comment (Reply)
 
 ```bash
-maton api -X POST '/linkedin-community-management/rest/socialActions/{encoded_commentUrn}/comments' -H 'Linkedin-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0' -H 'Content-Type: application/json' --input - <<'JSON'
+maton api -X POST '/linkedin-community-management/rest/socialActions/{encoded_commentUrn}/comments' -H 'LinkedIn-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "actor": "urn:li:organization:{orgId}",
   "object": "urn:li:share:{shareId}",
@@ -346,7 +346,7 @@ JSON
 #### Edit Comment
 
 ```bash
-maton api -X POST '/linkedin-community-management/rest/socialActions/{encoded_postUrn}/comments/{commentId}?actor=urn%3Ali%3Aorganization%3A{orgId}' -H 'Linkedin-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0' -H 'X-RestLi-Method: PARTIAL_UPDATE' -H 'Content-Type: application/json' --input - <<'JSON'
+maton api -X POST '/linkedin-community-management/rest/socialActions/{encoded_postUrn}/comments/{commentId}?actor=urn%3Ali%3Aorganization%3A{orgId}' -H 'LinkedIn-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0' -H 'X-RestLi-Method: PARTIAL_UPDATE' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "patch": {
     "message": {
@@ -364,7 +364,7 @@ JSON
 #### Delete Comment
 
 ```bash
-maton api '/linkedin-community-management/rest/socialActions/{encoded_postUrn}/comments/{commentId}?actor=urn%3Ali%3Aorganization%3A{orgId}' -X DELETE -H 'Linkedin-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
+maton api '/linkedin-community-management/rest/socialActions/{encoded_postUrn}/comments/{commentId}?actor=urn%3Ali%3Aorganization%3A{orgId}' -X DELETE -H 'LinkedIn-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
 ```
 
 **Note:** `{encoded_postUrn}` and `{commentId}` are placeholders. Replace each of them with real values before sending the request.
@@ -374,7 +374,7 @@ maton api '/linkedin-community-management/rest/socialActions/{encoded_postUrn}/c
 #### Create Reaction
 
 ```bash
-maton api -X POST '/linkedin-community-management/rest/reactions?actor=urn%3Ali%3Aorganization%3A{orgId}' -H 'Linkedin-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0' -H 'Content-Type: application/json' --input - <<'JSON'
+maton api -X POST '/linkedin-community-management/rest/reactions?actor=urn%3Ali%3Aorganization%3A{orgId}' -H 'LinkedIn-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "root": "urn:li:activity:{activityId}",
   "reactionType": "LIKE"
@@ -389,7 +389,7 @@ JSON
 #### Get Reactions on Post
 
 ```bash
-maton api '/linkedin-community-management/rest/reactions/(entity:{encoded_entityUrn})?q=entity' -H 'Linkedin-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
+maton api '/linkedin-community-management/rest/reactions/(entity:{encoded_entityUrn})?q=entity' -H 'LinkedIn-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
 ```
 
 **Note:** `{encoded_entityUrn}` is a placeholder. Replace it with a real value before sending the request.
@@ -397,7 +397,7 @@ maton api '/linkedin-community-management/rest/reactions/(entity:{encoded_entity
 #### Delete Reaction
 
 ```bash
-maton api '/linkedin-community-management/rest/reactions/(actor:{encoded_actorUrn},entity:{encoded_entityUrn})' -X DELETE -H 'Linkedin-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
+maton api '/linkedin-community-management/rest/reactions/(actor:{encoded_actorUrn},entity:{encoded_entityUrn})' -X DELETE -H 'LinkedIn-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
 ```
 
 **Note:** `{encoded_actorUrn}` and `{encoded_entityUrn}` are placeholders. Replace each of them with real values before sending the request.
@@ -411,7 +411,7 @@ These endpoints require the authenticated member to be an `ADMINISTRATOR` of the
 #### Organization Follower Statistics (Lifetime)
 
 ```bash
-maton api '/linkedin-community-management/rest/organizationalEntityFollowerStatistics?q=organizationalEntity&organizationalEntity=urn%3Ali%3Aorganization%3A{orgId}' -H 'Linkedin-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
+maton api '/linkedin-community-management/rest/organizationalEntityFollowerStatistics?q=organizationalEntity&organizationalEntity=urn%3Ali%3Aorganization%3A{orgId}' -H 'LinkedIn-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
 ```
 
 Returns follower counts segmented by geo, function, industry, seniority, and staff count range.
@@ -419,7 +419,7 @@ Returns follower counts segmented by geo, function, industry, seniority, and sta
 #### Organization Follower Statistics (Time-Bound)
 
 ```bash
-maton api '/linkedin-community-management/rest/organizationalEntityFollowerStatistics?q=organizationalEntity&organizationalEntity=urn%3Ali%3Aorganization%3A{orgId}&timeIntervals.timeGranularityType=DAY&timeIntervals.timeRange.start={startMs}&timeIntervals.timeRange.end={endMs}' -H 'Linkedin-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
+maton api '/linkedin-community-management/rest/organizationalEntityFollowerStatistics?q=organizationalEntity&organizationalEntity=urn%3Ali%3Aorganization%3A{orgId}&timeIntervals.timeGranularityType=DAY&timeIntervals.timeRange.start={startMs}&timeIntervals.timeRange.end={endMs}' -H 'LinkedIn-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
 ```
 
 **Note:** `{startMs}` and `{endMs}` are placeholders. Replace each of them with real values before sending the request.
@@ -429,13 +429,13 @@ maton api '/linkedin-community-management/rest/organizationalEntityFollowerStati
 #### Organization Page Statistics (Lifetime)
 
 ```bash
-maton api '/linkedin-community-management/rest/organizationPageStatistics?q=organization&organization=urn%3Ali%3Aorganization%3A{orgId}' -H 'Linkedin-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
+maton api '/linkedin-community-management/rest/organizationPageStatistics?q=organization&organization=urn%3Ali%3Aorganization%3A{orgId}' -H 'LinkedIn-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
 ```
 
 #### Organization Page Statistics (Time-Bound)
 
 ```bash
-maton api '/linkedin-community-management/rest/organizationPageStatistics?q=organization&organization=urn%3Ali%3Aorganization%3A{orgId}&timeIntervals.timeGranularityType=DAY&timeIntervals.timeRange.start={startMs}&timeIntervals.timeRange.end={endMs}' -H 'Linkedin-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
+maton api '/linkedin-community-management/rest/organizationPageStatistics?q=organization&organization=urn%3Ali%3Aorganization%3A{orgId}&timeIntervals.timeGranularityType=DAY&timeIntervals.timeRange.start={startMs}&timeIntervals.timeRange.end={endMs}' -H 'LinkedIn-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
 ```
 
 **Note:** `{startMs}` and `{endMs}` are placeholders. Replace each of them with real values before sending the request.
@@ -443,7 +443,7 @@ maton api '/linkedin-community-management/rest/organizationPageStatistics?q=orga
 #### Organization Share Statistics (Lifetime)
 
 ```bash
-maton api '/linkedin-community-management/rest/organizationalEntityShareStatistics?q=organizationalEntity&organizationalEntity=urn%3Ali%3Aorganization%3A{orgId}' -H 'Linkedin-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
+maton api '/linkedin-community-management/rest/organizationalEntityShareStatistics?q=organizationalEntity&organizationalEntity=urn%3Ali%3Aorganization%3A{orgId}' -H 'LinkedIn-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
 ```
 
 **Response:**
@@ -467,7 +467,7 @@ maton api '/linkedin-community-management/rest/organizationalEntityShareStatisti
 #### Organization Share Statistics (Time-Bound)
 
 ```bash
-maton api '/linkedin-community-management/rest/organizationalEntityShareStatistics?q=organizationalEntity&organizationalEntity=urn%3Ali%3Aorganization%3A{orgId}&timeIntervals.timeGranularityType=DAY&timeIntervals.timeRange.start={startMs}&timeIntervals.timeRange.end={endMs}' -H 'Linkedin-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
+maton api '/linkedin-community-management/rest/organizationalEntityShareStatistics?q=organizationalEntity&organizationalEntity=urn%3Ali%3Aorganization%3A{orgId}&timeIntervals.timeGranularityType=DAY&timeIntervals.timeRange.start={startMs}&timeIntervals.timeRange.end={endMs}' -H 'LinkedIn-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
 ```
 
 **Note:** `{startMs}` and `{endMs}` are placeholders. Replace each of them with real values before sending the request.
@@ -475,7 +475,7 @@ maton api '/linkedin-community-management/rest/organizationalEntityShareStatisti
 #### Share Statistics for Specific Posts
 
 ```bash
-maton api '/linkedin-community-management/rest/organizationalEntityShareStatistics?q=organizationalEntity&organizationalEntity=urn%3Ali%3Aorganization%3A{orgId}&shares=List(urn%3Ali%3Ashare%3A{shareId1},urn%3Ali%3Ashare%3A{shareId2})' -H 'Linkedin-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
+maton api '/linkedin-community-management/rest/organizationalEntityShareStatistics?q=organizationalEntity&organizationalEntity=urn%3Ali%3Aorganization%3A{orgId}&shares=List(urn%3Ali%3Ashare%3A{shareId1},urn%3Ali%3Ashare%3A{shareId2})' -H 'LinkedIn-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
 ```
 
 ### Mentioning an Organization
@@ -503,7 +503,7 @@ Use `#keyword` syntax in `commentary`:
 LinkedIn uses offset-based pagination with `start` and `count` parameters:
 
 ```bash
-maton api '/linkedin-community-management/rest/posts?author=...&q=author&count=10&start=0' -H 'Linkedin-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
+maton api '/linkedin-community-management/rest/posts?author=...&q=author&count=10&start=0' -H 'LinkedIn-Version: 202606' -H 'X-Restli-Protocol-Version: 2.0.0'
 ```
 
 Response includes pagination info:
@@ -533,7 +533,7 @@ Use the `links[].href` with `rel: "next"` for the next page, or increment `start
 - Organization posts require `w_organization_social` permission and an admin role on the org
 - Member posts require `w_member_social` permission
 - Reading member posts requires `r_member_social` (restricted permission)
-- The `Linkedin-Version` header is required on all requests (format: `YYYYMM`, e.g., `202606`). LinkedIn keeps roughly the last ~12 monthly versions active and returns HTTP 426 `NONEXISTENT_VERSION` for retired or future-dated versions — pin to a recent month and bump periodically
+- The `LinkedIn-Version` header (format: `YYYYMM`, e.g., `202606`) selects the API version; Maton sends `202606` when it's left out. LinkedIn retires old monthly versions and returns HTTP 426 `NONEXISTENT_VERSION` for retired or future-dated ones, so use a recent month
 - Post content types: text-only, image (`urn:li:image:{id}`), video (`urn:li:video:{id}`), document (`urn:li:document:{id}`), article
 - Statistics endpoints return data only for administered organizations
 - Share statistics only cover the past 12 months (rolling window)

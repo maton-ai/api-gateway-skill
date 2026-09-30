@@ -12,7 +12,7 @@ Replace the upstream base URL with the app name. Everything after the base URL i
 - Upstream: `https://api.linkedin.com/rest/me`
 - Gateway: `https://api.maton.ai/linkedin/rest/me`
 
-**Important:** All requests require `LinkedIn-Version` header.
+**Important:** REST API (`/rest/...`) calls take a `LinkedIn-Version` header (`YYYYMM`, e.g. `202606`). If you leave it out, Maton sends `202606`.
 
 ### Profile API
 
@@ -763,7 +763,7 @@ Note: Available scopes depend on your LinkedIn OAuth connection. Verify granted 
 
 ### Notes
 
-- Include `LinkedIn-Version: 202606` header for all REST API calls
+- `LinkedIn-Version` (`YYYYMM`) selects the REST API version; Maton sends `202606` when it's left out. LinkedIn retires old monthly versions and returns HTTP 426 `NONEXISTENT_VERSION` for retired or future-dated ones, so use a recent month
 - Author URN format: `urn:li:person:{personId}`
 - Get person ID from `/rest/me` endpoint
 - **Commentary uses Little Text Format** — escape reserved characters (`|{}@[]()<>#\*_~`) with backslash or content will be truncated

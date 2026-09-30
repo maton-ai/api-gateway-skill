@@ -9,15 +9,15 @@
 
 Replace the upstream base URL with the app name. Everything after the base URL including query strings is kept as-is. Any account-specific part of the base URL and the API credentials are stored in the Maton connection, and the gateway injects both so requests never carry them. For example:
 
-- Upstream: `https://graph.facebook.com/v21.0/{phone_number_id}/messages`
-- Gateway: `https://api.maton.ai/whatsapp-business/v21.0/{phone_number_id}/messages`
+- Upstream: `https://graph.facebook.com/v25.0/{phone_number_id}/messages`
+- Gateway: `https://api.maton.ai/whatsapp-business/v25.0/{phone_number_id}/messages`
 
 ### Messages API
 
 #### Send Text Message
 
 ```bash
-maton api -X POST '/whatsapp-business/v21.0/{phone_number_id}/messages' -H 'Content-Type: application/json' --input - <<'JSON'
+maton api -X POST '/whatsapp-business/v25.0/{phone_number_id}/messages' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "messaging_product": "whatsapp",
   "recipient_type": "individual",
@@ -38,7 +38,7 @@ JSON
 The template language code must match the locale the user or recipient asked for, and the template must already be approved in that language — `en_US` below is only an example, not a default to reuse.
 
 ```bash
-maton api -X POST '/whatsapp-business/v21.0/{phone_number_id}/messages' -H 'Content-Type: application/json' --input - <<'JSON'
+maton api -X POST '/whatsapp-business/v25.0/{phone_number_id}/messages' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "messaging_product": "whatsapp",
   "to": "1234567890",
@@ -66,7 +66,7 @@ JSON
 #### Send Image Message
 
 ```bash
-maton api -X POST '/whatsapp-business/v21.0/{phone_number_id}/messages' -H 'Content-Type: application/json' --input - <<'JSON'
+maton api -X POST '/whatsapp-business/v25.0/{phone_number_id}/messages' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "messaging_product": "whatsapp",
   "to": "1234567890",
@@ -84,7 +84,7 @@ JSON
 #### Send Document Message
 
 ```bash
-maton api -X POST '/whatsapp-business/v21.0/{phone_number_id}/messages' -H 'Content-Type: application/json' --input - <<'JSON'
+maton api -X POST '/whatsapp-business/v25.0/{phone_number_id}/messages' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "messaging_product": "whatsapp",
   "to": "1234567890",
@@ -103,7 +103,7 @@ JSON
 #### Send Video Message
 
 ```bash
-maton api -X POST '/whatsapp-business/v21.0/{phone_number_id}/messages' -H 'Content-Type: application/json' --input - <<'JSON'
+maton api -X POST '/whatsapp-business/v25.0/{phone_number_id}/messages' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "messaging_product": "whatsapp",
   "to": "1234567890",
@@ -121,7 +121,7 @@ JSON
 #### Send Audio Message
 
 ```bash
-maton api -X POST '/whatsapp-business/v21.0/{phone_number_id}/messages' -H 'Content-Type: application/json' --input - <<'JSON'
+maton api -X POST '/whatsapp-business/v25.0/{phone_number_id}/messages' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "messaging_product": "whatsapp",
   "to": "1234567890",
@@ -138,7 +138,7 @@ JSON
 #### Send Location Message
 
 ```bash
-maton api -X POST '/whatsapp-business/v21.0/{phone_number_id}/messages' -H 'Content-Type: application/json' --input - <<'JSON'
+maton api -X POST '/whatsapp-business/v25.0/{phone_number_id}/messages' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "messaging_product": "whatsapp",
   "to": "1234567890",
@@ -158,7 +158,7 @@ JSON
 #### Send Contact Message
 
 ```bash
-maton api -X POST '/whatsapp-business/v21.0/{phone_number_id}/messages' -H 'Content-Type: application/json' --input - <<'JSON'
+maton api -X POST '/whatsapp-business/v25.0/{phone_number_id}/messages' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "messaging_product": "whatsapp",
   "to": "1234567890",
@@ -184,7 +184,7 @@ JSON
 #### Send Interactive Button Message
 
 ```bash
-maton api -X POST '/whatsapp-business/v21.0/{phone_number_id}/messages' -H 'Content-Type: application/json' --input - <<'JSON'
+maton api -X POST '/whatsapp-business/v25.0/{phone_number_id}/messages' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "messaging_product": "whatsapp",
   "to": "1234567890",
@@ -210,7 +210,7 @@ JSON
 #### Send Interactive List Message
 
 ```bash
-maton api -X POST '/whatsapp-business/v21.0/{phone_number_id}/messages' -H 'Content-Type: application/json' --input - <<'JSON'
+maton api -X POST '/whatsapp-business/v25.0/{phone_number_id}/messages' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "messaging_product": "whatsapp",
   "to": "1234567890",
@@ -241,7 +241,7 @@ JSON
 #### Mark Message as Read
 
 ```bash
-maton api -X POST '/whatsapp-business/v21.0/{phone_number_id}/messages' -H 'Content-Type: application/json' --input - <<'JSON'
+maton api -X POST '/whatsapp-business/v25.0/{phone_number_id}/messages' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "messaging_product": "whatsapp",
   "status": "read",
@@ -269,7 +269,7 @@ BOUNDARY="maton-$$"
   printf -- '--%s--\r\n' "$BOUNDARY"
 } > /tmp/upload.body
 
-maton api -X POST '/whatsapp-business/v21.0/{phone_number_id}/media' \
+maton api -X POST '/whatsapp-business/v25.0/{phone_number_id}/media' \
   -H "Content-Type: multipart/form-data; boundary=$BOUNDARY" \
   --input /tmp/upload.body
 ```
@@ -279,7 +279,7 @@ maton api -X POST '/whatsapp-business/v21.0/{phone_number_id}/media' \
 #### Get Media URL
 
 ```bash
-maton api '/whatsapp-business/v21.0/{media_id}'
+maton api '/whatsapp-business/v25.0/{media_id}'
 ```
 
 **Note:** `{media_id}` is a placeholder. Replace it with a real value before sending the request.
@@ -287,7 +287,7 @@ maton api '/whatsapp-business/v21.0/{media_id}'
 #### Delete Media
 
 ```bash
-maton api '/whatsapp-business/v21.0/{media_id}' -X DELETE
+maton api '/whatsapp-business/v25.0/{media_id}' -X DELETE
 ```
 
 **Note:** `{media_id}` is a placeholder. Replace it with a real value before sending the request.
@@ -297,7 +297,7 @@ maton api '/whatsapp-business/v21.0/{media_id}' -X DELETE
 #### List Templates
 
 ```bash
-maton api '/whatsapp-business/v21.0/{whatsapp_business_account_id}/message_templates'
+maton api '/whatsapp-business/v25.0/{whatsapp_business_account_id}/message_templates'
 ```
 
 **Note:** `{whatsapp_business_account_id}` is a placeholder. Replace it with a real value before sending the request.
@@ -310,7 +310,7 @@ maton api '/whatsapp-business/v21.0/{whatsapp_business_account_id}/message_templ
 
 ```bash
 # `language` sets the locale this template is created for; use the one the user asked for.
-maton api -X POST '/whatsapp-business/v21.0/{whatsapp_business_account_id}/message_templates' -H 'Content-Type: application/json' --input - <<'JSON'
+maton api -X POST '/whatsapp-business/v25.0/{whatsapp_business_account_id}/message_templates' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "name": "order_confirmation",
   "language": "en_US",
@@ -341,7 +341,7 @@ Template categories: `AUTHENTICATION`, `MARKETING`, `UTILITY`
 #### Delete Template
 
 ```bash
-maton api '/whatsapp-business/v21.0/{whatsapp_business_account_id}/message_templates?name=template_name' -X DELETE
+maton api '/whatsapp-business/v25.0/{whatsapp_business_account_id}/message_templates?name=template_name' -X DELETE
 ```
 
 **Note:** `{whatsapp_business_account_id}` is a placeholder. Replace it with a real value before sending the request.
@@ -351,7 +351,7 @@ maton api '/whatsapp-business/v21.0/{whatsapp_business_account_id}/message_templ
 #### Get Phone Number
 
 ```bash
-maton api '/whatsapp-business/v21.0/{phone_number_id}'
+maton api '/whatsapp-business/v25.0/{phone_number_id}'
 ```
 
 **Note:** `{phone_number_id}` is a placeholder. Replace it with a real value before sending the request.
@@ -359,7 +359,7 @@ maton api '/whatsapp-business/v21.0/{phone_number_id}'
 #### List Phone Numbers
 
 ```bash
-maton api '/whatsapp-business/v21.0/{whatsapp_business_account_id}/phone_numbers'
+maton api '/whatsapp-business/v25.0/{whatsapp_business_account_id}/phone_numbers'
 ```
 
 **Note:** `{whatsapp_business_account_id}` is a placeholder. Replace it with a real value before sending the request.
@@ -369,7 +369,7 @@ maton api '/whatsapp-business/v21.0/{whatsapp_business_account_id}/phone_numbers
 #### Get Business Profile
 
 ```bash
-maton api '/whatsapp-business/v21.0/{phone_number_id}/whatsapp_business_profile?fields=about,address,description,email,profile_picture_url,websites,vertical'
+maton api '/whatsapp-business/v25.0/{phone_number_id}/whatsapp_business_profile?fields=about,address,description,email,profile_picture_url,websites,vertical'
 ```
 
 **Note:** `{phone_number_id}` is a placeholder. Replace it with a real value before sending the request.
@@ -377,7 +377,7 @@ maton api '/whatsapp-business/v21.0/{phone_number_id}/whatsapp_business_profile?
 #### Update Business Profile
 
 ```bash
-maton api -X POST '/whatsapp-business/v21.0/{phone_number_id}/whatsapp_business_profile' -H 'Content-Type: application/json' --input - <<'JSON'
+maton api -X POST '/whatsapp-business/v25.0/{phone_number_id}/whatsapp_business_profile' -H 'Content-Type: application/json' --input - <<'JSON'
 {
   "messaging_product": "whatsapp",
   "about": "Your trusted partner",
@@ -400,7 +400,7 @@ JSON
 - Media files must be publicly accessible URLs or uploaded via the Media API
 - Interactive messages support up to 3 buttons or 10 list items
 - Message IDs (`wamid`) are used to track message status and replies
-- API version `v21.0` is current; check Meta docs for latest version
+- API version `v25.0` is current. Meta retires Graph API versions about two years after release; check Meta docs for the latest version
 
 ### Resources
 

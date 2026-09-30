@@ -323,7 +323,7 @@ For raw HTTP requests, follow the `nextRecordsUrl` returned in the query respons
 
 - Use URL encoding for SOQL queries (spaces become `+`)
 - Record IDs are 15 or 18 character alphanumeric strings
-- API version (v63.0) can be adjusted; latest is v65.0
+- API version (v63.0) can be adjusted; `maton salesforce version list` shows the versions your org supports
 - Update and Delete operations return HTTP 204 (no content) on success
 - Dates for updated/deleted queries use ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`
 - Use `allOrNone: true` in batch operations for atomic transactions
