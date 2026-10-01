@@ -12,7 +12,7 @@ Replace the upstream base URL with the app name. Everything after the base URL i
 - Upstream: `https://api.getjobber.com/api//graphql`
 - Gateway: `https://api.maton.ai/jobber/graphql`
 
-**Important:** Jobber uses a GraphQL API exclusively. All requests are POST requests to the `/graphql` endpoint. The gateway also injects the `X-JOBBER-GRAPHQL-VERSION` header (currently `2025-04-16`).
+**Important:** Jobber uses a GraphQL API exclusively. All requests are POST requests to the `/graphql` endpoint. The gateway also injects the `X-JOBBER-GRAPHQL-VERSION` header (currently `2026-05-12`).
 
 ### Account API
 
@@ -301,7 +301,7 @@ Webhooks include HMAC-SHA256 signatures for verification.
 
 - Jobber uses GraphQL exclusively (no REST API)
 - Maton automatically injects the `X-JOBBER-GRAPHQL-VERSION` header
-- Current gateway API version: `2025-04-16` (latest)
+- Current gateway API version: `2026-05-12`. Jobber keeps each version for up to 18 months; send your own `X-JOBBER-GRAPHQL-VERSION` to pin a different one
 - Old API versions are supported for 12-18 months from release
 - Use the GraphiQL explorer in Jobber's Developer Center for schema discovery
 - IDs use `EncodedId` type (base64 encoded) - pass as strings
