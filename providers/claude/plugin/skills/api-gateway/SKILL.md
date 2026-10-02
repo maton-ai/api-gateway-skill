@@ -34,20 +34,11 @@ brew install maton-ai/cli/maton
 
 ## Authentication
 
-### Device (Recommended)
-
 ```bash
 maton login
 ```
 
-Prints a link and a user code. Open the link in a browser on any device, approve the code, then run `maton login` again to finish signing in. Once complete, it creates a profile in config.toml (eg. $HOME/.config/maton/config.toml) and stores the access and refresh tokens in the operating system's credential store (Keychain on macOS, Credential Manager on Windows, Secret Service on Linux), auto-renewed on expiry. The CLI reads them when it needs them.
-
-### API Key
-```bash
-maton login --interactive
-```
-
-Requires manually copying an API key from [Settings](https://maton.ai/settings), which is error prone. Once complete, it also creates a profile in config.toml and stores the key in the same credential store. It is preferred over `export MATON_API_KEY=...`, which exposes a long-lived credential to every child process. When `MATON_API_KEY` is set, it overrides the active profile. If the CLI cannot be installed at all, see [Appendix: Environments Without the CLI](#appendix-environments-without-the-cli) for the raw HTTP form and the rules for handling the key.
+Prints a login link. Open it in a browser and copy the verification code shown. Then run `maton login --code <CODE>` to finish signing in. Once complete, it creates a profile in config.toml (eg. $HOME/.config/maton/config.toml) and stores the access and refresh tokens in the operating system's credential store (Keychain on macOS, Credential Manager on Windows, Secret Service on Linux), auto-renewed on expiry. The CLI reads them when it needs them.
 
 ### Verify
 
