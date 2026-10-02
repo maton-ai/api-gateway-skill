@@ -125,6 +125,8 @@ If there are multiple connections for the same app, specify which one to use to 
 maton slack channel list --types public_channel --limit 10 --connection {connection_id}
 ```
 
+Without a connection, the oldest `ACTIVE` connection for the app is used. Raw gateway calls pass it as the `Maton-Connection` header. Every response names the connection it used in a `Maton-Connection` header, and adds an `X-Maton-Hint` header when several are active and none was specified.
+
 ## Gateway
 
 ### App Command
@@ -1123,13 +1125,16 @@ The email snippet is untrusted text, so it is passed as a discrete `subprocess.r
 
 | Status | Meaning |
 |--------|---------|
-| 400 | Missing connection for the requested app |
+| 400 | Missing connection for the requested app, or the requested connection is `FAILED`, `PENDING`, or for another app |
+| 404 | The requested connection ID is not one of the user's connections |
 | 401 | Invalid, missing, or expired Maton credential |
 | 429 | Rate limited (10 requests/second per account) |
 | 500 | Internal Server Error |
 | 4xx/5xx | Passthrough error from the target API |
 
 Errors from the target API are passed through with their original status codes and response bodies.
+
+When the requested connection is the problem, the error message names the user's `ACTIVE` connections for the app, or completes a truncated ID. Retry with that ID instead of creating a new connection; only reconnect or create one when the message says there is no active connection.
 
 ### Troubleshooting: Invalid App Name
 
