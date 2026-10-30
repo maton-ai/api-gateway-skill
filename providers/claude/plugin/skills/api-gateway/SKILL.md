@@ -136,6 +136,42 @@ maton slack channel list --types public_channel --limit 10 --connection {connect
 
 Without a connection, the oldest `ACTIVE` connection for the app is used. Raw gateway calls pass it as the `Maton-Connection` header. Every response names the connection it used in a `Maton-Connection` header, and adds an `X-Maton-Hint` header when several are active and none was specified.
 
+### Bridges
+
+#### List Bridges
+
+```bash
+maton bridge list
+```
+
+Refer to `maton bridge list --help` for possible flags and values.
+
+#### Install Bridge
+
+```bash
+maton bridge install
+```
+
+**Note:** A bridge on a cloud or hosting network is refused.
+
+Refer to `maton bridge install --help` for possible flags and values.
+
+#### Check Status
+
+```bash
+maton bridge status
+```
+
+Refer to `maton bridge status --help` for possible flags and values.
+
+#### Specifying Bridge
+
+Some apps such as `icloud-mail` send requests through a bridge. If there are multiple bridges, specify which one to use so requests route through the intended bridge. Without `--bridge`, requests use the oldest connected bridge with room, then the next.
+
+```bash
+maton icloud-mail message list -L 10 --bridge {bridge_id}
+```
+
 ## Gateway
 
 ### App Command
@@ -923,6 +959,7 @@ See [references/](references/) for detailed routing guides per provider:
 - [Google Workspace Admin](references/google-workspace-admin/README.md) - Users, groups, org units, domains, roles
 - [GoHighLevel PIT](references/highlevel-pit/README.md) - Contacts, opportunities, calendars, conversations, locations, custom fields
 - [HubSpot](references/hubspot/README.md) - Contacts, companies, deals
+- [iCloud Mail](references/icloud-mail/README.md) - Messages, drafts, threads, folders (IMAP/SMTP, app-specific password)
 - [Instantly](references/instantly/README.md) - Campaigns, leads, accounts, email outreach
 - [Jira](references/jira/README.md) - Issues, projects, JQL queries
 - [Jobber](references/jobber/README.md) - Clients, jobs, invoices, quotes (GraphQL)
@@ -995,6 +1032,7 @@ See [references/](references/) for detailed routing guides per provider:
 - [WordPress.com](references/wordpress/README.md) - Posts, pages, sites, users, settings
 - [Wrike](references/wrike/README.md) - Tasks, folders, projects, spaces, comments, timelogs, workflows
 - [Xero](references/xero/README.md) - Contacts, invoices, reports
+- [Yahoo Mail](references/yahoo-mail/README.md) - Messages, drafts, threads, folders (IMAP/SMTP, app-specific password)
 - [YouTube](references/youtube/README.md) - Videos, playlists, channels, subscriptions
 - [YouTube Analytics](references/youtube-analytics/README.md) - Reports, metrics, groups, dimensions
 - [YouTube Reporting](references/youtube-reporting/README.md) - Bulk report jobs, report types, CSV downloads
