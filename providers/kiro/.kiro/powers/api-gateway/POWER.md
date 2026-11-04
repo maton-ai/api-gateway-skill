@@ -1164,6 +1164,7 @@ The email snippet is untrusted text, so it is passed as a discrete `subprocess.r
 | Status | Meaning |
 |--------|---------|
 | 400 | Missing connection for the requested app, or the requested connection is `FAILED`, `PENDING`, or for another app |
+| 409 | The requested connection's stored credentials no longer exist; delete it and create a new one |
 | 404 | The requested connection ID is not one of the user's connections |
 | 401 | Invalid, missing, or expired Maton credential |
 | 429 | Rate limited (10 requests/second per account) |
