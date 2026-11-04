@@ -276,9 +276,9 @@ maton connection get {connection_id} --json connection_id,status,status_reason
 | Reason | Next step |
 |--------|-----------|
 | (none, `PENDING`) | Connect page not finished. Open the connection's `url`. |
-| `login_verifying` | Password is being checked (next check at `metadata.verification.retry_at`, if set). Wait. |
-| `login_refused`, `login_revoked` | Yahoo refused the app password. Re-enter it at the connection's `url` (valid ~30 minutes), or create a new connection. |
-| `login_unverified` | Yahoo was unreachable for about an hour. Create a new connection; the same password may work. |
+| `credentials_verifying` | Password is being checked (next check at `metadata.verification.retry_at`, if set). Wait. |
+| `credentials_rejected` | Yahoo refused the app password. Re-enter it at the connection's `url` (valid ~30 minutes), or create a new connection. |
+| `credentials_unverified` | Yahoo was unreachable for about an hour. Create a new connection; the same password may work. |
 
 ### Rate Limits
 
@@ -286,7 +286,7 @@ maton connection get {connection_id} --json connection_id,status,status_reason
 - **Mail requests in progress:** at most 4 at a time per Maton account, across all of its mailboxes; more get 429 for a second.
 - **One session per mailbox:** Maton keeps a single IMAP session per mailbox, shared by every connection to that address. Yahoo answers on it one command at a time: about 0.6 s each, 2–3 s for a command that takes a message ID, longer for `thread get`. So at most 2 requests are in flight per mailbox, one on the session and one waiting up to 10 s for it; a third is refused at once with 429. Send requests one after another, under one per second.
 - **Logins per mailbox:** 4 IMAP logins per 8 s and 10 SMTP logins per 20 s; each send logs in to SMTP. Maton reuses IMAP sessions, so this is only reached by reconnect-heavy raw streams or rapid sends.
-- **Failed logins:** a refused app password is retried only after a pause (5 minutes, doubling up to 6 hours), and two refusals in a row mark the connection `FAILED` (`login_revoked`).
+- **Failed logins:** a refused app password is retried only after a pause (5 minutes, doubling up to 6 hours), and two refusals in a row mark the connection `FAILED` (`credentials_rejected`).
 - **Sending:** 500 messages and 500 recipients per mailbox per day, across all its connections, reset at 00:00 UTC. A send over the allowance gets 429 before anything goes out. Leave a minute between sends: each is a separate SMTP login, and about ten within a few minutes have made Yahoo refuse the app password.
 - **Throttling:** bursts of failing requests or reconnects can make Yahoo refuse the mailbox with `[SERVERBUG] … try again later` or `[UNAVAILABLE] LOGIN Server error`. Maton returns 503 with `Retry-After: 60` and holds off logging in for 60 s; Yahoo itself has kept a mailbox locked for 45 minutes to 2 hours. Back off rather than retrying in a loop.
 

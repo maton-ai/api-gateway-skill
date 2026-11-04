@@ -282,12 +282,12 @@ maton connection get {connection_id} --json connection_id,status,status_reason
 | Reason | Next step |
 |--------|-----------|
 | (none, `PENDING`) | Connect page not finished. Open the connection's `url`. |
-| `login_verifying` | Password is being checked (next check at `metadata.verification.retry_at`, if set). Wait. |
+| `credentials_verifying` | Password is being checked (next check at `metadata.verification.retry_at`, if set). Wait. |
 | `route_verifying` | Sending route is being set up. Wait a minute and check again. |
 | `bridge_missing` | No Maton bridge installed. Ask the user to run `maton bridge install` on their own computer. |
 | `bridge_disconnected` | Bridge computer is asleep, offline, or logged out. Turns `ACTIVE` again when the bridge reconnects. |
-| `login_refused`, `login_revoked` | Apple refused the app-specific password. Re-enter it at the connection's `url` (valid ~30 minutes), or create a new connection. |
-| `login_unverified` | Apple was unreachable for about an hour. Create a new connection; the same password may work. |
+| `credentials_rejected` | Apple refused the app-specific password. Re-enter it at the connection's `url` (valid ~30 minutes), or create a new connection. |
+| `credentials_unverified` | Apple was unreachable for about an hour. Create a new connection; the same password may work. |
 
 ### Rate Limits
 

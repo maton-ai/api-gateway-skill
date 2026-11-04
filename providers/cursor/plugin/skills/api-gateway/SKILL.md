@@ -116,6 +116,8 @@ maton connection get {connection_id}
 
 Open the returned URL in a browser to complete authorizing the app. If the app offers scope selection, choose only the scopes the current task needs.
 
+A `FAILED` connection carries a `status_reason` (`credentials_rejected`, or `credentials_unverified` for email apps) and usually a `status_detail` sentence saying why. Delete it and create a new connection; only an email app's connect page still takes a new password while its `url` is valid. Email apps also report a `status_reason` while `PENDING`; see the app's reference.
+
 Refer to `maton connection get --help` for possible flags and values.
 
 ### Delete Connection
