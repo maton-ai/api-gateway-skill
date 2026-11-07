@@ -286,8 +286,8 @@ maton connection get {connection_id} --json connection_id,status,status_reason
 | `route_verifying` | Sending route is being set up. Wait a minute and check again. |
 | `bridge_missing` | No Maton bridge installed. Ask the user to run `maton bridge install` on their own computer. |
 | `bridge_disconnected` | Bridge computer is asleep, offline, or logged out. Turns `ACTIVE` again when the bridge reconnects. |
-| `credentials_rejected` | Apple refused the app-specific password. Re-enter it at the connection's `url` (valid ~30 minutes), or create a new connection. |
-| `credentials_unverified` | Apple was unreachable for about an hour. Create a new connection; the same password may work. |
+| `credentials_rejected` | Apple refused the app-specific password. Reauthorize the connection with a new app-specific password (`maton connection reauthorize {connection_id}`). |
+| `credentials_unverified` | Apple was unreachable for about an hour. Reauthorize the connection (`maton connection reauthorize {connection_id}`); the same password may work. |
 
 ### Rate Limits
 

@@ -277,8 +277,8 @@ maton connection get {connection_id} --json connection_id,status,status_reason
 |--------|-----------|
 | (none, `PENDING`) | Connect page not finished. Open the connection's `url`. |
 | `credentials_verifying` | Password is being checked (next check at `metadata.verification.retry_at`, if set). Wait. |
-| `credentials_rejected` | Yahoo refused the app password. Re-enter it at the connection's `url` (valid ~30 minutes), or create a new connection. |
-| `credentials_unverified` | Yahoo was unreachable for about an hour. Create a new connection; the same password may work. |
+| `credentials_rejected` | Yahoo refused the app password. Reauthorize the connection with a new app password (`maton connection reauthorize {connection_id}`). |
+| `credentials_unverified` | Yahoo was unreachable for about an hour. Reauthorize the connection (`maton connection reauthorize {connection_id}`); the same password may work. |
 
 ### Rate Limits
 

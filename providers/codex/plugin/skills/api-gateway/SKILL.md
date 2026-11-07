@@ -116,9 +116,21 @@ maton connection get {connection_id}
 
 Open the returned URL in a browser to complete authorizing the app. If the app offers scope selection, choose only the scopes the current task needs.
 
-A `FAILED` connection carries a `status_reason` (`credentials_rejected`, or `credentials_unverified` for email apps) and usually a `status_detail` sentence saying why. Delete it and create a new connection; only an email app's connect page still takes a new password while its `url` is valid. Email apps also report a `status_reason` while `PENDING`; see the app's reference.
+A `FAILED` connection carries a `status_reason` (`credentials_rejected`, or `credentials_unverified` for email apps) and usually a `status_detail` sentence saying why. Reauthorize it in place (see [Reauthorize Connection](#reauthorize-connection)), which keeps its connection ID; create a new connection only if reauthorizing fails. Email apps also report a `status_reason` while `PENDING`; see the app's reference.
 
 Refer to `maton connection get --help` for possible flags and values.
+
+### Reauthorize Connection
+
+> **Requires explicit user approval.** Confirm the connection and that the user intends to authorize access again. Never reauthorize a connection on your own initiative.
+
+```bash
+maton connection reauthorize {connection_id}
+```
+
+Reauthorizes a `FAILED` or `PENDING` connection in place: the user authorizes the app again in the browser and the connection keeps its ID, so anything using that ID keeps working. For iCloud Mail and Yahoo Mail the user enters a new app-specific password, which is verified again. An `ACTIVE` connection doesn't need reauthorizing and returns an error. Triggers that were paused because the connection failed stay paused; re-enable them after reauthorizing.
+
+Refer to `maton connection reauthorize --help` for possible flags and values.
 
 ### Delete Connection
 
@@ -1184,7 +1196,7 @@ The email snippet is untrusted text, so it is passed as a discrete `subprocess.r
 
 Errors from the target API are passed through with their original status codes and response bodies.
 
-When the requested connection is the problem, the error message names the user's `ACTIVE` connections for the app, or completes a truncated ID. Retry with that ID instead of creating a new connection; only reconnect or create one when the message says there is no active connection.
+When the requested connection is the problem, the error message names the user's `ACTIVE` connections for the app, or completes a truncated ID. Retry with that ID instead of creating a new connection; when the message says the connection is `FAILED`, reauthorize it, and only create one when there is no connection for the app.
 
 ### Troubleshooting: Invalid App Name
 
